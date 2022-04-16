@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose'
-import isEmail from 'validator/lib/isEmail'
-import { GradeJury } from './types';
+const { Schema, model } = require('mongoose')
+const isEmail = require('validator/lib/isEmail')
+const { GradeJury } = require('./types')
 
 
 const JurySchema = new Schema({
@@ -18,7 +18,7 @@ const JurySchema = new Schema({
         trim: true,
         validate: {
             validator: email => isEmail(email),
-            message: `{VALUE} est un email invalide`
+            message: props => `${props.value} est un email invalide!`
         }
     },
     telephone: { type: String, required: true },
@@ -44,7 +44,5 @@ JurySchema.virtual('notifications', {
 });
 
 
-const Jury = mongoose.model('Jury', JurySchema);
-
-export default Jury;
+module.exports = model('Jury', JurySchema, 'juries');
 

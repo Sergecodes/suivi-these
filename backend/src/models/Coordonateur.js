@@ -1,6 +1,5 @@
-import { Schema } from 'mongoose'
-// todo install validator
-import isEmail from 'validator/lib/isEmail';
+const { Schema, model } = require('mongoose')
+const isEmail = require( 'validator/lib/isEmail');
 
 
 const CoordonateurSchema = new Schema({
@@ -12,7 +11,7 @@ const CoordonateurSchema = new Schema({
         trim: true,
         validate: {
             validator: email => isEmail(email),
-            message: `{VALUE} est un email invalide`
+            message: props => `${props.value} est un email invalide!`
         }
     },
     motDePasse: {
@@ -37,8 +36,5 @@ CoordonateurSchema.virtual('notifications', {
 });
 
 
-const Coordonateur = mongoose.model('Coordonateur', CoordonateurSchema);
-
-
-export default Coordonateur;
+module.exports = model('Coordonateur', CoordonateurSchema);
 

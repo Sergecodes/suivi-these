@@ -1,24 +1,41 @@
 /* Declaration des enums et autres */
 
-export const Niveau = Object.freeze({
+const ACTEURS = {
+    COORDONATEUR: 'Coordonateur',
+    EXPERT: 'Expert',
+    CONSEIL: 'Conseil',
+    ADMIN: 'Admin',
+    ETUDIANT: 'Etudiant',
+    JURY: 'Jury',
+    RECTORAT: 'Rectorat'
+}
+
+
+const Niveau = Object.freeze({
     MASTER: "MASTER 2",
     THESE: "DOCTORAT",
 });
 
 
-export const Sexe = Object.freeze({
+const Sexe = Object.freeze({
     MALE: "Mâle",
     FEMELLE: "Femelle"
 });
 
 
-export const Notification = Object.freeze({
+const Notification = Object.freeze({
     RAPPEL: "Rappel",
     
 });
 
 
-export const Avis = Object.freeze({
+// On utilise les noms des modeles correspondants  
+const ActeurNotif = Object.freeze({
+    ...ACTEURS
+});
+
+
+const Avis = Object.freeze({
     POSITIF: 'Positif',
     NEGATIF: 'Négatif',
     SOUTENANCE_FAVORABLE: "Soutenance favorable",
@@ -28,7 +45,7 @@ export const Avis = Object.freeze({
 });
 
 
-export const AvisEmetteur = Object.freeze({
+const AvisEmetteur = Object.freeze({
    // On utilise les noms des modeles correspondants  
    COORDONATEUR: 'Coordonateur',
    EXPERT: 'Expert',
@@ -37,36 +54,36 @@ export const AvisEmetteur = Object.freeze({
 });
 
 
-export const CategorieFichier = Object.freeze({
+const CategorieFichier = Object.freeze({
     THESE: 'Thèse',
     RESUME_THESE: 'Resumé du thèse',
 });
 
 
-export const StatutDossier = Object.freeze({
+const StatutDossier = Object.freeze({
     ATTENTE_VALIDATION: "En attente de validation",
     ACCEPTE_ADMIN: "Validé par l'admin",
     REJETE_ADMIN: "Rejeté par l'admin"
 });
 
 
-export const TypeExpert = Object.freeze({
+const TypeExpert = Object.freeze({
     INTERNE: "Interne",
     EXTERNE: "Externe"
 });
 
 
-export const GradeJury = Object.freeze({
+const GradeJury = Object.freeze({
     UN: 1,
     DEUX: 2,
     TROIS: 3
 });
 
 
-export const GradeExpert = GradeJury;
+const GradeExpert = GradeJury;
 
 
-export const EtapeDossier = Object.freeze({
+const EtapeDossier = Object.freeze({
     UNE: 1,
     DEUX: 2,
     TROIS: 3,
@@ -76,13 +93,24 @@ export const EtapeDossier = Object.freeze({
 });
 
 
-export const GerantEtapeDossier = Object.freeze({
+const GerantEtapeDossier = Object.freeze({
     // On utilise les noms des modeles correspondants  
     COORDONATEUR: 'Coordonateur',
     EXPERT: 'Expert',
     JURY: 'Jury',
     ADMIN: 'Admin',
-
 });
 
+
+// On utilise les noms des modeles correspondants  
+const ActeurDossier = Object.freeze({
+    ...ACTEURS
+});
+
+
+module.exports = {
+    Niveau, Sexe, Notification, ActeurDossier, GerantEtapeDossier,
+    EtapeDossier, GradeExpert, CategorieFichier, AvisEmetteur,
+    StatutDossier, ActeurNotif, Avis, TypeExpert, GradeJury
+}
 
