@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose'
-import isEmail from 'validator/lib/isEmail'
-import { TypeExpert, GradeExpert } from './types'
+const { Schema, model } = require('mongoose')
+const isEmail = require('validator/lib/isEmail')
+const { TypeExpert, GradeExpert } = require('./types')
 
 
 const ExpertSchema = new Schema({
@@ -18,7 +18,7 @@ const ExpertSchema = new Schema({
         trim: true,
         validate: {
             validator: email => isEmail(email),
-            message: `{VALUE} est un email invalide`
+            message: props => `${props.value} est un email invalide!`
         }
     },
     ville: { type: String, required: true }, 
@@ -43,8 +43,6 @@ ExpertSchema.virtual('notifications', {
 });
 
 
-const Expert = mongoose.model('Expert', ExpertSchema);
-
-export default Expert;
+module.exports = model('Expert', ExpertSchema);
 
 

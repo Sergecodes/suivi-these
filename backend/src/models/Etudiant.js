@@ -1,12 +1,11 @@
-import { Schema } from 'mongoose'
-import isEmail from 'validator/lib/isEmail'
-import { 
-    Niveau, Sexe, CategorieFichier, EtapeDossier, 
+const { Schema, model } = require('mongoose')
+const isEmail = require('validator/lib/isEmail')
+const { 
+    Niveau, Sexe, CategorieFichier, EtapeDossier: EtapeDossierEnum,
     GerantEtapeDossier, StatutDossier
-} from './types'
+} = require('./types')
 
 
-// todo search created_at and updated_at fields mongoose
 const EtudiantSchema = new Schema({
     matricule: {
         type: String,
@@ -29,7 +28,7 @@ const EtudiantSchema = new Schema({
         trim: true,
         validate: {
             validator: email => isEmail(email),
-            message: `{VALUE} est un email invalide`
+            message: props => `${props.value} est un email invalide!`
         }
     },
     dateNaissance: { type: Date, required: true },
@@ -45,6 +44,8 @@ const EtudiantSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
     uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
     encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+}, {
+    timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
 
 EtudiantSchema.virtual('notifications', {
@@ -68,7 +69,8 @@ const DossierSchema = new Schema({
         ]
     },
     raisonStatut: String,
-    dateDepot: { type: Date, required: true, default: Date.now },
+}, {
+    timestamps: { createdAt: 'dateDepot', updatedAt: 'misAJourLe' }
 });
 
 
@@ -100,27 +102,27 @@ const FichierDossierSchema = new Schema({
 // EtapeDossier
 const EtapeDossierSchema = new Schema({
     numEtape: { 
-        type: number, 
+        type: Number, 
         required: true, 
-        default: EtapeDossier.UNE,
+        default: EtapeDossierEnum.UNE,
         enum: [
-            EtapeDossier.UNE, 
-            EtapeDossier.DEUX, 
-            EtapeDossier.TROIS, 
-            EtapeDossier.QUATRE, 
-            EtapeDossier.CINQ, 
-            EtapeDossier.SIX
+            EtapeDossierEnum.UNE, 
+            EtapeDossierEnum.DEUX, 
+            EtapeDossierEnum.TROIS, 
+            EtapeDossierEnum.QUATRE, 
+            EtapeDossierEnum.CINQ, 
+            EtapeDossierEnum.SIX
         ]
     },
-    debuteLe: Date,
-    acheveLe: Date,
+    debuteeLe: Date,
+    acheveeLe: Date,
     delai: Date,
-    gereParModelId: {
+    gereePar: {
         type: Schema.Types.ObjectId,
         required: true,
-        refPath: 'gerePar'
+        refPath: 'gereParModel'
     },
-    gerePar: {
+    gereeParModel: {
         type: String,
         required: true,
         enum: [
@@ -142,11 +144,11 @@ const JuryNoteDossierSchema = new Schema({
 
 
 // Compilation des modeles
-const Etudiant = mongoose.model('Etudiant', EtudiantSchema);
-const Dossier = mongoose.model('Dossier', DossierSchema);
-const FichierDossier = mongoose.model('FichierDossier', FichierDossierSchema);
-const EtapeDossier = mongoose.model('EtapeDossier', EtapeDossierSchema);
-const JuryNoteDossier = mongoose.model('JuryNoteDossier', JuryNoteDossierSchema);
+const Etudiant = model('Etudiant', EtudiantSchema);
+const Dossier = model('Dossier', DossierSchema);
+const FichierDossier = model('FichierDossier', FichierDossierSchema, 'fichiers_dossiers');
+const EtapeDossier = model('EtapeDossier', EtapeDossierSchema, 'etapes_dossiers');
+const JuryNoteDossier = model('JuryNoteDossier', JuryNoteDossierSchema, 'juries_notes_dossiers');
 
-export { Etudiant, Dossier, FichierDossier, EtapeDossier, JuryNoteDossier };
+module.exports = { Etudiant, Dossier, FichierDossier, EtapeDossier, JuryNoteDossier };
 

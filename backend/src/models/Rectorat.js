@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose'
-import isEmail from 'validator/lib/isEmail'
+const { Schema, model } = require('mongoose')
+const isEmail = require('validator/lib/isEmail')
 
 
 const RectoratSchema = new Schema({
@@ -15,7 +15,7 @@ const RectoratSchema = new Schema({
         trim: true,
         validate: {
             validator: email => isEmail(email),
-            message: `{VALUE} est un email invalide`
+            message: props => `${props.value} est un email invalide!`
         }
     }
 });
@@ -28,7 +28,4 @@ RectoratSchema.virtual('notifications', {
 });
 
 
-const Rectorat = mongoose.model('Rectorat', RectoratSchema);
-
-export default Rectorat;
-
+module.exports = model('Rectorat', RectoratSchema);

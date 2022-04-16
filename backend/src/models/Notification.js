@@ -1,44 +1,35 @@
-// import { Schema } from 'mongoose'
-// // todo install validator
-// import isEmail from 'validator/lib/isEmail';
+const { Schema, model } = require('mongoose')
+const { ActeurNotif, Notification } = require('./types')
 
 
-// const CoordonateurSchema = new Schema({
-//     email: {
-//         type: String,
-//         required: true, 
-//         index: { unique: true },
-//         lowercase: true,
-//         trim: true,
-//         validate: {
-//             validator: email => isEmail(email),
-//             message: `{VALUE} est un email invalide`
-//         }
-//     },
-//     motDePasse: {
-//         type: String,
-//         required: true
-//     },  // todo encrypt before saving
-//     nom: { type: String }, 
-//     prenom: { type: String },
-// });
+const NotificationSchema = new Schema({
+    type: { 
+        type: String, 
+        required: true, 
+        enum: [Notification.RAPPEL, ]
+    },
+    destinataire: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        refPath: 'destinataireModel'
+    },
+    destinataireModel: {
+        type: String,
+        required: true,
+        enum: [
+            ActeurNotif.COORDONATEUR, 
+            ActeurNotif.EXPERT, 
+            ActeurNotif.CONSEIL,
+            ActeurNotif.JURY, 
+            ActeurNotif.ETUDIANT, 
+            ActeurNotif.RECTORAT,
+            ActeurNotif.ADMIN
+        ]
+    },
+    creeLe: { type: Date, default: Date.now, required: true },
+    vueLe: Date
+});
 
 
-// CoordonateurSchema.virtual('uniteRecherche', {
-//     ref: 'UniteRecherche',
-//     localField: '_id',
-//     foreignField: 'coordonateur'
-// });
-
-// CoordonateurSchema.virtual('notifications', {
-//     ref: 'Notification',
-//     localField: '_id',
-//     foreignField: 'destinataire'
-// });
-
-
-// const Coordonateur = mongoose.model('Coordonateur', CoordonateurSchema);
-
-
-// export default Coordonateur;
+module.exports = model('Notification', NotificationSchema);
 

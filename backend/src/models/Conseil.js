@@ -1,6 +1,5 @@
-import { Schema } from 'mongoose'
-// todo install validator
-import isEmail from 'validator/lib/isEmail';
+const { Schema, model } = require('mongoose')
+const isEmail = require('validator/lib/isEmail');
 
 
 const ConseilSchema = new Schema({
@@ -12,7 +11,7 @@ const ConseilSchema = new Schema({
         trim: true,
         validate: {
             validator: email => isEmail(email),
-            message: `{VALUE} est un email invalide`
+            message: props => `${props.value} est un email invalide!`
         }
     },
     motDePasse: {
@@ -29,8 +28,5 @@ ConseilSchema.virtual('notifications', {
 });
 
 
-const Conseil = mongoose.model('Conseil', ConseilSchema);
-
-
-export default Conseil;
+module.exports = model('Conseil', ConseilSchema);
 

@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+const { Schema, model } = require('mongoose')
 
 
 const UniteRechercheSchema = new Schema({
@@ -8,7 +8,5 @@ const UniteRechercheSchema = new Schema({
 });
 
 
-const UniteRecherche = mongoose.model('UniteRecherche', UniteRechercheSchema);
-
-export default UniteRecherche;
+module.exports = model('UniteRecherche', UniteRechercheSchema, 'unites_recherche');
 
