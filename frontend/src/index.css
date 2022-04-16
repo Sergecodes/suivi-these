@@ -1,13 +1,405 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/*
+  couleurs:#FF5821
+*/
+
+/* TopHeader component*/
+
+.topHeaderIcon {
+  color: #ff5821;
 }
+
+.topHeader {
+  color: #cdd6d5;
+  background-color: #595656;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.topHeaderInfo span{
+  margin-right : 30px;
+}
+
+.headerIconEmpty,.headerIconFull{
+  padding:5px 15px;
+}
+
+.headerIconFull{
+  background-color: #ff5821;
+  border:none;
+  color:#373f50;
+}
+
+.headerIconEmpty{
+  border:2px solid #ff5821;
+  color:#ff5821;
+  background-color: #595656;
+}
+@media (max-width:1080px) {
+  .topHeader{
+    display: none;
+  }
+}
+
+
+/* Navbar Header*/
+
+.logo img {
+  height: 50px;
+  width: 50px;
+}
+
+.logo a,
+.navContent a {
+  text-decoration: none;
+  color: #595656;
+  font-weight: 600;
+}
+
+.logo a {
+  padding-left: 10px;
+  color: #595656;
+  font-size: 180%;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+.navContent a {
+  font-size: 17px;
+  margin:0px 30px;
+}
+
+.logo:hover a,.logo:hover{
+  color:#595656;
+  cursor:pointer;
+}
+
+.navContent a:hover {
+  color: #ff5821;
+}
+
+.language{
+  height:30px;
+  width:30px;
+  color:#595656;
+  
+}
+
+
+@media (max-width:991px){
+  .options{
+    margin-left:20px;
+  }
+}
+/*NavbarMobileView*/
+.options {
+  height: 30px;
+  width: 30px;
+  position: relative;
+  color: #595656;
+}
+
+.cross {
+  color: #595656;
+}
+
+.options:hover,
+.cross:hover {
+  color: #ff5821;
+  cursor  : pointer;
+}
+
+.navMobile {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  margin-left: 50%;
+  z-index: 1;
+  background-color: white;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+
+.navMobile div {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 60%;
+  height: 100vh;
+  background-color: white;
+  border: 1px solid #ff5821;
+}
+
+.navMobile div a {
+  padding: 10px 0px;
+  border-bottom: 2px solid #ff5821;
+  width: 90%;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .logo a {
+    flex-wrap: wrap;
+    width: 25vw;
+    font-size: 28px;
+  }
+
+  .navButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 80px;
+  }
+
+  .btn-empty,
+  .btn-full {
+    width: 170px;
+    margin: 0px;
+    padding: 4px;
+  }
+}
+
+/*WelcomeComponent*/
+.welcome {
+  height: 75vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../public/dom-fou-YRMWVcdyhmI-unsplash\ \(1\).jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: 0;
+  color: white;
+  position: relative;
+}
+
+.welcomeText {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  animation-name: welcome-animation;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+}
+
+/**animation**/
+@keyframes welcome-animation {
+  0% {
+    left: -30%;
+    top: 30%;
+  }
+
+  50% {
+    left: -10%;
+    top: 30%;
+  }
+
+  100% {
+    left: 5%;
+    top: 30%;
+  }
+}
+
+/**animation**/
+.welcomeText h1 {
+  font-weight: 700;
+  font-size: 50px;
+}
+
+.welcomeText h4 {
+  margin-bottom: 5%;
+}
+
+.welcomeButtonEmpty,
+.welcomeButtonFill {
+  text-align: center;
+  position: relative;
+  padding: 6px 20px;
+  
+}
+
+.welcomeButtonEmpty {
+  border: 3px solid #ff5821;
+  background-color: transparent;
+  color: #ff5821;
+}
+
+.welcomeButtonFill {
+  border:none;
+  background-color: #ff5821;
+  color: #111111;
+}
+
+
+.welcomeButtonFill:hover ,.headerIconFull:hover {
+    box-shadow: 0px 0px 2px 2px #f8997a;
+}
+.welcomeButtonEmpty:hover, .headerIconEmpty:hover{
+  background-color: #ff5821;
+  color: #111111;
+}
+.welcomeButtonEmpty{
+  border:3px solid #ff5821;
+}
+
+
+/*Utility Component*/
+
+/**************espace entre les bootstrap colons********************/
+
+
+.contactCard {
+  box-sizing: border-box;
+  border: 15px solid transparent;
+  background-clip: padding-box;
+}
+
+.prior,
+.second {
+  border-radius: 25px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+ background-color: white;
+}
+
+.prior h2 {
+  color: #373f50;
+  padding-bottom: 5%;
+}
+
+.prior p {
+  color: white;
+  padding-bottom: 5%;
+}
+
+.prior button {
+  padding:8px 25px;
+  background-color: #f8997a;
+  border: none;
+  font-size: 18px;
+}
+
+
+.prior button:hover {
+  background-color: white;
+  color: #ff5821;
+}
+
+/*Unity Component*/
+.unité {
+  background-color: #FFF9F7;
+}
+
+.unitéText h2,
+.unitéText p {
+  color: #635551;
+  text-align: center;
+}
+
+.unitéText p {
+  font-weight: 500;
+  padding-top: 10px;
+}
+
+.unitéCard {
+  position: relative;
+  color: #635551;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.unitéCardIcon {
+  background-color: #ff5821;
+  color: white;
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  top: -20%;
+}
+
+.unitéCardIcon:hover {
+  background-color: white;
+  color: #ff5821;
+  border: 2px solid #ff5821;
+}
+
+@media (min-width: 992px) {
+  .unitéText {
+    margin-top: 300px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .unitéText {
+    margin-top: 590px;
+  }
+}
+
+@media (max-width: 767px) {
+  .unitéText {
+    margin-top: 1100px;
+  }
+}
+
+/*contact component*/
+
+.contact {
+  background-color: #fafafa;
+}
+
+.contactText,
+.contactCard h5,
+.contactCard p {
+  color: #635551;
+}
+
+.contactCardIcon {
+  background-color: white;
+  color: #ff5821;
+  border: 2px dashed #ff5821;
+  height: 50px;
+  width: 50px;
+}
+
+.contactCard {
+  border-radius: 20px;
+}
+
+/*footer*/
+.footerLink p {
+  font-size: 20px;
+}
+
+.footerLink p,
+.footerCol p {
+  font-weight: bold;
+}
+
+.footerLink ul {
+  list-style: none;
+}
+
+.footerLink ul li a {
+  text-decoration: none;
+}
+
+.footerLink ul li a {
+  color: #595656;
+}
+
+.footerLink ul li a:hover {
+  color: #ff5821;
+}
+
+.footerCol h6 {}
+
+/*
+  aos
+*/

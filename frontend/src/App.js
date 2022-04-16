@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState} from 'react';
 
-function App() {
+/*import Accueil from './screen/Accueil';
+import Header from './screen/Header';
+import Footer from './screen/Footer';
+import TopHeader from "./components/common/TopHeader"
+import NavbarHeader from "./components/common/NavbarHeader"
+import Copyright from "./components/common/Copyright";
+import TopHeader from "./components/common/TopHeader"
+import NavbarHeader from './components/common/NavbarHeader';*/
+import Accueil from './screen/Accueil';
+import Header from './screen/Header';
+import Footer from './screen/Footer';
+
+
+
+const App = () => {
+  const [isLogin,setIsLogin]= useState(true);
+  const [page,setPage]=useState("accueil");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <div >
+      
+
+      <Header isLogin={isLogin} page={page}/>
+      <Accueil isLogin={isLogin} />
+      <Footer/>
+</div>
+  )
 }
 
-module.exports = App;
+export default App;
