@@ -31,7 +31,7 @@ body {
 
 .headerIconFull{
   background-color: #ff5821;
-  border:none;
+  border:2px solid #ff5821;
   color:#373f50;
 }
 
@@ -234,9 +234,10 @@ body {
 }
 
 .welcomeButtonFill {
-  border:none;
+  border:3px solid #ff5821;
   background-color: #ff5821;
   color: #111111;
+
 }
 
 

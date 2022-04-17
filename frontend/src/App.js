@@ -1,30 +1,31 @@
 import React,{useState} from 'react';
+import {BrowserRouter,Routes,Route} from "react-router-dom";
 
-/*import Accueil from './screen/Accueil';
-import Header from './screen/Header';
-import Footer from './screen/Footer';
-import TopHeader from "./components/common/TopHeader"
-import NavbarHeader from "./components/common/NavbarHeader"
-import Copyright from "./components/common/Copyright";
-import TopHeader from "./components/common/TopHeader"
-import NavbarHeader from './components/common/NavbarHeader';*/
+
 import Accueil from './screen/Accueil';
-import Header from './screen/Header';
-import Footer from './screen/Footer';
+
 
 
 
 const App = () => {
   const [isLogin,setIsLogin]= useState(true);
-  const [page,setPage]=useState("accueil");
+ 
   return (
-    <div >
-      
+    <BrowserRouter>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Accueil isLogin={isLogin}/>}/>
+            <Route path="/*" element ={<div className="d-flex flex-column align-items-center text-align-center">
+              <h1 style={{color:"red"}}>ERROR !</h1>
+              <h2 style={{fontWeight:"none"}}>Fonctionnalité pas encore developée</h2>
+              </div>}
+              />
+               
 
-      <Header isLogin={isLogin} page={page}/>
-      <Accueil isLogin={isLogin} />
-      <Footer/>
-</div>
+          </Routes>
+        </div>
+    </BrowserRouter>
+   
   )
 }
 
