@@ -2,6 +2,7 @@ import React ,{useEffect} from 'react';
 import {BiCubeAlt} from 'react-icons/bi';
 import {BsImages} from 'react-icons/bs';
 import {IoNewspaperOutline} from "react-icons/io5";
+import {Link} from "react-router-dom";
 
 import Aos from "aos";
 import "aos/dist/aos.css";
@@ -19,7 +20,7 @@ const UtilityComponent = () => {
                     <p>
                         Cette plateforme est un miroir refletant l'ecole doctorale. Elle vous aidera à ...
                     </p>
-                    <button className="rounded-pill "> En savoir plus ! </button>
+                    <Link to="/*"><button className="rounded-pill "> En savoir plus ! </button></Link>
                </div>
             </div>
             <div className="my-3 col-12 col-md-6 col-lg " style={{backgroundColor:"transparent"}}>
