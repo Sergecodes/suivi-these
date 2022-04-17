@@ -3,16 +3,7 @@ const { Avis, AvisEmetteur } = require('./types')
 
 
 const AvisSchema = new Schema({
-    type: { 
-        type: String, 
-        enum: [
-            Avis.POSITIF, 
-            Avis.NEGATIF, 
-            Avis.SOUTENANCE_FAVORABLE, 
-            Avis.FAVORABLE_SOUS_RESERVE, 
-            Avis.DEFAVORABLE
-        ] 
-    },
+    type: { type: String, required: true, enum: Object.values(Avis) },
     commentaire: String,  
     rapportUrl: String, 
     envoyeLe: { type: Date, default: Date.now, required: true },

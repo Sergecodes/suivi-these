@@ -7,7 +7,8 @@ const ACTEURS = {
     ADMIN: 'Admin',
     ETUDIANT: 'Etudiant',
     JURY: 'Jury',
-    RECTORAT: 'Rectorat'
+    RECTORAT: 'Rectorat',
+    Departement: 'Departement'
 }
 
 
@@ -99,6 +100,7 @@ const GerantEtapeDossier = Object.freeze({
     EXPERT: 'Expert',
     JURY: 'Jury',
     ADMIN: 'Admin',
+    DEPARTEMENT: 'Departement'
 });
 
 

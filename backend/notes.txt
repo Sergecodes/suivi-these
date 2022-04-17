@@ -1,21 +1,2 @@
-// Importer tous les models a partir du server.js
-// fs.readdirSync(__dirname + '/models').forEach(filename => {
-//     if (filename.includes('.js')) {
-//         require(`${__dirname}/models/${filename}`);
-//     }
-// });
-
-// Importer tous les models a partir du server.js
-// import fs from 'fs'
-// import { dirname } from 'path'
-// import { fileURLToPath } from 'url'
-
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// fs.readdirSync(__dirname + '/src/models').forEach(filename => {
-//     if (filename.includes('.js')) {
-//         require(`${__dirname}/src/models/${filename}`);
-//     }
-// });
-
-
+- added 'message' to EnvoiMessage
+- added model Departement

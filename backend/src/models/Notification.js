@@ -6,7 +6,7 @@ const NotificationSchema = new Schema({
     type: { 
         type: String, 
         required: true, 
-        enum: [Notification.RAPPEL, ]
+        enum: Object.values(Notification)
     },
     destinataire: {
         type: Schema.Types.ObjectId,
@@ -16,15 +16,7 @@ const NotificationSchema = new Schema({
     destinataireModel: {
         type: String,
         required: true,
-        enum: [
-            ActeurNotif.COORDONATEUR, 
-            ActeurNotif.EXPERT, 
-            ActeurNotif.CONSEIL,
-            ActeurNotif.JURY, 
-            ActeurNotif.ETUDIANT, 
-            ActeurNotif.RECTORAT,
-            ActeurNotif.ADMIN
-        ]
+        enum: Object.values(ActeurNotif)
     },
     creeLe: { type: Date, default: Date.now, required: true },
     vueLe: Date

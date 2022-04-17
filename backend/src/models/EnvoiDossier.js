@@ -2,9 +2,12 @@ const { Schema, model } = require('mongoose')
 const { ActeurDossier } = require('./types')
 
 
+let acteursDossiers = Object.values(ActeurDossier);
+
 const EnvoiDossierSchema = new Schema({
     envoyeLe: { type: Date, default: Date.now, required: true },
     vueLe: Date,
+    message: String,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
     envoyePar: {
         type: Schema.Types.ObjectId,
@@ -14,15 +17,7 @@ const EnvoiDossierSchema = new Schema({
     envoyeParModel: {
         type: String,
         required: true,
-        enum: [
-            ActeurDossier.ETUDIANT,
-            ActeurDossier.COORDONATEUR, 
-            ActeurDossier.EXPERT, 
-            ActeurDossier.CONSEIL,
-            ActeurDossier.JURY, 
-            ActeurDossier.RECTORAT,
-            ActeurDossier.ADMIN
-        ]
+        enum: acteursDossiers
     },
     destinataire: {
         type: Schema.Types.ObjectId,
@@ -32,14 +27,7 @@ const EnvoiDossierSchema = new Schema({
     destinataireModel: {
         type: String,
         required: true,
-        enum: [
-            ActeurDossier.COORDONATEUR, 
-            ActeurDossier.EXPERT, 
-            ActeurDossier.CONSEIL,
-            ActeurDossier.JURY, 
-            ActeurDossier.RECTORAT,
-            ActeurDossier.ADMIN
-        ]
+        enum: acteursDossiers
     },
 });
 

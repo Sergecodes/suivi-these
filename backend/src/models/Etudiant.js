@@ -34,11 +34,7 @@ const EtudiantSchema = new Schema({
     dateNaissance: { type: Date, required: true },
     lieuNaissance: { type: String, required: true }, 
     numTelephone: { type: String, required: true }, 
-    sexe: {
-        type: String,
-        required: true,
-        enum: [Sexe.MALE, Sexe.FEMELLE]
-    },
+    sexe: { type: String, required: true, enum: Object.values(Sexe) },
     compteValideLe: Date,
     urlPhotoProfil: { type: String, required: true },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
@@ -47,6 +43,7 @@ const EtudiantSchema = new Schema({
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
+
 
 EtudiantSchema.virtual('notifications', {
     ref: 'Notification',
