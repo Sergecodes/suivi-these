@@ -2,7 +2,8 @@ const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
 
 
-const RectoratSchema = new Schema({
+const DepartementSchema = new Schema({
+    nom: { type: String, required: true },
     motDePasse: {
         type: String,
         required: true
@@ -17,15 +18,16 @@ const RectoratSchema = new Schema({
             validator: email => isEmail(email),
             message: props => `${props.value} est un email invalide!`
         }
-    }
+    },
+    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
 });
 
 
-RectoratSchema.virtual('notifications', {
+DepartementSchema.virtual('notifications', {
     ref: 'Notification',
     localField: '_id',
     foreignField: 'destinataire'
 });
 
 
-module.exports = model('Rectorat', RectoratSchema);
+module.exports = model('Departement', DepartementSchema);

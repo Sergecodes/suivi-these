@@ -1,20 +1,11 @@
 const { Schema, model } = require('mongoose')
-const { Avis, AvisEmetteur } = require('./types')
+const { Avis, AvisEmetteur, AvisDestinataire } = require('./types')
 
 
 const AvisSchema = new Schema({
-    type: { 
-        type: String, 
-        enum: [
-            Avis.POSITIF, 
-            Avis.NEGATIF, 
-            Avis.SOUTENANCE_FAVORABLE, 
-            Avis.FAVORABLE_SOUS_RESERVE, 
-            Avis.DEFAVORABLE
-        ] 
-    },
+    type: { type: String, required: true, enum: Object.values(Avis) },
+    rapport: String, 
     commentaire: String,  
-    rapportUrl: String, 
     envoyeLe: { type: Date, default: Date.now, required: true },
     donnePar: {
         type: Schema.Types.ObjectId,
@@ -24,7 +15,18 @@ const AvisSchema = new Schema({
     donneParModel: {
         type: String,
         required: true,
-        enum: [AvisEmetteur.COORDONATEUR, AvisEmetteur.EXPERT, AvisEmetteur.CONSEIL]
+        enum: Object.values(AvisEmetteur)
+    },
+    destinataire: {
+        type: Schema.Types.ObjectId,
+        // required: true,
+        refPath: 'destinataireModel'
+    },
+    destinataireModel: {
+        type: String,
+        required: true,
+        default: AvisDestinataire.ADMIN,
+        enum: Object.values(AvisDestinataire)
     },
     vueLe: Date,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },

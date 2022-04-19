@@ -26,12 +26,12 @@ const JurySchema = new Schema({
         type: Number, 
         required: true, 
         default: GradeJury.UN,  
-        enum: [GradeJury.UN, GradeJury.DEUX, GradeJury.TROIS]
+        enum: Object.values(GradeJury)
     },
 });
 
 
-JurySchema.virtual('encadres', {
+JurySchema.virtual('encadre', {
     ref: 'Etudiant',
     localField: '_id',
     foreignField: 'encadreur'

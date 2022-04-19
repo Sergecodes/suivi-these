@@ -1,5 +1,6 @@
 /* Declaration des enums et autres */
 
+// Noms des acteures et leur modele
 const ACTEURS = {
     COORDONATEUR: 'Coordonateur',
     EXPERT: 'Expert',
@@ -7,7 +8,8 @@ const ACTEURS = {
     ADMIN: 'Admin',
     ETUDIANT: 'Etudiant',
     JURY: 'Jury',
-    RECTORAT: 'Rectorat'
+    RECTORAT: 'Rectorat',
+    DEPARTEMENT: 'Departement'
 }
 
 
@@ -25,11 +27,10 @@ const Sexe = Object.freeze({
 
 const Notification = Object.freeze({
     RAPPEL: "Rappel",
-    
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance d'un étudiant du Master 2"
 });
 
 
-// On utilise les noms des modeles correspondants  
 const ActeurNotif = Object.freeze({
     ...ACTEURS
 });
@@ -46,12 +47,16 @@ const Avis = Object.freeze({
 
 
 const AvisEmetteur = Object.freeze({
-   // On utilise les noms des modeles correspondants  
-   COORDONATEUR: 'Coordonateur',
-   EXPERT: 'Expert',
-   CONSEIL: 'Conseil',
-
+    COORDONATEUR: ACTEURS.COORDONATEUR,
+    EXPERT: ACTEURS.EXPERT,
+    CONSEIL: ACTEURS.CONSEIL,
+    DEPARTEMENT: ACTEURS.DEPARTEMENT
 });
+
+
+const AvisDestinataire = Object.freeze({
+    ADMIN: ACTEURS.ADMIN
+ });
 
 
 const CategorieFichier = Object.freeze({
@@ -94,15 +99,14 @@ const EtapeDossier = Object.freeze({
 
 
 const GerantEtapeDossier = Object.freeze({
-    // On utilise les noms des modeles correspondants  
-    COORDONATEUR: 'Coordonateur',
-    EXPERT: 'Expert',
-    JURY: 'Jury',
-    ADMIN: 'Admin',
+    COORDONATEUR: ACTEURS.COORDONATEUR,
+    EXPERT: ACTEURS.EXPERT,
+    JURY: ACTEURS.JURY,
+    ADMIN: ACTEURS.ADMIN,
+    DEPARTEMENT: ACTEURS.DEPARTEMENT
 });
 
 
-// On utilise les noms des modeles correspondants  
 const ActeurDossier = Object.freeze({
     ...ACTEURS
 });
@@ -111,6 +115,6 @@ const ActeurDossier = Object.freeze({
 module.exports = {
     Niveau, Sexe, Notification, ActeurDossier, GerantEtapeDossier,
     EtapeDossier, GradeExpert, CategorieFichier, AvisEmetteur,
-    StatutDossier, ActeurNotif, Avis, TypeExpert, GradeJury
+    StatutDossier, ActeurNotif, Avis, TypeExpert, GradeJury, AvisDestinataire
 }
 

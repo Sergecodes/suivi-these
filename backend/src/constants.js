@@ -1,0 +1,2 @@
+EMAILS_ADMIN = [];
+EMAILS_RECTORAT = [];

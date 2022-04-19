@@ -8,5 +8,18 @@ const UniteRechercheSchema = new Schema({
 });
 
 
+UniteRechercheSchema.virtual('etudiants', {
+    ref: 'Etudiant',
+    localField: '_id',
+    foreignField: 'uniteRecherche'
+});
+
+UniteRechercheSchema.virtual('departements', {
+    ref: 'Departement',
+    localField: '_id',
+    foreignField: 'uniteRecherche'
+});
+
+
 module.exports = model('UniteRecherche', UniteRechercheSchema, 'unites_recherche');
 
