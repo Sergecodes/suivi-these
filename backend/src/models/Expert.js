@@ -26,12 +26,12 @@ const ExpertSchema = new Schema({
         type: String, 
         required: true, 
         default: GradeExpert.UN,
-        enum: [GradeExpert.UN, GradeExpert.DEUX, GradeExpert.TROIS]
+        enum: Object.values(GradeExpert)
     }, 
     type: { 
         type: String, 
         default: TypeExpert.INTERNE, 
-        enum: [TypeExpert.EXTERNE, TypeExpert.INTERNE] 
+        enum: Object.values(TypeExpert)
     }
 });
 

@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose')
-const isEmail = require( 'validator/lib/isEmail');
+const isEmail = require( 'validator/lib/isEmail')
+const Avis = require('./Avis')
+const { AvisEmetteur, AvisDestinataire } = require('./types')
 
 
 const CoordonateurSchema = new Schema({
@@ -26,7 +28,8 @@ const CoordonateurSchema = new Schema({
 CoordonateurSchema.virtual('uniteRecherche', {
     ref: 'UniteRecherche',
     localField: '_id',
-    foreignField: 'coordonateur'
+    foreignField: 'coordonateur',
+    justOne: true
 });
 
 CoordonateurSchema.virtual('notifications', {
@@ -34,6 +37,29 @@ CoordonateurSchema.virtual('notifications', {
     localField: '_id',
     foreignField: 'destinataire'
 });
+
+
+CoordonateurSchema.methods.programmerDateSoutenanceMaster = function(etudiant, date) {
+    etudiant.dateSoutenance = date;
+    await etudiant.save();
+};
+
+CoordonateurSchema.methods.envoyerAvisTheseAdmin = function(
+    type, 
+    commentaire, 
+    rapport, 
+    dossierId
+) {
+    Avis.create({
+        type,
+        commentaire,
+        rapport,
+        dossier: dossierId,
+        donnePar: this._id,
+        donneParModel: AvisEmetteur.COORDONATEUR,
+        destinataireModel: AvisDestinataire.ADMIN
+    });
+}
 
 
 module.exports = model('Coordonateur', CoordonateurSchema);

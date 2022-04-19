@@ -26,7 +26,7 @@ const JurySchema = new Schema({
         type: Number, 
         required: true, 
         default: GradeJury.UN,  
-        enum: [GradeJury.UN, GradeJury.DEUX, GradeJury.TROIS]
+        enum: Object.values(GradeJury)
     },
 });
 

@@ -1,2 +1,18 @@
+
 - added 'message' to EnvoiMessage
 - added model Departement
+- add operation "changerSujet()" on Dossier
+- add field dateSoutenance on Etudiant
+- add method envoyerDossier with updated params in Etudiant
+- rename field 'rapportUrl' in Avis to rapport
+- extract connecter and deconnecter methods then import them using stereotypes & what not
+
+todo:
+    - send notification(and eventually email) to admin when user's account is created
+    - 
+
+
+* matricule and etudiant should not be unique, this will permit a student to register
+maybe eventually i.e to have a master2 and doctorat account in the system
+* etudiant login: email ou matricule, password, niveau
+
