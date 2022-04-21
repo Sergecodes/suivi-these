@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
-const { TypeExpert, GradeExpert } = require('./types')
+const Avis = require('./Avis')
+const { TypeExpert, GradeExpert, AvisEmetteur } = require('./types')
 
 
 const ExpertSchema = new Schema({
@@ -41,6 +42,23 @@ ExpertSchema.virtual('notifications', {
     localField: '_id',
     foreignField: 'destinataire'
 });
+
+
+ExpertSchema.methods.donnerAvisTheseAdmin = async function(
+    type, 
+    commentaire, 
+    rapport, 
+    idDossier
+) {
+    await Avis.create({
+        type,
+        commentaire,
+        rapport,
+        dossier: idDossier,
+        donnePar: this._id,
+        donneParModel: AvisEmetteur.EXPERT
+    });
+}
 
 
 module.exports = model('Expert', ExpertSchema);

@@ -25,14 +25,22 @@ const Sexe = Object.freeze({
 });
 
 
-const Notification = Object.freeze({
+const TypeNotification = Object.freeze({
     RAPPEL: "Rappel",
+    NOUVEAU_ETUDIANT: "Nouveau étudiant",
+    NOUVEL_AVIS: 'Nouvel avis dossier',
+    DOSSIER_REJETE: "Dossier de l'étudiant rejeté",
+    COMPTE_REJETE: "Compte de l'étudiant rejeté",
+    NOTE_JURY: "Nouvelle note de jury",
     AUTORISATION_SOUTENANCE: "Autorisation de soutenance d'un étudiant du Master 2"
 });
 
 
-const ActeurNotif = Object.freeze({
-    ...ACTEURS
+const ModelNotif = Object.freeze({
+    ...ACTEURS,
+    AVIS: 'Avis',
+    DOSSIER: 'Dossier',
+    NOTE_DOSSIER: 'NoteDossier'
 });
 
 
@@ -49,6 +57,7 @@ const Avis = Object.freeze({
 const AvisEmetteur = Object.freeze({
     COORDONATEUR: ACTEURS.COORDONATEUR,
     EXPERT: ACTEURS.EXPERT,
+    JURY: ACTEURS.JURY,
     CONSEIL: ACTEURS.CONSEIL,
     DEPARTEMENT: ACTEURS.DEPARTEMENT
 });
@@ -111,10 +120,14 @@ const ActeurDossier = Object.freeze({
     ...ACTEURS
 });
 
+const CategorieNote = Object.freeze({
+    
+});
+
 
 module.exports = {
-    Niveau, Sexe, Notification, ActeurDossier, GerantEtapeDossier,
-    EtapeDossier, GradeExpert, CategorieFichier, AvisEmetteur,
-    StatutDossier, ActeurNotif, Avis, TypeExpert, GradeJury, AvisDestinataire
+    Niveau, Sexe, TypeNotification, ActeurDossier, GerantEtapeDossier,
+    EtapeDossier, GradeExpert, CategorieFichier, AvisEmetteur, CategorieNote,
+    StatutDossier, ModelNotif, Avis, TypeExpert, GradeJury, AvisDestinataire
 }
 
