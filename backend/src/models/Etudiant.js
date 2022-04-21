@@ -1,11 +1,10 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
-const { 
-    Niveau, Sexe, ActeurDossier, TypeNotification, ModelNotif, 
-} = require('./types')
+const { Niveau, Sexe, ActeurDossier, TypeNotification, ModelNotif } = require('./types')
 const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
 const Notification = require('./Notification')
+const { validerMatricule } = require('../utils')
 
 
 const EtudiantSchema = new Schema({
@@ -13,6 +12,10 @@ const EtudiantSchema = new Schema({
         type: String,
         required: true,
         index: true,
+        validate: {
+            validator: mat => validerMatricule(mat),
+            message: props => `${props.value} est un matricule invalide!`
+        }
         // todo validate matricule; uppercase before saving
     },
     nom: { type: String, required: true }, 
@@ -78,12 +81,12 @@ EtudiantSchema.post('save', async function(etudiant) {
 
 
 // Operations
-EtudiantSchema.methods.changerEncadreur = async function(nouveauEncadreurId) {
+EtudiantSchema.methods.changerEncadreur = async function(idNouveauEncadreur) {
     // if (this.niveau != Niveau.MASTER) {
     //     throw new Error("L'etudiant doit etre en Masteur pour avoir un encadreur");
     // }
 
-    this.encadreur = nouveauEncadreurId;
+    this.encadreur = idNouveauEncadreur;
     await this.save();
 };
 
