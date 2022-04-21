@@ -50,7 +50,7 @@ EtudiantSchema.virtual('dossierObj').get(function() {
 });
 
 EtudiantSchema.virtual('sujet').get(function() {
-    return await this.dossierObj.sujet;
+    return this.dossierObj.sujet;
 });
 
 
@@ -68,7 +68,7 @@ EtudiantSchema.methods.changerEncadreur = function(nouveauEncadreurId) {
     // }
 
     this.encadreur = nouveauEncadreurId;
-    await this.save();
+    this.save();
 };
 
 EtudiantSchema.methods.changerSujet = function(nouveauSujet) {
