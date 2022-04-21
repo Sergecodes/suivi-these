@@ -1,23 +1,36 @@
 const { Schema, model } = require('mongoose')
-const { ActeurNotif, Notification } = require('./types')
+const { ModelNotif, TypeNotification } = require('./types')
 
+
+let acteursNotifs = Object.values(ModelNotif);
 
 const NotificationSchema = new Schema({
     type: { 
         type: String, 
         required: true, 
-        enum: Object.values(Notification)
+        enum: Object.values(TypeNotification)
     },
     destinataire: {
         type: Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         refPath: 'destinataireModel'
     },
     destinataireModel: {
         type: String,
         required: true,
-        enum: Object.values(ActeurNotif)
+        enum: acteursNotifs
     },
+    objectConcerne: {
+        type: Schema.Types.ObjectId,
+        // required: true,
+        refPath: 'objectConcerneModel'
+    },
+    objectConcerneModel: {
+        type: String,
+        required: true,
+        enum: acteursNotifs
+    },
+    message: String,
     creeLe: { type: Date, default: Date.now, required: true },
     vueLe: Date
 });

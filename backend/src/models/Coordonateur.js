@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require( 'validator/lib/isEmail')
 const Avis = require('./Avis')
-const { AvisEmetteur, AvisDestinataire } = require('./types')
+const { AvisEmetteur } = require('./types')
 
 
 const CoordonateurSchema = new Schema({
@@ -39,25 +39,24 @@ CoordonateurSchema.virtual('notifications', {
 });
 
 
-CoordonateurSchema.methods.programmerDateSoutenanceMaster = function(etudiant, date) {
+CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
-    etudiant.save();
+    await etudiant.save();
 };
 
-CoordonateurSchema.methods.envoyerAvisTheseAdmin = function(
+CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
     type, 
     commentaire, 
     rapport, 
-    dossierId
+    idDossier
 ) {
-    Avis.create({
+    await Avis.create({
         type,
         commentaire,
         rapport,
-        dossier: dossierId,
+        dossier: idDossier,
         donnePar: this._id,
-        donneParModel: AvisEmetteur.COORDONATEUR,
-        destinataireModel: AvisDestinataire.ADMIN
+        donneParModel: AvisEmetteur.COORDONATEUR
     });
 }
 

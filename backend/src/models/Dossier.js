@@ -1,7 +1,8 @@
 const { Schema, model } = require('mongoose')
 const { 
     CategorieFichier, EtapeDossier: EtapeDossierEnum,
-    GerantEtapeDossier, StatutDossier
+    GerantEtapeDossier, StatutDossier, TypeNotification,
+    ModelNotif, CategorieNote, ActeurDossier, 
 } = require('./types')
 
 
@@ -32,23 +33,30 @@ DossierSchema.virtual('fichiers', {
     foreignField: 'dossier'
 });
 
+DossierSchema.virtual('notes', {
+    ref: 'NoteDossier',
+    localField: '_id',
+    foreignField: 'dossier',
+});
+
 DossierSchema.virtual('etapes', {
     ref: 'EtapeDossier',
     localField: '_id',
     foreignField: 'dossier'
 });
 
-DossierSchema.virtual('etapeActuelle').get(function() {
-    const EtapeDossier = model('EtapeDossier');
-    EtapeDossier.findById(this._id).populate('etapes');
+
+// Operations
+DossierSchema.virtual('etapeActuelle').get(async function() {
+    await this.populate('etapes');
+    return this.etapes.at(-1);
 });
 
 
-// Operations
-DossierSchema.methods.changerSujet = function(nouveauSujet) {
+DossierSchema.methods.changerSujet = async function(nouveauSujet) {
     if (this.sujet !== nouveauSujet) {
         this.sujet = nouveauSujet;
-        this.save();
+        await this.save();
         // this.save().then(dossier => {
         //     console.log("Le nouveau sujet est", dossier.sujet);
         // }).catch(err => {
@@ -82,7 +90,7 @@ const EtapeDossierSchema = new Schema({
     debuteeLe: Date,
     acheveeLe: Date,
     delai: Date,
-    gereePar: {
+    gereeParActeur: {
         type: String,
         required: true,
         enum: Object.values(GerantEtapeDossier)
@@ -90,19 +98,45 @@ const EtapeDossierSchema = new Schema({
 });
 
 
-// JuryNoteDossier 
-const JuryNoteDossierSchema = new Schema({
-    jury: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
-    dossier:  { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
-    noteLe: { type: Date, default: Date.now, required: true}
+// NoteDossier
+const NoteDossierSchema = new Schema({
+    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
+    categorie: { type: String, required: true, enum: Object.values(CategorieNote) },
+    valeur: { type: Number, required: true },
+    notePar: { 
+        type: Schema.Types.ObjectId,
+        required: true,
+        refPath: 'noteParModel'
+    },
+    noteParModel: {
+        type: String,
+        required: true,
+        default: ActeurDossier.JURY,
+        enum: Object.values(ActeurDossier)
+    },
+    noteLe: { type: Date, default: Date.now, required: true },
 });
+
+
+/**
+ * Envoyer une notification a l'administrateur
+ */
+NoteDossierSchema.post('save', async function(doc) {
+    await Notification.create({
+        type: TypeNotification.NOTE_JURY,
+        destinataireModel: ModelNotif.ADMIN,
+        objetConcerne: doc._id,
+        objetConcerneModel: ModelNotif.NOTE_DOSSIER
+    });
+});
+
 
 
 const Dossier = model('Dossier', DossierSchema);
 const FichierDossier = model('FichierDossier', FichierDossierSchema, 'fichiers_dossiers');
 const EtapeDossier = model('EtapeDossier', EtapeDossierSchema, 'etapes_dossiers');
-const JuryNoteDossier = model('JuryNoteDossier', JuryNoteDossierSchema, 'juries_notes_dossiers');
+const NoteDossier = model('NoteDossier', NoteDossierSchema, 'notes_dossiers');
 
 
-module.exports = { Dossier, FichierDossier, EtapeDossier, JuryNoteDossier };
+module.exports = { Dossier, FichierDossier, EtapeDossier, NoteDossier };
 

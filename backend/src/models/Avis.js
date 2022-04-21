@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose')
-const { Avis, AvisEmetteur, AvisDestinataire } = require('./types')
+const { 
+    Avis, AvisEmetteur, AvisDestinataire, 
+    ModelNotif, TypeNotification 
+} = require('./types')
 
 
 const AvisSchema = new Schema({
@@ -9,7 +12,7 @@ const AvisSchema = new Schema({
     envoyeLe: { type: Date, default: Date.now, required: true },
     donnePar: {
         type: Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         refPath: 'donneParModel'
     },
     donneParModel: {
@@ -32,6 +35,20 @@ const AvisSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
+});
+
+
+/**
+ * Envoyer une notification au destinataire
+ */
+ AvisSchema.post('save', async function(avis) {
+    await Notification.create({
+        type: TypeNotification.NOUVEL_AVIS,
+        destinataire: avis.destinataire,
+        destinataireModel: avis.destinataireModel,
+        objetConcerne: avis._id,
+        objetConcerneModel: ModelNotif.AVIS
+    });
 });
 
 

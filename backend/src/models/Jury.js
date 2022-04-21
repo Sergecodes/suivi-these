@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
-const { GradeJury } = require('./types')
+const { NoteDossier } = require('./Dossier')
+const Avis = require('./Avis')
+const { GradeJury, ActeurDossier, AvisEmetteur } = require('./types')
 
 
 const JurySchema = new Schema({
@@ -42,6 +44,33 @@ JurySchema.virtual('notifications', {
     localField: '_id',
     foreignField: 'destinataire'
 });
+
+
+JurySchema.methods.attribuerNote = async function(dossier, categorie, valeur) {
+    await NoteDossier.create({
+        dossier,
+        categorie,
+        valeur,
+        notePar: this._id,
+        noteParModel: ActeurDossier.JURY
+    });
+}   
+
+JurySchema.methods.donnerAvisAdmin = async function(
+    type, 
+    commentaire, 
+    rapport, 
+    idDossier
+) {
+    await Avis.create({
+        type,
+        commentaire,
+        rapport,
+        dossier: idDossier,
+        donnePar: this._id,
+        donneParModel: AvisEmetteur.JURY
+    });
+}
 
 
 module.exports = model('Jury', JurySchema, 'juries');

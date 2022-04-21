@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose')
-const { ActeurDossier } = require('./types')
+const { ActeurDossier, TypeNotification } = require('./types')
+const Notification = require('./Notification')
 
 
 let acteursDossiers = Object.values(ActeurDossier);
@@ -11,7 +12,7 @@ const EnvoiDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
     envoyePar: {
         type: Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         refPath: 'envoyeParModel'
     },
     envoyeParModel: {
@@ -21,7 +22,7 @@ const EnvoiDossierSchema = new Schema({
     },
     destinataire: {
         type: Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         refPath: 'destinataireModel'
     },
     destinataireModel: {
@@ -29,6 +30,20 @@ const EnvoiDossierSchema = new Schema({
         required: true,
         enum: acteursDossiers
     },
+});
+
+
+/**
+ * Envoyer une notification au destinataire
+ */
+EnvoiDossierSchema.post('save', async function(envDossier) {
+    await Notification.create({
+        type: TypeNotification.NOUVEL_AVIS,
+        destinataire: envDossier.destinataire,
+        destinataireModel: envDossier.destinataireModel,
+        objetConcerne: envDossier._id,
+        objetConcerneModel: ModelNotif.AVIS
+    });
 });
 
 

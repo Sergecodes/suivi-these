@@ -5,10 +5,15 @@
 - add field dateSoutenance on Etudiant
 - add method envoyerDossier with updated params in Etudiant
 - rename field 'rapportUrl' in Avis to rapport
-- extract connecter and deconnecter methods then import them using stereotypes & what not
+- (class diagram) extract connecter and deconnecter methods then import them using stereotypes & what not
+- remove rejet dossier association. instead add method rejeterDossier to admin, whose implementation will consist of updating the status of the dossier
+- update noter_dossier association class
+- remove model Statut_Dossier and directly place status in Dossier model
+- remove soumettreNoteVersAdmin() method from Admin
+
+
 
 todo:
-    - send notification(and eventually email) to admin when user's account is created
     - implement validator for matricule 
     - 
 
