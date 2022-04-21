@@ -9,6 +9,7 @@
 
 todo:
     - send notification(and eventually email) to admin when user's account is created
+    - implement validator for matricule 
     - 
 
 

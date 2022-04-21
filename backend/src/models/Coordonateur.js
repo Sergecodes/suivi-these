@@ -41,7 +41,7 @@ CoordonateurSchema.virtual('notifications', {
 
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = function(etudiant, date) {
     etudiant.dateSoutenance = date;
-    await etudiant.save();
+    etudiant.save();
 };
 
 CoordonateurSchema.methods.envoyerAvisTheseAdmin = function(

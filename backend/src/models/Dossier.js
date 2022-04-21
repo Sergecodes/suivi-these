@@ -48,7 +48,7 @@ DossierSchema.virtual('etapeActuelle').get(function() {
 DossierSchema.methods.changerSujet = function(nouveauSujet) {
     if (this.sujet !== nouveauSujet) {
         this.sujet = nouveauSujet;
-        await this.save();
+        this.save();
         // this.save().then(dossier => {
         //     console.log("Le nouveau sujet est", dossier.sujet);
         // }).catch(err => {

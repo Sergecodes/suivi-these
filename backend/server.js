@@ -24,6 +24,8 @@ fs.readdirSync(__dirname + '/src/models').forEach(filename => {
         require(`${__dirname}/src/models/${filename}`);
     }
 });
+console.log("Modeles installés")
+
 
 // Configuration serveur
 const app = express();
