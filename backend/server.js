@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const AUTH_ROUTE = require('./controllers/authentifications');
 
 
 // console.log(process.env);
@@ -48,9 +49,14 @@ apiRouter.get('/', (req, res) => {
     res.send("Bienvenue sur l'api");
 });
 
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 // app.use('/api/users', usersRoute);
 
+//les routes
+/*********************AUthentifications ****************/
+apiRouter.route('/register')
+.post(AUTH_ROUTE.register)
+/*******************End of Authentications route************* */
 
 // Lancer le serveur
 app.listen(port, () => {

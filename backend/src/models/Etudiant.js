@@ -44,8 +44,8 @@ const EtudiantSchema = new Schema({
     compteValideLe: Date,
     urlPhotoProfil: { type: String, required: true },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
-    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
-    encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+    // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    // encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
@@ -70,14 +70,15 @@ EtudiantSchema.virtual('notifications', {
 /**
  * Envoyer une notification a l'administrateur
  */
-EtudiantSchema.post('save', async function(etudiant) {
-    await Notification.create({
-        type: TypeNotification.NOUVEAU_ETUDIANT,
-        destinataireModel: ModelNotif.ADMIN,
-        objetConcerne: etudiant._id,
-        objetConcerneModel: ModelNotif.ETUDIANT
-    });
-});
+// EtudiantSchema.post('save', async function(etudiant) {
+//     console.log(ModelNotif);
+//     await Notification.create({
+//         type: TypeNotification.NOUVEAU_ETUDIANT,
+//         destinataireModel: ModelNotif.ADMIN,
+//         objetConcerne: etudiant._id,
+//         objetConcerneModel: ModelNotif.ETUDIANT
+//     });
+// });
 
 
 // Operations
