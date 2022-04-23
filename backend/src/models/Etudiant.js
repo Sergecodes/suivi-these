@@ -5,6 +5,7 @@ const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
 const Notification = require('./Notification')
 const { validerMatricule } = require('../utils')
+const bcrypt = require('bcrypt');
 
 
 const EtudiantSchema = new Schema({
@@ -49,6 +50,36 @@ const EtudiantSchema = new Schema({
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
+
+EtudiantSchema.pre("save",function(next){
+    const user = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(user.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    user.motDePasse = hash;
+                    console.log(user.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
+
+});
+
+EtudiantSchema.methods.verifyPassword = function(motDePasse,cb){
+    bcrypt.compare(motDePasse,this.motDePasse,function(err,isMatch){
+        if(err) return cb(err);
+        cb(null,isMatch);
+    })
+}
 
 
 EtudiantSchema.virtual('dossierObj').get(async function() {

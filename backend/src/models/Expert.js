@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
 const Avis = require('./Avis')
+const bcrypt = require('bcrypt');
 const { TypeExpert, GradeExpert, AvisEmetteur } = require('./types')
 
 
@@ -35,6 +36,29 @@ const ExpertSchema = new Schema({
         enum: Object.values(TypeExpert)
     }
 });
+
+ExpertSchema.pre("save",function(next){
+    const expert = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(expert.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    expert.motDePasse = hash;
+                    console.log(expert.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
+
+})
 
 
 ExpertSchema.virtual('notifications', {

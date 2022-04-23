@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const AUTH_ROUTE = require('./controllers/authentifications');
+// var passport = require('passport');
 
 
 // console.log(process.env);
@@ -54,12 +55,46 @@ app.use('/api', apiRouter);
 
 //les routes
 /*********************AUthentifications ****************/
-apiRouter.route('/register')
+apiRouter.route('/register-etudiant')
 .post(AUTH_ROUTE.register)
+
+apiRouter.route('/login-conseil')
+.post(AUTH_ROUTE.login_student);
+
+apiRouter.route('/new-conseil')
+.post(AUTH_ROUTE.new_conseil);
+
+apiRouter.route('/login-conseil')
+.post(AUTH_ROUTE.conseil_login);
+
+apiRouter.route('/register-coord')
+.post(AUTH_ROUTE.register_coordonateur);
+
+apiRouter.route('/login-coord')
+.post(AUTH_ROUTE.login_coordonateur)
+
+apiRouter.route('/register-departement')
+.post(AUTH_ROUTE.register_departement)
+
+apiRouter.route('/login-department')
+.post(AUTH_ROUTE.login_departement);
+
+apiRouter.route('/new-expert')
+.post(AUTH_ROUTE.register_expert);
+
+apiRouter.route('/login-expert')
+.post(AUTH_ROUTE.login_student);
+
+apiRouter.route('/register-jury')
+.post(AUTH_ROUTE.register_jury);
+
+apiRouter.route('/login-jury')
+.post(AUTH_ROUTE.login_jury);
 /*******************End of Authentications route************* */
 
 // Lancer le serveur
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
+
 

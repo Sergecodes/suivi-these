@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail');
+const bcrypt = require('bcrypt');
 
 
 const ConseilSchema = new Schema({
@@ -19,6 +20,29 @@ const ConseilSchema = new Schema({
         required: true
     },  // todo encrypt before saving
 });
+
+ConseilSchema.pre("save",function(next){
+    const conseil = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(conseil.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    conseil.motDePasse = hash;
+                    console.log(conseil.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
+
+})
 
 
 ConseilSchema.virtual('notifications', {
