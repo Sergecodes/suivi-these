@@ -5,6 +5,7 @@ const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
 const Notification = require('./Notification')
 const { validerMatricule } = require('../utils')
+const bcrypt = require('bcrypt');
 
 
 const EtudiantSchema = new Schema({
@@ -44,11 +45,41 @@ const EtudiantSchema = new Schema({
     compteValideLe: Date,
     urlPhotoProfil: { type: String, required: true },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
-    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
-    encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+    // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    // encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
+
+EtudiantSchema.pre("save",function(next){
+    const user = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(user.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    user.motDePasse = hash;
+                    console.log(user.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
+
+});
+
+EtudiantSchema.methods.verifyPassword = function(motDePasse,cb){
+    bcrypt.compare(motDePasse,this.motDePasse,function(err,isMatch){
+        if(err) return cb(err);
+        cb(null,isMatch);
+    })
+}
 
 
 EtudiantSchema.virtual('dossierObj').get(async function() {
@@ -70,14 +101,15 @@ EtudiantSchema.virtual('notifications', {
 /**
  * Envoyer une notification a l'administrateur
  */
-EtudiantSchema.post('save', async function(etudiant) {
-    await Notification.create({
-        type: TypeNotification.NOUVEAU_ETUDIANT,
-        destinataireModel: ModelNotif.ADMIN,
-        objetConcerne: etudiant._id,
-        objetConcerneModel: ModelNotif.ETUDIANT
-    });
-});
+// EtudiantSchema.post('save', async function(etudiant) {
+//     console.log(ModelNotif);
+//     await Notification.create({
+//         type: TypeNotification.NOUVEAU_ETUDIANT,
+//         destinataireModel: ModelNotif.ADMIN,
+//         objetConcerne: etudiant._id,
+//         objetConcerneModel: ModelNotif.ETUDIANT
+//     });
+// });
 
 
 // Operations

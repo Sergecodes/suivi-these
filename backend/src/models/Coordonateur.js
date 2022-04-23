@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose')
 const isEmail = require( 'validator/lib/isEmail')
 const Avis = require('./Avis')
 const { AvisEmetteur } = require('./types')
+const bcrypt = require('bcrypt');
 
 
 const CoordonateurSchema = new Schema({
@@ -23,7 +24,28 @@ const CoordonateurSchema = new Schema({
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true },
 });
+CoordonateurSchema.pre("save",function(next){
+    const coordonateur = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(coordonateur.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    coordonateur.motDePasse = hash;
+                    console.log(coordonateur.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
 
+})
 
 CoordonateurSchema.virtual('uniteRecherche', {
     ref: 'UniteRecherche',
@@ -59,6 +81,8 @@ CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
         donneParModel: AvisEmetteur.COORDONATEUR
     });
 }
+
+
 
 
 module.exports = model('Coordonateur', CoordonateurSchema);

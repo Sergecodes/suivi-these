@@ -1,7 +1,8 @@
-const { Schema, model } = require('mongoose')
-const isEmail = require('validator/lib/isEmail')
-const { NoteDossier } = require('./Dossier')
-const Avis = require('./Avis')
+const { Schema, model } = require('mongoose');
+const isEmail = require('validator/lib/isEmail');
+const { NoteDossier } = require('./Dossier');
+const Avis = require('./Avis');
+const bcrypt = require('bcrypt');
 const { GradeJury, ActeurDossier, AvisEmetteur } = require('./types')
 
 
@@ -31,6 +32,29 @@ const JurySchema = new Schema({
         enum: Object.values(GradeJury)
     },
 });
+
+JurySchema.pre("save",function(next){
+    const jury = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(jury.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    jury.motDePasse = hash;
+                    console.log(jury.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
+
+})
 
 
 JurySchema.virtual('encadre', {
