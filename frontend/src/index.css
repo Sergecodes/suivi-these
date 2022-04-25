@@ -404,3 +404,132 @@ body {
 /*
   aos
 */
+
+/**************************************** PAGE ETUDIANT********************************/
+
+.commonDashboard{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin:10px 10px;
+}
+
+.studentPicture{
+  position:relative;
+}
+
+.studentPicture p{
+  position:absolute;
+  background-color:rgb(36, 190, 190);
+  color:white;
+  top:-10px;
+  border-radius:3px 3px;
+ left:15px;
+ font-size: 12px;
+ 
+}
+
+.studentPicture img{
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 12px;
+  width:75px;
+  height:75px;
+  border-radius: 50% 50%;
+}
+
+.dashboardLinks p, .dashboardLinks div a{
+  padding:9px 15px;
+  
+}
+
+.dashboardLinks p{
+  background-color: #f3f3f3;
+  font-size: 15px;
+  color: #595656;
+  margin:0;
+}
+
+.dashboardLinks div a{
+  text-decoration: none;
+  color:#2b2a2a;
+  border-bottom:1px solid #ececec;
+}
+
+.dashboardLinks div a:hover{
+  border-color: #ff5821;
+  color:#ff5821;
+}
+
+/*StudentProfile**/
+
+.ModifiedProfileImg{
+  background-color: #f3f3f3;
+  padding:15px 15px;
+}
+
+.ModifiedProfileImg img{
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 12px;
+  width:75px;
+  height:75px;
+}
+
+.profileBlockInfo{
+  margin:10px 0px;
+  
+}
+.profileBlockInfo input{
+ 
+ 
+}
+
+
+.profileBlockInfo p{
+  font-size:15px;
+  font-style: italic;
+  padding:0px;
+  margin:4px 0px;
+}
+
+.profileModifButton{
+    
+}
+
+
+
+/*depot dossier*/
+input[type=file i]{
+  color:transparent;
+  width:122px;
+}
+
+
+.step h2{
+  font-size: 20px;
+  font-weight: 495;
+}
+
+.stepFile label{
+  border:1px solid #dddada;
+  border-radius:3px 0px 0px 3px;
+  padding:0px 10px;
+  display:flex;
+  align-items: center;
+  border-right: none;
+  font-size: 15px;
+  width:60%;
+  height:31px;
+}
+
+.warning{
+  color:rgb(218, 57, 57)
+}
+
+
+/*evolution dossier*/
+.evolutionStepTitle{
+  margin-bottom:4px;
+  font-weight: 500;
+  font-size:17px;
+  
+}
+
+.evolutionStepInfo div, .evolutionStepInfo p{
+  margin:4px 0px;
+}
