@@ -58,6 +58,12 @@ app.use('/api', apiRouter);
 apiRouter.route('/register-etudiant')
 .post(AUTH_ROUTE.register)
 
+apiRouter.route('/etudiant/password/:id')
+.put(AUTH_ROUTE.change_student_password)
+
+apiRouter.route('/phone/:id')
+.put(AUTH_ROUTE.changePhoneNumber)
+
 apiRouter.route('/login-conseil')
 .post(AUTH_ROUTE.login_student);
 
