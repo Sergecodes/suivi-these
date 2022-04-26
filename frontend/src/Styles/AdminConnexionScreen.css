@@ -1,0 +1,47 @@
+.container-connexion {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.container-data-connexion {
+  min-height: 50vh;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 7%;
+  position: relative;
+  background: white;
+}
+.container-data-connexion-left,
+.container-data-connexion-right {
+  position: absolute;
+  height: 100%;
+}
+.container-data-connexion-left {
+  /* position: ab; */
+  background: url("../../public/dom-fou-YRMWVcdyhmI-unsplash\ \(1\).jpg");
+  background-position: center;
+  background-size: cover;
+  left: 0;
+}
+.container-data-connexion-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+}
+.cover-left-image {
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(125deg, #ff5821 10%, rgba(255, 88, 33, 0.8));
+  opacity: 0.8;
+}
+.btn-connexion {
+  background-color: #ff5821;
+  border-color: #ff5821;
+}
+.btn-connexion:hover {
+  background-color: rgba(243, 63, 3, 0.85);
+  border-color: #ff5821;
+}
