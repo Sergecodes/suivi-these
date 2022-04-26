@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 // var passport = require('passport');
 
+/************************EVERYTHINK ABOUT STUDEN ****************************** */
 
 exports.register = function(req,res){
     console.log("enter")
@@ -72,6 +73,53 @@ exports.login_student = async function(req,res){
         console.log(error)
         res.status(500).send("Something went wrong");
     }
+}
+
+exports.change_student_password = function(req,res){
+    const {id} = req.params;
+    const {ActualPassword,NewPassword} = req.body;
+    USERS.findById(id,function(err,etudiant){
+        if(err){
+            return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+        }
+        //L'utilisateur a ete trouver
+        const validPassword =  bcrypt.compare(ActualPassword,etudiant.motDePasse);
+        if(!validPassword) return res.status(400).send("please enter a valid password");
+        if(req.body.NewPassword){
+            etudiant.motDePasse = NewPassword;
+        };
+        etudiant.save(function(err,newStudent){
+            if(err){
+                console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau mot de passe: ", err);
+                res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement du nouveau mot de passe",error:err}).status(500);        
+            }
+            res.json({success:true,message:"le mot de passe a ete enregistrer avec success",data:newStudent.motDePasse});
+        })
+    })
+}
+
+exports.changePhoneNumber = function(req,res){
+    const {id} = req.params;
+    const{newPhoneNumber} = req.body;
+    USERS.findById(id,function(err,etudiant){
+        if(err){
+            return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+        }
+         //L'utilisateur a ete trouver
+         if(req.body.newPhoneNumber){
+             etudiant.numTelephone = newPhoneNumber;
+         }
+         etudiant.save(function(err,newStudent){
+            if(err){
+                console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+                res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone",error:err}).status(500);        
+            }
+            res.json({success:true,message:"le nouveau numero de telephone a ete enregistrer avec success",data:newStudent.numTelephone});
+        })
+
+
+
+    })
 }
 
 /**************** CONSEIL SCIENTIFIQUE ***********************/
