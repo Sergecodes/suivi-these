@@ -1,9 +1,8 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
-const { Niveau, Sexe, ActeurDossier, TypeNotification, ModelNotif } = require('./types')
+const { Niveau, Sexe, ActeurDossier } = require('./types')
 const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
-const Notification = require('./Notification')
 const { validerMatricule } = require('../utils')
 const bcrypt = require('bcrypt');
 
