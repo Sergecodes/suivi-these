@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const AUTH_ROUTE = require('./controllers/authentifications');
+const ETUDIANT_ROUTE = require('./controllers/etudiantMethods');
 // var passport = require('passport');
 
 
@@ -96,6 +97,9 @@ apiRouter.route('/register-jury')
 
 apiRouter.route('/login-jury')
 .post(AUTH_ROUTE.login_jury);
+
+apiRouter.route('/etudiants/v1/get_Files_step_By_Mat')
+.get(ETUDIANT_ROUTE.getDoc_etape);
 /*******************End of Authentications route************* */
 
 // Lancer le serveur
