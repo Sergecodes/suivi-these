@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const fileupload = require('express-fileupload');
+
+// Importer les routes
 const etudiantRoutes = require('./src/routes/etudiant');
 const adminRoutes = require('./src/routes/admin');
 const conseilRoutes = require('./src/routes/conseil');
@@ -48,6 +51,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileupload({
+    limits: { fileSize: 10 * 1024 * 1024}
+}));
 
 
 // Configuration des routes
