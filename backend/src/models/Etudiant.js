@@ -3,7 +3,7 @@ const isEmail = require('validator/lib/isEmail')
 const { Niveau, Sexe, ActeurDossier } = require('./types')
 const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
-const { validerMatricule } = require('../utils')
+const { validerMatricule } = require('../validators')
 const bcrypt = require('bcrypt');
 
 
