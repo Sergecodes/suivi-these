@@ -12,11 +12,11 @@ const EtudiantSchema = new Schema({
         type: String,
         required: true,
         index: true,
+        uppercase: true,
         validate: {
             validator: mat => validerMatricule(mat),
             message: props => `${props.value} est un matricule invalide!`
         }
-        // todo validate matricule; uppercase before saving
     },
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true }, 

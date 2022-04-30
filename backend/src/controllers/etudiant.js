@@ -125,9 +125,14 @@ exports.changePhoneNumber = function(req,res){
  * 
  */
 exports.uploadFiles = function(req, res) {
-    console.log(req.files);
-    console.log(req.body);
     const { idEtudiant, sujet, niveau } = req.body;
+
+    if (!idEtudiant || !sujet || !niveau) {
+        return res.status(400).json({ 
+			success: false,
+			message: "Invalid request body" 
+		});
+    }
 
     if (!req.files || Object.keys(req.files).length === 0) {
 		return res.status(400).json({ 
