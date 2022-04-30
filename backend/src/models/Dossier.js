@@ -1,8 +1,9 @@
 const { Schema, model } = require('mongoose')
 const { 
-    CategorieFichier, EtapeDossier: EtapeDossierEnum,
+    CategorieFichierMaster, CategorieFichierThese, 
     GerantEtapeDossier, StatutDossier, TypeNotification,
     ModelNotif, CategorieNote, ActeurDossier, 
+    EtapeDossier: EtapeDossierEnum,
 } = require('./types')
 
 
@@ -71,8 +72,14 @@ const FichierDossierSchema = new Schema({
     categorie: {
         type: String,
         required: true,
-        enum: Object.values(CategorieFichier)
+        enum: [
+            ...new Set([
+                ...Object.values(CategorieFichierMaster),
+                ...Object.values(CategorieFichierThese)
+            ])
+        ]
     },
+    url: { type: String, required: true },
     uploadeLe: { type: Date, required: true, default: Date.now },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
 });

@@ -10,6 +10,8 @@ router.route('/etudiant/password/:id').put(controller.change_student_password)
 
 router.route('/phone/:id').put(controller.changePhoneNumber)
 
+router.route('/uploader-fichiers').post(controller.uploadFiles)
+
 
 module.exports = router;
 

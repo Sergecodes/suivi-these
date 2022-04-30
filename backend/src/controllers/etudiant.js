@@ -1,6 +1,11 @@
-const USERS  = require ('../models/Etudiant');
+const USERS  = require('../models/Etudiant');
+const { Dossier, FichierDossier } = require('../models/Dossier')
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
+const path = require('path');
+const fs = require('fs')
+const { Types } = require('../constants');
+const Etudiant = require('../models/Etudiant');
 const saltRounds = 10;
 // var passport = require('passport');
 
@@ -113,4 +118,123 @@ exports.changePhoneNumber = function(req,res){
     })
 }
 
+
+/**
+ * Recuperer les fichiers renvoyes par un etudiant et 
+ * creer son dossier a partir de ceux-ci.
+ * 
+ */
+exports.uploadFiles = function(req, res) {
+    const { idEtudiant, sujet, niveau } = req.body;
+
+    if (!idEtudiant || !sujet || !niveau) {
+        return res.status(400).json({ 
+			success: false,
+			message: "Invalid request body" 
+		});
+    }
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+		return res.status(400).json({ 
+			success: false,
+			message: "Aucun fichier envoyé" 
+		});
+	} 
+
+    // Validate file categories
+    let validFilenames = [];
+    if (niveau == Types.Niveau.MASTER) {
+        validFilenames = Object.values(Types.CategorieFichierMaster);
+        for (let filename of validFilenames) {
+            if (!req.files[filename]) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Le fichier ${filename} est manquant`
+                });
+            }
+        }
+    } else if (niveau == Types.Niveau.THESE) {
+        validFilenames = Object.values(Types.CategorieFichierThese);
+        for (let filename of validFilenames) {
+            if (!req.files[filename]) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Le fichier ${filename} est manquant`
+                });
+            }
+        }
+    } else {
+        return res.status(400).json({
+            success: false,
+            message: 'Niveau non trouvé ou invalide'
+        });
+    }
+
+    // Validate file extensions (todo ?)
+
+    Etudiant.findById(idEtudiant, function(err, etud) {
+        if(err){
+            return res.json({
+                success: false,
+                message: "quelque chose nas pas marcher lors de la recuperation de l'etudiant"
+            }).status(500);
+        }
+
+        if (!etud) {
+            return res.status(404).json({message: 'Etudiant non trouve'});
+        }
+        
+        // Create dossier
+        Dossier.create({ sujet }, async function(err, dossier) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: "quelque chose nas pas marcher lors de la recuperation de l'etudiant",
+                    error: err
+                }).status(500);
+            }
+
+            etud.dossier = dossier._id;
+            await etud.save();
+
+            // Upload files
+            let fileEntries = Object.entries(req.files);
+            let i = 0, n = fileEntries.length;
+            let basedir = '/home/sergeman/Desktop/classified/suivi-these/media/';
+            for (const [fileCat, fileCatObj] of fileEntries) {
+                let etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
+                let saveDir = path.join(basedir, etudDir);
+                
+                // Create student directory if it doesn't exist
+                if (!fs.existsSync(saveDir)) {
+                    fs.mkdirSync(saveDir);
+                }
+
+                let uploadPath = path.join(saveDir, fileCat + path.extname(fileCatObj.name));
+
+                // Use the mv() method to place the file somewhere on your server
+                fileCatObj.mv(uploadPath, async function(err) {
+                    if (err)
+                        return res.status(500).send(err);
+
+                    // Create file
+                    await FichierDossier.create({ 
+                        categorie: fileCat,
+                        url: uploadPath,
+                        dossier: dossier._id
+                    });
+
+                    i++;
+
+                    // Return response if for loop is over
+                    if (i == n-1) 
+                        res.json({ success: true, message: 'Files uploaded!'});
+                });
+            }
+        });
+    });
+    
+    
+
+}
 
