@@ -233,8 +233,21 @@ exports.uploadFiles = function(req, res) {
             }
         });
     });
-    
-    
+}
 
+exports.sort_dateSoutenance_by2Date= function(req,res){
+    const {startDate,finalDate} = req.query;
+    if(startDate instanceof Date == false || finalDate instanceof Date == false){
+        res.json({message:"Veuillez entrer svp le format de date valide , yyy/mmm/ddd",success:false}).status(400);
+    }
+    Etudiant.find({
+        createdAt:
+        {$gte:ISODate(startDate),$lt:ISODate(finalDate)}
+    },function(err,etudiant){
+        if(err){
+            console.log("une erreur est survenue lors de la recuperation des dates de soutenance de soutance");
+        }
+        res.json({message:"les date de soutenance ont ete recuperer avec success",data:etudiant});
+    })
 }
 
