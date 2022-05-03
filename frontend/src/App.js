@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'antd/dist/antd.min.css';
 
 import Accueil from "./screen/Accueil";
 import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
@@ -10,7 +11,12 @@ import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexion
 import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen.js";
+import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
+import Etudiant from "./screen/Etudiant";
+import DepotDossierMaster from "./components/page etudiant/DepotDossierMaster";
+import EvolutionDossier from "./components/page etudiant/EvolutionDossier"
+import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
+import Soutenance from "./screen/Soutenance"
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -20,6 +26,12 @@ const App = () => {
       <div className="App">
         <Routes>
           <Route path="/" element={<Accueil isLogin={isLogin} />} />
+          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />
+          <Route path="/account" element={<Etudiant/>}>
+            <Route path="/account/depot" element={<DepotDossierMaster/>}/>
+            <Route path="/account/profil" element={<ProfilEtudiant/>}/>
+            <Route path="/account/evolution" element={<EvolutionDossier/>}/>
+          </Route>
           <Route
             path="/*"
             element={

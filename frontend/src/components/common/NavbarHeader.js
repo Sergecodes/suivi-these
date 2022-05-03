@@ -11,7 +11,7 @@ const NavbarHeader = (props) => {
     const location = useLocation(); //used to have the general idea of the location of the url
    
   return (
-    <section className="shadow rounded container-fluid "  >
+    <section className=" rounded container-fluid" style={{borderBottom:"1px solid rgba(149, 157, 165, 0.2)" }}>
         <div className="container pb-1">
             <div className="d-flex justify-content-between  align-items-center my-3" >
                 <div className="logo d-flex align-items-center "  >
@@ -21,7 +21,7 @@ const NavbarHeader = (props) => {
             <div className="d-flex align-items-center">
                 <div className=" d-none d-lg-flex justify-content-around navContent" >
                         <Link to="/" style={location.pathname==="/"?{color:"#FF5821"}:{}}>Accueil</Link>
-                        <Link to="/*" style={location.pathname==="/soutenance"?{color:"#FF5821"}:{}}>Soutenances</Link>
+                        <Link to="/soutenance" style={location.pathname==="/soutenance"?{color:"#FF5821"}:{}}>Soutenances</Link>
                         <Link to="/*" style={location.pathname==="/information"?{color:"#FF5821"}:{}}>Informations</Link>
                     </div>
                     <Dropdown >
@@ -41,7 +41,7 @@ const NavbarHeader = (props) => {
                 <div className="d-flex fs-5 fw-bold flex-column navContent align-items-center" >
                 <ImCross className="my-5 cross" onClick={()=>{setClicked(!clicked)}} style={{height:"30px",width:"30px"}}/>
                     <Link to="/" style={location.pathname==="/"?{color:"#FF5821"}:{}}>Accueil</Link>
-                    <Link to="/*" style={location.pathname==="/soutenance"?{color:"#FF5821"}:{}}>Soutenances</Link>
+                    <Link to="/soutenance" style={location.pathname==="/soutenance"?{color:"#FF5821"}:{}}>Soutenances</Link>
                     <Link to="/*" style={location.pathname==="/information"?{color:"#FF5821"}:{}}>Informations</Link>
                 </div>
         </div> 
