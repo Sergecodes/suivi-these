@@ -22,3 +22,35 @@ todo:
 maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
+// Upload file(firebase...)
+// Note: use the string "true" not the keyword true; 
+// since env vars are parsed as strings
+// (also see https://github.com/ladjs/dotenv-parse-variables)
+if (process.env.USE_FIREBASE === "true") {
+    // req.files is an object containing objects with the file name input
+    // as the key...
+    for(let file in req.files) {
+        let fileMetadata = {
+            // cacheControl: 'public,max-age=86400',  // 24hrs = 86400s (1hr=3600s) 
+            contentType: file.mimetype
+        };
+
+        const imageRef = ref(storage, `${matricule} ${new Date().getFullYear()}/` + file.name);
+
+        await uploadBytesResumable(imageRef, file.data, fileMetadata)
+        .then(async (snapshot) => {
+            console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+            console.log('File metadata:', snapshot.metadata);
+    
+            // Let's get a download URL for the file.
+            await getDownloadURL(snapshot.ref).then((url) => {
+                console.log('File available at', url);
+                
+            });
+        }).catch(error => {
+            console.error('Upload failed', error);
+            return res.status(500).json({ success: false, error });
+        });
+
+    }
+}

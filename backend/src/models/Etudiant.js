@@ -1,10 +1,9 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
-const { Niveau, Sexe, ActeurDossier, TypeNotification, ModelNotif } = require('./types')
+const { Niveau, Sexe, ActeurDossier } = require('./types')
 const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
-const Notification = require('./Notification')
-const { validerMatricule } = require('../utils')
+const { validerMatricule } = require('../validators')
 const bcrypt = require('bcrypt');
 
 
@@ -13,11 +12,11 @@ const EtudiantSchema = new Schema({
         type: String,
         required: true,
         index: true,
+        uppercase: true,
         validate: {
             validator: mat => validerMatricule(mat),
             message: props => `${props.value} est un matricule invalide!`
         }
-        // todo validate matricule; uppercase before saving
     },
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true }, 
