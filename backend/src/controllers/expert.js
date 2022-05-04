@@ -19,7 +19,7 @@ exports.register_expert = function(req,res){
                 console.log("erreur lors de l'enregistrement dun expert: ",err);
                 res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau expert",error:err}).status(500)
             }
-            res.json({success:true,message:'Enregistrer avec success',data:nouveau_expert});
+            res.json({success:true,message:'Enregistrer avec success',data:nouveau_expert}).status(201);
 
         })
 }

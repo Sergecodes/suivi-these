@@ -29,7 +29,7 @@ exports.new_conseil = function(req,res){
                 console.log("erreur lors de l'enregistrement dun conseil scientifique");
                 res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
             }
-            res.json({succes:true,mesage:"le nouveau conseil a ete enregistrer avec success",data:nouveau_conseil}).status(200);
+            res.json({succes:true,mesage:"le nouveau conseil a ete enregistrer avec success",data:nouveau_conseil}).status(201);
         })
 }
 

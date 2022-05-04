@@ -53,7 +53,7 @@ exports.register = function(req,res){
                 console.log(err);
                 res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
             }
-            res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(200);
+            res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(201);
         })
 
         //if  passwordComplexity().validate(Etudiant.motDePasse).error
@@ -200,7 +200,7 @@ exports.uploadFiles = function(req, res) {
             // Upload files
             let fileEntries = Object.entries(req.files);
             let i = 0, n = fileEntries.length;
-            let basedir = '/home/sergeman/Desktop/classified/suivi-these/media/';
+            let basedir = '/home/sergeman/Desktop/classified/suivi-these/dossiers_etudiants/';
             for (const [fileCat, fileCatObj] of fileEntries) {
                 let etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
                 let saveDir = path.join(basedir, etudDir);
@@ -228,7 +228,7 @@ exports.uploadFiles = function(req, res) {
 
                     // Return response if for loop is over
                     if (i == n-1) 
-                        res.json({ success: true, message: 'Files uploaded!'});
+                        res.json({ success: true, message: 'Files uploaded!'}).status(201);
                 });
             }
         });

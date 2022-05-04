@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const session = require('express-session')
+const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
@@ -51,6 +53,20 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'session-secret',
+    saveUninitialized: false,  // don't create session until something stored
+    resave: false,   // don't save session if unmodified,
+    cookie: {
+        sameSite: 'none',
+        maxAge: 2 * 24 * 60 * 60 * 1000,  // = 2days
+        secure: process.env.PRODUCTION === "true" || false
+    },
+    store: MongoStore.create({
+        mongoUrl: urlBd,
+        ttl: 2 * 24 * 60 * 60   // = 2 days. Default is 14 days
+    })
+}));
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,

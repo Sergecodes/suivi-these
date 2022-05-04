@@ -18,7 +18,7 @@ exports.register_jury = function(req,res){
                 console.log("erreur lors de l'enregistrement dun jurry: ",err);
                 res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client",error:err}).status(500)
             }
-            res.json({success:true,message:'Enregistrer avec success',data:nouveau_jury});
+            res.json({success:true,message:'Enregistrer avec success',data:nouveau_jury}).status(201);
         })
 }
 

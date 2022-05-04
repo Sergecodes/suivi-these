@@ -17,7 +17,7 @@ exports.register_departement = function(req,res){
                 console.log("erreur lors de l'enregistrement dun departement: ",err);
                 res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
             }
-            res.json({success:true,message:'Enregistrer avec success',data:nouveau_departement});
+            res.json({success:true,message:'Enregistrer avec success',data:nouveau_departement}).status(201);
         })
 }
 
