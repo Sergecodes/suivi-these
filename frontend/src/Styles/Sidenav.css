@@ -1,0 +1,45 @@
+.sidenav{
+    height:100vh;
+    width:280px;
+    padding:0px 15px;
+    background-image:linear-gradient(#2a1c5a, #4b3a6e);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    color:white;
+}
+hr{
+    margin-bottom:10px;
+}
+.title{
+    font-size:18px;
+    padding-top:10px;
+    font-weight:500;
+}
+.actorInfo div p{
+    margin:0px;
+    font-weight: 500;
+}
+
+.actorInfo >p{
+    font-style:italic;
+    font-weight: 300;
+}
+
+.sidenavItem{
+    cursor:pointer;
+    margin:2px 0px;
+    border-radius: 3px;
+}
+.sidenavItem a{
+    font-size:14px;
+    font-weight: bold;
+    color:white;
+    display:flex;
+    align-items:center;
+    padding:10px 2px;
+    
+}
+
+ .sidenavItem a:hover{
+    background-color: white;
+    color:#2a1c5a;
+}

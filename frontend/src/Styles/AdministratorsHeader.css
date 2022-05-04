@@ -1,0 +1,16 @@
+.adminHeader{
+    background-color: transparent;
+}
+
+.adminOptions{
+   font-size:25px; 
+}
+.icons{
+    display:flex;
+    justify-content: space-around;
+}
+
+.icons a{
+    font-size:15px;
+    color:#2a1c5a;
+}

@@ -16,7 +16,8 @@ import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/page etudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/page etudiant/EvolutionDossier"
 import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
-import Soutenance from "./screen/Soutenance"
+import Soutenance from "./screen/Soutenance";
+import Jury from "./screen/Jury";
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -32,6 +33,7 @@ const App = () => {
             <Route path="/account/profil" element={<ProfilEtudiant/>}/>
             <Route path="/account/evolution" element={<EvolutionDossier/>}/>
           </Route>
+          <Route path="/acteur/jury" element={<Jury/>}/>
           <Route
             path="/*"
             element={

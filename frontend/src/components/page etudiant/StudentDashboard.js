@@ -20,6 +20,9 @@ const StudentDashboard = (props) => {
       dispatch(setClicked())
     }
   },[width])
+  const test=()=>{
+    console.log(test);
+  }
  
   return (
     <section className="studentDashboard px-2" style={files.clicked===false &&width<1015 ?{display:"none"}:{}}>
