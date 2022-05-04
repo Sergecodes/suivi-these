@@ -1,0 +1,17 @@
+h1 {
+  font-size: 2rem;
+  padding: 5px 10px;
+}
+h2 {
+  font-size: 1.2rem;
+  padding: 5px;
+}
+.color-orange {
+  color: #ff5821;
+}
+.color-blue {
+  color: blue;
+}
+.gras {
+  font-weight: bold;
+}

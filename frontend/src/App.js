@@ -11,6 +11,17 @@ import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScre
 import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen.js";
+import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen.js";
+import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen.js";
+import EquipeScreen from "./screen/InfotmationScreens/EquipeScreen.js";
+import FormationEnTheseScreen from "./screen/InfotmationScreens/FormationEnTheseScreen.js";
+import InscriptionScreen from "./screen/InfotmationScreens/InscriptionScreen.js";
+import Presentation from "./screen/InfotmationScreens/Presentation.js";
+import ProceduredeSoutenanceScreen from "./screen/InfotmationScreens/ProceduredeSoutenanceScreen.js";
+import SuivieDeFormation from "./screen/InfotmationScreens/SuivieDeFormation.js";
+import TheseEnCotutelleScreen from "./screen/InfotmationScreens/TheseEnCotutelleScreen.js";
+import TheseEnCoursScreen from "./screen/InfotmationScreens/TheseEnCoursScreen.js";
+import UnitesRechercheScreen from "./screen/InfotmationScreens/UnitesRechercheScreen.js";
 
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -68,6 +79,32 @@ const App = () => {
             element={<DepartementConnexionScreen />}
           ></Route>
         </Routes>
+
+        {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres */}
+        <Route path="/canditature" element={<CandidatureScreen />}></Route>
+        <Route
+          path="/conseil"
+          element={<ConseilScientifiqueInscriptionScreen />}
+        ></Route>
+        <Route path="/document" element={<DocumentImportantScreen />}></Route>
+        <Route path="/equipe" element={<EquipeScreen />}></Route>
+        <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
+        <Route path="/Inscription" element={<InscriptionScreen />}></Route>
+        <Route path="/presentation" element={<Presentation />}></Route>
+        <Route
+          path="/Procedure"
+          element={<ProceduredeSoutenanceScreen />}
+        ></Route>
+        <Route path="/Suivie" element={<SuivieDeFormation />}></Route>
+        <Route
+          path="/these-cotutelle"
+          element={<TheseEnCotutelleScreen />}
+        ></Route>
+        <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
+        <Route
+          path="/unites-recherche"
+          element={<UnitesRechercheScreen />}
+        ></Route>
       </div>
     </BrowserRouter>
   );
