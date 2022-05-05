@@ -1,5 +1,6 @@
 const JURY = require('../models/Jury');
 const bcrypt = require('bcrypt');
+const { Types } = require('../constants')
 const saltRounds = 10;
 // var passport = require('passport');
 
@@ -27,10 +28,15 @@ exports.login_jury = async function(req,res){
     try{
         const {email,motDePasse} = req.body;
         let jury = await JURY.findOne({email});
-        if(!jury){return res.status(400).send("Jury Not found")};
+        if(!jury){return res.status(404).send("Jury Not found")};
         const validPassword = await bcrypt.compare(motDePasse,jury.motDePasse);
         if(!validPassword) return res.status(400).send("please enter a valid password");
-       res.json({succes:true,message:"Connexion reussie",data:jury})
+
+        req.session.user = {
+            _id: jury._id,
+            model: Types.ACTEURS.JURY
+        };
+       res.json({success:true,message:"Connexion reussie",data:jury})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");

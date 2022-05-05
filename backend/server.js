@@ -15,6 +15,7 @@ const departementRoutes = require('./src/routes/departement');
 const expertRoutes = require('./src/routes/expert');
 const juryRoutes  = require('./src/routes/jury');
 const rectoratRoutes = require('./src/routes/rectorat');
+const otherRoutes = require('./src/routes/other')
 // var passport = require('passport');
 
 
@@ -83,6 +84,7 @@ apiRouter.get('/', (req, res) => {
 });
 
 app.use('/api', apiRouter);
+app.use('/api', otherRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/etudiants', etudiantRoutes);
 app.use('/api/conseils', conseilRoutes);
