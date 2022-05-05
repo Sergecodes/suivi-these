@@ -89,7 +89,7 @@ exports.change_student_password = function(req,res){
         //L'utilisateur a ete trouver
         const validPassword =  bcrypt.compare(ActualPassword,etudiant.motDePasse);
         console.log(validPassword);
-        
+
         if(!validPassword) return res.status(400).send("please enter a valid password");
         if(req.body.NewPassword){
             etudiant.motDePasse = NewPassword;
@@ -105,9 +105,9 @@ exports.change_student_password = function(req,res){
 }
 
 exports.changePhoneNumber = function(req,res){
-    const {id} = req.params;
+    const {matricule} = req.params;
     const{newPhoneNumber} = req.body;
-    USERS.findById(id,function(err,etudiant){
+    USERS.findOne({matricule}, function(err,etudiant){
         if(err){
             return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
         }

@@ -55,7 +55,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_SECRET || 'session-secret',
     saveUninitialized: false,  // don't create session until something stored
@@ -70,6 +69,7 @@ app.use(session({
         ttl: 2 * 24 * 60 * 60   // = 2 days. Default is 14 days
     })
 }));
+app.use(cookieParser());
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,
