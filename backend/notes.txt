@@ -1,3 +1,4 @@
+// Nice post: https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
 
 - added 'message' to EnvoiMessage
 - added model Departement

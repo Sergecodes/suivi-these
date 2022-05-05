@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
 
@@ -54,6 +55,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_SECRET || 'session-secret',
     saveUninitialized: false,  // don't create session until something stored

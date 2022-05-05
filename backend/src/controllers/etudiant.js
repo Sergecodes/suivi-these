@@ -88,6 +88,8 @@ exports.change_student_password = function(req,res){
         }
         //L'utilisateur a ete trouver
         const validPassword =  bcrypt.compare(ActualPassword,etudiant.motDePasse);
+        console.log(validPassword);
+        
         if(!validPassword) return res.status(400).send("please enter a valid password");
         if(req.body.NewPassword){
             etudiant.motDePasse = NewPassword;
