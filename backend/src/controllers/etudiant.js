@@ -53,7 +53,7 @@ exports.register = function(req,res){
                 console.log(err);
                 res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
             }
-            res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(200);
+            res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(201);
         })
 
         //if  passwordComplexity().validate(Etudiant.motDePasse).error
@@ -64,10 +64,15 @@ exports.login_student = async function(req,res){
     try{
         const {matricule,motDePasse} = req.body;
         let etudiant = await USERS.findOne({matricule});
-        if(!etudiant){return res.status(400).send("User Not found")};
+        if(!etudiant){return res.status(404).send("User Not found")};
         const validPassword = await bcrypt.compare(motDePasse,etudiant.motDePasse);
         if(!validPassword) return res.status(400).send("please enter a valid password");
-       res.json({succes:true,message:"Connexion reussie",data:etudiant})
+
+        req.session.user = {
+            _id: etudiant._id,
+            model: Types.ACTEURS.ETUDIANT
+        };
+       res.json({success:true,message:"Connexion reussie",data:etudiant})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");
@@ -83,6 +88,8 @@ exports.change_student_password = function(req,res){
         }
         //L'utilisateur a ete trouver
         const validPassword =  bcrypt.compare(ActualPassword,etudiant.motDePasse);
+        console.log(validPassword);
+
         if(!validPassword) return res.status(400).send("please enter a valid password");
         if(req.body.NewPassword){
             etudiant.motDePasse = NewPassword;
@@ -98,9 +105,9 @@ exports.change_student_password = function(req,res){
 }
 
 exports.changePhoneNumber = function(req,res){
-    const {id} = req.params;
+    const {matricule} = req.params;
     const{newPhoneNumber} = req.body;
-    USERS.findById(id,function(err,etudiant){
+    USERS.findOne({matricule}, function(err,etudiant){
         if(err){
             return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
         }
@@ -200,7 +207,7 @@ exports.uploadFiles = function(req, res) {
             // Upload files
             let fileEntries = Object.entries(req.files);
             let i = 0, n = fileEntries.length;
-            let basedir = '/home/sergeman/Desktop/classified/suivi-these/media/';
+            let basedir = '/home/sergeman/Desktop/classified/suivi-these/dossiers_etudiants/';
             for (const [fileCat, fileCatObj] of fileEntries) {
                 let etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
                 let saveDir = path.join(basedir, etudDir);
@@ -228,7 +235,7 @@ exports.uploadFiles = function(req, res) {
 
                     // Return response if for loop is over
                     if (i == n-1) 
-                        res.json({ success: true, message: 'Files uploaded!'});
+                        res.json({ success: true, message: 'Files uploaded!'}).status(201);
                 });
             }
         });

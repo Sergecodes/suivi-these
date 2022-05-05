@@ -1,6 +1,7 @@
 const COORD = require('../models/Coordonateur');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
+const { Types } = require('../constants')
 const saltRounds = 10;
 // var passport = require('passport');
 
@@ -35,7 +36,7 @@ exports.register_coordonateur = function(req,res){
                 console.log("erreur lors de l'enregistrement dun conseil scientifique");
                 res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
             }
-            res.json({succes:true,mesage:"le nouveau conseil a ete enregistrer avec success",data:nouveau_coordonateur}).status(200);
+            res.json({success:true,message:"le nouveau conseil a ete enregistrer avec success",data:nouveau_coordonateur}).status(201);
 
         })
 }
@@ -44,10 +45,15 @@ exports.login_coordonateur = async function(req,res){
     try{
         const {email,motDePasse} = req.body;
         let coordonateur = await COORD.findOne({email});
-        if(!coordonateur){return res.status(400).send("Coordonateur Not found")};
+        if(!coordonateur){return res.status(404).send("Coordonateur Not found")};
         const validPassword = await bcrypt.compare(motDePasse,coordonateur.motDePasse);
         if(!validPassword) return res.status(400).send("please enter a valid password");
-       res.json({succes:true,message:"Connexion reussie",data:coordonateur})
+
+        req.session.user = {
+            _id: coordonateur._id,
+            model: Types.ACTEURS.COORDONATEUR
+        };
+       res.json({success:true,message:"Connexion reussie",data:coordonateur})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");
