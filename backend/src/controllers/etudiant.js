@@ -74,27 +74,47 @@ exports.login_student = async function(req,res){
     }
 }
 
-exports.change_student_password = function(req,res){
-    const {id} = req.params;
-    const {ActualPassword,NewPassword} = req.body;
+exports.change_student_password =async  function(req,res){
+
+   try{
+    const {id}=req.params;
+    const {pass,newPass} = req.body;
+
     USERS.findById(id,function(err,etudiant){
         if(err){
+            console.log("une erreur esr survenu lors de la recuperation de cet utilisateur, l'utilisateur n'existe pas ou a ete supprier")
             return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
         }
-        //L'utilisateur a ete trouver
-        const validPassword =  bcrypt.compare(ActualPassword,etudiant.motDePasse);
-        if(!validPassword) return res.status(400).send("please enter a valid password");
-        if(req.body.NewPassword){
-            etudiant.motDePasse = NewPassword;
-        };
-        etudiant.save(function(err,newStudent){
+        console.log(etudiant);
+        //utilisateur trouver
+        bcrypt.compare(pass,etudiant.motDePasse,function(err,result){
             if(err){
-                console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau mot de passe: ", err);
-                res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement du nouveau mot de passe",error:err}).status(500);        
+                console.log("une erreur interne est suvenue: ",err);
+                return res.json({success:false,message:"une erreur interne est survenue",error:err});
             }
-            res.json({success:true,message:"le mot de passe a ete enregistrer avec success",data:newStudent.motDePasse});
+            if(result == true){
+                etudiant.motDePasse = newPass
+                etudiant.save(function(err,nouveau_Etudiant){
+                    console.log('ici ici');
+                    if(err){
+                        console.log(err);
+                        res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+                    }
+                    res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse}).status(200);
+                })
+            }else{
+                res.json({message:"les mots de passe ne correspondent pas"})
+            }
+
         })
     })
+       
+    }catch(error){
+       console.log(error);
+       res.status(500).send("Something went wrong")
+   }
+
+    
 }
 
 exports.changePhoneNumber = function(req,res){
