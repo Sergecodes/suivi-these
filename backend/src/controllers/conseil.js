@@ -1,6 +1,7 @@
 const CONSEIL = require('../models/Conseil');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
+const { Types } = require('../constants')
 const saltRounds = 10;
 // var passport = require('passport');
 
@@ -29,7 +30,7 @@ exports.new_conseil = function(req,res){
                 console.log("erreur lors de l'enregistrement dun conseil scientifique");
                 res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
             }
-            res.json({succes:true,mesage:"le nouveau conseil a ete enregistrer avec success",data:nouveau_conseil}).status(200);
+            res.json({success:true,mesage:"le nouveau conseil a ete enregistrer avec success",data:nouveau_conseil}).status(201);
         })
 }
 
@@ -37,10 +38,40 @@ exports.conseil_login = async function(req,res){
     try{
         const {email,motDePasse} = req.body;
         let conseil = await CONSEIL.findOne({email});
-        if(!conseil){return res.status(400).send("Conseil Not found")};
-        const validPassword = await bcrypt.compare(motDePasse,conseil.motDePasse);
-        if(!validPassword) return res.status(400).send("please enter a valid password");
-       res.json({succes:true,message:"Connexion reussie",data:conseil})
+        if(!conseil){return res.status(404).send("Conseil Not found")};
+
+        bcrypt.compare(motDePasse, conseil.motDePasse, function(err,result) {
+			if(err){
+				console.log("une erreur interne est suvenue: ",err);
+				return res.status(500).json({
+					success:false,message:"une erreur interne est survenue",
+					error:err
+				});
+			}
+
+			if(!result) {
+				res.json({
+					success: false,
+					message: "Invalid credentials"
+				})
+			} else {
+				// Create user session
+				req.session.user = {
+					_id: conseil._id,
+					model: Types.ACTEURS.CONSEIL
+				};
+
+				// Remove mot de passe from returned result
+				let data = conseil.toJSON();
+				delete data.motDePasse;
+
+				res.json({
+					success: true,
+					message: "Connexion reussie",
+					data
+				});
+			}
+		})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");

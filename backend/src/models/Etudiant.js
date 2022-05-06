@@ -20,10 +20,7 @@ const EtudiantSchema = new Schema({
     },
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true }, 
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo validate password length; encrypt password before saving (post method)
+    motDePasse: { type: String, required: true }, 
     niveau: { type: String, required: true, enum: Object.values(Niveau) },
     email: {
         type: String,
@@ -36,19 +33,21 @@ const EtudiantSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    dateNaissance: { type: Date, required: true },
-    dateSoutenance: Date,
+    // todo validate date (yyyy/mm/dd)
+    dateNaissance: { type: String, required: true },
+    dateSoutenance: String,
     lieuNaissance: { type: String, required: true }, 
     numTelephone: { type: String, required: true }, 
     sexe: { type: String, required: true, enum: Object.values(Sexe) },
-    compteValideLe: Date,
-    urlPhotoProfil: { type: String, required: true },
+    compteValideLe: String,
+    urlPhotoProfil: String,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
-    // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
-    // encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
+
 
 EtudiantSchema.pre("save",function(next){
     const user = this;
