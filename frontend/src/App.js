@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'antd/dist/antd.min.css';
 
@@ -18,9 +18,11 @@ import EvolutionDossier from "./components/page etudiant/EvolutionDossier"
 import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
 import Soutenance from "./screen/Soutenance";
 import Jury from "./screen/Jury";
+import NotationMaster from "./components/page jury/NotationMaster"
+import ProfilJury from "./components/page jury/ProfilJury"
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const isLogin= true;
 
   return (
     <BrowserRouter>
@@ -33,7 +35,10 @@ const App = () => {
             <Route path="/account/profil" element={<ProfilEtudiant/>}/>
             <Route path="/account/evolution" element={<EvolutionDossier/>}/>
           </Route>
-          <Route path="/acteur/jury" element={<Jury/>}/>
+          <Route path="/acteur/jury" element={<Jury/>}>
+            <Route path="/acteur/jury/notation" element={<NotationMaster/>}/>
+            <Route path="/acteur/jury/profil" element={<ProfilJury/>}/>
+          </Route>
           <Route
             path="/*"
             element={

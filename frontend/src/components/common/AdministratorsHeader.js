@@ -1,17 +1,21 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { setAdminClicked } from "../../redux/DashboardDisplaySlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Input, Space } from 'antd';
-import {BsBellFill,BsDownload,BsPersonCircle} from "react-icons/bs"
+import { Input } from 'antd';
+import {BsBellFill,BsDownload,BsPersonCircle} from "react-icons/bs";
+
+
 
 const AdministratorsHeader = (props) => {
   const dispatch = useDispatch();
   const files = useSelector((state) => state.dashboardDisplay);
-  const location = useLocation();
+ /// const location = useLocation();
   const { Search } = Input;
   const onSearch = value => console.log(value);
+  
+
   
   return (
     <section className="adminHeader my-2 d-flex  justify-content-around align-items-center row">
@@ -23,7 +27,7 @@ const AdministratorsHeader = (props) => {
             }}
             style={files.adminClicked === true ? { color: "#FF5821" } : {}}
           />
-          <p className="fs-5 fw-light" style={{margin:"0px"}}>Bienvenu!!! {props.nom}</p>
+          <p className="fs-5 fw-light d-flex justify-content-center flex-wrap align-items-center " style={{margin:"0px"}}>Bienvenu!!! <span className="ms-1">{props.nom}</span></p>
       </div>
       <div className=" col-5 d-flex justify-content-center " style={{margin:"0px"}}>
         <Search placeholder="input search text" allowClear onSearch={onSearch} style={{ width: 300 }} />

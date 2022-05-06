@@ -1,8 +1,13 @@
 import React from 'react';
 import {FaGraduationCap} from "react-icons/fa";
+//import {useWindowSize} from "react-use";
+
 
 
 const Sidenav = (props) => {
+
+
+
   return (
     <div className="sidenav" style={props.display===true?{display:"none"}:{}}>
         <p className="title"><FaGraduationCap/> ECOLE DOCTORALE</p>

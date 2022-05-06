@@ -6,7 +6,7 @@ import {MdDashboard} from "react-icons/md"
 import {BsBellFill, BsPersonFill,BsFillFileEarmarkSpreadsheetFill} from "react-icons/bs";
 import "../../Styles/Sidenav.css";
 import {JuryData} from "../../constants/Constant";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 
 const SidenavJury = () => {
