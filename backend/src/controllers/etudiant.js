@@ -108,7 +108,7 @@ exports.login_student = async function(req,res){
 
 exports.change_student_password =async  function(req,res){
 
-   	try {
+   try {
 		const {id}=req.params;
 		const {pass,newPass} = req.body;
 
