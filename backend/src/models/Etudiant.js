@@ -42,7 +42,7 @@ const EtudiantSchema = new Schema({
     numTelephone: { type: String, required: true }, 
     sexe: { type: String, required: true, enum: Object.values(Sexe) },
     compteValideLe: Date,
-    urlPhotoProfil: { type: String, required: true },
+    urlPhotoProfil: String,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
     // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
     // encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },

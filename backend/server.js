@@ -73,6 +73,7 @@ app.use(cookieParser());
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,
+    createParentPath: true
     // parseNested: true,
     // useTempFiles: true
 }));

@@ -51,7 +51,7 @@ exports.isExpert = function(req, res, next) {
 }
 
 
-exports.isEtudiant = function(req, res, next) {
+exports.isJury = function(req, res, next) {
     if (!req.session || !req.session.user) {
         return res.status(401).send("Not authenticated");
     } else if (req.session.user.model !== Types.ACTEURS.JURY) {
@@ -61,7 +61,7 @@ exports.isEtudiant = function(req, res, next) {
 }
 
 
-exports.isEtudiant = function(req, res, next) {
+exports.isRectorat = function(req, res, next) {
     if (!req.session || !req.session.user) {
         return res.status(401).send("Not authenticated");
     } else if (req.session.user.model !== Types.ACTEURS.RECTORAT) {
@@ -71,7 +71,7 @@ exports.isEtudiant = function(req, res, next) {
 }
 
 
-exports.isEtudiant = function(req, res, next) {
+exports.isAdmin = function(req, res, next) {
     if (!req.session || !req.session.user) {
         return res.status(401).send("Not authenticated");
     } else if (req.session.user.model !== Types.ACTEURS.ADMIN) {

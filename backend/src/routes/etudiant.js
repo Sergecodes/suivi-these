@@ -13,6 +13,8 @@ router.route('/phone/:matricule').put(isEtudiant, controller.changePhoneNumber)
 
 router.route('/uploader-fichiers').post(isEtudiant, controller.uploadFiles);
 
+router.route('/update-photo').put(isEtudiant, controller.updatePhoto)
+
 router.route('/date_soutenance').get(controller.sort_dateSoutenance_by2Date);
 
 
