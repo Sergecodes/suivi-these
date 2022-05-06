@@ -1,5 +1,5 @@
 const USERS  = require('../models/Etudiant');
-const { Dossier, FichierDossier } = require('../models/Dossier')
+const { Dossier, EtapeDossier, FichierDossier } = require('../models/Dossier')
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const path = require('path');
@@ -26,8 +26,8 @@ exports.register = function(req,res){
 		Etudiant.numTelephone = req.body.numTelephone;
 		Etudiant.sexe = req.body.sexe;
 		Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
-		// Etudiant.uniteRecherche = req.body.uniteRecherche;
-		// Etudiant.encadreur = req.body.encadreur;
+		Etudiant.uniteRecherche = req.body.uniteRecherche;
+		Etudiant.encadreur = req.body.encadreur;
 		//controle;
 		if(Etudiant.nom == ''){
 			return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
@@ -89,10 +89,14 @@ exports.login_student = async function(req,res){
 					model: Types.ACTEURS.ETUDIANT
 				};
 
+				// Remove mot de passe from returned result
+				let data = etudiant.toJSON();
+				delete data.motDePasse;
+
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data: etudiant
+					data
 				});
 			}
 		})
@@ -104,41 +108,41 @@ exports.login_student = async function(req,res){
 
 exports.change_student_password =async  function(req,res){
 
-   try{
-	const {id}=req.params;
-	const {pass,newPass} = req.body;
+   	try {
+		const {id}=req.params;
+		const {pass,newPass} = req.body;
 
-	USERS.findById(id,function(err,etudiant){
-		if(err){
-			console.log("une erreur esr survenu lors de la recuperation de cet utilisateur, l'utilisateur n'existe pas ou a ete supprier")
-			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
-		}
-	  
-		console.log(etudiant);
-	  
-		//utilisateur trouver
-		bcrypt.compare(pass,etudiant.motDePasse,function(err,result){
+		USERS.findById(id,function(err,etudiant){
 			if(err){
-				console.log("une erreur interne est suvenue: ",err);
-				return res.json({success:false,message:"une erreur interne est survenue",error:err});
+				console.log("une erreur esr survenu lors de la recuperation de cet utilisateur, l'utilisateur n'existe pas ou a ete supprier")
+				return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
 			}
-			if(result == true){
-				etudiant.motDePasse = newPass
-				etudiant.save(function(err,nouveau_Etudiant){
-					console.log('ici ici');
-					if(err){
-						console.log(err);
-						res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
-					}
-					res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse}).status(200);
-				})
-			}else{
-				res.json({message:"les mots de passe ne correspondent pas"})
-			}
+		
+			console.log(etudiant);
+		
+			//utilisateur trouver
+			bcrypt.compare(pass,etudiant.motDePasse,function(err,result){
+				if(err){
+					console.log("une erreur interne est suvenue: ",err);
+					return res.json({success:false,message:"une erreur interne est survenue",error:err});
+				}
+				if(result == true){
+					etudiant.motDePasse = newPass
+					etudiant.save(function(err,nouveau_Etudiant){
+						console.log('ici ici');
+						if(err){
+							console.log(err);
+							res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+						}
+						res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse}).status(200);
+					})
+				}else{
+					res.json({message:"les mots de passe ne correspondent pas"})
+				}
+			})
 		})
-	})
 	   
-	}catch(error){
+	} catch(error){
 	   console.log(error);
 	   res.status(500).send("Something went wrong")
    }
@@ -146,9 +150,9 @@ exports.change_student_password =async  function(req,res){
 
 
 exports.changePhoneNumber = function(req,res){
-	const {id} = req.params;
-	const{newPhoneNumber} = req.body;
-	USERS.findById(id, function(err,etudiant){
+	const {newPhoneNumber} = req.body;
+
+	USERS.findById(req.session.user._id, function(err,etudiant){
 		if(err){
 			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
 		}
@@ -194,7 +198,7 @@ exports.updatePhoto = function(req, res) {
 		);
 	}
 
-	Etudiant.findById(idEtudiant, function(err, etud) {
+	Etudiant.findById(idEtudiant, async function(err, etud) {
 		if(err) {
 			return res.json({
 				success: false,
@@ -269,12 +273,12 @@ exports.updatePhoto = function(req, res) {
 /**
  * Recuperer les fichiers renvoyes par un etudiant et 
  * creer son dossier a partir de ceux-ci.
- * 
  */
 exports.uploadFiles = function(req, res) {
-	const { idEtudiant, sujet, niveau } = req.body;
+	const { sujet, niveau } = req.body;
+	const idEtudiant = req.session.user._id;
 
-	if (!idEtudiant || !sujet || !niveau) {
+	if (!sujet || !niveau) {
 		return res.status(400).json({ 
 			success: false,
 			message: "Invalid request body" 
@@ -444,20 +448,52 @@ exports.uploadFiles = function(req, res) {
 }
 
 
-// todo
-exports.sort_dateSoutenance_by2Date= function(req,res){
-	const {startDate,finalDate} = req.query;
-	if(startDate instanceof Date == false || finalDate instanceof Date == false){
-		res.json({message:"Veuillez entrer svp le format de date valide , yyy/mmm/ddd",success:false}).status(400);
-	}
-	Etudiant.find({
-		createdAt:
-		{$gte:ISODate(startDate),$lt:ISODate(finalDate)}
-	},function(err,etudiant){
-		if(err){
-			console.log("une erreur est survenue lors de la recuperation des dates de soutenance de soutance");
+exports.datesSoutenance = function(req,res) {
+	Etudiant.find({ dateSoutenance: { $ne: '' } }, (err, etuds) => {
+		if (err) {
+			return res.status(500).json({ success: false, error: err });
 		}
-		res.json({message:"les date de soutenance ont ete recuperer avec success",data:etudiant});
-	})
+
+		let result = {};
+
+		for (let etud of etuds) {
+			let date = etud.dateSoutenance;
+			let etudObj = { 
+				matricule: etud.matricule, 
+				nom: etud.nom, 
+				prenom: etud.prenom, 
+				niveau: etud.niveau
+			};
+
+			if (!(date in result)) {
+				result[date] = [etudObj];
+			} else {
+				result[date] = result[date].push(etudObj);
+			}
+		}
+
+		return res.json(result);
+	});
+}
+
+
+exports.etapesDossier = async function (req, res) {
+	const idEtudiant = req.session.user._id;
+	Etudiant.findById(idEtudiant, async (err, etud) => {
+		if (err)
+			return res.status(500).send(err);
+
+		if (!etud) {
+			return res.status(404).send("Etudiant non trouve");
+		}
+
+		try {
+			let etapes = await EtapeDossier.find({ dossier: etud.dossier });
+			res.json(etapes);
+		} catch (error) {
+			console.error(error);
+			res.status(500).json(error);
+		}
+	});
 }
 

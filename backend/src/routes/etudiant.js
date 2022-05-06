@@ -15,7 +15,9 @@ router.route('/uploader-fichiers').post(isEtudiant, controller.uploadFiles);
 
 router.route('/update-photo').put(isEtudiant, controller.updatePhoto)
 
-router.route('/date_soutenance').get(controller.sort_dateSoutenance_by2Date);
+router.route('/dates-soutenance').get(controller.datesSoutenance);
+
+router.route('/etapes-dossier').get(isEtudiant, controller.etapesDossier)
 
 
 module.exports = router;

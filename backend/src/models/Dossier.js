@@ -75,7 +75,7 @@ const FichierDossierSchema = new Schema({
     },
     url: { type: String, required: true },
     uploadeLe: { type: Date, required: true, default: Date.now },
-    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
+    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
 });
 
 FichierDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
@@ -90,9 +90,9 @@ const EtapeDossierSchema = new Schema({
         enum: Object.values(EtapeDossierEnum)
     },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
-    debuteeLe: Date,
-    acheveeLe: Date,
-    delai: Date,
+    debuteeLe: { type: Date, default: Date.now, required: true },
+    acheveeLe: String,
+    delai: String,
     gereeParActeur: {
         type: String,
         required: true,
