@@ -39,14 +39,39 @@ exports.conseil_login = async function(req,res){
         const {email,motDePasse} = req.body;
         let conseil = await CONSEIL.findOne({email});
         if(!conseil){return res.status(404).send("Conseil Not found")};
-        const validPassword = await bcrypt.compare(motDePasse,conseil.motDePasse);
-        if(!validPassword) return res.status(400).send("please enter a valid password");
 
-        req.session.user = {
-            _id: conseil._id,
-            model: Types.ACTEURS.CONSEIL
-        };
-       res.json({success:true,message:"Connexion reussie",data:conseil})
+        bcrypt.compare(motDePasse, conseil.motDePasse, function(err,result) {
+			if(err){
+				console.log("une erreur interne est suvenue: ",err);
+				return res.status(500).json({
+					success:false,message:"une erreur interne est survenue",
+					error:err
+				});
+			}
+
+			if(!result) {
+				res.json({
+					success: false,
+					message: "Invalid credentials"
+				})
+			} else {
+				// Create user session
+				req.session.user = {
+					_id: conseil._id,
+					model: Types.ACTEURS.CONSEIL
+				};
+
+				// Remove mot de passe from returned result
+				let data = conseil.toJSON();
+				delete data.motDePasse;
+
+				res.json({
+					success: true,
+					message: "Connexion reussie",
+					data
+				});
+			}
+		})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");

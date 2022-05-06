@@ -30,14 +30,38 @@ exports.login_expert = async function(req,res){
         const {email,motDePasse} = req.body;
         let expert = await EXPERT.findOne({email});
         if(!expert){return res.status(404).send("Departement Not found")};
-        const validPassword = await bcrypt.compare(motDePasse,expert.motDePasse);
-        if(!validPassword) return res.status(400).send("please enter a valid password");
+        bcrypt.compare(motDePasse, expert.motDePasse, function(err,result) {
+			if(err){
+				console.log("une erreur interne est suvenue: ",err);
+				return res.status(500).json({
+					success:false,message:"une erreur interne est survenue",
+					error:err
+				});
+			}
 
-        req.session.user = {
-            _id: expert._id,
-            model: Types.ACTEURS.EXPERT
-        };
-       res.json({success:true,message:"Connexion reussie",data:expert})
+			if(!result) {
+				res.json({
+					success: false,
+					message: "Invalid credentials"
+				})
+			} else {
+				// Create user session
+				req.session.user = {
+					_id: expert._id,
+					model: Types.ACTEURS.EXPERT
+				};
+
+				// Remove mot de passe from returned result
+				let data = expert.toJSON();
+				delete data.motDePasse;
+
+				res.json({
+					success: true,
+					message: "Connexion reussie",
+					data
+				});
+			}
+		})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");
