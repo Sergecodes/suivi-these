@@ -7,8 +7,7 @@ function Presentation() {
       <div className="container">
         <div className="row">
           <h1 className="color-orange">Présentation de l'Ecole Doctorale </h1>
-          <hr></hr>
-          <div className="contact-box">
+          <div className="container" style={{ textAlign: "left" }}>
             <h2 className="color-orange">Contact</h2>
             <hr></hr>
             <p>
@@ -36,35 +35,30 @@ function Presentation() {
               Conférences UPS, membre du bureau.
             </p>
           </div>
-          <div className="secretariat-ed">
+          <div className="secretariat-ed container">
             <h2 className="color-orange">Secrétariat de l'école doctorale</h2>
             <hr></hr>
             <p>
-              <p>
-                {" "}
-                Mme <span className="color-orange">Soraya Berkouk</span>
-              </p>
-              <p className="site color-orange">edsdm@univ-tlse3.fr</p>
-              <h3> Heures d'ouverture au public:</h3>
-              <p>lundi et jeudi : de 10h à 12h et de</p>
-              <p style={{ color: "green" }}>
-                14h à 16h Secrétariat de l'école doctorale Science de la matière
-                Maison de la Recherche et de la Valorisation
-              </p>
-              <p>porte AR023</p>
-              <p> Université Toulouse III </p>
-              <p> 118, route de Narbonne</p>
-              <p>31062 Toulouse Cedex </p>
-              <p>
-                {" "}
-                <span style={{ color: "green" }}>Tél: 05 62 25 00 64</span>{" "}
-                (from abroad : 0033 5 62 25 00 64)
-              </p>
-              <p className="site color-orange">
-                {" "}
-                https://ed-sdm.univ-toulouse.fr
-              </p>
+              {" "}
+              Mme <span className="color-orange">Soraya Berkouk</span>
             </p>
+            <p className="site color-orange">edsdm@univ-tlse3.fr</p>
+            <h3> Heures d'ouverture au public:</h3>
+            <p>lundi et jeudi : de 10h à 12h et de</p>
+            <p style={{ color: "green" }}>
+              14h à 16h Secrétariat de l'école doctorale Science de la matière
+              Maison de la Recherche et de la Valorisation
+            </p>
+            <p>porte AR023</p>
+            <p> Université Toulouse III </p>
+            <p> 118, route de Narbonne</p>
+            <p>31062 Toulouse Cedex </p>
+            <p>
+              {" "}
+              <span style={{ color: "green" }}>Tél: 05 62 25 00 64</span> (from
+              abroad : 0033 5 62 25 00 64)
+            </p>
+            <p className="site color-orange">https://ed-sdm.univ-toulouse.fr</p>
           </div>
           <div className="Missions">
             <h2>En Bref : Missions des Ecoles Doctorales</h2>

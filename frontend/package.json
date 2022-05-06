@@ -17,13 +17,8 @@
     "react-icons": "^4.3.1",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.0",
-<<<<<<< HEAD
-    "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1",
-=======
+    "react-scripts": "^5.0.0",
     "react-use": "^17.3.2",
->>>>>>> d42944e6ac37354b15d915379621d6a250243ca5
     "web-vitals": "^2.1.4"
   },
   "scripts": {
