@@ -8,6 +8,7 @@ const {
 
 
 const DossierSchema = new Schema({
+    etudiant: { type: Schema.Types.ObjectId, ref: 'Etudiant', required: true },
     sujet: { type: String, required: true },
     statut: { 
         type: String, 
@@ -20,13 +21,6 @@ const DossierSchema = new Schema({
     timestamps: { createdAt: 'dateDepot', updatedAt: 'misAJourLe' }
 });
 
-
-DossierSchema.virtual('etudiant', {
-    ref: 'Etudiant',
-    localField: '_id',
-    foreignField: 'dossier',
-    justOne: true
-});
 
 DossierSchema.virtual('fichiers', {
     ref: 'FichierDossier',
@@ -84,6 +78,8 @@ const FichierDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
 });
 
+FichierDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
+
 
 // EtapeDossier
 const EtapeDossierSchema = new Schema({
@@ -105,6 +101,9 @@ const EtapeDossierSchema = new Schema({
 });
 
 
+EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true } );
+
+
 // NoteDossier
 const NoteDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
@@ -124,6 +123,8 @@ const NoteDossierSchema = new Schema({
     noteLe: { type: Date, default: Date.now, required: true },
 });
 
+
+NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 
 /**
  * Envoyer une notification a l'administrateur

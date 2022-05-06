@@ -8,4 +8,4 @@ EMAILS_RECTORAT = [];
 
 // })
 
-module.exports = { Types };
+module.exports = { Types, EMAILS_ADMIN, EMAILS_RECTORAT };

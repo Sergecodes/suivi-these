@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'antd/dist/antd.min.css';
 
@@ -19,7 +19,7 @@ import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
 import Soutenance from "./screen/Soutenance"
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const isLogin = true;
 
   return (
     <BrowserRouter>

@@ -1,11 +1,11 @@
-import React,{useState} from 'react'
+import React from 'react'
 
 import { Steps } from 'antd';
 
 const { Step } = Steps;
 
 const EvolutionDossier=()=> {
-    const [current,setCurrent]=useState(2);
+    const current = 2;
     const steps = [
         {
           title: <p className="evolutionStepTitle">Envoi du dossier de soutenance</p>,

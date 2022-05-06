@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import {useWindowSize} from "react-use";
 import {EtudiantData} from '../../constants/EtudiantData';
 import {BsFolder,BsPerson,BsArrowRepeat} from "react-icons/bs";
@@ -15,11 +15,7 @@ const StudentDashboard = (props) => {
   const dispatch=useDispatch();
   const files=useSelector(state=>state.dashboardDisplay);
   const {width}=useWindowSize();
-  useEffect(()=>{
-    if(files.clicked===true && width>1015){
-      dispatch(setClicked())
-    }
-  },[width])
+  
  
   return (
     <section className="studentDashboard px-2" style={files.clicked===false &&width<1015 ?{display:"none"}:{}}>
