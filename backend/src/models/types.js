@@ -1,7 +1,7 @@
 /* Declaration des enums et autres */
 
 // Noms des acteures et leur modele
-const ACTEURS = {
+const ACTEURS = Object.freeze({
     COORDONATEUR: 'Coordonateur',
     EXPERT: 'Expert',
     CONSEIL: 'Conseil',
@@ -10,7 +10,7 @@ const ACTEURS = {
     JURY: 'Jury',
     RECTORAT: 'Rectorat',
     DEPARTEMENT: 'Departement'
-}
+});
 
 
 const Niveau = Object.freeze({
@@ -160,6 +160,6 @@ module.exports = {
     Niveau, Sexe, TypeNotification, ActeurDossier, GerantEtapeDossier,
     EtapeDossier, GradeExpert, AvisEmetteur, CategorieNote, AvisDestinataire,
     StatutDossier, ModelNotif, Avis, TypeExpert, GradeJury, 
-    CategorieFichierThese, CategorieFichierMaster, 
+    CategorieFichierThese, CategorieFichierMaster, ACTEURS
 }
 
