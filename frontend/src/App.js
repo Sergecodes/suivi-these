@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import 'antd/dist/antd.min.css';
+import "antd/dist/antd.min.css";
 
 /*import Accueil from "./screen/Accueil";
 import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
@@ -85,7 +85,33 @@ const App = () => {
           <Route
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
-          ></Route>*/}
+          ></Route>
+
+          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
+          <Route path="/canditature" element={<CandidatureScreen />}></Route>
+          <Route
+            path="/conseil"
+            element={<ConseilScientifiqueInscriptionScreen />}
+          ></Route>
+          <Route path="/document" element={<DocumentImportantScreen />}></Route> */}
+          {/* <Route path="/equipe" element={<EquipeScreen />}></Route>
+        <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
+        <Route path="/Inscription" element={<InscriptionScreen />}></Route>
+        <Route path="/presentation" element={<Presentation />}></Route>
+        <Route
+          path="/Procedure"
+          element={<ProceduredeSoutenanceScreen />}
+        ></Route>
+        <Route path="/Suivie" element={<SuivieDeFormation />}></Route>
+        <Route
+          path="/these-cotutelle"
+          element={<TheseEnCotutelleScreen />}
+        ></Route>
+        <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
+        <Route
+          path="/unites-recherche"
+          element={<UnitesRechercheScreen />}
+        ></Route> */}
         </Routes>
       </div>
     </BrowserRouter>

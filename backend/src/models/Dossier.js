@@ -1,12 +1,14 @@
 const { Schema, model } = require('mongoose')
 const { 
-    CategorieFichier, EtapeDossier: EtapeDossierEnum,
+    CategorieFichierMaster, CategorieFichierThese, 
     GerantEtapeDossier, StatutDossier, TypeNotification,
     ModelNotif, CategorieNote, ActeurDossier, 
+    EtapeDossier: EtapeDossierEnum,
 } = require('./types')
 
 
 const DossierSchema = new Schema({
+    etudiant: { type: Schema.Types.ObjectId, ref: 'Etudiant', required: true },
     sujet: { type: String, required: true },
     statut: { 
         type: String, 
@@ -19,13 +21,6 @@ const DossierSchema = new Schema({
     timestamps: { createdAt: 'dateDepot', updatedAt: 'misAJourLe' }
 });
 
-
-DossierSchema.virtual('etudiant', {
-    ref: 'Etudiant',
-    localField: '_id',
-    foreignField: 'dossier',
-    justOne: true
-});
 
 DossierSchema.virtual('fichiers', {
     ref: 'FichierDossier',
@@ -71,11 +66,19 @@ const FichierDossierSchema = new Schema({
     categorie: {
         type: String,
         required: true,
-        enum: Object.values(CategorieFichier)
+        enum: [
+            ...new Set([
+                ...Object.values(CategorieFichierMaster),
+                ...Object.values(CategorieFichierThese)
+            ])
+        ]
     },
+    url: { type: String, required: true },
     uploadeLe: { type: Date, required: true, default: Date.now },
-    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
+    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
 });
+
+FichierDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 
 
 // EtapeDossier
@@ -87,15 +90,18 @@ const EtapeDossierSchema = new Schema({
         enum: Object.values(EtapeDossierEnum)
     },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
-    debuteeLe: Date,
-    acheveeLe: Date,
-    delai: Date,
+    debuteeLe: { type: Date, default: Date.now, required: true },
+    acheveeLe: String,
+    delai: String,
     gereeParActeur: {
         type: String,
         required: true,
         enum: Object.values(GerantEtapeDossier)
     },
 });
+
+
+EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true } );
 
 
 // NoteDossier
@@ -117,6 +123,8 @@ const NoteDossierSchema = new Schema({
     noteLe: { type: Date, default: Date.now, required: true },
 });
 
+
+NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 
 /**
  * Envoyer une notification a l'administrateur

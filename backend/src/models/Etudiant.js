@@ -3,7 +3,7 @@ const isEmail = require('validator/lib/isEmail')
 const { Niveau, Sexe, ActeurDossier } = require('./types')
 const EnvoiDossier = require('./EnvoiDossier')
 const Dossier = require('./Dossier')
-const { validerMatricule } = require('../utils')
+const { validerMatricule } = require('../validators')
 const bcrypt = require('bcrypt');
 
 
@@ -12,18 +12,15 @@ const EtudiantSchema = new Schema({
         type: String,
         required: true,
         index: true,
+        uppercase: true,
         validate: {
             validator: mat => validerMatricule(mat),
             message: props => `${props.value} est un matricule invalide!`
         }
-        // todo validate matricule; uppercase before saving
     },
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true }, 
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo validate password length; encrypt password before saving (post method)
+    motDePasse: { type: String, required: true }, 
     niveau: { type: String, required: true, enum: Object.values(Niveau) },
     email: {
         type: String,
@@ -36,19 +33,21 @@ const EtudiantSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    dateNaissance: { type: Date, required: true },
-    dateSoutenance: Date,
+    // todo validate date (yyyy/mm/dd)
+    dateNaissance: { type: String, required: true },
+    dateSoutenance: String,
     lieuNaissance: { type: String, required: true }, 
     numTelephone: { type: String, required: true }, 
     sexe: { type: String, required: true, enum: Object.values(Sexe) },
-    compteValideLe: Date,
-    urlPhotoProfil: { type: String, required: true },
+    compteValideLe: String,
+    urlPhotoProfil: String,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
-    // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
-    // encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });
+
 
 EtudiantSchema.pre("save",function(next){
     const user = this;

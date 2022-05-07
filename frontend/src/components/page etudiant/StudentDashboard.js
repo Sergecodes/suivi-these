@@ -15,7 +15,6 @@ const StudentDashboard = (props) => {
   const dispatch=useDispatch();
   const files=useSelector(state=>state.dashboardDisplay);
   const {width}=useWindowSize();
-
   return (
     <section className="studentDashboard px-2" style={files.clicked===false &&width<1015 ?{display:"none"}:{}}>
        <p className="py-1 fs-5" style={{color:"white",textAlign:"center"}} >DASHBOARD ETUDIANT</p>

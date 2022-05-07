@@ -1,7 +1,7 @@
 /* Declaration des enums et autres */
 
 // Noms des acteures et leur modele
-const ACTEURS = {
+const ACTEURS = Object.freeze({
     COORDONATEUR: 'Coordonateur',
     EXPERT: 'Expert',
     CONSEIL: 'Conseil',
@@ -10,7 +10,7 @@ const ACTEURS = {
     JURY: 'Jury',
     RECTORAT: 'Rectorat',
     DEPARTEMENT: 'Departement'
-}
+});
 
 
 const Niveau = Object.freeze({
@@ -68,9 +68,40 @@ const AvisDestinataire = Object.freeze({
  });
 
 
-const CategorieFichier = Object.freeze({
+const CategorieFichierMaster = Object.freeze({
+    CV: 'CV',
+    MEMOIRE: 'Mémoire',
+    // ACTE_NAISSANCE: 'Acte de naissance',
+    // ATTEST_INSCRIP: "Attestation d'inscription",
+    // REL_NOTES_M1: 'Relevé de notes Master 1',
+    // REL_NOTES_M2: 'Relevé de notes Master 2',
+    // LISTE_SELECT: 'Liste de selection',
+    // FICHE_INSCRIP: "Fiche d'inscription",
+    // DROITS_UNIV: 'Droits universitaires',
+    // RAPPORT_PRESOUTIENT: 'Rapport pre soutenance',
+    // ATTEST_LIC: 'Attestation de license',
+});
+
+const CategorieFichierThese = Object.freeze({
+    CV: 'CV',
     THESE: 'Thèse',
     RESUME_THESE: 'Resumé du thèse',
+    MEMOIRE: 'Mémoire',
+    ACTE_NAISSANCE: 'Acte de naissance',
+    ATTEST_INSCRIP: "Attestation d'inscription",
+    DECLAR_HONNEUR: "Déclaration d'honneur",
+    DIPLOME_LIC: 'Diplome de license',
+    DIPLOME_BAC: 'Diplome de baccalauréat',
+    ATTEST_M2: 'Attestation Master 2',
+    PREUVE_VALID: 'Preuve validation des unités',
+    COUVERTURE: 'Couverture',
+    ABSTRACT: 'Abstract',
+    DEROGATION: 'Dérogation',
+    RAPPORT_ENC: "Rapport de l'encadreur",
+    LETTRE_ENC: "Lettre de l'encadreur",
+    LETTRE_CHEF: 'Lettre du chef de departement',
+    LISTE_SELECT: 'Liste de selection',
+    FICHE_INSCRIP: "Fiche d'inscription",
 });
 
 
@@ -127,7 +158,8 @@ const CategorieNote = Object.freeze({
 
 module.exports = {
     Niveau, Sexe, TypeNotification, ActeurDossier, GerantEtapeDossier,
-    EtapeDossier, GradeExpert, CategorieFichier, AvisEmetteur, CategorieNote,
-    StatutDossier, ModelNotif, Avis, TypeExpert, GradeJury, AvisDestinataire
+    EtapeDossier, GradeExpert, AvisEmetteur, CategorieNote, AvisDestinataire,
+    StatutDossier, ModelNotif, Avis, TypeExpert, GradeJury, 
+    CategorieFichierThese, CategorieFichierMaster, ACTEURS
 }
 
