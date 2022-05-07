@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 
@@ -21,7 +21,7 @@ import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen.js"
 import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen.js";
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const isLogin = true;
 
   return (
     <BrowserRouter>
