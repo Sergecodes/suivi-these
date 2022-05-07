@@ -46,14 +46,38 @@ exports.login_coordonateur = async function(req,res){
         const {email,motDePasse} = req.body;
         let coordonateur = await COORD.findOne({email});
         if(!coordonateur){return res.status(404).send("Coordonateur Not found")};
-        const validPassword = await bcrypt.compare(motDePasse,coordonateur.motDePasse);
-        if(!validPassword) return res.status(400).send("please enter a valid password");
+        bcrypt.compare(motDePasse, coordonateur.motDePasse, function(err,result) {
+			if(err){
+				console.log("une erreur interne est suvenue: ",err);
+				return res.status(500).json({
+					success:false,message:"une erreur interne est survenue",
+					error:err
+				});
+			}
 
-        req.session.user = {
-            _id: coordonateur._id,
-            model: Types.ACTEURS.COORDONATEUR
-        };
-       res.json({success:true,message:"Connexion reussie",data:coordonateur})
+			if(!result) {
+				res.json({
+					success: false,
+					message: "Invalid credentials"
+				})
+			} else {
+				// Create user session
+				req.session.user = {
+					_id: coordonateur._id,
+					model: Types.ACTEURS.COORDONATEUR
+				};
+
+				// Remove mot de passe from returned result
+				let data = coordonateur.toJSON();
+				delete data.motDePasse;
+
+				res.json({
+					success: true,
+					message: "Connexion reussie",
+					data
+				});
+			}
+		})
     } catch(error){
         console.log(error)
         res.status(500).send("Something went wrong");
