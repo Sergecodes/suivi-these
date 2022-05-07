@@ -15,6 +15,7 @@ import {
   addActeDeNaissance,
   addCv
 } from "../../../redux/MasterFilesUploadSlice";
+import { CategorieFichierMaster } from "../../../constants/Constant";
 
 const FileUpload = (props) => {
   const dispatch = useDispatch();
@@ -24,26 +25,26 @@ const FileUpload = (props) => {
     }
   }
   function addFileMaster(file) {
-    if (props.name === "Memoire") dispatch(addMemoire({ memoire: file }));
-    else if (props.name === "Attestation de license")
+    if (props.name ===CategorieFichierMaster.MEMOIRE) dispatch(addMemoire({ memoire: file }));
+    else if (props.name === CategorieFichierMaster.ATTEST_LIC)
       dispatch(addAttestationLicense({ attestationLicense: file }));
-    else if (props.name === "Droits universitaires")
+    else if (props.name === CategorieFichierMaster.DROITS_UNIV)
       dispatch(addDroitsUniversitaires({ droitsUniversitaires: file }));
-    else if (props.name === "Rapport presoutenance")
+    else if (props.name === CategorieFichierMaster.RAPPORT_PRESOUTIENT)
       dispatch(addRapportPresoutenance({ rapportPresoutenance: file }));
-    else if (props.name === "Attestation d'inscription")
+    else if (props.name === CategorieFichierMaster.ATTEST_INSCRIP)
       dispatch(addAttestationInscription({ attestationInscription: file }));
-    else if (props.name === "Rélevé de notes M1")
+    else if (props.name === CategorieFichierMaster.REL_NOTES_M1)
       dispatch(addReleveM1({ releveM1: file }));
-    else if (props.name === "Rélevé de notes M2")
+    else if (props.name === CategorieFichierMaster.REL_NOTES_M2)
       dispatch(addReleveM2({ releveM2: file }));
-    else if (props.name === "Liste selection")
+    else if (props.name === CategorieFichierMaster.LISTE_SELECT)
       dispatch(addListeSelection({ listeSelection: file }));
-    else if (props.name === "Fiche d'inscription")
+    else if (props.name ===CategorieFichierMaster.FICHE_INSCRIP)
       dispatch(addFicheInscription({ ficheInscription: file }));
-    else if (props.name === "Curriculum vitae")
+    else if (props.name === CategorieFichierMaster.CV)
       dispatch(addCv({ cv: file }));
-    else if (props.name === "Acte de naissance")
+    else if (props.name === CategorieFichierMaster.ACTE_NAISSANCE)
       dispatch(addActeDeNaissance({ acteDeNaissance: file }));
   }
 

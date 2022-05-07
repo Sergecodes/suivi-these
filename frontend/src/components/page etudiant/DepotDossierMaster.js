@@ -4,6 +4,8 @@ import FirstStep from "./EtapesMaster/FirstStep";
 import SecondStep from "./EtapesMaster/SecondStep";
 import ThirdStep from "./EtapesMaster/ThirdStep";
 import {useSelector} from "react-redux";
+import axios from "axios";
+
 
 const { Step } = Steps;
 
@@ -52,9 +54,32 @@ const DepotDossierMaster = () => {
     setCurrent(current - 1);
   };
 
+  function verification(){
+    var verify=true;
+      for(let obj in files){
+        if(files[obj].type===undefined){
+          verify=false;
+          break;
+        }
+     
+      }
+    return verify;
+  }
   const handleSubmit= () =>{
-    message.success("Processing complete!")
-      console.log(files);
+    console.log(files);
+    if(verification()){
+      var formData = new FormData();
+      for(let obj in files){
+        formData.append(files[obj].name,files[obj]);
+        axios.post("https://")
+      }
+      message.success("Processing complete!");
+    }
+    else{
+      message.error("un ou plusieurs fichiers manquants");
+    }
+   
+
   }
 
   return (

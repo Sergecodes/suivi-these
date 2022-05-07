@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'antd/dist/antd.min.css';
 
-import Accueil from "./screen/Accueil";
+/*import Accueil from "./screen/Accueil";
 import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
@@ -11,15 +11,15 @@ import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexion
 import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
+import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
 import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/page etudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/page etudiant/EvolutionDossier"
 import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
-import Soutenance from "./screen/Soutenance";
+/*import Soutenance from "./screen/Soutenance";
 import Jury from "./screen/Jury";
 import NotationMaster from "./components/page jury/NotationMaster"
-import ProfilJury from "./components/page jury/ProfilJury"
+import ProfilJury from "./components/page jury/ProfilJury"*/
 
 const App = () => {
   const isLogin= true;
@@ -28,17 +28,17 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil isLogin={isLogin} />} />
-          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />
+         {/* <Route path="/" element={<Accueil isLogin={isLogin} />} />
+          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />*/}
           <Route path="/account" element={<Etudiant/>}>
             <Route path="/account/depot" element={<DepotDossierMaster/>}/>
             <Route path="/account/profil" element={<ProfilEtudiant/>}/>
             <Route path="/account/evolution" element={<EvolutionDossier/>}/>
           </Route>
-          <Route path="/acteur/jury" element={<Jury/>}>
+         {/* <Route path="/acteur/jury" element={<Jury/>}>
             <Route path="/acteur/jury/notation" element={<NotationMaster/>}/>
             <Route path="/acteur/jury/profil" element={<ProfilJury/>}/>
-          </Route>
+        </Route>*/}
           <Route
             path="/*"
             element={
@@ -50,7 +50,7 @@ const App = () => {
               </div>
             }
           />
-          <Route
+        { /* <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
           ></Route>
@@ -85,7 +85,7 @@ const App = () => {
           <Route
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
-          ></Route>
+          ></Route>*/}
         </Routes>
       </div>
     </BrowserRouter>

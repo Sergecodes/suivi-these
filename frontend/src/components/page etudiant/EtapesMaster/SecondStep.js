@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {AiOutlineWarning} from "react-icons/ai";
 import FileUpload from "../upload/FileUpload"
+import { CategorieFichierMaster } from '../../../constants/Constant';
 //import { addMemoire,addAttestationLicense,addDroitsUniversitaires, addRapportPresoutenance } from '../../../redux/filesUploadSlice';
 
 
@@ -12,24 +13,24 @@ const FirstStep = () => {
       <h2 >Tous vos fichiers doivent ètre scannés et enregistrés au format pdf (PDF)</h2>
        <div className="row mt-4">
         <div className=" col-6 col-md-4   stepFile mb-3">
-             <FileUpload name="Acte de naissance" niveau="master" />
+             <FileUpload name={CategorieFichierMaster.ACTE_NAISSANCE} niveau="master" />
              <p>{files.acteDeNaissance.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name="Rélevé de notes M1" niveau="master" />
+             <FileUpload name={CategorieFichierMaster.REL_NOTES_M1} niveau="master" />
              <p>{files.releveM1.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name="Rélevé de notes M2" niveau="master" />
+             <FileUpload name={CategorieFichierMaster.REL_NOTES_M2} niveau="master" />
              <p>{files.releveM2.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name="Droits universitaires" niveau="master" />
+             <FileUpload name={CategorieFichierMaster.DROITS_UNIV} niveau="master" />
              <p>{files.droitsUniversitaires.name}</p>
           </div>
          
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name="Attestation de license" niveau="master" />
+             <FileUpload name={CategorieFichierMaster.ATTEST_LIC} niveau="master" />
              <p>{files.attestationLicense.name}</p>
           </div>
        
