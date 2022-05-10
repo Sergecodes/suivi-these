@@ -369,7 +369,7 @@ export default function SoutenanceCalendar() {
             <div style={{ padding: 8 }}>
               <Title
                 level={4}
-                style={{fontSize:"20px", textAlign: 'center', margin: '1.5rem 0rem',color:"#FF5821" }}
+                style={{fontSize:"20px", textAlign: 'center', margin: '1.5rem 0rem',color:"var(--primaryColor)" }}
               >
                 SOUTENANCES 
               </Title>

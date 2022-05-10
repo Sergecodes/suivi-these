@@ -6,14 +6,14 @@ h1 {
 h2 {
   font-size: 1.2rem;
   padding: 5px;
-  color: #ff5821;
+  color: var(--primaryColor);
   margin-bottom: -1rem;
 }
 hr {
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 .color-orange {
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 .color-blue {
   color: blue;
@@ -29,13 +29,13 @@ h3 {
 }
 ol li,
 ul li {
-  list-style: #ff5821;
+  list-style: var(--primaryColor);
   line-height: 1.8rem;
 }
 ol li::marker,
 ul li::marker {
-  color: #ff5821;
-  background-color: #ff5821;
+  color: var(--primaryColor);
+  background-color: var(--primaryColor);
 }
 h4 {
   font-size: 1rem;
@@ -45,7 +45,7 @@ h4 {
   font-size: 0.8rem;
 }
 .inscription-btn {
-  background-color: #ff5821;
+  background-color: var(--primaryColor);
   color: white;
   padding: 5px 10px;
 }

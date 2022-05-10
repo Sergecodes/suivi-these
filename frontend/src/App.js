@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 
 import Accueil from "./screen/Accueil";
-import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
@@ -11,33 +11,46 @@ import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexion
 import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
+import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
 import Etudiant from "./screen/Etudiant";
-import DepotDossierMaster from "./components/page etudiant/DepotDossierMaster";
-import EvolutionDossier from "./components/page etudiant/EvolutionDossier";
-import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant";
+import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
+import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier"
+import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
+
 import Soutenance from "./screen/Soutenance";
-import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen.js";
-import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen.js";
+import Jury from "./screen/Jury";
+import NotationMaster from "./components/pageJury/NotationMaster"
+import ProfilJury from "./components/pageJury/ProfilJury"
+import NotificationJury from "./components/pageJury/NotificationJury";
+import TableList from "./components/pageJury/TableList";
+
+/*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
+import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
+import ConseilScientifiqueInscriptionScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/
 
 const App = () => {
-  const isLogin = true;
+  const isLogin= true;
 
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil isLogin={isLogin} />} />
-          <Route
-            path="/soutenance"
-            element={<Soutenance isLogin={isLogin} />}
-          />
-          <Route path="/account" element={<Etudiant />}>
-            <Route path="/account/depot" element={<DepotDossierMaster />} />
-            <Route path="/account/profil" element={<ProfilEtudiant />} />
-            <Route path="/account/evolution" element={<EvolutionDossier />} />
+         <Route path="/" element={<Accueil isLogin={isLogin} />} />
+          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />
+          <Route path="/account" element={<Etudiant/>}>
+            <Route path="/account/depot" element={<DepotDossierMaster/>}/>
+            <Route path="/account/profil" element={<ProfilEtudiant/>}/>
+            <Route path="/account/evolution" element={<EvolutionDossier/>}/>
+         
+
           </Route>
-          <Route
+          <Route path="/acteur/jury" element={<Jury/>}>
+          <Route path="/acteur/jury/dashboard" element={<TableList/>}/>
+            <Route path="/acteur/jury/notation" element={<NotationMaster/>}/>
+            <Route path="/acteur/jury/profil" element={<ProfilJury/>}/>
+            <Route path="/acteur/jury/notifications" element={<NotificationJury/>}/>
+        </Route>
+        <Route
             path="/*"
             element={
               <div className="d-flex flex-column align-items-center text-align-center">
@@ -48,7 +61,7 @@ const App = () => {
               </div>
             }
           />
-          <Route
+        {/* <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
           ></Route>
@@ -84,14 +97,14 @@ const App = () => {
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
           ></Route>
-
-          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres */}
+          */}
+          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
           <Route path="/canditature" element={<CandidatureScreen />}></Route>
           <Route
             path="/conseil"
             element={<ConseilScientifiqueInscriptionScreen />}
           ></Route>
-          <Route path="/document" element={<DocumentImportantScreen />}></Route>
+          <Route path="/document" element={<DocumentImportantScreen />}></Route> */}
           {/* <Route path="/equipe" element={<EquipeScreen />}></Route>
         <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
         <Route path="/Inscription" element={<InscriptionScreen />}></Route>

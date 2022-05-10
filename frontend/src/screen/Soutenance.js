@@ -1,5 +1,5 @@
 import React from "react";
-import SoutenanceCalendar from "../components/page soutenance/SoutenanceCalendar";
+import SoutenanceCalendar from "../components/pageSoutenance/SoutenanceCalendar";
 import Header from "../screen/Header";
 import Footer from "../screen/Footer";
 

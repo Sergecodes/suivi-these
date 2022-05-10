@@ -4,27 +4,19 @@ import { Steps } from "antd";
 
 const { Step } = Steps;
 
-const EvolutionDossier = () => {
-  // const [current,setCurrent]=useState(2);
-  const current = 2;
-  const steps = [
-    {
-      title: (
-        <p className="evolutionStepTitle">Envoi du dossier de soutenance</p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 0 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Coordonnateur</p>
+const EvolutionDossier=()=> {
+    const current=2;
+    const steps = [
+        {
+          title: <p className="evolutionStepTitle">Envoi du dossier de soutenance</p>,
+          description:<div className="evolutionStepInfo" style={current<=0?{display:"none"}:{}}>
+              <div className="d-flex align-items-center">
+                  <p>Mon, September 18 at 10:07 AM</p>
+                  <span className="mx-2">-</span>
+                  <p>Tues, September 19 at 10:07 PM</p>
+              </div>
+              <p>Coordonnateur</p>
         </div>
-      ),
     },
     {
       title: (
