@@ -11,7 +11,7 @@ router.route('/password/:id').put(isEtudiant, controller.change_student_password
 
 router.route('/phone/:matricule').put(isEtudiant, controller.changePhoneNumber)
 
-router.route('/uploader-fichiers').post(controller.uploadFiles);
+router.route('/uploader-fichiers').post(isEtudiant, controller.uploadFiles);
 
 router.route('/update-photo').put(isEtudiant, controller.updatePhoto)
 
