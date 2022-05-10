@@ -24,7 +24,7 @@ const SidenavJury = () => {
             <Link to="/acteur/jury/profil"><BsPersonFill className="me-2"/> EDITER PROFIL</Link>
         </SidenavItem>
         <SidenavItem>
-            <Link to="/acteur/jury/nofications"><BsBellFill className="me-2"/> NOTIFICATIONS</Link>
+            <Link to="/acteur/jury/notifications"><BsBellFill className="me-2"/> NOTIFICATIONS</Link>
         </SidenavItem>
       
     </Sidenav>

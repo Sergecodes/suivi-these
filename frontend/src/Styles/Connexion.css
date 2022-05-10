@@ -9,11 +9,11 @@
   text-align: center;
   justify-content: center;
   font-size: 2.2rem;
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 #btn-color-orange {
-  background-color: #ff5821;
-  border-color: #ff5821;
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
 }
 .form-control:focus,
 .form-check-input:focus,

@@ -275,8 +275,10 @@ exports.updatePhoto = function(req, res) {
  * creer son dossier a partir de ceux-ci.
  */
 exports.uploadFiles = function(req, res) {
+	console.log(req.files);
 	const { sujet, niveau } = req.body;
-	const idEtudiant = req.session.user._id;
+	//req.session.user= {_id:"",model:"etudiant"}
+	const idEtudiant = "";
 
 	if (!sujet || !niveau) {
 		return res.status(400).json({ 

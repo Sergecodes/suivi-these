@@ -5,6 +5,7 @@ import SecondStep from "./EtapesMaster/SecondStep";
 import ThirdStep from "./EtapesMaster/ThirdStep";
 import {useSelector} from "react-redux";
 import axios from "axios";
+import {CategorieFichierMaster} from "../../constants/Constant";
 
 
 const { Step } = Steps;
@@ -18,7 +19,7 @@ const DepotDossierMaster = () => {
       title: (
         <p
           style={
-            current === 0 ? (current === 0 ? { color: "#FF5821" } : {}) : {}
+            current === 0 ? (current === 0 ? { color: "var(--primaryColor)" } : {}) : {}
           }
         >
           Etape 1
@@ -27,21 +28,21 @@ const DepotDossierMaster = () => {
       content: <FirstStep />,
     },
     {
-      title: <p style={current === 1 ? { color: "#FF5821" } : {}}>Etape 2</p>,
+      title: <p style={current === 1 ? { color: "var(--primaryColor)" } : {}}>Etape 2</p>,
       content: <SecondStep />,
     },
     {
-      title: <p style={current === 2 ? { color: "#FF5821" } : {}}>Etape 3</p>,
+      title: <p style={current === 2 ? { color: "var(--primaryColor)" } : {}}>Etape 3</p>,
       content: <ThirdStep numero={1} />,
     },
 
     {
-      title: <p style={current === 3 ? { color: "#FF5821" } : {}}>Etape 4</p>,
+      title: <p style={current === 3 ? { color: "var(--primaryColor)" } : {}}>Etape 4</p>,
       content: <ThirdStep numero={2} />,
     },
 
     {
-      title: <p style={current === 4 ? { color: "#FF5821" } : {}}>Etape 5</p>,
+      title: <p style={current === 4 ? { color: "var(--primaryColor)" } : {}}>Etape 5</p>,
       content: <ThirdStep numero={3} />,
     },
   ];
@@ -65,14 +66,40 @@ const DepotDossierMaster = () => {
       }
     return verify;
   }
+
+  function getName(prop){
+    if(prop==="memoire") return CategorieFichierMaster.MEMOIRE;
+    else if(prop==="attestationInscription" ) return CategorieFichierMaster.ATTEST_INSCRIP
+    else if(prop==="rapportPresoutenance" ) return CategorieFichierMaster.RAPPORT_PRESOUTIENT
+    else if(prop==="droitsUniversitaires" ) return CategorieFichierMaster.DROITS_UNIV
+    else if(prop==="attestationLicense" ) return CategorieFichierMaster.ATTEST_LIC
+    else if(prop==="releveM1" ) return CategorieFichierMaster.REL_NOTES_M1
+    else if(prop==="releveM2" ) return CategorieFichierMaster.REL_NOTES_M2
+    else if(prop==="listeSelection" ) return CategorieFichierMaster.LISTE_SELECT
+    else if(prop==="ficheInscription" ) return CategorieFichierMaster.FICHE_INSCRIP
+    else if(prop==="acteDeNaissance" ) return CategorieFichierMaster.ACTE_NAISSANCE
+    else if(prop==="cv" ) return CategorieFichierMaster.CV
+  }
+
   const handleSubmit= () =>{
     console.log(files);
     if(verification()){
       var formData = new FormData();
-      for(let obj in files){
-        formData.append(files[obj].name,files[obj]);
-        axios.post("https://")
+    for(let prop in files){
+        formData.append(getName(prop),files[prop]);
+        
       }
+      formData.append("sujet","rapport presoutenance");
+      formData.append("niveau","MASTER 2");
+        //http://localhost:3001/api/etudiants/uploader-fichiers
+        axios.post('http://localhost:3001/api/etudiants/uploader-fichiers',formData)
+        .then(res=>{
+          console.log(res);
+        })
+        .catch(err=>{
+          console.error(err);
+        })
+     
       message.success("Processing complete!");
     }
     else{
@@ -106,8 +133,8 @@ const DepotDossierMaster = () => {
         {current > 0 && (
           <Button
             style={{
-              border: "1px solid #ff5821",
-              color: "#ff5821",
+              border: "1px solid var(--primaryColor)",
+              color: "var(--primaryColor)",
               margin: "0 8px",
             }}
             onClick={() => prev()}

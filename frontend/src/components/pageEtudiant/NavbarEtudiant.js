@@ -24,7 +24,7 @@ const NavbarEtudiant = () => {
         onClick={() => {
           dispatch(setClicked());
         }}
-        style={files.clicked === true ? { color: "#FF5821" } : {}}
+        style={files.clicked === true ? { color: "var(--primaryColor)" } : {}}
       />
       <h4 style={{ margin: "0px" }}>{test()}</h4>
       <Link to="/">

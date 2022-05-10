@@ -39,7 +39,7 @@ const StudentDashboard = (props) => {
                        <Link to="/account/dossier"><p><BsArrowRepeat/>  Changement de sujet</p></Link>
                        <Link to="/account/dossier" ><p><BsArrowRepeat/>   Changement d'encadreur</p></Link>
               
-                        <Link to="/account/profil" style={props.url==="/account/profil"?{color:"#ff5821",borderColor:"#ff5821"}:{}}><p><BsPerson/>  Editer Profil</p></Link>
+                        <Link to="/account/profil" style={props.url==="/account/profil"?{color:"var(--primaryColor)",borderColor:"var(--primaryColor)"}:{}}><p><BsPerson/>  Editer Profil</p></Link>
                        <Link to="/account/evolution"><p><BiRocket/> Evolution du dossier</p></Link>
                        <Link to="/*"><p><FiLogOut/> Deconnexion</p></Link>
                    

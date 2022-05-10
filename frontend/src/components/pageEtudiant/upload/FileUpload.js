@@ -51,10 +51,11 @@ const FileUpload = (props) => {
   return (
     <Upload
     className="fileUpload"
-      accept=".txt,.pdf, .csv"
+      accept=".pdf"
       showUploadList={false}
       beforeUpload={handleupload}
       maxCount="1"
+      name="hello"
     >
       <Button>
         {<UploadOutlined />} {props.name}

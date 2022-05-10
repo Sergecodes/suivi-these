@@ -20,9 +20,9 @@ const NavbarHeader = (props) => {
                 </div>
             <div className="d-flex align-items-center">
                 <div className=" d-none d-lg-flex justify-content-around navContent" >
-                        <Link to="/" style={location.pathname==="/"?{color:"#FF5821"}:{}}>Accueil</Link>
-                        <Link to="/soutenance" style={location.pathname==="/soutenance"?{color:"#FF5821"}:{}}>Soutenances</Link>
-                        <Link to="/*" style={location.pathname==="/information"?{color:"#FF5821"}:{}}>Informations</Link>
+                        <Link to="/" style={location.pathname==="/"?{color:"var(--primaryColor)"}:{}}>Accueil</Link>
+                        <Link to="/soutenance" style={location.pathname==="/soutenance"?{color:"var(--primaryColor)"}:{}}>Soutenances</Link>
+                        <Link to="/*" style={location.pathname==="/information"?{color:"var(--primaryColor)"}:{}}>Informations</Link>
                     </div>
                     <Dropdown >
                         <Dropdown.Toggle variant="success" id="dropdown-basic" style={{backgroundColor:"white",color:"#595656",border:"none",boxShadow:"none"}}>
@@ -34,15 +34,15 @@ const NavbarHeader = (props) => {
                             <Dropdown.Item ><Link to="/" style={{textDecoration:"none",color:"#595656"}}>Anglais</Link></Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <GiHamburgerMenu className="d-flex d-lg-none options" onClick={()=>{setClicked(!clicked)}} style={clicked===true?{color:'#FF5821'}:{}}/>
+                    <GiHamburgerMenu className="d-flex d-lg-none options" onClick={()=>{setClicked(!clicked)}} style={clicked===true?{color:'var(--primaryColor)'}:{}}/>
             </div>
             </div>
             <div className="navMobile  d-lg-none" style={clicked===true?{}:{display:"none"}}>  
                 <div className="d-flex fs-5 fw-bold flex-column navContent align-items-center" >
                 <ImCross className="my-5 cross" onClick={()=>{setClicked(!clicked)}} style={{height:"30px",width:"30px"}}/>
-                    <Link to="/" style={location.pathname==="/"?{color:"#FF5821"}:{}}>Accueil</Link>
-                    <Link to="/soutenance" style={location.pathname==="/soutenance"?{color:"#FF5821"}:{}}>Soutenances</Link>
-                    <Link to="/*" style={location.pathname==="/information"?{color:"#FF5821"}:{}}>Informations</Link>
+                    <Link to="/" style={location.pathname==="/"?{color:"var(--primaryColor)"}:{}}>Accueil</Link>
+                    <Link to="/soutenance" style={location.pathname==="/soutenance"?{color:"var(--primaryColor)"}:{}}>Soutenances</Link>
+                    <Link to="/*" style={location.pathname==="/information"?{color:"var(--primaryColor)"}:{}}>Informations</Link>
                 </div>
         </div> 
         </div>

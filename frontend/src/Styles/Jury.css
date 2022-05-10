@@ -40,7 +40,46 @@
   }
 
   .submitNotation{
-    background-color: #2a1c5a;
+    background-color: var(--secondaryColor);
     color:white;
   }
   
+
+  /*NotificationJury*/
+
+  /*.notificationJury> p{
+    
+  }*/
+
+  .actionsNotification p{
+
+    cursor:pointer
+  }
+  .actionsNotification p:hover{
+
+    color:rgb(147, 207, 235);
+  }
+
+  .actionsNotification  button{
+    border:1px solid var(--secondaryColor);
+    color:var(--secondaryColor);
+    box-shadow: none !important;
+  }
+
+  .actionsNotification  button:hover{
+    background-color:#7d68c9 ;
+    border:1px solid transparent;
+  }
+
+  .contentNotification{
+    border:1px solid transparent;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    background-color: rgb(243, 242, 242);
+    border-radius: 15px;
+  }
+
+  /*Tablelist*/
+  .tableList{
+
+    overflow:scroll;
+  }

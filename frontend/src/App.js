@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 
-/*import Accueil from "./screen/Accueil";
-import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+import Accueil from "./screen/Accueil";
+/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
@@ -13,13 +13,20 @@ import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConne
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
 import Etudiant from "./screen/Etudiant";
-import DepotDossierMaster from "./components/page etudiant/DepotDossierMaster";
-import EvolutionDossier from "./components/page etudiant/EvolutionDossier"
-import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
-/*import Soutenance from "./screen/Soutenance";
+import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
+import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier"
+import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
+
+import Soutenance from "./screen/Soutenance";
 import Jury from "./screen/Jury";
-import NotationMaster from "./components/page jury/NotationMaster"
-import ProfilJury from "./components/page jury/ProfilJury"*/
+import NotationMaster from "./components/pageJury/NotationMaster"
+import ProfilJury from "./components/pageJury/ProfilJury"
+import NotificationJury from "./components/pageJury/NotificationJury";
+import TableList from "./components/pageJury/TableList";
+
+/*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
+import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
+import ConseilScientifiqueInscriptionScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/
 
 const App = () => {
   const isLogin= true;
@@ -28,18 +35,22 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-         {/* <Route path="/" element={<Accueil isLogin={isLogin} />} />
-          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />*/}
+         <Route path="/" element={<Accueil isLogin={isLogin} />} />
+          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />
           <Route path="/account" element={<Etudiant/>}>
             <Route path="/account/depot" element={<DepotDossierMaster/>}/>
             <Route path="/account/profil" element={<ProfilEtudiant/>}/>
             <Route path="/account/evolution" element={<EvolutionDossier/>}/>
+         
+
           </Route>
-         {/* <Route path="/acteur/jury" element={<Jury/>}>
+          <Route path="/acteur/jury" element={<Jury/>}>
+          <Route path="/acteur/jury/dashboard" element={<TableList/>}/>
             <Route path="/acteur/jury/notation" element={<NotationMaster/>}/>
             <Route path="/acteur/jury/profil" element={<ProfilJury/>}/>
-        </Route>*/}
-          <Route
+            <Route path="/acteur/jury/notifications" element={<NotificationJury/>}/>
+        </Route>
+        <Route
             path="/*"
             element={
               <div className="d-flex flex-column align-items-center text-align-center">
@@ -50,7 +61,7 @@ const App = () => {
               </div>
             }
           />
-        { /* <Route
+        {/* <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
           ></Route>
@@ -86,7 +97,7 @@ const App = () => {
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
           ></Route>
-
+          */}
           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
           <Route path="/canditature" element={<CandidatureScreen />}></Route>
           <Route

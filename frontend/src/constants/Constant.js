@@ -14,42 +14,50 @@ export const critères=[
     {
         id:1,
         nom:"Respect des normes de presentation d'un memoire de master (4points)",
-        note:0
+        note:0,
+        max:"4"
     },
     {
         id:2,
         nom:"Langue, style, fautes d'ortographe et de grammaire, qualité typographique, richesse de la bibliographie et utilisatioin des références récentes (6points)",
-        note:0
+        note:0,
+        max:"6"
     },
     {
         id:3,
         nom:"Cohérence dans la structuration du memoire et fluidité dans la lecture (6points)",
-        note:0
+        note:0,
+        max:"6"
     },
     {
         id:4,
         nom:"Qualité de la reliure et du document final (4points)",
-        note:0
+        note:0,
+        max:"4"
     },
     {
         id:5,
         nom:"Clarté et pertinence de la problématique (10points)",
-        note:0
+        note:0,
+        max:"10"
     },
     {
         id:6,
         nom:"Clarté dans la redaction (10points)",
-        note:0
+        note:0,
+        max:"10"
     },
     {
         id:7,
         nom:"Validité des résultats présentés (10points)",
-        note:0
+        note:0,
+        max:"10"
     },
     {
         id:8,
         nom:"Validité des résultats présentés (10points)",
-        note:0
+        note:0,
+        max:"10"
     },
     
 ]

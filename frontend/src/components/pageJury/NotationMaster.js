@@ -4,14 +4,24 @@ import PdfViewer from '../common/PdfViewer';
 import {EtudiantData} from "../../constants/EtudiantData";
 
 const NotationMaster = () => {
-  const date= new Date();
-  
   const [notation,setNotation]=useState(critères);
+  const [somme,setSomme] =useState(0);
   const handleChange=(e,index)=>{
         const newNotation=notation;
         newNotation[index].note=e.target.value;
         setNotation(newNotation);
-        console.log(notation);
+        setSomme(calculSomme(notation));
+  }
+  function calculSomme(notes){
+    let temp=0;
+    for(let i in notes){
+     
+  
+     temp=temp+parseInt(notes[i].note);
+    }
+    return temp;
+ 
+
   }
   return (
     <section className="notation" >
@@ -21,7 +31,7 @@ const NotationMaster = () => {
         <div className=" notationHeader">
           <p>MATRICULE: {EtudiantData[0].matricule}</p>
           <p>NOTE DE LECTURE/60</p>
-          <p>DATE:{date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear()}</p>
+          <p>DATE:{new Date().toLocaleDateString("en-US")}</p>
         </div>
         <hr/>
         <div className="notationHeader">
@@ -33,11 +43,14 @@ const NotationMaster = () => {
             return(
               <div key={critère.id} className="notationHeaderElements">
                   <p>{critère.nom}</p>
-                  <input type="number" defaultValue={critère.note} onChange={e=>handleChange(e,index)}></input>
+                  <input type="number" min="0" max={critère.max} defaultValue={critère.note} onChange={e=>handleChange(e,index)}></input>
               </div>
             )
           })}
         </div>
+      </div>
+      <div className="my-3 fs-5">
+        Note totale : {somme} / 60
       </div>
       <div className=" d-flex justify-content-center">
         <button className="btn submitNotation" type="button">Soumettre notation</button>
