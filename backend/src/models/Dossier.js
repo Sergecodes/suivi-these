@@ -78,7 +78,7 @@ const FichierDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
 });
 
-FichierDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
+FichierDossierSchema.index( { dossier: 1, categorie: 1 }, { unique: true } );
 
 
 // EtapeDossier

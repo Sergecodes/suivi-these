@@ -497,3 +497,6 @@ exports.etapesDossier = async function (req, res) {
 	});
 }
 
+exports.checkUploaderDossier = function (req, res) {
+	
+}
