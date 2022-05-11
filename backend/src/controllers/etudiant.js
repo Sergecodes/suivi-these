@@ -497,6 +497,12 @@ exports.etapesDossier = async function (req, res) {
 	});
 }
 
-exports.checkUploaderDossier = function (req, res) {
-	
+exports.checkUploaderDossier = async function (req, res) {
+	const idEtudiant = req.session.user._id;
+
+	let etud = await Etudiant.findById(idEtudiant);
+	if (!etud)
+		res.status(404).send("Etudiant non trouve");
+
+	res.send({ 'dejaUploade': Boolean(etud.dossier) });
 }
