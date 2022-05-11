@@ -3,6 +3,9 @@ const COORD = require('../models/Coordonateur');
 const JURY = require('../models/Jury');
 const CONSEIL = require('../models/Conseil');
 const EXPERT = require('../models/Expert');
+const USERS = require('../models/Etudiant');
+const AUTRES = require('../models/autresUtils');
+const DOSSIER = require('../models/Dossier');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -338,3 +341,63 @@ exports.deleteExpert = function(req,res){
     }
 }
 /***************END OF EVERYTHING ABOUT EXPERT*********/
+
+
+
+/***********1- Rejetter l'inscription d'un etudiant**********************/
+ exports.rejetD1Etudiant = function(req,res){
+     const {etudiant_id,raison_de_rejet} = req.body;
+
+     USERS.findById(etudiant_id,function(err,etudiant){
+         if(err){
+            return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+         }
+         //L'etudiant a ete trouver
+         AUTRES.rejeterEtudiant(etudiant,raison_de_rejet);
+     })
+ }
+/************************END**************************** */
+
+
+/*********2- Rejetter la deande de soutenance d'un etudiant en these***************/
+   exports.rejetD1Dossier = function(req,res){
+       const{id_dossier,raison} = req.body;
+       
+       DOSSIER.findById(id_dossier,function(err,dossier){
+           if(err){
+            return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du dossier de l'etudiant",error:err}).status(500);
+           }
+           //le dossier a ete trouver
+           AUTRES.rejeterDossier(dossier,raison);
+       })
+   }
+/**************************END*****************************************************/
+
+
+
+
+
+
+
+
+
+// exports.changePhoneNumber = function(req,res){
+// 	const {newPhoneNumber} = req.body;
+
+// 	USERS.findById(req.session.user._id, function(err,etudiant){
+// 		if(err){
+// 			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+// 		}
+// 		 //L'utilisateur a ete trouver
+// 		 if(req.body.newPhoneNumber){
+// 			 etudiant.numTelephone = newPhoneNumber;
+// 		 }
+// 		 etudiant.save(function(err,newStudent){
+// 			if(err){
+// 				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+// 				res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone",error:err}).status(500);        
+// 			}
+// 			res.json({success:true,message:"le nouveau numero de telephone a ete enregistrer avec success",data:newStudent.numTelephone});
+// 		})
+// 	})
+// }

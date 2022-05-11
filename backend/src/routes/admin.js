@@ -15,8 +15,7 @@ const {isAdmin} = require('../middlewares');
  router.route('/delete_conseil/:conseil_id').delete(isAdmin,controller.deleteConseil);
  router.route('add_expert').post(isAdmin,controller.add_expert);
  router.route('delete_expert/:expert_id').delete(isAdmin,controller.deleteExpert);
-
-
-
+ router.route('reject_student').post(isAdmin,controller.rejetD1Etudiant);
+ router.route('reject_student_doc').post(isAdmin,controller.rejetD1Dossier);
 module.exports = router;
 

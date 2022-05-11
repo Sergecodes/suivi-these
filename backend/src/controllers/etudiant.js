@@ -269,7 +269,6 @@ exports.updatePhoto = function(req, res) {
 	});
 }
 
-
 /**
  * Recuperer les fichiers renvoyes par un etudiant et 
  * creer son dossier a partir de ceux-ci.
