@@ -8,8 +8,6 @@ const { storage } = require('../../firebase.config')
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
-const saltRounds = 10;
-// var passport = require('passport');
 
 
 exports.register = function(req,res){

@@ -10,20 +10,17 @@ const CoordonateurSchema = new Schema({
         type: String,
         required: true, 
         index: { unique: true },
-        lowercase: true,
         trim: true,
         validate: {
             validator: email => isEmail(email),
             message: props => `${props.value} est un email invalide!`
         }
     },
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo encrypt before saving
+    motDePasse: { type: String, required: true },
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true },
 });
+
 CoordonateurSchema.pre("save",function(next){
     const coordonateur = this;
     if(this.isModified("motDePasse") || this.isNew){

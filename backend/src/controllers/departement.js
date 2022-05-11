@@ -2,8 +2,6 @@ const DEPART = require('../models/Departement');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
-const saltRounds = 10;
-// var passport = require('passport');
 
 
 

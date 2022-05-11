@@ -26,7 +26,6 @@ const EtudiantSchema = new Schema({
         type: String,
         required: true, 
         index: true,
-        lowercase: true,
         trim: true,
         validate: {
             validator: email => isEmail(email),

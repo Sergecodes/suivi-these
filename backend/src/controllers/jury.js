@@ -1,26 +1,24 @@
 const JURY = require('../models/Jury');
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
-const saltRounds = 10;
-// var passport = require('passport');
 
 
 exports.register_jury = function(req,res){
     var jury = new JURY();
-        jury.nom = req.body.nom;
-        jury.prenom=req.body.prenom;
-        jury.motDePasse = req.body.motDePasse;
-        jury.email = req.body.email;
-        jury.telephone = req.body.telephone;
-        jury.grade = req.body.grade;
+	jury.nom = req.body.nom;
+	jury.prenom=req.body.prenom;
+	jury.motDePasse = req.body.motDePasse;
+	jury.email = req.body.email;
+	jury.telephone = req.body.telephone;
+	jury.grade = req.body.grade;
 
-        jury.save(function(err,nouveau_jury){
-            if(err){
-                console.log("erreur lors de l'enregistrement dun jurry: ",err);
-                res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client",error:err}).status(500)
-            }
-            res.json({success:true,message:'Enregistrer avec success',data:nouveau_jury}).status(201);
-        })
+	jury.save(function(err,nouveau_jury){
+		if(err){
+			console.log("erreur lors de l'enregistrement dun jurry: ",err);
+			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client",error:err}).status(500)
+		}
+		res.json({success:true,message:'Enregistrer avec success',data:nouveau_jury}).status(201);
+	})
 }
 
 
@@ -66,4 +64,10 @@ exports.login_jury = async function(req,res){
         res.status(500).send("Something went wrong");
     }
 }
+
+
+exporte.rapportsEtudMaster = async function (req, res) {
+	let etuds = await Etudiant.find({ dossier })
+}
+
 

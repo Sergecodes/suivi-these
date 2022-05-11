@@ -1,8 +1,6 @@
 const EXPERT = require('../models/Expert');
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
-const saltRounds = 10;
-// var passport = require('passport');
 
 
 exports.register_expert = function(req,res){

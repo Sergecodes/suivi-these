@@ -13,12 +13,6 @@
 - remove soumettreNoteVersAdmin() method from Admin
 
 
-
-todo:
-    - implement validator for matricule 
-    - 
-
-
 * matricule and etudiant should not be unique, this will permit a student to register
 maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau

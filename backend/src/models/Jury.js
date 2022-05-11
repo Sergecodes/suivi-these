@@ -9,15 +9,11 @@ const { GradeJury, ActeurDossier, AvisEmetteur } = require('./types')
 const JurySchema = new Schema({
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true }, 
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo validate password length; encrypt password before saving (post method)
+    motDePasse: { type: String, required: true },
     email: {
         type: String,
         required: true, 
         index: { unique: true },
-        lowercase: true,
         trim: true,
         validate: {
             validator: email => isEmail(email),

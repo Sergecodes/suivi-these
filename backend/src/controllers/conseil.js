@@ -2,8 +2,6 @@ const CONSEIL = require('../models/Conseil');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
-const saltRounds = 10;
-// var passport = require('passport');
 
 
 exports.new_conseil = function(req,res){
