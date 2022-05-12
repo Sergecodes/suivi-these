@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import 'antd/dist/antd.min.css';
-
+import "antd/dist/antd.min.css";
+import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css;";
 import Accueil from "./screen/Accueil";
 import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
@@ -14,9 +15,10 @@ import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexi
 import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
 import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/page etudiant/DepotDossierMaster";
-import EvolutionDossier from "./components/page etudiant/EvolutionDossier"
-import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant"
-import Soutenance from "./screen/Soutenance"
+import EvolutionDossier from "./components/page etudiant/EvolutionDossier";
+import ProfilEtudiant from "./components/page etudiant/ProfilEtudiant";
+import Soutenance from "./screen/Soutenance";
+// informationScreen
 
 const App = () => {
   const isLogin = true;
@@ -26,23 +28,16 @@ const App = () => {
       <div className="App">
         <Routes>
           <Route path="/" element={<Accueil isLogin={isLogin} />} />
-          <Route path="/soutenance" element={<Soutenance isLogin={isLogin} />} />
-          <Route path="/account" element={<Etudiant/>}>
-            <Route path="/account/depot" element={<DepotDossierMaster/>}/>
-            <Route path="/account/profil" element={<ProfilEtudiant/>}/>
-            <Route path="/account/evolution" element={<EvolutionDossier/>}/>
-          </Route>
           <Route
-            path="/*"
-            element={
-              <div className="d-flex flex-column align-items-center text-align-center">
-                <h1 style={{ color: "red" }}>ERROR !</h1>
-                <h2 style={{ fontWeight: "none" }}>
-                  Fonctionnalité pas encore developée
-                </h2>
-              </div>
-            }
+            path="/soutenance"
+            element={<Soutenance isLogin={isLogin} />}
           />
+          <Route path="/account" element={<Etudiant />}>
+            <Route path="/account/depot" element={<DepotDossierMaster />} />
+            <Route path="/account/profil" element={<ProfilEtudiant />} />
+            <Route path="/account/evolution" element={<EvolutionDossier />} />
+          </Route>
+
           <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
@@ -79,10 +74,9 @@ const App = () => {
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
           ></Route>
-        </Routes>
 
-        {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres */}
-        <Route path="/canditature" element={<CandidatureScreen />}></Route>
+          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres */}
+          {/* <Route path="/canditature" element={<CandidatureScreen />}></Route>
         <Route
           path="/conseil"
           element={<ConseilScientifiqueInscriptionScreen />}
@@ -104,8 +98,21 @@ const App = () => {
         <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
         <Route
           path="/unites-recherche"
-          element={<UnitesRechercheScreen />}
-        ></Route>
+          element={<UnitesRechercheScreen />} */}
+          {/* ></Route> */}
+          <Route
+            path="/*"
+            element={
+              <div className="d-flex flex-column align-items-center text-align-center">
+                <h1 style={{ color: "red" }}>ERROR !</h1>
+                <h2 style={{ fontWeight: "none" }}>
+                  Fonctionnalité pas encore developée
+                </h2>
+              </div>
+            }
+          />
+        </Routes>
+        <ToastContainer />
       </div>
     </BrowserRouter>
   );

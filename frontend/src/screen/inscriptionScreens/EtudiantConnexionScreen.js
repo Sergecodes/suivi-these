@@ -1,6 +1,47 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  connexion,
+  login,
+  reset,
+} from "../../redux/authentification/authSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import LoadingScreen from "../LoadingScreen.js";
 function EtudiantConnexionScreen() {
+  // matricule, motDePasse, niveau
+
+  const [user, setUser] = useState({
+    matricule: "",
+    niveau: "DOCTORAT",
+    motDePasse: "",
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { etudiant, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
+  useEffect(() => {
+    if (isError) {
+      alert(message);
+    }
+    if (isSuccess) {
+      toast.success("Connexion Reussie");
+      alert("connexion Reussie");
+
+      navigate("/account");
+    }
+    if (isLoading) {
+      return <LoadingScreen />;
+    }
+    dispatch(reset());
+  }, [etudiant, isSuccess, isError, message, navigate, dispatch]);
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    dispatch(login(user));
+  };
   return (
     <div>
       <div style={{ padding: "4%" }} className="container-connexion">
@@ -15,48 +56,54 @@ function EtudiantConnexionScreen() {
                   <div className="cover-left-image"></div>
                 </div>
                 <div className="col-md-6 container-data-connexion-right">
-                  <form className="row g-3">
+                  <form className="row g-3" onSubmit={submitHandler}>
                     <div className="col-6">
-                      <label for="inputAddress" className="form-label">
+                      <label htmlFor="matricule" className="form-label">
                         Matricule
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        id="inputAddress"
+                        id="matricule"
+                        onChange={(e) =>
+                          setUser({ ...user, matricule: e.target.value })
+                        }
                       />
                     </div>
                     <div className="col-6">
-                      <label for="inputAddress" className="form-label">
+                      <label htmlFor="email" className="form-label">
                         Email
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="inputAddress"
-                      />
+                      <input type="text" className="form-control" id="email" />
                     </div>
-                    <div class="col-md-12">
-                      <label for="inputState" class="form-label">
+                    <div className="col-md-12">
+                      <label htmlFor="inputState" className="form-label">
                         State
                       </label>
-                      <select id="inputState" class="form-select">
-                        <option placeholder="Appuyer pour choisir">
-                          Appuyer pour choisir
-                        </option>
-                        <option>MASTER 2</option>
-                        <option>THESE</option>
+                      <select
+                        id="inputState"
+                        className="form-select"
+                        defaultValue="MASTER 2"
+                        onChange={(e) =>
+                          setUser({ ...user, niveau: e.target.value })
+                        }
+                      >
+                        <option value="MASTER 2">MASTER 2</option>
+                        <option value="DOCTORAT">THESE</option>
                       </select>
                     </div>
 
                     <div className="col-12">
-                      <label for="inputAddress2" className="form-label">
+                      <label htmlFor="password" className="form-label">
                         Mot de Passe
                       </label>
                       <input
                         type="password"
                         className="form-control"
-                        id="inputAddress2"
+                        id="password"
+                        onChange={(e) =>
+                          setUser({ ...user, motDePasse: e.target.value })
+                        }
                       />
                     </div>
                     <br />
@@ -68,6 +115,19 @@ function EtudiantConnexionScreen() {
                       >
                         Se Connecter
                       </button>
+                    </div>
+                    <div
+                      style={{
+                        marginBottom: "25px",
+                        color: "#029ff0",
+                        fontSize: "1rem",
+                        cursor: "pointer",
+                        textDecoration: "none",
+                      }}
+                    >
+                      <Link to="/inscription/etudiant">
+                        Je n'ai pas de compte
+                      </Link>
                     </div>
                     {/* <div className="col-12">
                     <button type="submit" className="btn btn-primary">
@@ -87,3 +147,33 @@ function EtudiantConnexionScreen() {
 }
 
 export default EtudiantConnexionScreen;
+
+// juste pour connexion
+
+// "matricule":"19m2429",
+//     "motDePasse":"jocelyn",
+//     "niveaU":"these",
+//     "nom":"yemaleu",
+//     "prenom":"jocelyn",
+//     "email":"jocelynwotcheu2@gmail.com",
+//     "dateNaissance":"12/02/2002",
+//     "lieuNaissance":"banke",
+//     "numTelephone":"690456392",
+//     "sexe":"masculin",
+//     "urlPhotoProfil":"urlPhotoProfil",
+//     "uniteRecherche":"uniteRecherche",
+//     "encadreur":"encadreur"
+
+// "matricule":"19m2429",
+//     "motDePasse":"Jocelyn-1409",
+//     "niveaU":"these",
+//     "nom":"yemaleu",
+//     "prenom":"jocelyn",
+//     "email":"jocelynwotcheu2@gmail.com",
+//     "dateNaissance":"12/02/2000",
+//     "lieuNaissance":"banke",
+//     "numTelephone":"690456392",
+//     "sexe":"masculin",
+//     "urlPhotoProfil":"urlPhotoProfil",
+//     "uniteRecherche":"uniteRecherche",
+//     "encadreur":"encadreur"
