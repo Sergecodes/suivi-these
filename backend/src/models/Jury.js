@@ -27,6 +27,7 @@ const JurySchema = new Schema({
         default: GradeJury.UN,  
         enum: Object.values(GradeJury)
     },
+    departement: { type: Schema.Types.ObjectId, ref: 'Departement', required: true }
 });
 
 JurySchema.pre("save",function(next){
@@ -59,6 +60,13 @@ JurySchema.virtual('encadre', {
     foreignField: 'encadreur'
 });
 
+JurySchema.virtual('etudiants', {
+    ref: 'Etudiant',
+    localField: '_id',
+    foreignField: 'juges',
+});
+
+
 JurySchema.virtual('notifications', {
     ref: 'Notification',
     localField: '_id',
@@ -66,14 +74,29 @@ JurySchema.virtual('notifications', {
 });
 
 
-JurySchema.methods.attribuerNote = async function(dossier, categorie, valeur) {
+JurySchema.methods.verifierDejaNoter = async function(idDossier) {
+    let note = await NoteDossier.findOne({ notePar: this._id, dossier: idDossier });
+    return Boolean(note);
+}   
+
+
+JurySchema.methods.attribuerNote = async function(idDossier, categorie, valeur) {
+    let dejaNote = await this.verifierDejaNoter(idDossier);
+    if (dejaNote)
+        throw "Dossier deja note par ce membre du jury";
+
     await NoteDossier.create({
-        dossier,
+        dossier: idDossier,
         categorie,
         valeur,
         notePar: this._id,
         noteParModel: ActeurDossier.JURY
     });
+}   
+
+JurySchema.methods.verifierAvisDonne = async function(idDossier) {
+    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
+    return Boolean(donne);
 }   
 
 JurySchema.methods.donnerAvisAdmin = async function(
@@ -82,6 +105,10 @@ JurySchema.methods.donnerAvisAdmin = async function(
     rapport, 
     idDossier
 ) {
+    let donne = await this.verifierDejaNoter(idDossier);
+    if (donne)
+        throw "Ce membre de jury a deja envoye son avis a l'admin";
+
     await Avis.create({
         type,
         commentaire,

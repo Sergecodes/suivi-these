@@ -19,6 +19,7 @@ const DepartementSchema = new Schema({
     uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
 });
 
+
 DepartementSchema.pre("save",function(next){
     const departement = this;
     if(this.isModified("motDePasse") || this.isNew){
@@ -39,8 +40,21 @@ DepartementSchema.pre("save",function(next){
     }else{
         return next();
     }
+});
 
-})
+
+DepartementSchema.virtual('juries', {
+    ref: 'Jury',
+    localField: '_id',
+    foreignField: 'departement'
+});
+
+
+DepartementSchema.virtual('etudiants', {
+    ref: 'Etudiant',
+    localField: '_id',
+    foreignField: 'departement'
+});
 
 
 DepartementSchema.virtual('notifications', {

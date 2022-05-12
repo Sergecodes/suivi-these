@@ -7,17 +7,17 @@ const { Types } = require('../constants')
 
 exports.register_departement = function(req,res){
     var departement = new DEPART();
-        departement.nom = req.body.nom;
-        departement.motDePasse = req.body.motDePasse;
-        departement.email = req.body.email;
+	departement.nom = req.body.nom;
+	departement.motDePasse = req.body.motDePasse;
+	departement.email = req.body.email;
 
-        departement.save(function(err,nouveau_departement){
-            if(err){
-                console.log("erreur lors de l'enregistrement dun departement: ",err);
-                res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
-            }
-            res.json({success:true,message:'Enregistrer avec success',data:nouveau_departement}).status(201);
-        })
+	departement.save(function(err,nouveau_departement){
+		if(err){
+			console.log("erreur lors de l'enregistrement dun departement: ",err);
+			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
+		}
+		res.json({success:true,message:'Enregistrer avec success',data:nouveau_departement}).status(201);
+	})
 }
 
 

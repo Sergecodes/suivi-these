@@ -10,54 +10,49 @@ const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
 
 
-exports.register = function(req,res){
-	console.log("enter")
+exports.register = function(req,res) {
 	var Etudiant = new USERS();
-		Etudiant.matricule = req.body.matricule;
-		Etudiant.nom = req.body.nom;
-		Etudiant.prenom = req.body.prenom;
-		Etudiant.motDePasse = req.body.motDePasse;
-		Etudiant.niveau = req.body.niveau;
-		Etudiant.email = req.body.email;
-		Etudiant.dateNaissance = req.body.dateNaissance;
-		Etudiant.lieuNaissance = req.body.lieuNaissance;
-		Etudiant.numTelephone = req.body.numTelephone;
-		Etudiant.sexe = req.body.sexe;
-		Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
-		Etudiant.uniteRecherche = req.body.uniteRecherche;
-		Etudiant.encadreur = req.body.encadreur;
-		//controle;
-		if(Etudiant.nom == ''){
-			return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
-		}else if(Etudiant.prenom == ''){
-			return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
-		}else if(Etudiant.motDePasse == ''){
-			return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
-		  
-		}else if(Etudiant.motDePasse !== ''){
-			if(passwordComplexity().validate(Etudiant.motDePasse).error){
-				return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
-			}else{
-				console.log("mot de passe valide")
-			}
-		}else if( Etudiant.dateNaissance == ''){
-			return res.json({success:false,message:'le champ date de naissance est vide'}).status(500);
-		}else if( Etudiant.lieuNaissance == ''){
-			return res.json({success:false,message:'le champ Lieu de naissance est vide de naissance est vide'}).status(500);
-		}else if(Etudiant.numTelephone == ''){
-			res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
+	Etudiant.matricule = req.body.matricule;
+	Etudiant.nom = req.body.nom;
+	Etudiant.prenom = req.body.prenom;
+	Etudiant.motDePasse = req.body.motDePasse;
+	Etudiant.niveau = req.body.niveau;
+	Etudiant.email = req.body.email;
+	Etudiant.dateNaissance = req.body.dateNaissance;
+	Etudiant.lieuNaissance = req.body.lieuNaissance;
+	Etudiant.numTelephone = req.body.numTelephone;
+	Etudiant.sexe = req.body.sexe;
+	Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
+	Etudiant.departement = req.body.departement;
+	Etudiant.encadreur = req.body.encadreur;
+	
+	if(Etudiant.nom == ''){
+		return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
+	}else if(Etudiant.prenom == ''){
+		return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
+	}else if(Etudiant.motDePasse == ''){
+		return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
+		
+	}else if(Etudiant.motDePasse !== ''){
+		if(passwordComplexity().validate(Etudiant.motDePasse).error){
+			return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+		}else{
+			console.log("mot de passe valide")
 		}
-		Etudiant.save(function(err,nouveau_Etudiant){
-			console.log('ici ici');
-			if(err){
-				console.log(err);
-				res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
-			}
-			res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(201);
-		})
-
-		//if  passwordComplexity().validate(Etudiant.motDePasse).error
-		//  
+	}else if( Etudiant.dateNaissance == ''){
+		return res.json({success:false,message:'le champ date de naissance est vide'}).status(500);
+	}else if( Etudiant.lieuNaissance == ''){
+		return res.json({success:false,message:'le champ Lieu de naissance est vide de naissance est vide'}).status(500);
+	}else if(Etudiant.numTelephone == ''){
+		res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
+	}
+	Etudiant.save(function(err,nouveau_Etudiant){
+		if(err){
+			console.log(err);
+			res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+		}
+		res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(201);
+	})
 }
 
 exports.login_student = async function(req,res){
@@ -104,10 +99,9 @@ exports.login_student = async function(req,res){
 	}
 }
 
-exports.change_student_password =async  function(req,res){
-
+exports.change_student_password = async function(req,res){
    try {
-		const {id}=req.params;
+		const id = req.session.user._id;
 		const {pass,newPass} = req.body;
 
 		USERS.findById(id,function(err,etudiant){
@@ -132,10 +126,10 @@ exports.change_student_password =async  function(req,res){
 							console.log(err);
 							res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
 						}
-						res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse}).status(200);
+						res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse});
 					})
 				}else{
-					res.json({message:"les mots de passe ne correspondent pas"})
+					res.status(400).json({message:"les mots de passe ne correspondent pas"})
 				}
 			})
 		})

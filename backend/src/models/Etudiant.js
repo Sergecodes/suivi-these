@@ -41,8 +41,14 @@ const EtudiantSchema = new Schema({
     compteValideLe: String,
     urlPhotoProfil: String,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
-    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    departement: { type: Schema.Types.ObjectId, ref: 'Departement', required: true },
     encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+    // Note, etudiants de These n'ont pas de juges
+    juges: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'Jury' }],
+        validate: [arr => arr.length <= 4, '{PATH} est plus de 4']
+    },
+    // juges: [{ type: Schema.Types.ObjectId, ref: 'Jury' }]
 }, {
     timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
 });

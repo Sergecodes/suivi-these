@@ -11,6 +11,7 @@
 - update noter_dossier association class
 - remove model Statut_Dossier and directly place status in Dossier model
 - remove soumettreNoteVersAdmin() method from Admin
+- add departement to Etudiant model...
 
 
 * matricule and etudiant should not be unique, this will permit a student to register
