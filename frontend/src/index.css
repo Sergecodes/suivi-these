@@ -3,13 +3,13 @@ body {
 }
 
 /*
-  couleurs:#FF5821
+  couleurs:var(--primaryColor)
 */
 
 /* TopHeader component*/
 
 .topHeaderIcon {
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 
 .topHeader {
@@ -30,14 +30,14 @@ body {
 }
 
 .headerIconFull{
-  background-color: #ff5821;
-  border:2px solid #ff5821;
+  background-color: var(--primaryColor);
+  border:2px solid var(--primaryColor);
   color:#373f50;
 }
 
 .headerIconEmpty{
-  border:2px solid #ff5821;
-  color:#ff5821;
+  border:2px solid var(--primaryColor);
+  color:var(--primaryColor);
   background-color: #595656;
 }
 @media (max-width:1080px) {
@@ -81,7 +81,7 @@ body {
 }
 
 .navContent a:hover {
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 
 .language{
@@ -111,7 +111,7 @@ body {
 
 .options:hover,
 .cross:hover {
-  color: #ff5821;
+  color: var(--primaryColor);
   cursor  : pointer;
 }
 
@@ -135,12 +135,12 @@ body {
   width: 60%;
   height: 100vh;
   background-color: white;
-  border: 1px solid #ff5821;
+  border: 1px solid var(--primaryColor);
 }
 
 .navMobile div a {
   padding: 10px 0px;
-  border-bottom: 2px solid #ff5821;
+  border-bottom: 2px solid var(--primaryColor);
   width: 90%;
   text-align: center;
 }
@@ -231,14 +231,14 @@ body {
 }
 
 .welcomeButtonEmpty {
-  border: 3px solid #ff5821;
+  border: 3px solid var(--primaryColor);
   background-color: transparent;
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 
 .welcomeButtonFill {
-  border:3px solid #ff5821;
-  background-color: #ff5821;
+  border:3px solid var(--primaryColor);
+  background-color: var(--primaryColor);
   color: #111111;
 
 }
@@ -248,11 +248,11 @@ body {
     box-shadow: 0px 0px 2px 2px #f8997a;
 }
 .welcomeButtonEmpty:hover, .headerIconEmpty:hover{
-  background-color: #ff5821;
+  background-color: var(--primaryColor);
   color: #111111;
 }
 .welcomeButtonEmpty{
-  border:3px solid #ff5821;
+  border:3px solid var(--primaryColor);
 }
 
 
@@ -294,7 +294,7 @@ body {
 
 .prior button:hover {
   background-color: white;
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 
 /*Unity Component*/
@@ -320,7 +320,7 @@ body {
 }
 
 .unitéCardIcon {
-  background-color: #ff5821;
+  background-color: var(--primaryColor);
   color: white;
   height: 60px;
   width: 60px;
@@ -330,8 +330,8 @@ body {
 
 .unitéCardIcon:hover {
   background-color: white;
-  color: #ff5821;
-  border: 2px solid #ff5821;
+  color: var(--primaryColor);
+  border: 2px solid var(--primaryColor);
 }
 
 @media (min-width: 992px) {
@@ -366,8 +366,8 @@ body {
 
 .contactCardIcon {
   background-color: white;
-  color: #ff5821;
-  border: 2px dashed #ff5821;
+  color: var(--primaryColor);
+  border: 2px dashed var(--primaryColor);
   height: 50px;
   width: 50px;
 }
@@ -399,7 +399,7 @@ body {
 }
 
 .footerLink ul li a:hover {
-  color: #ff5821;
+  color: var(--primaryColor);
 }
 
 .footerCol h6 {}

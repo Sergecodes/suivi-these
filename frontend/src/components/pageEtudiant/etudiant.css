@@ -70,7 +70,7 @@ background-repeat: no-repeat;
         padding-top:15px;
     }
     .dashboardCross{
-        color:#ff5821;
+        color:var(--primaryColor);
         position:absolute;
         top:1%;
         right:2%
@@ -105,13 +105,13 @@ background-repeat: no-repeat;
 }
 
 .navHeaderElements a:hover{
-    color:#FF5821;
+    color:var(--primaryColor);
 }
 
 /*EVOLUTION DOSSIER DE SOUTENANCE*/
 
 .ant-steps-vertical>.ant-steps-item .ant-steps-item-icon{
-    border:1px solid #FF5821 !important;
+    border:1px solid var(--primaryColor) !important;
     
    
 }
@@ -120,11 +120,11 @@ background-repeat: no-repeat;
 .depotDossier .ant-steps-item-process .ant-steps-item-icon>.ant-steps-icon .ant-steps-icon-dot,
 .depotDossier .ant-steps-item-process .ant-steps-item-icon>.ant-steps-icon .ant-steps-icon-dot
 {
-    background: #FF5821 !important;
+    background: var(--primaryColor) !important;
 }
 
 .evolution .anticon svg,.fileUpload .anticon svg{
-    color:#FF5821  !important;
+    color:var(--primaryColor)  !important;
     transform:scale(1.2)  !important;
     margin-bottom: 8px  !important;
     
@@ -173,8 +173,8 @@ font-size:18px;
 
 
 .ant-btn-primary{
-    background-color: #FF5821 !important;
-    border:1px solid #FF5821 !important;
+    background-color: var(--primaryColor) !important;
+    border:1px solid var(--primaryColor) !important;
 }
 .ant-btn-primary:hover{
     background-color: #ee8d6d !important;

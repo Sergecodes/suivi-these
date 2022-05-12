@@ -1,7 +1,7 @@
 import React from 'react';
-import StudentDashboard from '../components/page etudiant/StudentDashboard';
-import "../components/page etudiant/etudiant.css";
-import NavbarEtudiant from '../components/page etudiant/NavbarEtudiant';
+import StudentDashboard from '../components/pageEtudiant/StudentDashboard';
+import "../components/pageEtudiant/etudiant.css";
+import NavbarEtudiant from '../components/pageEtudiant/NavbarEtudiant';
 import { Outlet } from 'react-router-dom';
 import { setClicked } from "../redux/DashboardDisplaySlice";
 import {useSelector,useDispatch} from "react-redux";
