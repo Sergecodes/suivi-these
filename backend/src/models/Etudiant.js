@@ -46,7 +46,7 @@ const EtudiantSchema = new Schema({
     // Note, etudiants de These n'ont pas de juges
     juges: {
         type: [{ type: Schema.Types.ObjectId, ref: 'Jury' }],
-        validate: [arr => arr.length <= 4, '{PATH} est plus de 4']
+        validate: [arr => arr.length <= 4, '{PATH} a plus de 4 elements']
     },
     // juges: [{ type: Schema.Types.ObjectId, ref: 'Jury' }]
 }, {

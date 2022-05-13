@@ -28,7 +28,22 @@ exports.new_conseil = function(req,res){
             console.log("erreur lors de l'enregistrement dun conseil scientifique");
             res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
         }
-        res.json({success:true,mesage:"le nouveau conseil a ete enregistrer avec success",data:nouveau_conseil}).status(201);
+
+        // Create user session
+        req.session.user = {
+            _id: Conseil._id,
+            model: Types.ACTEURS.CONSEIL
+        };
+
+        // Remove mot de passe from returned result
+        let data = Conseil.toJSON();
+        delete data.motDePasse;
+
+        res.json({
+            success: true,
+            message: "le nouveau conseil a ete enregistrer avec success",
+            data
+        }).status(201);
     })
 }
 
