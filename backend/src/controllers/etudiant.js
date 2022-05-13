@@ -134,7 +134,11 @@ exports.change_student_password = async function(req,res){
 							console.log(err);
 							res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
 						}
-						res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse});
+						
+						if (req.session)
+        					req.session.destroy();
+
+						res.json({ success: true, message: "Vous avez ete deconnecte" });
 					})
 				}else{
 					res.status(400).json({message:"les mots de passe ne correspondent pas"})
