@@ -11,15 +11,13 @@
 - update noter_dossier association class
 - remove model Statut_Dossier and directly place status in Dossier model
 - remove soumettreNoteVersAdmin() method from Admin
-
-
-
-todo:
-    - implement validator for matricule 
-    - 
+- add departement to Etudiant model...
 
 
 * matricule and etudiant should not be unique, this will permit a student to register
 maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
+
+TODO: 
+    - 
 

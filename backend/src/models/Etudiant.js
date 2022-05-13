@@ -22,58 +22,58 @@ const EtudiantSchema = new Schema(
     prenom: { type: String, required: true },
     motDePasse: { type: String, required: true },
     niveau: { type: String, required: true, enum: Object.values(Niveau) },
-    // email: {
-    //   type: String,
-    //   required: true,
-    //   index: true,
-    //   lowercase: true,
-    //   trim: true,
-    //   validate: {
-    //     validator: (email) => isEmail(email),
-    //     message: (props) => `${props.value} est un email invalide!`,
-    //   },
-    // },
+    email: {
+        type: String,
+        required: true, 
+        index: true,
+        trim: true,
+        validate: {
+            validator: email => isEmail(email),
+            message: props => `${props.value} est un email invalide!`
+        }
+    },
     // todo validate date (yyyy/mm/dd)
-    //   dateNaissance: { type: String, required: true },
-    //   dateSoutenance: String,
-    //   lieuNaissance: { type: String, required: true },
-    //   numTelephone: { type: String, required: true },
-    //   sexe: { type: String, required: true, enum: Object.values(Sexe) },
-    //   compteValideLe: String,
-    //   urlPhotoProfil: String,
-    //   dossier: { type: Schema.Types.ObjectId, ref: "Dossier" },
-    //   uniteRecherche: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "UniteRecherche",
-    //     required: true,
-    //   },
-    //   encadreur: { type: Schema.Types.ObjectId, ref: "Jury", required: true },
-  },
-  {
-    timestamps: { createdAt: "creeLe", updatedAt: "misAJourLe" },
-  }
-);
+    dateNaissance: { type: String, required: true },
+    dateSoutenance: String,
+    lieuNaissance: { type: String, required: true }, 
+    numTelephone: { type: String, required: true }, 
+    sexe: { type: String, required: true, enum: Object.values(Sexe) },
+    compteValideLe: String,
+    urlPhotoProfil: String,
+    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
+    departement: { type: Schema.Types.ObjectId, ref: 'Departement', required: true },
+    encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
+    // Note, etudiants de These n'ont pas de juges
+    juges: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'Jury' }],
+        validate: [arr => arr.length <= 4, '{PATH} a plus de 4 elements']
+    },
+    // juges: [{ type: Schema.Types.ObjectId, ref: 'Jury' }]
+}, {
+    timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
+});
 
-EtudiantSchema.pre("save", function (next) {
-  const user = this;
-  if (this.isModified("motDePasse") || this.isNew) {
-    bcrypt.genSalt(10, function (saltError, salt) {
-      if (saltError) {
-        return next(saltError);
-      } else {
-        bcrypt.hash(user.motDePasse, salt, function (hashError, hash) {
-          if (hashError) {
-            return next(hashError);
-          }
-          user.motDePasse = hash;
-          console.log(user.motDePasse);
-          next();
-        });
-      }
-    });
-  } else {
-    return next();
-  }
+
+EtudiantSchema.pre("save",function(next){
+    const user = this;
+    if(this.isModified("motDePasse") || this.isNew){
+        bcrypt.genSalt(10,function(saltError,salt){
+            if(saltError){
+                return next(saltError)
+            }else{
+                bcrypt.hash(user.motDePasse,salt,function(hashError,hash){
+                    if(hashError){
+                        return next(hashError)
+                    }
+                    user.motDePasse = hash;
+                    console.log(user.motDePasse);
+                    next()
+                })
+            }
+        })
+    }else{
+        return next();
+    }
 });
 
 EtudiantSchema.methods.verifyPassword = function (motDePasse, cb) {

@@ -71,15 +71,15 @@ const AvisDestinataire = Object.freeze({
 const CategorieFichierMaster = Object.freeze({
     CV: 'CV',
     MEMOIRE: 'Mémoire',
-    // ACTE_NAISSANCE: 'Acte de naissance',
-    // ATTEST_INSCRIP: "Attestation d'inscription",
-    // REL_NOTES_M1: 'Relevé de notes Master 1',
-    // REL_NOTES_M2: 'Relevé de notes Master 2',
-    // LISTE_SELECT: 'Liste de selection',
-    // FICHE_INSCRIP: "Fiche d'inscription",
-    // DROITS_UNIV: 'Droits universitaires',
-    // RAPPORT_PRESOUTIENT: 'Rapport pre soutenance',
-    // ATTEST_LIC: 'Attestation de license',
+    ACTE_NAISSANCE: 'Acte de naissance',
+    ATTEST_INSCRIP: "Attestation d'inscription",
+    REL_NOTES_M1: 'Relevé de notes Master 1',
+    REL_NOTES_M2: 'Relevé de notes Master 2',
+    LISTE_SELECT: 'Liste de selection',
+    FICHE_INSCRIP: "Fiche d'inscription",
+    DROITS_UNIV: 'Droits universitaires',
+    RAPPORT_PRESOUTIENT: 'Rapport pre soutenance',
+    ATTEST_LIC: 'Attestation de license',
 });
 
 const CategorieFichierThese = Object.freeze({
@@ -152,7 +152,8 @@ const ActeurDossier = Object.freeze({
 });
 
 const CategorieNote = Object.freeze({
-    
+    LECTURE: 'Note de lecture',
+
 });
 
 
