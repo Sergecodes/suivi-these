@@ -2,6 +2,7 @@ const COORD = require('../models/Coordonateur');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
+const { removePassword } = require('../utils')
 
 
 exports.register_coordonateur = function(req,res){
@@ -34,8 +35,18 @@ exports.register_coordonateur = function(req,res){
             console.log("erreur lors de l'enregistrement dun conseil scientifique");
             res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
         }
-        res.json({success:true,message:"le nouveau conseil a ete enregistrer avec success",data:nouveau_coordonateur}).status(201);
+        
+		// Create user session
+        req.session.user = {
+            _id: nouveau_coordonateur._id,
+            model: Types.ACTEURS.COORDONATEUR
+        };
 
+        res.json({
+            success: true,
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_coordonateur.toJSON())
+        }).status(201);
     })
 }
 
@@ -65,14 +76,10 @@ exports.login_coordonateur = async function(req,res){
 					model: Types.ACTEURS.COORDONATEUR
 				};
 
-				// Remove mot de passe from returned result
-				let data = coordonateur.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: removePassword(coordonateur.toJSON())
 				});
 			}
 		})

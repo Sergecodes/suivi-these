@@ -8,6 +8,7 @@ const { storage } = require('../../firebase.config')
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
+const { removePassword } = require('../utils')
 
 
 exports.register = function(req,res) {
@@ -46,12 +47,23 @@ exports.register = function(req,res) {
 	}else if(Etudiant.numTelephone == ''){
 		res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
 	}
-	Etudiant.save(function(err,nouveau_Etudiant){
+	Etudiant.save(function(err,nouveau_etudiant){
 		if(err){
 			console.log(err);
 			res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
 		}
-		res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(201);
+		
+		// Create user session
+        req.session.user = {
+            _id: nouveau_etudiant._id,
+            model: Types.ACTEURS.ETUDIANT
+        };
+
+        res.json({
+            success: true,
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_etudiant.toJSON())
+        }).status(201);
 	})
 }
 
@@ -82,14 +94,10 @@ exports.login_student = async function(req,res){
 					model: Types.ACTEURS.ETUDIANT
 				};
 
-				// Remove mot de passe from returned result
-				let data = etudiant.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: removePassword(etudiant.toJSON())
 				});
 			}
 		})

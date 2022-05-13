@@ -2,6 +2,7 @@ const DEPART = require('../models/Departement');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
+const { removePassword } = require('../utils')
 
 
 
@@ -16,7 +17,18 @@ exports.register_departement = function(req,res){
 			console.log("erreur lors de l'enregistrement dun departement: ",err);
 			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
 		}
-		res.json({success:true,message:'Enregistrer avec success',data:nouveau_departement}).status(201);
+		
+		// Create user session
+        req.session.user = {
+            _id: nouveau_departement._id,
+            model: Types.ACTEURS.DEPARTEMENT
+        };
+
+        res.json({
+            success: true,
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_departement.toJSON())
+        }).status(201);
 	})
 }
 
@@ -47,14 +59,10 @@ exports.login_departement = async function(req,res){
 					model: Types.ACTEURS.DEPARTEMENT
 				};
 
-				// Remove mot de passe from returned result
-				let data = departement.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: nouveauPassword(departement.toJSON())
 				});
 			}
 		})

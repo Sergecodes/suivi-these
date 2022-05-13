@@ -1,6 +1,7 @@
 const EXPERT = require('../models/Expert');
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
+const { removePassword } = require('../utils')
 
 
 exports.register_expert = function(req,res){
@@ -18,7 +19,18 @@ exports.register_expert = function(req,res){
 			console.log("erreur lors de l'enregistrement dun expert: ",err);
 			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau expert",error:err}).status(500)
 		}
-		res.json({success:true,message:'Enregistrer avec success',data:nouveau_expert}).status(201);
+
+		// Create user session
+        req.session.user = {
+            _id: nouveau_expert._id,
+            model: Types.ACTEURS.EXPERT
+        };
+
+        res.json({
+            success: true,
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_expert.toJSON())
+        }).status(201);
 
 	})
 }

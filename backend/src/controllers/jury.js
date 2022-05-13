@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const passwordComplexity = require("joi-password-complexity");
 const { Types } = require('../constants')
 const Jury = require('../models/Jury');
-const Etudiant = require('../models/Etudiant');
+const Dossier = require('../models/Dossier');
+const { removePassword } = require('../utils')
 
 
 exports.register_jury = function(req,res){
@@ -20,7 +21,19 @@ exports.register_jury = function(req,res){
 			console.log("erreur lors de l'enregistrement dun jurry: ",err);
 			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client",error:err}).status(500)
 		}
-		res.json({success:true,message:'Enregistrer avec success',data:nouveau_jury}).status(201);
+
+		// Create user session
+        req.session.user = {
+            _id: nouveau_jury._id,
+            model: Types.ACTEURS.JURY
+        };
+
+        res.json({
+            success: true,
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_jury.toJSON())
+        }).status(201);
+		
 	})
 }
 
@@ -51,14 +64,10 @@ exports.login_jury = async function(req,res){
 					model: Types.ACTEURS.JURY
 				};
 
-				// Remove mot de passe from returned result
-				let data = jury.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: removePassword(jury.toJSON())
 				});
 			}
 		})
@@ -68,7 +77,9 @@ exports.login_jury = async function(req,res){
     }
 }
 
-// -----
+
+// ------------
+
 exports.rapportsEtudsMaster = async function (req, res) {
 	let jury = await Jury.findById(req.session.user._id)
 		.populate({
@@ -86,26 +97,16 @@ exports.rapportsEtudsMaster = async function (req, res) {
 			}
 		});
 
-	if (!jury)
-		res.status(404).send("Jury non trouve");
-
 	res.json({ etudiants: jury.etudiants });
 }
 
 
-exports.noterEtudiant = async function (req, res) {
-	const { idEtudiant, valeur } = req.body;
-	let jury = await Jury.findById(req.session.user._id);
-	let etud = await Etudiant.findById(idEtudiant);
-
-	if (!jury)
-		res.status(404).send("Jury non trouve");
-	
-	if (!etud)
-		res.status(404).send("Etudiant non trouve");
+exports.noterDossier = async function (req, res) {
+	const { valeur } = req.body;
+	const { jury, dossier } = res.locals;
 
 	try {
-		await jury.attribuerNote(etud.dossier, Types.CategorieFichierMaster.MEMOIRE, valeur);
+		await jury.attribuerNote(dossier._id, Types.CategorieFichierMaster.MEMOIRE, valeur);
 	} catch (err) {
 		res.status(400).json(err);
 	}
@@ -114,31 +115,19 @@ exports.noterEtudiant = async function (req, res) {
 }
 
 
-exports.verifierNoterEtudiant = async function (req, res) {
-	const { idEtudiant } = req.body;
-	let jury = await Jury.findById(req.session.user._id);
-	let etud = await Etudiant.findById(idEtudiant);
-
-	if (!jury)
-		res.status(404).send("Jury non trouve");
-	
-	if (!etud)
-		res.status(404).send("Etudiant non trouve");
-
-	res.json({ dejaNote: await jury.verifierDejaNoter(etud.dossier) });
+exports.verifierNoterDossier = async function (req, res) {
+	const { jury, dossier } = res.locals;
+	res.json({ dejaNote: await jury.verifierDejaNoter(dossier._id) });
 }
 
 
 exports.notifications = async function (req, res) {
 	let jury = await Jury.findById(req.session.user._id).populate('notifications');
-	if (!jury)
-		res.status(404).send("Jury non trouve");
-	
 	res.json({ notifs: jury.notifications });
 }
 
 
-exports.changePassword = async function(req, res) {
+exports.changePassword = function(req, res) {
 	try {
 		const id = req.session.user._id;
 		const { pass, newPass } = req.body;
@@ -201,33 +190,17 @@ exports.changePhoneNumber = function(req, res) {
 }
 
 exports.verifierAvisDonne = async function (req, res) {
-	const { idEtudiant } = req.body;
-	let jury = await Jury.findById(req.session.user._id);
-	let etud = await Etudiant.findById(idEtudiant);
-
-	if (!jury)
-		res.status(404).send("Jury non trouve");
-	
-	if (!etud)
-		res.status(404).send("Etudiant non trouve");
-
-	res.json({ dejaDonne: await jury.verifierAvisDonne(etud.dossier) });
+	const { jury, dossier } = res.locals;
+	res.json({ dejaDonne: await jury.verifierAvisDonne(dossier._id) });
 }
 
 
-exports.donnerAvisAdmin = function (req, res) {
-	const { idEtudiant, avis, commentaire, rapport } = req.body;
-	let jury = await Jury.findById(req.session.user._id);
-	let etud = await Etudiant.findById(idEtudiant);
-
-	if (!jury)
-		res.status(404).send("Jury non trouve");
-	
-	if (!etud)
-		res.status(404).send("Etudiant non trouve");
+exports.donnerAvisAdmin = async function (req, res) {
+	const { avis, commentaire, rapport } = req.body;
+	const { jury, dossier } = res.locals;
 
 	try {
-		await jury.donnerAvisAdmin(avis, commentaire, rapport, etud.dossier);
+		await jury.donnerAvisAdmin(avis, commentaire, rapport, dossier._id);
 	} catch (err) {
 		res.status(400).json(err);
 	}

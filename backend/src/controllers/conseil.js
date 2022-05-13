@@ -1,7 +1,8 @@
 const CONSEIL = require('../models/Conseil');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
-const { Types } = require('../constants')
+const { Types } = require('../constants');
+const { removePassword } = require('../utils')
 
 
 exports.new_conseil = function(req,res){
@@ -31,18 +32,14 @@ exports.new_conseil = function(req,res){
 
         // Create user session
         req.session.user = {
-            _id: Conseil._id,
+            _id: nouveau_conseil._id,
             model: Types.ACTEURS.CONSEIL
         };
 
-        // Remove mot de passe from returned result
-        let data = Conseil.toJSON();
-        delete data.motDePasse;
-
         res.json({
             success: true,
-            message: "le nouveau conseil a ete enregistrer avec success",
-            data
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_conseil.toJSON())
         }).status(201);
     })
 }
@@ -74,14 +71,10 @@ exports.conseil_login = async function(req,res){
 					model: Types.ACTEURS.CONSEIL
 				};
 
-				// Remove mot de passe from returned result
-				let data = conseil.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: removePassword(conseil.toJSON())
 				});
 			}
 		})

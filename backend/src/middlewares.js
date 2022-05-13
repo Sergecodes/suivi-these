@@ -1,4 +1,6 @@
-const { Types } = require('./constants')
+const { Types } = require('./constants');
+const Jury = require('../models/Jury');
+const Dossier = require('../models/Dossier');
 
 
 exports.isEtudiant = function(req, res, next) {
@@ -80,4 +82,21 @@ exports.isAdmin = function(req, res, next) {
     next();
 }
 
+
+exports.getJuryAndDossier = async function (req, res, next) {
+    const { idDossier } = req.body;
+    let jury = await Jury.findById(req.session.user._id);
+	let dossier = await Dossier.findById(idDossier);
+
+	if (!jury)
+		res.status(404).send("Jury non trouve");
+	
+	if (!dossier)
+		res.status(404).send("Dossier non trouve");
+
+    res.locals.jury = jury;
+    res.locals.dossier = dossier;
+
+    next();
+}
 
