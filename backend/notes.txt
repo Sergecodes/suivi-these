@@ -19,5 +19,6 @@ maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
 TODO: 
-    - 
+    - add change password for other actors
+    - add pasword complexity validation when changing password.
 
