@@ -1,6 +1,6 @@
 const { Types } = require('./constants');
-const Jury = require('../models/Jury');
-const Dossier = require('../models/Dossier');
+const Jury = require('./models/Jury');
+const Dossier = require('./models/Dossier');
 
 
 exports.isEtudiant = function(req, res, next) {
