@@ -93,25 +93,33 @@
 .modifPhotoActeur p:hover {
   color: var(--secondaryColor);
 }
-.acteurInput{
-  margin:6px 0px
+.acteurInput,.acteurInputDisabled{
+  margin:0 0;
+  margin-bottom:12px;
 }
-.acteurInput p{
+.acteurInput p,.acteurInputDisabled p{
     color:rgb(61, 60, 60);
    margin:0px;
    font-size: 12px;
 }
 
-.acteurInput input{
+.acteurInput input, .acteurInputDisabled input{
     border: 1px solid darkgray;
     border-top:none;
     border-left:none;
     border-right:none;
     padding:5px 3px !important;
-    color:black;
     background-color: transparent !important;
     font-size: 15px;
     box-shadow: none !important;
+}
+
+.acteurInput input{
+  color:black;
+}
+
+.acteurInputDisabled input{
+  color:darkgray;
 }
 
 .acteurInfoBtnBack{

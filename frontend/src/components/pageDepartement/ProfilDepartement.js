@@ -32,7 +32,7 @@ const ProfilDepartement = () => {
               </p>
             </div>
             <div className="col-12 col-md-6 py-2 ">
-              <div className="acteurInput">
+              <div className="acteurInputDisabled">
                 <p> matricule</p>
                 <input
                   className="form-control "
@@ -41,7 +41,7 @@ const ProfilDepartement = () => {
                   defaultValue={DepartementData.matricule}
                 ></input>
               </div>
-              <div className="acteurInput">
+              <div className="acteurInputDisabled">
                 <p> Email</p>
                 <input
                   className="form-control "
@@ -50,7 +50,7 @@ const ProfilDepartement = () => {
                   defaultValue={DepartementData.email}
                 ></input>
               </div>
-              <div className="acteurInput">
+              <div className="acteurInputDisabled">
                 <p> Nom</p>
                 <input
                   className="form-control "
@@ -59,7 +59,7 @@ const ProfilDepartement = () => {
                   defaultValue={DepartementData.nom}
                 ></input>
               </div>
-              <div className="acteurInput">
+              <div className="acteurInputDisabled">
                 <p> Prenom</p>
                 <input
                   className="form-control "
