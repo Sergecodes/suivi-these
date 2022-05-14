@@ -14,6 +14,8 @@ exports.register_jury = function(req,res){
 	jury.email = req.body.email;
 	jury.telephone = req.body.telephone;
 	jury.grade = req.body.grade;
+	jury.departement = req.body.departement;
+
 
 	jury.save(function(err,nouveau_jury){
 		if(err){
