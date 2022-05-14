@@ -63,7 +63,7 @@ const PdfViewer=()=> {
 
         {/* we will display error message in case user select some file
         other than pdf */}
-        {pdfError&&<span className='text-danger'>{pdfError}</span>}
+        {pdfError&&<span className='text-danger' style={{marginTop:"3px"}}>{pdfError}</span>}
 
       </form>
 

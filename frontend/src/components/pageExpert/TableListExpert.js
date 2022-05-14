@@ -65,7 +65,7 @@ const data = [
     dateNotation: '---',
     statut: (
       <div>
-        <Link to="/acteur/jury/notation">
+        <Link to="/acteur/expert/notation">
           <button
             type="button"
             className="btn py-1"
@@ -95,7 +95,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut:<Link to="/acteur/jury/notation">
+    statut:<Link to="/acteur/expert/notation">
     <button
       type="button"
       className="btn py-1"
@@ -124,7 +124,7 @@ const data = [
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: '---',
     statut:<div>
-    <Link to="/acteur/jury/notation">
+    <Link to="/acteur/expert/notation">
       <button
         type="button"
         className="btn py-1"
@@ -154,7 +154,7 @@ const data = [
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: '---',
     statut: <div>
-    <Link to="/acteur/jury/notation">
+    <Link to="/acteur/expert/notation">
       <button
         type="button"
         className="btn py-1"
@@ -183,7 +183,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/expert/notation">
     <button
       type="button"
       className="btn py-1"
@@ -211,7 +211,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/expert/notation">
     <button
       type="button"
       className="btn py-1"
@@ -240,7 +240,7 @@ const data = [
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: '---',
     statut: <div>
-    <Link to="/acteur/jury/notation">
+    <Link to="/acteur/expert/notation">
       <button
         type="button"
         className="btn py-1"
@@ -269,7 +269,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/expert/notation">
     <button
       type="button"
       className="btn py-1"
@@ -297,7 +297,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/expert/notation">
     <button
       type="button"
       className="btn py-1"
@@ -325,7 +325,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/expert/notation">
     <button
       type="button"
       className="btn py-1"
@@ -345,7 +345,7 @@ const data = [
   console.log('params', pagination, filters, sorter, extra);
 }*/
 
-const TableList = () => {
+const TableListExpert = () => {
   return (
     <div className=" mx-3 my-3" style={{overflow:"scroll"}}>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
@@ -353,4 +353,4 @@ const TableList = () => {
   );
 };
 
-export default TableList;
+export default TableListExpert;

@@ -1,0 +1,135 @@
+/*AdministraorsHeader*/
+.adminHeader {
+  /* background-image:linear-gradient(var(--secondaryColor), #4b3a6e);*/
+  background-color: var(--secondaryColor);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  margin: 0;
+}
+
+.adminOptions {
+  font-size: 25px;
+}
+.icons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.icons a,
+.icons > div > p {
+  font-size: 15px;
+  color: white;
+}
+
+@media (min-width: 580px) {
+  .logoGraduation,
+  .welcomeName {
+    font-size: 18px !important;
+  }
+}
+
+.profileOptions {
+  background-color: rgb(248, 244, 244);
+  z-index: 15;
+  color: var(--secondaryColor);
+  position: absolute;
+  right: 2%;
+  top: 95%;
+  width: 180px;
+  border-radius: 15px;
+  padding: 10px 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  font-size: 16px;
+}
+
+.profileOptions a {
+  color: rgb(129, 128, 128);
+}
+
+.profileOptions a:hover {
+  color: var(--secondaryColor);
+}
+
+/*notification*/
+
+.actionsNotification p {
+  cursor: pointer;
+}
+.actionsNotification p:hover {
+  color: rgb(147, 207, 235);
+}
+
+.actionsNotification button {
+  border: 1px solid var(--secondaryColor);
+  color: var(--secondaryColor);
+  box-shadow: none !important;
+}
+
+.actionsNotification button:hover {
+  background-color: #7d68c9;
+  border: 1px solid transparent;
+}
+
+.contentNotification {
+  border: 1px solid transparent;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: rgb(243, 242, 242);
+  border-radius: 15px;
+}
+
+/**Profil des differents administrateurs de la plateforme***/
+
+.modifInfo {
+  background-color: white;
+}
+.modifPhotoActeur p {
+  color: rgb(87, 84, 84);
+  font-weight: 300;
+  cursor: pointer;
+}
+.modifPhotoActeur p:hover {
+  color: var(--secondaryColor);
+}
+.acteurInput{
+  margin:6px 0px
+}
+.acteurInput p{
+    color:rgb(61, 60, 60);
+   margin:0px;
+   font-size: 12px;
+}
+
+.acteurInput input{
+    border: 1px solid darkgray;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    padding:5px 3px !important;
+    color:black;
+    background-color: transparent !important;
+    font-size: 15px;
+    box-shadow: none !important;
+}
+
+.acteurInfoBtnBack{
+  background-color: rgb(196, 190, 190);
+  color:black;
+  padding:5px 8px;
+}
+.acteurInfoBtnSubmit{
+  background-color:var(--secondaryColor);
+  color:white;
+  padding:5px 13px;
+}
+
+.acteurInfoBtnSubmit:hover{
+  background-color:transparent;
+  border:1px solid var(--secondaryColor);
+  color:var(--secondaryColor);
+}
+.acteurInfoBtnBack:hover{
+  background-color: darkgray;
+}

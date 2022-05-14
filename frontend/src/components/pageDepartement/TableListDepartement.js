@@ -2,7 +2,8 @@ import { Table } from "antd";
 import React from "react";
 import moment from "moment";
 import {MdSend} from "react-icons/md"
-import {   BsArrowRight} from "react-icons/bs";
+
+import {ImCross, ImCheckmark} from "react-icons/im";
 import { Link } from "react-router-dom";
 
 
@@ -65,7 +66,7 @@ const data = [
     dateNotation: '---',
     statut: (
       <div>
-        <Link to="/acteur/jury/notation">
+        <Link to="/acteur/departement/verification">
           <button
             type="button"
             className="btn py-1"
@@ -75,7 +76,7 @@ const data = [
               backgroundColor: "var(--secondaryColor)",
             }}
           >
-            <MdSend/> Notation
+            <MdSend/> Consulter
           </button>
         </Link>
       </div>
@@ -95,7 +96,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut:<Link to="/acteur/jury/notation">
+    statut:<Link to="/acteur/departement/verification">
     <button
       type="button"
       className="btn py-1"
@@ -105,7 +106,7 @@ const data = [
         backgroundColor: "transparent",
       }}
     >
-      <BsArrowRight /> Déja noté
+      <ImCheckmark /> Validé
     </button>
   </Link>,
   },
@@ -124,7 +125,7 @@ const data = [
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: '---',
     statut:<div>
-    <Link to="/acteur/jury/notation">
+    <Link to="/acteur/departement/verification">
       <button
         type="button"
         className="btn py-1"
@@ -134,7 +135,7 @@ const data = [
           backgroundColor: "var(--secondaryColor)",
         }}
       >
-        <MdSend/> Notation
+        <MdSend/> Consulter
       </button>
     </Link>
   </div>,
@@ -154,7 +155,7 @@ const data = [
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: '---',
     statut: <div>
-    <Link to="/acteur/jury/notation">
+    <Link to="/acteur/departement/verification">
       <button
         type="button"
         className="btn py-1"
@@ -164,7 +165,7 @@ const data = [
           backgroundColor: "var(--secondaryColor)",
         }}
       >
-        <MdSend/> Notation
+        <MdSend/> Consulter
       </button>
     </Link>
   </div>,
@@ -183,17 +184,17 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/departement/verification">
     <button
       type="button"
       className="btn py-1"
       style={{
-        color: "green",
+        color: "red",
         cursor: "pointer",
         backgroundColor: "transparent",
       }}
     >
-      <BsArrowRight /> Déja noté
+      <ImCross /> Rejeté
     </button>
   </Link>,
   },
@@ -211,17 +212,17 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/departement/verification">
     <button
       type="button"
       className="btn py-1"
       style={{
-        color: "green",
+        color: "red",
         cursor: "pointer",
         backgroundColor: "transparent",
       }}
     >
-      <BsArrowRight /> Déja noté
+      <ImCross /> Rejeté
     </button>
   </Link>,
   },
@@ -240,7 +241,7 @@ const data = [
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: '---',
     statut: <div>
-    <Link to="/acteur/jury/notation">
+    <Link to="/acteur/departement/verification">
       <button
         type="button"
         className="btn py-1"
@@ -250,7 +251,7 @@ const data = [
           backgroundColor: "var(--secondaryColor)",
         }}
       >
-        <MdSend/> Notation
+        <MdSend/> Consulter
       </button>
     </Link>
   </div>,
@@ -269,7 +270,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/departement/verification">
     <button
       type="button"
       className="btn py-1"
@@ -279,7 +280,7 @@ const data = [
         backgroundColor: "transparent",
       }}
     >
-      <BsArrowRight /> Déja noté
+      <ImCheckmark /> Validé
     </button>
   </Link>,
   },
@@ -297,7 +298,7 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/departement/verification">
     <button
       type="button"
       className="btn py-1"
@@ -307,7 +308,7 @@ const data = [
         backgroundColor: "transparent",
       }}
     >
-      <BsArrowRight /> Déja noté
+      <ImCheckmark /> Validé
     </button>
   </Link>,
   },
@@ -325,17 +326,17 @@ const data = [
     name: <div className="fs-6 fw-light">Nchouwet Mfouapon Kuntz Stephane</div>,
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-    statut: <Link to="/acteur/jury/notation">
+    statut: <Link to="/acteur/departement/verification">
     <button
       type="button"
       className="btn py-1"
       style={{
-        color: "green",
+        color: "red",
         cursor: "pointer",
         backgroundColor: "transparent",
       }}
     >
-      <BsArrowRight /> Déja noté
+      <ImCross /> Rejeté
     </button>
   </Link>,
   },
@@ -345,7 +346,7 @@ const data = [
   console.log('params', pagination, filters, sorter, extra);
 }*/
 
-const TableList = () => {
+const TableListDepartement = () => {
   return (
     <div className=" mx-3 my-3" style={{overflow:"scroll"}}>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
@@ -353,4 +354,4 @@ const TableList = () => {
   );
 };
 
-export default TableList;
+export default TableListDepartement;

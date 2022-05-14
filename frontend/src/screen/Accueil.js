@@ -4,6 +4,7 @@ import UtilityComponent from "../components/accueil/UtilityComponent";
 import UnitéComponent from "../components/accueil/UnitéComponent";
 import Header from "../screen/Header";
 import Footer from "../screen/Footer";
+import "../index.css";
 
 
 

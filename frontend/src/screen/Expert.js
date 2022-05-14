@@ -1,14 +1,13 @@
 import React from 'react';
-import JuryHeader from '../components/pageJury/JuryHeader';
+import ExpertHeader from "../components/pageExpert/ExpertHeader";
 import "../Styles/AdminCommon.css";
 import '../Styles/Jury.css';
 import { Outlet } from 'react-router-dom';
 
-
-const Jury = () => {
+const Expert = () => {
   return (
     <div style={{backgroundColor: "#E9EAEF",minHeight:"100vh",maxWidth:"100vw",orverflow:"hidden"}}>
-      <JuryHeader/>
+      <ExpertHeader/>
       <Outlet/>
       <p className="border border-top text-center fw-bold py-2" >ECOLE DOCTORALE STG</p>
 
@@ -16,5 +15,4 @@ const Jury = () => {
   )
 }
 
-
-export default Jury
+export default Expert
