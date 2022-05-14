@@ -1,6 +1,8 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
+const Notification = require('./Notification');
+const { ModelNotif, AvisEmetteur, TypeNotification } = require('./types');
 
 
 const RectoratSchema = new Schema({
@@ -47,6 +49,36 @@ RectoratSchema.virtual('notifications', {
     foreignField: 'destinataire'
 });
 
+
+RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, date) {
+    etudiant.dateSoutenance = date;
+    await etudiant.save();
+
+    // todo also update etape
+    
+    await Notification.create({
+        type: TypeNotification.SOUTENANCE_PROGRAMMEE,
+        destinataire: etudiant._id,
+        destinataireModel: ModelNotif.ETUDIANT,
+        message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
+    });
+};
+
+// RectoratSchema.methods.donnerAvisTheseAdmin = async function(
+//     type, 
+//     commentaire, 
+//     rapport, 
+//     idDossier
+// ) {
+//     await Avis.create({
+//         type,
+//         commentaire,
+//         rapport,
+//         dossier: idDossier,
+//         donnePar: this._id,
+//         donneParModel: AvisEmetteur.
+//     });
+// }
 
 module.exports = model('Rectorat', RectoratSchema, 'rectorat');
 

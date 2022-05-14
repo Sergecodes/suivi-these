@@ -61,6 +61,14 @@ CoordonateurSchema.virtual('notifications', {
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
+    // todo also update etape 
+    
+    await Notification.create({
+        type: TypeNotification.SOUTENANCE_PROGRAMMEE,
+        destinataire: etudiant._id,
+        destinataireModel: ModelNotif.ETUDIANT,
+        message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
+    });
 };
 
 CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(

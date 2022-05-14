@@ -48,5 +48,47 @@ AdminSchema.virtual('notifications', {
 });
 
 
+
+/**
+ * Rejeter le dossier d'un etudiant
+ * @param dossier: L'objet document
+ * @param raison
+ */
+AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
+    dossier.statut = StatutDossier.REJETE_ADMIN;
+    dossier.raisonStatut = raison;
+    await dossier.save();
+
+    // Notifier l'etudiant
+    await Notification.create({
+        type: TypeNotification.DOSSIER_REJETE,
+        destinataire: dossier.etudiant,
+        destinataireModel: ModelNotif.ETUDIANT,
+        objetConcerne: dossier._id,
+        objetConcerneModel: ModelNotif.DOSSIER
+    });
+}
+
+
+/**
+ * Rejeter l'inscription d'un etudiant
+ * @param etudiant: L'objet document
+ * @param raison
+ */
+ AdminSchema.methods.rejeterEtudiant = async function (etudiant, raison) {
+    // Notifier l'etudiant
+    await Notification.create({
+        type: TypeNotification.COMPTE_REJETE,
+        destinataire: etudiant,
+        destinataireModel: ModelNotif.ETUDIANT,
+        objetConcerne: etudiant._id,
+        objetConcerneModel: ModelNotif.ETUDIANT,
+        message: raison
+    });
+}
+
+
+
+
 module.exports = model('Admin', AdminSchema, 'admin');
 

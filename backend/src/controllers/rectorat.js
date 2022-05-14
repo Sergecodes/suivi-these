@@ -3,6 +3,7 @@ const Notification = require('../models/Notification');
 const bcrypt = require('bcrypt');
 const Rectorat = require('../models/Rectorat');
 const { removePassword } = require('../utils');
+const Etudiant = require('../models/Etudiant');
 
 
 exports.login_rectorat = async function(req,res){
@@ -99,3 +100,79 @@ exports.changePassword = function(req, res) {
 	}
 }
  
+
+exports.changeEmail = function(req,res){
+	const {newEmail} = req.body;
+
+	Rectorat.findById(req.session.user._id, function(err,rectorat){
+		if(err){
+			return res.json({success:false,error:err}).status(500);
+		}
+
+		 if(req.body.newEmail){
+			 rectorat.email = newEmail;
+		 }
+		 rectorat.save(function(err, newRectorat){
+			if(err){
+				res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement",error:err}).status(500);        
+			}
+			res.json({ success:true, newEmail: newRectorat.email });
+		})
+	})
+}
+
+
+exports.rapportsEtudsThese = async function (req, res) {
+	let etudiants = await Etudiant.find({ niveau: Types.Niveau.THESE })
+      .select('-motDePasse')
+		.populate({
+			path: 'dossier',
+			populate: [
+            // 'notes',
+            {
+               path: 'fichiers',
+               select: 'url uploadeLe',
+               match: { categorie: Types.CategorieFichierThese.MEMOIRE }
+            }, 
+         ]
+		});
+
+   console.log(etudiants);
+
+   let rectoratEtuds = [], numEtape = 8;
+   for (let etud of etudiants) {
+      let dossier = etud.dossier;
+      if (await dossier.etapeActuelle === numEtape) {
+         rectoratEtuds.push(etud);
+      }
+   }
+
+	res.json({ etudiants: rectoratEtuds });
+}
+
+
+exports.programmerDateSoutenance = async function (req, res) {
+   const { idEtudiant, dateSoutient } = req.body;
+   let etud = await Etudiant.findById(idEtudiant);
+
+   if (!etud)
+      res.status(404).send("Etudiant non trouve");
+      
+   if (etud.niveau != Types.Niveau.THESE)
+      res.status(400).json({message: "L'etudiant doit etre un etudiant de these"});
+
+   let rectorat = await Rectorat.findById(req.session.user._id);
+   if (!rectorat)
+      res.status(404).send("Rectorat non trouve");
+
+   try {
+      await rectorat.programmerDateSoutenanceThese(etud, dateSoutient);
+   } catch (err) {
+      res.status(400).json({ err });
+   }
+
+   res.send("Date de soutenance programme!");
+}
+
+
+
