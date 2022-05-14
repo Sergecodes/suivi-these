@@ -18,7 +18,7 @@ exports.register_jury = function(req,res){
 	jury.save(function(err,nouveau_jury){
 		if(err){
 			console.log("erreur lors de l'enregistrement dun jurry: ",err);
-			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client",error:err}).status(500)
+			return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client",error:err}).status(500)
 		}
 
 		// Create user session

@@ -15,7 +15,7 @@ exports.register_departement = function(req,res){
 	departement.save(function(err,nouveau_departement){
 		if(err){
 			console.log("erreur lors de l'enregistrement dun departement: ",err);
-			res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
+			return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
 		}
 		
 		// Create user session
