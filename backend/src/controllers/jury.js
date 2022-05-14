@@ -83,6 +83,7 @@ exports.rapportsEtudsMaster = async function (req, res) {
 	let jury = await Jury.findById(req.session.user._id)
 		.populate({
 			path: 'etudiants',
+			match: { niveau: Types.Niveau.MASTER },
 			populate: {
 				path: 'dossier',
 				populate: [
@@ -133,8 +134,7 @@ exports.changePassword = function(req, res) {
 
 		Jury.findById(id, function(err,jury) {
 			if (err){
-				console.log("une erreur est survenu lors de la recuperation de ce jury, il n'existe pas ou a ete supprimer");
-				return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+				return res.json({success:false, error:err}).status(500);
 			}
 
 			if (!jury)
@@ -143,7 +143,7 @@ exports.changePassword = function(req, res) {
 			bcrypt.compare(pass, jury.motDePasse, function (err,result) {
 				if (err) {
 					console.log("une erreur interne est suvenue: ",err);
-					return res.json({success:false,message:"une erreur interne est survenue",error:err});
+					return res.status(500).json({success:false,message:"une erreur interne est survenue",error:err});
 				}
 				if (result === true){
 					jury.motDePasse = newPass;
