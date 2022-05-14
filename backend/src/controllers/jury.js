@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const passwordComplexity = require("joi-password-complexity");
 const { Types } = require('../constants')
 const Jury = require('../models/Jury');
-const Dossier = require('../models/Dossier');
 const { removePassword } = require('../utils')
 
 
