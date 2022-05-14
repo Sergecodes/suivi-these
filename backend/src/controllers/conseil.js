@@ -27,7 +27,7 @@ exports.new_conseil = function(req,res){
     Conseil.save(function(err,nouveau_conseil){
         if(err){
             console.log("erreur lors de l'enregistrement dun conseil scientifique");
-            res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
+            return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
         }
 
         // Create user session

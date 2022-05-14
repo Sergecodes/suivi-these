@@ -7,7 +7,7 @@ const isNumeric = val => !isNaN(val);
  * @param {dict} obj 
  */
 const removePassword = obj => {
-    if (motDePasse in obj) 
+    if ('motDePasse' in obj) 
         delete obj.motDePasse;
 
     return obj;

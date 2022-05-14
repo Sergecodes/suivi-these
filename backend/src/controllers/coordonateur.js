@@ -6,7 +6,7 @@ const { removePassword } = require('../utils')
 
 
 exports.register_coordonateur = function(req,res){
-    var coordonateur = new COORD();
+    let coordonateur = new COORD();
     coordonateur.email = req.body.email;
     coordonateur.motDePasse = req.body.motDePasse;
     coordonateur.nom = req.body.nom;
@@ -30,24 +30,24 @@ exports.register_coordonateur = function(req,res){
         return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
     }
 
-    coordonateur.save(function(err,nouveau_coordonateur){
+    coordonateur.save((err, coordo) => {
         if(err){
-            console.log("erreur lors de l'enregistrement dun conseil scientifique");
-            res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
+            console.log("erreur lors de l'enregistrement dun coordonateur");
+            return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
         }
         
 		// Create user session
         req.session.user = {
-            _id: nouveau_coordonateur._id,
+            _id: coordo._id,
             model: Types.ACTEURS.COORDONATEUR
         };
 
         res.json({
             success: true,
             message: "Enregistre avec succes",
-            data: removePassword(nouveau_coordonateur.toJSON())
+            data: removePassword(coordo.toJSON())
         }).status(201);
-    })
+    });
 }
 
 exports.login_coordonateur = async function(req,res){
