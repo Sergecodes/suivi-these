@@ -32,7 +32,9 @@ const TypeNotification = Object.freeze({
     DOSSIER_REJETE: "Dossier de l'étudiant rejeté",
     COMPTE_REJETE: "Compte de l'étudiant rejeté",
     NOTE_JURY: "Nouvelle note de jury",
-    AUTORISATION_SOUTENANCE: "Autorisation de soutenance d'un étudiant du Master 2"
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
+    SOUTENANCE_NON_VALIDE: "Soutenance non validé",
+    THESE_REJETE: 'Thèse rejeté'
 });
 
 

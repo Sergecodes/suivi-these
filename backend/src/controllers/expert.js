@@ -39,7 +39,7 @@ exports.login_expert = async function(req,res){
     try{
         const {email,motDePasse} = req.body;
         let expert = await EXPERT.findOne({email});
-        if(!expert){return res.status(404).send("Departement Not found")};
+        if(!expert){return res.status(404).send("Expert Not found")};
         bcrypt.compare(motDePasse, expert.motDePasse, function(err,result) {
 			if(err){
 				console.log("une erreur interne est suvenue: ",err);
@@ -61,14 +61,10 @@ exports.login_expert = async function(req,res){
 					model: Types.ACTEURS.EXPERT
 				};
 
-				// Remove mot de passe from returned result
-				let data = expert.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: removePassword(expert.toJSON())
 				});
 			}
 		})
