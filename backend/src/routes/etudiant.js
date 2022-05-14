@@ -17,7 +17,9 @@ router.route('/update-photo').put(isEtudiant, controller.updatePhoto)
 
 router.route('/dates-soutenance').get(controller.datesSoutenance);
 
-router.route('/etapes-dossier').get(isEtudiant, controller.etapesDossier)
+router.route('/etapes-dossier').get(isEtudiant, controller.etapesDossier);
+
+router.route('/check-dossier').get(isEtudiant, controller.checkUploaderDossier);
 
 
 module.exports = router;

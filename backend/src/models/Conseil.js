@@ -8,17 +8,13 @@ const ConseilSchema = new Schema({
         type: String,
         required: true, 
         index: { unique: true },
-        lowercase: true,
         trim: true,
         validate: {
             validator: email => isEmail(email),
             message: props => `${props.value} est un email invalide!`
         }
     },
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo encrypt before saving
+    motDePasse: { type: String, required: true }
 });
 
 ConseilSchema.pre("save",function(next){

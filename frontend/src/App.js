@@ -1,9 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
+<<<<<<< HEAD
 
 /*import Accueil from "./screen/Accueil";
 import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+=======
+import Accueil from "./screen/Accueil";
+/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+>>>>>>> c19e8c87b07276447977b7c9264e4dcda3a1f740
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
