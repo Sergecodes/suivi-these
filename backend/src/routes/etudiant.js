@@ -7,9 +7,9 @@ router.route('/login-etudiant').post(controller.login_student);
 
 router.route('/register-etudiant').post(controller.register)
 
-router.route('/password/:id').put(isEtudiant, controller.change_student_password);
+router.route('/change-password').put(isEtudiant, controller.change_student_password);
 
-router.route('/phone/:matricule').put(isEtudiant, controller.changePhoneNumber)
+router.route('/change-phone-number').put(isEtudiant, controller.changePhoneNumber)
 
 router.route('/uploader-fichiers').post(isEtudiant, controller.uploadFiles);
 

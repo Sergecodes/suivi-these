@@ -104,16 +104,17 @@ exports.rapportsEtudsMaster = async function (req, res) {
 
 
 exports.noterDossier = async function (req, res) {
-	const { valeur } = req.body;
+	const { valeur, commentaire } = req.body;
 	const { jury, dossier } = res.locals;
 
 	try {
-		await jury.attribuerNote(dossier._id, Types.CategorieFichierMaster.MEMOIRE, valeur);
+		await jury.attribuerNote(dossier._id, Types.CategorieNote.LECTURE, valeur, commentaire);
 	} catch (err) {
-		res.status(400).json(err);
+		console.error(err);
+		return res.status(400).json(err);
 	}
 
-	res.send("Succes!");
+	res.send("Succes!").status(200);
 }
 
 
@@ -200,16 +201,21 @@ exports.verifierAvisDonne = async function (req, res) {
 }
 
 
-exports.donnerAvisAdmin = async function (req, res) {
-	const { avis, commentaire, rapport } = req.body;
-	const { jury, dossier } = res.locals;
+// exports.donnerAvisAdmin = async function (req, res) {
+// 	const { avis, commentaire, rapport } = req.body;
+// 	const { jury, dossier } = res.locals;
 
-	try {
-		await jury.donnerAvisAdmin(avis, commentaire, rapport, dossier._id);
-	} catch (err) {
-		res.status(400).json(err);
-	}
+// 	if (!avis){
+// 		return res.status(400).send("Invalid request");
+// 	}
 
-	res.send("Succes!");
-}
+// 	try {
+// 		await jury.donnerAvisAdmin(avis, commentaire, rapport, dossier._id);
+// 	} catch (err) {
+// 		console.log(avis);
+// 		return res.status(400).json(err);
+// 	}
+
+// 	res.send("Succes!");
+// }
  

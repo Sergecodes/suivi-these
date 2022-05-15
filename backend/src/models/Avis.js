@@ -3,6 +3,7 @@ const {
     Avis, AvisEmetteur, AvisDestinataire, 
     ModelNotif, TypeNotification 
 } = require('./types')
+const Notification = require('./Notification');
 
 
 const AvisSchema = new Schema({
@@ -29,7 +30,7 @@ const AvisSchema = new Schema({
 /**
  * Envoyer une notification au destinataire
  */
- AvisSchema.post('save', async function(avis) {
+ AvisSchema.post('save', async function(avis, next) {
     await Notification.create({
         type: TypeNotification.NOUVEL_AVIS,
         destinataire: avis.destinataire,
@@ -37,6 +38,8 @@ const AvisSchema = new Schema({
         objetConcerne: avis._id,
         objetConcerneModel: ModelNotif.AVIS
     });
+
+    next();
 });
 
 

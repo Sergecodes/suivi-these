@@ -493,8 +493,8 @@ exports.datesSoutenance = function (req, res) {
     let result = {};
 
     for (let etud of etuds) {
-      let date = etud.dateSoutenance;
-      let etudObj = {
+      const date = etud.dateSoutenance;
+      const etudObj = {
         matricule: etud.matricule,
         nom: etud.nom,
         prenom: etud.prenom,
@@ -504,7 +504,7 @@ exports.datesSoutenance = function (req, res) {
       if (!(date in result)) {
         result[date] = [etudObj];
       } else {
-        result[date] = result[date].push(etudObj);
+        result[date].push(etudObj);
       }
     }
 
