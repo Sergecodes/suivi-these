@@ -21,16 +21,9 @@ const StudentDashboard = (props) => {
     toast.success("Deconnexion Reussie");
     alert("Deconnexion Reussie");
 
-<<<<<<< HEAD:frontend/src/components/page etudiant/StudentDashboard.js
     dispatch(logout());
     Navigate("/");
   };
-=======
-const StudentDashboard = (props) => {
-  const dispatch=useDispatch();
-  const files=useSelector(state=>state.dashboardDisplay);
-  const {width}=useWindowSize();
->>>>>>> 1e79a003f5a837947882188aa7c91a00982e99c2:frontend/src/components/pageEtudiant/StudentDashboard.js
   return (
     <section
       className="studentDashboard px-2"
@@ -56,7 +49,6 @@ const StudentDashboard = (props) => {
             alt=""
           />
         </div>
-<<<<<<< HEAD:frontend/src/components/page etudiant/StudentDashboard.js
         <div className="studentInfo" style={{ lineHeight: "1.4" }}>
           <p className="fs-6" style={{}}>
             {EtudiantData[0].nom}
@@ -110,19 +102,6 @@ const StudentDashboard = (props) => {
           </p>
         </Link>
       </div>
-=======
-       <div className="dashboardLinks mt-4">
-                
-                        <Link to="/account/depot" ><p><BsFolder/>   Depot dossier</p></Link>
-                       <Link to="/account/dossier"><p><BsArrowRepeat/>  Changement de sujet</p></Link>
-                       <Link to="/account/dossier" ><p><BsArrowRepeat/>   Changement d'encadreur</p></Link>
-              
-                        <Link to="/account/profil" style={props.url==="/account/profil"?{color:"var(--primaryColor)",borderColor:"var(--primaryColor)"}:{}}><p><BsPerson/>  Editer Profil</p></Link>
-                       <Link to="/account/evolution"><p><BiRocket/> Evolution du dossier</p></Link>
-                       <Link to="/*"><p><FiLogOut/> Deconnexion</p></Link>
-                   
-            </div>
->>>>>>> 1e79a003f5a837947882188aa7c91a00982e99c2:frontend/src/components/pageEtudiant/StudentDashboard.js
     </section>
   );
 };

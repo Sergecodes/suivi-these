@@ -5,6 +5,32 @@ const Rectorat = require('../models/Rectorat');
 const { removePassword } = require('../utils');
 const Etudiant = require('../models/Etudiant');
 
+exports.register_rectorat = function(req,res){
+   var rectorat = new Rectorat();
+  rectorat.motDePasse = req.body.motDePasse;
+  rectorat.email = req.body.email;
+
+   console.log(req.body);
+
+  rectorat.save(function(err,nouveau_rectorat){
+     if(err){
+        console.log("erreur lors de l'enregistrement dun rectorat: ",err);
+        return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
+     }
+     
+     // Create user session
+       req.session.user = {
+           _id: nouveau_rectorat._id,
+           model: Types.ACTEURS.RECTORAT
+       };
+
+       res.json({
+           success: true,
+           message: "Enregistre avec succes",
+           data: removePassword(nouveau_rectorat.toJSON())
+       }).status(201);
+  })
+}
 
 exports.login_rectorat = async function(req,res){
    try {
@@ -156,22 +182,22 @@ exports.programmerDateSoutenance = async function (req, res) {
    let etud = await Etudiant.findById(idEtudiant);
 
    if (!etud)
-      res.status(404).send("Etudiant non trouve");
+     return res.status(404).send("Etudiant non trouve");
       
    if (etud.niveau != Types.Niveau.THESE)
-      res.status(400).json({message: "L'etudiant doit etre un etudiant de these"});
+      return res.status(400).json({message: "L'etudiant doit etre un etudiant de these"});
 
    let rectorat = await Rectorat.findById(req.session.user._id);
    if (!rectorat)
-      res.status(404).send("Rectorat non trouve");
+      return res.status(404).send("Rectorat non trouve");
 
    try {
       await rectorat.programmerDateSoutenanceThese(etud, dateSoutient);
    } catch (err) {
-      res.status(400).json({ err });
+      return res.status(400).json({ err });
    }
 
-   res.send("Date de soutenance programme!");
+    res.send("Date de soutenance programmée!");
 }
 
 

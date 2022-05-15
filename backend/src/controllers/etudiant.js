@@ -50,20 +50,20 @@ exports.register = function(req,res) {
 	Etudiant.save(function(err,nouveau_etudiant){
 		if(err){
 			console.log(err);
-			res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+			return res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
 		}
 		
 		// Create user session
-        req.session.user = {
-            _id: nouveau_etudiant._id,
-            model: Types.ACTEURS.ETUDIANT
-        };
+    req.session.user = {
+        _id: nouveau_etudiant._id,
+        model: Types.ACTEURS.ETUDIANT
+    };
 
-        res.json({
-            success: true,
-            message: "Enregistre avec succes",
-            data: removePassword(nouveau_etudiant.toJSON())
-        }).status(201);
+    res.json({
+        success: true,
+        message: "Enregistre avec succes",
+        data: removePassword(nouveau_etudiant.toJSON())
+    }).status(201);
 	})
 }
 
@@ -493,8 +493,8 @@ exports.datesSoutenance = function (req, res) {
     let result = {};
 
     for (let etud of etuds) {
-      let date = etud.dateSoutenance;
-      let etudObj = {
+      const date = etud.dateSoutenance;
+      const etudObj = {
         matricule: etud.matricule,
         nom: etud.nom,
         prenom: etud.prenom,
@@ -504,7 +504,7 @@ exports.datesSoutenance = function (req, res) {
       if (!(date in result)) {
         result[date] = [etudObj];
       } else {
-        result[date] = result[date].push(etudObj);
+        result[date].push(etudObj);
       }
     }
 

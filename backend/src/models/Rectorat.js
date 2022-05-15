@@ -60,6 +60,8 @@ RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, 
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
         destinataire: etudiant._id,
         destinataireModel: ModelNotif.ETUDIANT,
+        objetConcerne: etudiant._id,
+        objetConcerneModel: ModelNotif.ETUDIANT,
         message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
     });
 };
