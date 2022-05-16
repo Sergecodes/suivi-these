@@ -19,9 +19,9 @@ router.route('/change-password').put(isJury, controller.changePassword);
 
 router.route('/change-number').put(isJury, controller.changePhoneNumber);
 
-// router.route('/verifier-avis-donne').get(isJury, getJuryAndDossier, controller.verifierAvisDonne);
+router.route('/verifier-avis-donne').get(isJury, getJuryAndDossier, controller.verifierAvisDonne);
 
-// router.route('/donner-avis-admin').post(isJury, getJuryAndDossier, controller.donnerAvisAdmin);
+router.route('/donner-avis-admin').post(isJury, getJuryAndDossier, controller.donnerAvisAdmin);
 
 
 module.exports = router;

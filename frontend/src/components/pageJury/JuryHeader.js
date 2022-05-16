@@ -11,10 +11,8 @@ const JuryHeader = () => {
         acteur={"JURY"}
         notification={"/acteur/jury/notifications"}
         profil={"/acteur/jury/profil"}
-      >
-       
-        
-      </AdministratorsHeader>
+      />
+     
     </>
   );
 };

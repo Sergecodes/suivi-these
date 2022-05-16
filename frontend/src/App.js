@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 
-//import Accueil from "./screen/Accueil";
+/*
+import Accueil from "./screen/Accueil";*/
 /*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
@@ -20,11 +21,7 @@ import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";*/
 
 /*import Soutenance from "./screen/Soutenance";
-import Jury from "./screen/Jury";
-import NotationMaster from "./components/pageJury/NotationMaster";
-import ProfilJury from "./components/pageJury/ProfilJury";
-import NotificationJury from "./components/pageJury/NotificationJury";
-import TableList from "./components/pageJury/TableList";
+
 import Expert from "./screen/Expert";
 import NotationThese from "./components/pageExpert/NotationThese";
 import ProfilExpert from "./components/pageExpert/ProfilExpert";
@@ -34,13 +31,23 @@ import Departement from "./screen/Departement";
 import ProfilDepartement from "./components/pageDepartement/ProfilDepartement";
 import DashboardDepartement from "./components/pageDepartement/DashboardDepartement"
 import NotificationDepartement from "./components/pageDepartement/NotificationDepartement";
-import VerificationMaster from "./components/pageDepartement/VerificationMaster";*/
+import VerificationMaster from "./components/pageDepartement/VerificationMaster";x
 import Rectorat from "./screen/Rectorat";
 import ProfilRectorat from "./components/pageRectorat/ProfilRectorat";
 import DashboardRectorat from "./components/pageRectorat/DashboardRectorat"
 import NotificationRectorat from "./components/pageRectorat/NotificationRectorat";
-import Programmation from "./components/pageRectorat/Programmation";
+import Programmation from "./components/pageRectorat/Programmation";*/
+
+
+/*-----------*/
+import Jury from "./screen/Jury";
+import NotationMaster from "./components/pageJury/NotationMaster";
+import ProfilJury from "./components/pageJury/ProfilJury";
+import NotificationJury from "./components/pageJury/NotificationJury";
 import TableList from "./components/pageJury/TableList";
+import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
+/*-----------*/
+
 
 /*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
 import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
@@ -57,7 +64,7 @@ const App = () => {
           <Route
             path="/soutenance"
             element={<Soutenance isLogin={isLogin} />}
-  />*/}
+            />
           <Route path="/account" element={<Etudiant />}>
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
@@ -66,8 +73,8 @@ const App = () => {
           <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
-          ></Route>
-        { /* <Route path="/acteur/jury" element={<Jury />}>
+          ></Route>*/}
+          <Route path="/acteur/jury" element={<Jury />}>
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
             <Route path="/acteur/jury/profil" element={<ProfilJury />} />
@@ -76,7 +83,11 @@ const App = () => {
               element={<NotificationJury />}
             />
           </Route>
-          <Route path="/acteur/expert" element={<Expert />}>
+           <Route
+            path="/connexion/jury"
+            element={<JuryInscriptionScreen />}
+          ></Route>
+          { /* <Route path="/acteur/expert" element={<Expert />}>
             <Route path="/acteur/expert/dashboard" element={<TableList />} />
             <Route path="/acteur/expert/notation" element={<NotationThese />} />
             <Route path="/acteur/expert/profil" element={<ProfilJury />} />
@@ -94,7 +105,7 @@ const App = () => {
               path="/acteur/departement/notifications"
               element={<NotificationDepartement />}
             />
-          </Route>*/}
+          </Route>
           <Route path="/acteur/rectorat" element={<Rectorat />}>
             <Route path="/acteur/rectorat/dashboard" element={<DashboardRectorat />} />
             <Route path="/acteur/rectorat/profil" element={<ProfilRectorat />} />
@@ -108,7 +119,7 @@ const App = () => {
               path="/acteur/rectorat/programmation"
               element={<Programmation />}
             />
-          </Route>
+          </Route>*/}
           <Route
             path="/*"
             element={

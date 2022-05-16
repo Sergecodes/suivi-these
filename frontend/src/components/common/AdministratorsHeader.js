@@ -67,7 +67,7 @@ const AdministratorsHeader = (props) => {
             <BsBellFill />
           </p>
         </Link>
-        <div style={{margin:"0",padding:"0",width:"15px",height:"24px", overflow:"hidden"}}>
+        <div style={props.children===undefined?{display:"none"}:{margin:"0",padding:"0",maxWidth:"15px",maxHeight:"24px", overflow:"hidden"}}>
           {props.children}
         </div>
         <div>
@@ -123,7 +123,10 @@ const AdministratorsHeader = (props) => {
             </Link>
           </p>
           <hr />
-          {props.children}
+          <p style={props.children===undefined?{display:"none"}:{margin:"0"}}>
+             {props.children}
+          </p>
+         
           <hr/>
           <p onClick={() => setHamburgerClicked(!hamburgerClicked)}>
             {" "}
