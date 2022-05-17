@@ -13,12 +13,12 @@ const UnitéComponent = () => {
   })
   return (
     <div className="unité py-5" >
-      <div data-Aos="fade-left" className="unitéText py-4 Aos">
+      <div data-aos="fade-up" className="unitéText py-4 ">
         <h2>Unités de recherche</h2>
         <p>Voici les differentes unités de recherche de l'école doctorale</p>
       </div>
       <div className="row mx-4 d-flex justify-content-center">
-        <div data-Aos="fade-up" className="Aos my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
+        <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <RiComputerLine style={{height:"30px",width:"30px"}}/></div>
                 <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
@@ -28,7 +28,7 @@ const UnitéComponent = () => {
                 </div>
             </div>
         </div>
-        <div data-Aos="fade-up" className="Aos my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
+        <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <GiMaterialsScience style={{height:"30px",width:"30px"}}/></div>
                 <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
@@ -38,7 +38,7 @@ const UnitéComponent = () => {
                 </div>
             </div>
         </div>
-        <div data-Aos="fade-up" className="Aos my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
+        <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <MdScience style={{height:"30px",width:"30px"}}/></div>
                 <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
@@ -48,7 +48,7 @@ const UnitéComponent = () => {
                 </div>
             </div>
         </div>
-        <div data-Aos="fade-up" className="Aos my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
+        <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <ImEarth style={{height:"30px",width:"30px"}}/></div>
                 <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
@@ -58,7 +58,7 @@ const UnitéComponent = () => {
                 </div>
             </div>
         </div>
-        <div data-Aos="fade-up" className="Aos my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
+        <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <IoBarChartSharp style={{height:"30px",width:"30px"}}/></div>
                 <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
