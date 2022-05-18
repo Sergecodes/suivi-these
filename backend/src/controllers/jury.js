@@ -64,7 +64,7 @@ exports.login_jury = async function(req,res){
 					_id: jury._id,
 					model: Types.ACTEURS.JURY
 				};
-
+				console.log(req.session);
 				res.json({
 					success: true,
 					message: "Connexion reussie",

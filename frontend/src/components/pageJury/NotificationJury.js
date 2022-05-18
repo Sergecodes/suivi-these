@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NotificationsActeurs from "../common/NotificationsActeurs";
+import axios from "axios";
 
 const notificationsJury = [
   {
@@ -33,6 +34,16 @@ const notificationsJury = [
 ];
 
 const NotificationJury = () => {
+
+  useEffect(()=>{
+    axios.get("http://localhost:3001/api/jury/notifications",{withCredentials:true})
+    .then(res=>{
+      console.log(res);
+    })
+    .catch(err=>{
+      console.error(err);
+    })
+  },[])
   return (
     <>
       <NotificationsActeurs notifications={notificationsJury}/>

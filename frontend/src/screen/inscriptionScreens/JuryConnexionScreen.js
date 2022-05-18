@@ -8,6 +8,7 @@ import {
   resetJury,
 } from "../../redux/authentification/authJurySlice";
 import "../../Styles/AdminConnexionScreen.css"
+import "../../Styles/Connexion.css"
 
 function JuryConnexionScreen() {
   const [user, setUser] = useState({

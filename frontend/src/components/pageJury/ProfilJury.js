@@ -14,7 +14,7 @@ const ProfilJury = () => {
     console.log('entrer')
     var formData = new FormData();
     formData.append("newPhoneNumber",tel);
-    axios.put('http://localhost:3001/api/jury/change-number',formData)
+    axios.put('http://localhost:3001/api/jury/change-number',formData,{widthCredentials:true})
     .then(res=>{
       console.log(res);
     })
