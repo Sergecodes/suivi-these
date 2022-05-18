@@ -40,6 +40,13 @@ DossierSchema.virtual('etapes', {
     foreignField: 'dossier'
 });
 
+DossierSchema.virtual('avis', {
+    ref: 'Avis',
+    localField: '_id',
+    foreignField: 'dossier'
+});
+
+
 
 // Operations
 DossierSchema.virtual('etapeActuelle').get(async function() {

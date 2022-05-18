@@ -6,6 +6,7 @@ const EXPERT = require('../models/Expert');
 const USERS = require('../models/Etudiant');
 const AUTRES = require('../models/autresUtils');
 const DOSSIER = require('../models/Dossier');
+const AVIS = require('../models/Avis');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -29,7 +30,6 @@ const CONSTANTES = require('../constants')
             }
         })
         console.log(Is_authorized);
-    
         //2. Les verications ete effectuer
           //2.1 si il n'est pas authorizer
           if(Is_authorized === undefined){
@@ -373,31 +373,26 @@ exports.deleteExpert = function(req,res){
    }
 /**************************END*****************************************************/
 
+/*********************************************************************************/
+           // verifier si les rapports d'expertise sont majoritairement correct sinon contacter un deuxième expert et refaire une verification , ou dans le
+           // cas où les deux rapports sont defavorables rejeter le memoire
 
+        exports.Verification_rapport_expertise = function(req,res){
+            const {avis_id} = req.body;
+            //On verifie tout d'abord si un avis existe dans la base de donnee;
+            AVIS.findById(avis_id,function(err,avis){
+                if(err){
+                    console.log("Nous sommes desoler une erreur est survenue lors de la recherche de l'avis");
+                }else{
+                    //l'avis qu'on recherche existe
+                    if(avis.donneParModel == 'Expert' && avis.destinataireModel == 'Admin'){
+                        if(!avis){
+                            res.json({success:true,message:"quelque chose s'est mal passer lors de"})
+                        }
 
+                    }
+                }
+            })
 
-
-
-
-
-
-// exports.changePhoneNumber = function(req,res){
-// 	const {newPhoneNumber} = req.body;
-
-// 	USERS.findById(req.session.user._id, function(err,etudiant){
-// 		if(err){
-// 			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
-// 		}
-// 		 //L'utilisateur a ete trouver
-// 		 if(req.body.newPhoneNumber){
-// 			 etudiant.numTelephone = newPhoneNumber;
-// 		 }
-// 		 etudiant.save(function(err,newStudent){
-// 			if(err){
-// 				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-// 				res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone",error:err}).status(500);        
-// 			}
-// 			res.json({success:true,message:"le nouveau numero de telephone a ete enregistrer avec success",data:newStudent.numTelephone});
-// 		})
-// 	})
-// }
+        }
+/********************************************************************************/
