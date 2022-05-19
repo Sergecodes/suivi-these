@@ -16,7 +16,9 @@ import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
 
-import Soutenance from "./screen/Soutenance";
+import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
+
+/*import Soutenance from "./screen/Soutenance";
 import Jury from "./screen/Jury";
 import NotationMaster from "./components/pageJury/NotationMaster";
 import ProfilJury from "./components/pageJury/ProfilJury";
@@ -51,6 +53,11 @@ const App = () => {
             <Route path="/account/evolution" element={<EvolutionDossier />} />
           </Route>
           <Route path="/acteur/jury" element={<Jury />}>
+          <Route
+            path="/connexion/etudiant"
+            element={<EtudiantConnexionScreen />}
+          ></Route>
+        { /* 
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
             <Route path="/acteur/jury/profil" element={<ProfilJury />} />
@@ -58,7 +65,7 @@ const App = () => {
               path="/acteur/jury/notifications"
               element={<NotificationJury />}
             />
-          </Route>
+  </Route>*/}
           <Route
             path="/*"
             element={
@@ -70,6 +77,7 @@ const App = () => {
               </div>
             }
           />
+
           {/* Routes pour les coordonateurs */}
           <Route
             path="/acteur/coordonateur"
@@ -99,7 +107,7 @@ const App = () => {
             path="/acteur/coordonateur/notification"
             element={<NotificationJury />}
           ></Route>
-          <Route
+          {/* <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
           ></Route>

@@ -4,270 +4,176 @@ const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 const path = require("path");
 // const fs = require('fs')
-const { storage } = require("../../firebase.config");
-const {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} = require("firebase/storage");
-const { Types } = require("../constants");
-const Etudiant = require("../models/Etudiant");
-const saltRounds = 10;
-// var passport = require('passport');
+const { storage } = require('../../firebase.config')
+const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
+const { Types } = require('../constants');
+const Etudiant = require('../models/Etudiant');
+const { removePassword } = require('../utils')
 
-exports.register = function (req, res) {
-  console.log("enter");
-  var Etudiant = new USERS();
-  Etudiant.matricule = req.body.matricule;
-  Etudiant.nom = req.body.nom;
-  Etudiant.prenom = req.body.prenom;
-  Etudiant.motDePasse = req.body.motDePasse;
-  Etudiant.niveau = req.body.niveau;
-  Etudiant.email = req.body.email;
-  Etudiant.dateNaissance = req.body.dateNaissance;
-  Etudiant.lieuNaissance = req.body.lieuNaissance;
-  Etudiant.numTelephone = req.body.numTelephone;
-  Etudiant.sexe = req.body.sexe;
-  Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
-  Etudiant.uniteRecherche = req.body.uniteRecherche;
-  Etudiant.encadreur = req.body.encadreur;
-  //controle;
-  if (Etudiant.nom == "") {
-    return res
-      .json({
-        success: false,
-        message:
-          "Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter",
-      })
-      .status(500);
-  } else if (Etudiant.prenom == "") {
-    return res
-      .json({
-        success: false,
-        message:
-          "Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter",
-      })
-      .status(500);
-  } else if (Etudiant.motDePasse == "") {
-    return res.json({
-      success: false,
-      message: "veuillez svp entrer un mot de passe",
-    });
-  } else if (Etudiant.motDePasse !== "") {
-    if (passwordComplexity().validate(Etudiant.motDePasse).error) {
-      return res
-        .json({
-          success: false,
-          message:
-            "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,",
-        })
-        .status(500);
-    } else {
-      console.log("mot de passe valide");
-    }
-  } else if (Etudiant.dateNaissance == "") {
-    return res
-      .json({ success: false, message: "le champ date de naissance est vide" })
-      .status(500);
-  } else if (Etudiant.lieuNaissance == "") {
-    return res
-      .json({
-        success: false,
-        message: "le champ Lieu de naissance est vide de naissance est vide",
-      })
-      .status(500);
-  } else if (Etudiant.numTelephone == "") {
-    res
-      .json({
-        success: false,
-        message:
-          "le champs numero de telephone est vide veuillez entrer votre numero de telephone",
-      })
-      .status(500);
-  }
-  Etudiant.save(function (err, nouveau_Etudiant) {
-    console.log("ici ici");
-    if (err) {
-      console.log(err);
-      res
-        .json({
-          success: false,
-          message:
-            "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur",
-          erreur: err,
-        })
-        .status(500);
-    }
-    res
-      .json({
+
+exports.register = function(req,res) {
+	var Etudiant = new USERS();
+	Etudiant.matricule = req.body.matricule;
+	Etudiant.nom = req.body.nom;
+	Etudiant.prenom = req.body.prenom;
+	Etudiant.motDePasse = req.body.motDePasse;
+	Etudiant.niveau = req.body.niveau;
+	Etudiant.email = req.body.email;
+	Etudiant.dateNaissance = req.body.dateNaissance;
+	Etudiant.lieuNaissance = req.body.lieuNaissance;
+	Etudiant.numTelephone = req.body.numTelephone;
+	Etudiant.sexe = req.body.sexe;
+	Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
+	Etudiant.departement = req.body.departement;
+	Etudiant.encadreur = req.body.encadreur;
+	
+	if(Etudiant.nom == ''){
+		return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
+	}else if(Etudiant.prenom == ''){
+		return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
+	}else if(Etudiant.motDePasse == ''){
+		return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
+		
+	}else if(Etudiant.motDePasse !== ''){
+		if(passwordComplexity().validate(Etudiant.motDePasse).error){
+			return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+		}else{
+			console.log("mot de passe valide")
+		}
+	}else if( Etudiant.dateNaissance == ''){
+		return res.json({success:false,message:'le champ date de naissance est vide'}).status(500);
+	}else if( Etudiant.lieuNaissance == ''){
+		return res.json({success:false,message:'le champ Lieu de naissance est vide de naissance est vide'}).status(500);
+	}else if(Etudiant.numTelephone == ''){
+		res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
+	}
+	Etudiant.save(function(err,nouveau_etudiant){
+		if(err){
+			console.log(err);
+			return res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+		}
+		
+		// Create user session
+    req.session.user = {
+        _id: nouveau_etudiant._id,
+        model: Types.ACTEURS.ETUDIANT
+    };
+
+    res.json({
         success: true,
-        message: "le nouveau etudiant viens d'etre enregistrer avec success",
-        data: nouveau_Etudiant,
-      })
-      .status(201);
-  });
+        message: "Enregistre avec succes",
+        data: removePassword(nouveau_etudiant.toJSON())
+    }).status(201);
+	})
+}
 
-  //if  passwordComplexity().validate(Etudiant.motDePasse).error
-  //
-};
+exports.login_student = async function(req,res){
+	try{
+		const {matricule,motDePasse, niveau} = req.body;
+		let etudiant = await USERS.findOne({matricule, niveau});
+		if(!etudiant){return res.status(404).send("User Not found")};
 
-exports.login_student = async function (req, res) {
-  try {
-    const { matricule, motDePasse, niveau } = req.body;
-    let etudiant = await USERS.findOne({ matricule, niveau });
-    console.log(`${matricule} et ${motDePasse} et ${niveau}`);
-    if (!etudiant) {
-      return res.status(404).send("Donnees Invalides : veuillez reesayer");
-    }
+		bcrypt.compare(motDePasse, etudiant.motDePasse, function(err,result) {
+			if(err){
+				console.log("une erreur interne est suvenue: ",err);
+				return res.status(500).json({
+					success:false,message:"une erreur interne est survenue",
+					error:err
+				});
+			}
 
-    bcrypt.compare(motDePasse, etudiant.motDePasse, function (err, result) {
-      if (err) {
-        console.log("une erreur interne est suvenue: ", err);
-        return res.status(500).json({
-          success: false,
-          message: "une erreur interne est survenue",
-          error: err,
-        });
-      }
+			if(!result) {
+				res.json({
+					success: false,
+					message: "Invalid credentials"
+				})
+			} else {
+				// Create user session
+				req.session.user = {
+					_id: etudiant._id,
+					model: Types.ACTEURS.ETUDIANT
+				};
 
-      if (!result) {
-        res.status(404).send("Mot de passe Invalide");
-        // res.json({
-        //   success: false,
-        //   message: "Invalid credentials",
-        // });
-      } else {
-        // Create user session
-        req.session.user = {
-          _id: etudiant._id,
-          model: Types.ACTEURS.ETUDIANT,
-        };
+				res.json({
+					success: true,
+					message: "Connexion reussie",
+					data: removePassword(etudiant.toJSON())
+				});
+			}
+		})
 
-        // Remove mot de passe from returned result
-        let data = etudiant.toJSON();
-        delete data.motDePasse;
-        console.log(data);
-        res.json({
-          success: true,
-          message: "Connexion reussie",
-          data,
-        });
-      }
-    });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-};
+	} catch(error){
+		res.status(500).send(error);
+	}
+}
 
-exports.change_student_password = async function (req, res) {
-  try {
-    const { id } = req.params;
-    const { pass, newPass } = req.body;
+exports.change_student_password = async function(req,res){
+   try {
+		const id = req.session.user._id;
+		const {pass,newPass} = req.body;
 
-    USERS.findById(id, function (err, etudiant) {
-      if (err) {
-        console.log(
-          "une erreur esr survenu lors de la recuperation de cet utilisateur, l'utilisateur n'existe pas ou a ete supprier"
-        );
-        return res
-          .json({
-            success: false,
-            message:
-              "quelque chose nas pas marcher lors de la recuperation de l'etudiant",
-            error: err,
-          })
-          .status(500);
-      }
+		USERS.findById(id,function(err,etudiant){
+			if(err){
+				console.log("une erreur esr survenu lors de la recuperation de cet utilisateur, l'utilisateur n'existe pas ou a ete supprier")
+				return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+			}
+		
+			console.log(etudiant);
+		
+			//utilisateur trouver
+			bcrypt.compare(pass,etudiant.motDePasse,function(err,result){
+				if(err){
+					console.log("une erreur interne est suvenue: ",err);
+					return res.json({success:false,message:"une erreur interne est survenue",error:err});
+				}
+				if(result == true){
+					etudiant.motDePasse = newPass
+					etudiant.save(function(err,nouveau_Etudiant){
+						console.log('ici ici');
+						if(err){
+							console.log(err);
+							res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+						}
+						
+						if (req.session)
+        					req.session.destroy();
 
-      console.log(etudiant);
+						res.json({ success: true, message: "Vous avez ete deconnecte" });
+					})
+				}else{
+					res.status(400).json({message:"les mots de passe ne correspondent pas"})
+				}
+			})
+		})
+	   
+	} catch(error){
+	   console.log(error);
+	   res.status(500).send("Something went wrong")
+   }
+}
 
-      //utilisateur trouver
-      bcrypt.compare(pass, etudiant.motDePasse, function (err, result) {
-        if (err) {
-          console.log("une erreur interne est suvenue: ", err);
-          return res.json({
-            success: false,
-            message: "une erreur interne est survenue",
-            error: err,
-          });
-        }
-        if (result == true) {
-          etudiant.motDePasse = newPass;
-          etudiant.save(function (err, nouveau_Etudiant) {
-            console.log("ici ici");
-            if (err) {
-              console.log(err);
-              res
-                .json({
-                  success: false,
-                  message:
-                    "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur",
-                  erreur: err,
-                })
-                .status(500);
-            }
-            res
-              .json({
-                success: true,
-                message:
-                  "le nouveau etudiant viens d'etre enregistrer avec success",
-                data: nouveau_Etudiant.motDePasse,
-              })
-              .status(200);
-          });
-        } else {
-          res.json({ message: "les mots de passe ne correspondent pas" });
-        }
-      });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong");
-  }
-};
 
-exports.changePhoneNumber = function (req, res) {
-  const { newPhoneNumber } = req.body;
+exports.changePhoneNumber = function(req,res){
+	const {newPhoneNumber} = req.body;
 
-  USERS.findById(req.session.user._id, function (err, etudiant) {
-    if (err) {
-      return res
-        .json({
-          success: false,
-          message:
-            "quelque chose nas pas marcher lors de la recuperation de l'etudiant",
-          error: err,
-        })
-        .status(500);
-    }
-    //L'utilisateur a ete trouver
-    if (req.body.newPhoneNumber) {
-      etudiant.numTelephone = newPhoneNumber;
-    }
-    etudiant.save(function (err, newStudent) {
-      if (err) {
-        console.log(
-          "Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ",
-          err
-        );
-        res
-          .json({
-            success: false,
-            message:
-              "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone",
-            error: err,
-          })
-          .status(500);
-      }
-      res.json({
-        success: true,
-        message:
-          "le nouveau numero de telephone a ete enregistrer avec success",
-        data: newStudent.numTelephone,
-      });
-    });
-  });
-};
+	USERS.findById(req.session.user._id, function(err,etudiant){
+		if(err){
+			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
+		}
+		 //L'utilisateur a ete trouver
+		 if(req.body.newPhoneNumber){
+			 etudiant.numTelephone = newPhoneNumber;
+		 }
+		 etudiant.save(function(err,newStudent){
+			if(err){
+				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+				res.json({success:false,message:"Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone",error:err}).status(500);        
+			}
+			res.json({success:true,message:"le nouveau numero de telephone a ete enregistrer avec success",data:newStudent.numTelephone});
+		})
+	})
+}
+
 
 /**
  * Recuperer les fichiers renvoyes par un etudiant et
@@ -587,8 +493,8 @@ exports.datesSoutenance = function (req, res) {
     let result = {};
 
     for (let etud of etuds) {
-      let date = etud.dateSoutenance;
-      let etudObj = {
+      const date = etud.dateSoutenance;
+      const etudObj = {
         matricule: etud.matricule,
         nom: etud.nom,
         prenom: etud.prenom,
@@ -598,7 +504,7 @@ exports.datesSoutenance = function (req, res) {
       if (!(date in result)) {
         result[date] = [etudObj];
       } else {
-        result[date] = result[date].push(etudObj);
+        result[date].push(etudObj);
       }
     }
 
@@ -607,20 +513,31 @@ exports.datesSoutenance = function (req, res) {
 };
 
 exports.etapesDossier = async function (req, res) {
-  const idEtudiant = req.session.user._id;
-  Etudiant.findById(idEtudiant, async (err, etud) => {
-    if (err) return res.status(500).send(err);
+	const idEtudiant = req.session.user._id;
+	Etudiant.findById(idEtudiant, async (err, etud) => {
+		if (err)
+			return res.status(500).send(err);
 
-    if (!etud) {
-      return res.status(404).send("Etudiant non trouve");
-    }
+		if (!etud) {
+			return res.status(404).send("Etudiant non trouve");
+		}
 
-    try {
-      let etapes = await EtapeDossier.find({ dossier: etud.dossier });
-      res.json(etapes);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json(error);
-    }
-  });
-};
+		try {
+			let etapes = await EtapeDossier.find({ dossier: etud.dossier });
+			res.json(etapes);
+		} catch (error) {
+			console.error(error);
+			res.status(500).json(error);
+		}
+	});
+}
+
+exports.checkUploaderDossier = async function (req, res) {
+	const idEtudiant = req.session.user._id;
+
+	let etud = await Etudiant.findById(idEtudiant);
+	if (!etud)
+		res.status(404).send("Etudiant non trouve");
+
+	res.send({ 'dejaUploade': Boolean(etud.dossier) });
+}

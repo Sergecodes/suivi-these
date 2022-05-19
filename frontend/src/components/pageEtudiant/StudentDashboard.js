@@ -25,6 +25,15 @@ const StudentDashboard = (props) => {
   const dispatch = useDispatch();
   const files = useSelector((state) => state.dashboardDisplay);
   const { width } = useWindowSize();
+  const nagivate = useNavigate();
+  const handleLougout = () => {
+    toast.success("Deconnexion Reussie");
+    alert("Deconnexion Reussie");
+
+    dispatch(logout());
+    Navigate("/");
+  };
+  
   return (
     <section
       className="studentDashboard px-2"
@@ -66,6 +75,36 @@ const StudentDashboard = (props) => {
               <BsArrowRepeat /> Changement d'encadreur
             </p>
           </Link>
+
+        <div className="studentInfo" style={{ lineHeight: "1.4" }}>
+          <p className="fs-6" style={{}}>
+            {EtudiantData[0].nom}
+          </p>
+          <p className="fs-6" style={{}}>
+            {EtudiantData[0].prenom}
+          </p>
+          <p>Niveau: {EtudiantData[0].niveau}</p>
+          <p className="fw-light" style={{}}>
+            Unité: {EtudiantData[0].uniteRecherche.code}
+          </p>
+        </div>
+      </div>
+      <div className="dashboardLinks mt-4">
+        <Link to="/account/depot">
+          <p>
+            <BsFolder /> Depot dossier
+          </p>
+        </Link>
+        <Link to="/account/dossier">
+          <p>
+            <BsArrowRepeat /> Changement de sujet
+          </p>
+        </Link>
+        <Link to="/account/dossier">
+          <p>
+            <BsArrowRepeat /> Changement d'encadreur
+          </p>
+        </Link>
 
           <Link
             to="/account/profil"

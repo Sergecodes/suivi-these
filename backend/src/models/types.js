@@ -32,7 +32,10 @@ const TypeNotification = Object.freeze({
     DOSSIER_REJETE: "Dossier de l'étudiant rejeté",
     COMPTE_REJETE: "Compte de l'étudiant rejeté",
     NOTE_JURY: "Nouvelle note de jury",
-    AUTORISATION_SOUTENANCE: "Autorisation de soutenance d'un étudiant du Master 2"
+    SOUTENANCE_PROGRAMMEE: "Date de soutenance programmeé",
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
+    SOUTENANCE_NON_VALIDEE: "Soutenance non validé",
+    THESE_REJETE: 'Thèse rejeté'
 });
 
 
@@ -71,15 +74,15 @@ const AvisDestinataire = Object.freeze({
 const CategorieFichierMaster = Object.freeze({
     CV: 'CV',
     MEMOIRE: 'Mémoire',
-    // ACTE_NAISSANCE: 'Acte de naissance',
-    // ATTEST_INSCRIP: "Attestation d'inscription",
-    // REL_NOTES_M1: 'Relevé de notes Master 1',
-    // REL_NOTES_M2: 'Relevé de notes Master 2',
-    // LISTE_SELECT: 'Liste de selection',
-    // FICHE_INSCRIP: "Fiche d'inscription",
-    // DROITS_UNIV: 'Droits universitaires',
-    // RAPPORT_PRESOUTIENT: 'Rapport pre soutenance',
-    // ATTEST_LIC: 'Attestation de license',
+    ACTE_NAISSANCE: 'Acte de naissance',
+    ATTEST_INSCRIP: "Attestation d'inscription",
+    REL_NOTES_M1: 'Relevé de notes Master 1',
+    REL_NOTES_M2: 'Relevé de notes Master 2',
+    LISTE_SELECT: 'Liste de selection',
+    FICHE_INSCRIP: "Fiche d'inscription",
+    DROITS_UNIV: 'Droits universitaires',
+    RAPPORT_PRESOUTIENT: 'Rapport pre soutenance',
+    ATTEST_LIC: 'Attestation de license',
 });
 
 const CategorieFichierThese = Object.freeze({
@@ -152,7 +155,8 @@ const ActeurDossier = Object.freeze({
 });
 
 const CategorieNote = Object.freeze({
-    
+    LECTURE: 'Note de lecture',
+
 });
 
 

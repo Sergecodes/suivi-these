@@ -2,24 +2,35 @@ const DEPART = require('../models/Departement');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
-const saltRounds = 10;
-// var passport = require('passport');
+const { removePassword } = require('../utils')
 
 
 
 exports.register_departement = function(req,res){
     var departement = new DEPART();
-        departement.nom = req.body.nom;
-        departement.motDePasse = req.body.motDePasse;
-        departement.email = req.body.email;
+	departement.nom = req.body.nom;
+	departement.motDePasse = req.body.motDePasse;
+	departement.email = req.body.email;
+	departement.uniteRecherche = req.body.uniteRecherche;
 
-        departement.save(function(err,nouveau_departement){
-            if(err){
-                console.log("erreur lors de l'enregistrement dun departement: ",err);
-                res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
-            }
-            res.json({success:true,message:'Enregistrer avec success',data:nouveau_departement}).status(201);
-        })
+	departement.save(function(err,nouveau_departement){
+		if(err){
+			console.log("erreur lors de l'enregistrement dun departement: ",err);
+			return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau departement",error:err}).status(500)
+		}
+		
+		// Create user session
+        req.session.user = {
+            _id: nouveau_departement._id,
+            model: Types.ACTEURS.DEPARTEMENT
+        };
+
+        res.json({
+            success: true,
+            message: "Enregistre avec succes",
+            data: removePassword(nouveau_departement.toJSON())
+        }).status(201);
+	})
 }
 
 
@@ -49,14 +60,10 @@ exports.login_departement = async function(req,res){
 					model: Types.ACTEURS.DEPARTEMENT
 				};
 
-				// Remove mot de passe from returned result
-				let data = departement.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: nouveauPassword(departement.toJSON())
 				});
 			}
 		})
