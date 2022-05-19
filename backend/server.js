@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
-const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
 
@@ -16,7 +16,7 @@ const departementRoutes = require('./src/routes/departement');
 const expertRoutes = require('./src/routes/expert');
 const juryRoutes  = require('./src/routes/jury');
 const rectoratRoutes = require('./src/routes/rectorat');
-const otherRoutes = require('./src/routes/other')
+const commonRoutes = require('./src/routes/common')
 // var passport = require('passport');
 
 
@@ -62,6 +62,7 @@ app.use(session({
     cookie: {
         sameSite: 'none',
         maxAge: 2 * 24 * 60 * 60 * 1000,  // = 2days
+        httpOnly: true,
         secure: process.env.PRODUCTION === "true" || false
     },
     store: MongoStore.create({
@@ -69,7 +70,7 @@ app.use(session({
         ttl: 2 * 24 * 60 * 60   // = 2 days. Default is 14 days
     })
 }));
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,
@@ -87,7 +88,7 @@ apiRouter.get('/', (req, res) => {
 });
 
 app.use('/api', apiRouter);
-app.use('/api', otherRoutes);
+app.use('/api', commonRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/etudiants', etudiantRoutes);
 app.use('/api/conseils', conseilRoutes);

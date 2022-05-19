@@ -1,6 +1,7 @@
 const { Types } = require('./constants');
 const Jury = require('./models/Jury');
 const Dossier = require('./models/Dossier');
+const Coordo = require('./modes/Coordonateur');
 
 
 exports.isEtudiant = function(req, res, next) {
@@ -82,6 +83,51 @@ exports.isAdmin = function(req, res, next) {
     next();
 }
 
+exports.getEtudiantFromReq = async function (req, res, next) {
+    const { idEtudiant } = req.body;
+    let etudiant = await Etudiant.findById(idEtudiant);
+
+    if (!etudiant)
+        return res.status(404).send("Etudiant non trouve");
+
+    res.locals.etudiant = etudiant;
+    next();
+}
+
+exports.getCoordonateur = async function (req, res, next) {
+    let coordo = await Coordo.findById(req.session.user._id);
+
+    if (!coordo)
+        return res.status(404).send("Coordonateur non trouve");
+
+    res.locals.coordo = coordo;
+    next();
+}
+
+
+exports.getJury = async function (req, res, next) {
+    let jury = await Jury.findById(req.session.user._id);
+
+    if (!jury)
+        return res.status(404).send("Jury non trouve");
+
+    res.locals.jury = jury;
+    next();
+}
+
+
+exports.getDossierFromReq = async function (req, res, next) {
+    const { idDossier } = req.body;
+    let dossier = await Dossier.findById(idDossier);
+
+    if (!dossier)
+        return res.status(404).send("Dossier non trouve");
+
+    res.locals.dossier = dossier;
+    next();
+}
+
+
 
 exports.getJuryAndDossier = async function (req, res, next) {
     const { idDossier } = req.body;
@@ -89,10 +135,10 @@ exports.getJuryAndDossier = async function (req, res, next) {
 	let dossier = await Dossier.findById(idDossier);
 
 	if (!jury)
-		res.status(404).send("Jury non trouve");
+		return res.status(404).send("Jury non trouve");
 	
 	if (!dossier)
-		res.status(404).send("Dossier non trouve");
+		return res.status(404).send("Dossier non trouve");
 
     res.locals.jury = jury;
     res.locals.dossier = dossier;

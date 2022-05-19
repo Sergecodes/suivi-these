@@ -71,12 +71,21 @@ CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudi
     });
 };
 
+CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
+    return Boolean(donne);
+}   
+
 CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
     type, 
     commentaire, 
     rapport, 
     idDossier
 ) {
+    let donne = await this.verifierAvisDonne(idDossier);
+    if (donne)
+        throw "Vous avez deja envoye votre avis a l'admin";
+
     await Avis.create({
         type,
         commentaire,

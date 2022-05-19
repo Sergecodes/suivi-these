@@ -105,7 +105,7 @@ JurySchema.methods.donnerAvisAdmin = async function(
     rapport, 
     idDossier
 ) {
-    let donne = await this.verifierDejaNoter(idDossier);
+    let donne = await this.verifierAvisDonne(idDossier);
     if (donne)
         throw "Ce membre de jury a deja envoye son avis a l'admin";
 

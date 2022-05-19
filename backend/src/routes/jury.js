@@ -7,7 +7,7 @@ router.route('/register-jury').post(isAdmin, controller.register_jury);
 
 router.route('/login-jury').post(controller.login_jury);
 
-router.route('/rapports-etudiants').get(isJury, controller.rapportsEtudsMaster);
+router.route('/rapports-etudiants-master').get(isJury, controller.rapportsEtudsMaster);
 
 router.route('/noter-dossier').post(isJury, getJuryAndDossier, controller.noterDossier);
 
