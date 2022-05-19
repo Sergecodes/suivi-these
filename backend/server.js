@@ -16,6 +16,7 @@ const departementRoutes = require('./src/routes/departement');
 const expertRoutes = require('./src/routes/expert');
 const juryRoutes  = require('./src/routes/jury');
 const rectoratRoutes = require('./src/routes/rectorat');
+const uniteRoutes = require('./src/routes/uniteRecherche')
 const otherRoutes = require('./src/routes/other')
 // var passport = require('passport');
 
@@ -96,6 +97,7 @@ app.use('/api/departements', departementRoutes);
 app.use('/api/experts', expertRoutes);
 app.use('/api/jury', juryRoutes);
 app.use('/api/rectorat', rectoratRoutes);
+app.use('/api/unite', uniteRoutes);
 
 
 // Lancer le serveur

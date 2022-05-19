@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const MasterFilesUploadSlice=createSlice({
     name:"masterFilesUpload",
     initialState:{
@@ -14,7 +15,7 @@ export const MasterFilesUploadSlice=createSlice({
         ficheInscription:{name:"aucun fichier selectionnés"},
         acteDeNaissance:{name:"aucun fichier selectionnés"},
         cv:{name:"aucun fichier selectionnés"},
-        enseignant1:
+       /* enseignant1:
             {
                 nom:"aucun nom selectionné",
                 prenom:"aucun prenom selectionné",
@@ -39,7 +40,7 @@ export const MasterFilesUploadSlice=createSlice({
                 email:"aucun email selectionné",
                 telephone:"aucun telephone selectionné",
                 grade:"aucun grade selectionné",
-            }
+            }* */
         
 
     
@@ -77,7 +78,7 @@ export const MasterFilesUploadSlice=createSlice({
         },
         addCv:(state,action)=>{
             state.cv=action.payload.cv;
-        },
+        }/*,
         addFirstEnseignant:(state,action)=>{
             state.enseignant1=action.payload.enseignant1;
         },
@@ -86,7 +87,7 @@ export const MasterFilesUploadSlice=createSlice({
         },
         addThirdEnseignant:(state,action)=>{
             state.enseignant3=action.payload.enseignant3;
-        }
+        }*/
     }
 })
 
@@ -101,9 +102,9 @@ export const {addListeSelection}=MasterFilesUploadSlice.actions;
 export const {addFicheInscription}=MasterFilesUploadSlice.actions;
 export const {addActeDeNaissance}=MasterFilesUploadSlice.actions;
 export const {addCv}=MasterFilesUploadSlice.actions;
-export const {addFirstEnseignant}=MasterFilesUploadSlice.actions;
+/*export const {addFirstEnseignant}=MasterFilesUploadSlice.actions;
 export const {addSecondEnseignant}=MasterFilesUploadSlice.actions;
-export const {addThirdEnseignant}=MasterFilesUploadSlice.actions;
+export const {addThirdEnseignant}=MasterFilesUploadSlice.actions;*/
 
 
 

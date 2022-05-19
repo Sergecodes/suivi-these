@@ -1,65 +1,70 @@
-const USERS  = require('../models/Etudiant');
-const { Dossier, EtapeDossier, FichierDossier } = require('../models/Dossier')
+const USERS = require("../models/Etudiant");
+const { Dossier, EtapeDossier, FichierDossier } = require("../models/Dossier");
 const passwordComplexity = require("joi-password-complexity");
-const bcrypt = require('bcrypt');
-const path = require('path');
+const bcrypt = require("bcrypt");
+const path = require("path");
 // const fs = require('fs')
 const { storage } = require('../../firebase.config')
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
-const saltRounds = 10;
-// var passport = require('passport');
+const { removePassword } = require('../utils')
 
 
-exports.register = function(req,res){
-	console.log("enter")
+exports.register = function(req,res) {
 	var Etudiant = new USERS();
-		Etudiant.matricule = req.body.matricule;
-		Etudiant.nom = req.body.nom;
-		Etudiant.prenom = req.body.prenom;
-		Etudiant.motDePasse = req.body.motDePasse;
-		Etudiant.niveau = req.body.niveau;
-		Etudiant.email = req.body.email;
-		Etudiant.dateNaissance = req.body.dateNaissance;
-		Etudiant.lieuNaissance = req.body.lieuNaissance;
-		Etudiant.numTelephone = req.body.numTelephone;
-		Etudiant.sexe = req.body.sexe;
-		Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
-		Etudiant.uniteRecherche = req.body.uniteRecherche;
-		Etudiant.encadreur = req.body.encadreur;
-		//controle;
-		if(Etudiant.nom == ''){
-			return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
-		}else if(Etudiant.prenom == ''){
-			return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
-		}else if(Etudiant.motDePasse == ''){
-			return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
-		  
-		}else if(Etudiant.motDePasse !== ''){
-			if(passwordComplexity().validate(Etudiant.motDePasse).error){
-				return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
-			}else{
-				console.log("mot de passe valide")
-			}
-		}else if( Etudiant.dateNaissance == ''){
-			return res.json({success:false,message:'le champ date de naissance est vide'}).status(500);
-		}else if( Etudiant.lieuNaissance == ''){
-			return res.json({success:false,message:'le champ Lieu de naissance est vide de naissance est vide'}).status(500);
-		}else if(Etudiant.numTelephone == ''){
-			res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
+	Etudiant.matricule = req.body.matricule;
+	Etudiant.nom = req.body.nom;
+	Etudiant.prenom = req.body.prenom;
+	Etudiant.motDePasse = req.body.motDePasse;
+	Etudiant.niveau = req.body.niveau;
+	Etudiant.email = req.body.email;
+	Etudiant.dateNaissance = req.body.dateNaissance;
+	Etudiant.lieuNaissance = req.body.lieuNaissance;
+	Etudiant.numTelephone = req.body.numTelephone;
+	Etudiant.sexe = req.body.sexe;
+	Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
+	Etudiant.departement = req.body.departement;
+	Etudiant.encadreur = req.body.encadreur;
+	
+	if(Etudiant.nom == ''){
+		return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
+	}else if(Etudiant.prenom == ''){
+		return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
+	}else if(Etudiant.motDePasse == ''){
+		return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
+		
+	}else if(Etudiant.motDePasse !== ''){
+		if(passwordComplexity().validate(Etudiant.motDePasse).error){
+			return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+		}else{
+			console.log("mot de passe valide")
 		}
-		Etudiant.save(function(err,nouveau_Etudiant){
-			console.log('ici ici');
-			if(err){
-				console.log(err);
-				res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
-			}
-			res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant}).status(201);
-		})
+	}else if( Etudiant.dateNaissance == ''){
+		return res.json({success:false,message:'le champ date de naissance est vide'}).status(500);
+	}else if( Etudiant.lieuNaissance == ''){
+		return res.json({success:false,message:'le champ Lieu de naissance est vide de naissance est vide'}).status(500);
+	}else if(Etudiant.numTelephone == ''){
+		res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
+	}
+	Etudiant.save(function(err,nouveau_etudiant){
+		if(err){
+			console.log(err);
+			return res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
+		}
+		
+		// Create user session
+    req.session.user = {
+        _id: nouveau_etudiant._id,
+        model: Types.ACTEURS.ETUDIANT
+    };
 
-		//if  passwordComplexity().validate(Etudiant.motDePasse).error
-		//  
+    res.json({
+        success: true,
+        message: "Enregistre avec succes",
+        data: removePassword(nouveau_etudiant.toJSON())
+    }).status(201);
+	})
 }
 
 exports.login_student = async function(req,res){
@@ -89,14 +94,10 @@ exports.login_student = async function(req,res){
 					model: Types.ACTEURS.ETUDIANT
 				};
 
-				// Remove mot de passe from returned result
-				let data = etudiant.toJSON();
-				delete data.motDePasse;
-
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data
+					data: removePassword(etudiant.toJSON())
 				});
 			}
 		})
@@ -106,9 +107,9 @@ exports.login_student = async function(req,res){
 	}
 }
 
-exports.change_student_password =async  function(req,res){
-   	try {
-		const {id}=req.params;
+exports.change_student_password = async function(req,res){
+   try {
+		const id = req.session.user._id;
 		const {pass,newPass} = req.body;
 
 		USERS.findById(id,function(err,etudiant){
@@ -133,10 +134,14 @@ exports.change_student_password =async  function(req,res){
 							console.log(err);
 							res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
 						}
-						res.json({success:true,message:"le nouveau etudiant viens d'etre enregistrer avec success",data:nouveau_Etudiant.motDePasse}).status(200);
+						
+						if (req.session)
+        					req.session.destroy();
+
+						res.json({ success: true, message: "Vous avez ete deconnecte" });
 					})
 				}else{
-					res.json({message:"les mots de passe ne correspondent pas"})
+					res.status(400).json({message:"les mots de passe ne correspondent pas"})
 				}
 			})
 		})
@@ -171,309 +176,342 @@ exports.changePhoneNumber = function(req,res){
 
 
 /**
- * Recuperer les fichiers renvoyes par un etudiant et 
+ * Recuperer les fichiers renvoyes par un etudiant et
  * creer son dossier a partir de ceux-ci.
- * 
+ *
  */
-exports.updatePhoto = function(req, res) {
-	const { idEtudiant } = req.body;
+exports.updatePhoto = function (req, res) {
+  const { idEtudiant } = req.body;
 
-	if (!req.files || Object.keys(req.files).length === 0) {
-		return res.status(400).json({ 
-			success: false,
-			message: "Aucun fichier envoyé" 
-		});
-	}
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Aucun fichier envoyé",
+    });
+  }
 
-	const file = req.files.photo;
-	const extname = path.extname(file.name);
+  const file = req.files.photo;
+  const extname = path.extname(file.name);
 
-	// Validate file extensions
-	const validExtensions = ['.png', '.jpg', '.jpeg'];
+  // Validate file extensions
+  const validExtensions = [".png", ".jpg", ".jpeg"];
 
-	if (!validExtensions.includes(extname)) {
-		return res.status(422).send(
-			`Format non supporte (${extname.substring(1)})`
-		);
-	}
+  if (!validExtensions.includes(extname)) {
+    return res
+      .status(422)
+      .send(`Format non supporte (${extname.substring(1)})`);
+  }
 
-	Etudiant.findById(idEtudiant, async function(err, etud) {
-		if(err) {
-			return res.json({
-				success: false,
-				message: "quelque chose nas pas marcher lors de la recuperation de l'etudiant"
-			}).status(500);
-		}
+  Etudiant.findById(idEtudiant, async function (err, etud) {
+    if (err) {
+      return res
+        .json({
+          success: false,
+          message:
+            "quelque chose nas pas marcher lors de la recuperation de l'etudiant",
+        })
+        .status(500);
+    }
 
-		if (!etud) {
-			return res.status(404).json({ message: 'Etudiant non trouve' });
-		}
-		
-		// Upload files
-		const etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
+    if (!etud) {
+      return res.status(404).json({ message: "Etudiant non trouve" });
+    }
 
-		if (process.env.USE_FIREBASE === "true") {
-			const uploadPath = path.join(etudDir, 'photo_profil' + path.extname(file.name));
-			const imageRef = ref(storage, uploadPath);
-			const fileMetadata = {
-				// cacheControl: 'public,max-age=86400',  // 24hrs = 86400s (1hr=3600s) 
-				contentType: file.mimetype
-			};
-	
-			await uploadBytesResumable(imageRef, file.data, fileMetadata)
-			.then(async (snapshot) => {
-				// console.log('Uploaded', snapshot.totalBytes, 'bytes.');
-				console.log('File metadata:', snapshot.metadata);
-		
-				// Let's get a download URL for the file.
-				await getDownloadURL(snapshot.ref).then(async (url) => {
-					console.log('File available at', url);
+    // Upload files
+    const etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
 
-					etud.urlPhotoProfil = url;
-					await etud.save();
-					return res.json({ success: true, message: 'Profile picture updated'}).status(200);
-				});
-			}).catch(error => {
-				console.error('Upload failed', error);
-				return res.status(500).json({ success: false, error });
-			});
+    if (process.env.USE_FIREBASE === "true") {
+      const uploadPath = path.join(
+        etudDir,
+        "photo_profil" + path.extname(file.name)
+      );
+      const imageRef = ref(storage, uploadPath);
+      const fileMetadata = {
+        // cacheControl: 'public,max-age=86400',  // 24hrs = 86400s (1hr=3600s)
+        contentType: file.mimetype,
+      };
 
-		} else {
-			const basedir = process.env.basedir;
+      await uploadBytesResumable(imageRef, file.data, fileMetadata)
+        .then(async (snapshot) => {
+          // console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+          console.log("File metadata:", snapshot.metadata);
 
-			if (!basedir) {
-				console.error("Set 'basedir' in .env file");
-				process.exit(1);
-			}
+          // Let's get a download URL for the file.
+          await getDownloadURL(snapshot.ref).then(async (url) => {
+            console.log("File available at", url);
 
-			const saveDir = path.join(basedir, etudDir);
-			
-			// Create student directory if it doesn't exist
-			// if (!fs.existsSync(saveDir)) {
-			//     fs.mkdirSync(saveDir);
-			// }
+            etud.urlPhotoProfil = url;
+            await etud.save();
+            return res
+              .json({ success: true, message: "Profile picture updated" })
+              .status(200);
+          });
+        })
+        .catch((error) => {
+          console.error("Upload failed", error);
+          return res.status(500).json({ success: false, error });
+        });
+    } else {
+      const basedir = process.env.basedir;
 
-			const uploadPath = path.join(saveDir, 'photo_profil' + path.extname(file.name));
+      if (!basedir) {
+        console.error("Set 'basedir' in .env file");
+        process.exit(1);
+      }
 
-			// Use the mv() method to place the file somewhere on your server
-			fileObj.mv(uploadPath, async function(err) {
-				if (err)
-					return res.status(500).send(err);
+      const saveDir = path.join(basedir, etudDir);
 
-				etud.urlPhotoProfil = uploadPath;
-				await etud.save();
-				return res.json({ success: true, message: 'Profile picture updated'}).status(200);
-			});
-		}
-	});
-}
+      // Create student directory if it doesn't exist
+      // if (!fs.existsSync(saveDir)) {
+      //     fs.mkdirSync(saveDir);
+      // }
 
+      const uploadPath = path.join(
+        saveDir,
+        "photo_profil" + path.extname(file.name)
+      );
+
+      // Use the mv() method to place the file somewhere on your server
+      fileObj.mv(uploadPath, async function (err) {
+        if (err) return res.status(500).send(err);
+
+        etud.urlPhotoProfil = uploadPath;
+        await etud.save();
+        return res
+          .json({ success: true, message: "Profile picture updated" })
+          .status(200);
+      });
+    }
+  });
+};
+      
+      
 /**
- * Recuperer les fichiers renvoyes par un etudiant et 
+ * Recuperer les fichiers renvoyes par un etudiant et
  * creer son dossier a partir de ceux-ci.
  */
-exports.uploadFiles = function(req, res) {
-	const { sujet, niveau } = req.body;
-	const idEtudiant = req.session.user._id;
+exports.uploadFiles = function (req, res) {
+  const { sujet, niveau } = req.body;
+  const idEtudiant = req.session.user._id;
 
-	if (!sujet || !niveau) {
-		return res.status(400).json({ 
-			success: false,
-			message: "Invalid request body" 
-		});
-	}
+  if (!sujet || !niveau) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid request body",
+    });
+  }
 
-	if (!req.files || Object.keys(req.files).length === 0) {
-		return res.status(400).json({ 
-			success: false,
-			message: "Aucun fichier envoyé" 
-		});
-	} 
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Aucun fichier envoyé",
+    });
+  }
 
-	// Validate file categories
-	let validFilenames = [];
+  // Validate file categories
+  let validFilenames = [];
 
-	if (niveau == Types.Niveau.MASTER) {
-		validFilenames = Object.values(Types.CategorieFichierMaster);
-		for (let filename of validFilenames) {
-			if (!req.files[filename]) {
-				return res.status(400).json({
-					success: false,
-					message: `Le fichier ${filename} est manquant`
-				});
-			}
-		}
-	} else if (niveau == Types.Niveau.THESE) {
-		validFilenames = Object.values(Types.CategorieFichierThese);
-		for (let filename of validFilenames) {
-			if (!req.files[filename]) {
-				return res.status(400).json({
-					success: false,
-					message: `Le fichier ${filename} est manquant`
-				});
-			}
-		}
-	} else {
-		return res.status(400).json({
-			success: false,
-			message: 'Niveau non trouvé ou invalide'
-		});
-	}
+  if (niveau == Types.Niveau.MASTER) {
+    validFilenames = Object.values(Types.CategorieFichierMaster);
+    for (let filename of validFilenames) {
+      if (!req.files[filename]) {
+        return res.status(400).json({
+          success: false,
+          message: `Le fichier ${filename} est manquant`,
+        });
+      }
+    }
+  } else if (niveau == Types.Niveau.THESE) {
+    validFilenames = Object.values(Types.CategorieFichierThese);
+    for (let filename of validFilenames) {
+      if (!req.files[filename]) {
+        return res.status(400).json({
+          success: false,
+          message: `Le fichier ${filename} est manquant`,
+        });
+      }
+    }
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "Niveau non trouvé ou invalide",
+    });
+  }
 
-	const fileEntries = Object.entries(req.files);
+  const fileEntries = Object.entries(req.files);
 
-	// Validate file extensions
-	const validExtensions = ['.png', '.jpg', '.jpeg', '.pdf'];
+  // Validate file extensions
+  const validExtensions = [".png", ".jpg", ".jpeg", ".pdf"];
 
-	for (const [fileCat, fileCatObj] of fileEntries) {
-		let extname = path.extname(fileCatObj.name);
-		if (!validExtensions.includes(extname)) {
-			return res.status(422).send(
-				`Le fichier ${fileCat} a un format non supporte (${extname.substring(1)})`
-			);
-		}
-	}
+  for (const [fileCat, fileCatObj] of fileEntries) {
+    let extname = path.extname(fileCatObj.name);
+    if (!validExtensions.includes(extname)) {
+      return res
+        .status(422)
+        .send(
+          `Le fichier ${fileCat} a un format non supporte (${extname.substring(
+            1
+          )})`
+        );
+    }
+  }
 
-	Etudiant.findById(idEtudiant, function(err, etud) {
-		if(err) {
-			return res.json({
-				success: false,
-				message: "quelque chose nas pas marcher lors de la recuperation de l'etudiant"
-			}).status(500);
-		}
+  Etudiant.findById(idEtudiant, function (err, etud) {
+    if (err) {
+      return res
+        .json({
+          success: false,
+          message:
+            "quelque chose nas pas marcher lors de la recuperation de l'etudiant",
+        })
+        .status(500);
+    }
 
-		if (!etud) {
-			return res.status(404).json({ message: 'Etudiant non trouve' });
-		}
-		
-		// Create dossier
-		Dossier.create({ sujet, etudiant: idEtudiant }, async function(err, dossier) {
-			if (err) {
-				return res.json({
-					success: false,
-					message: "erreur lors de la creation du dossier",
-					error: err
-				}).status(500);
-			}
+    if (!etud) {
+      return res.status(404).json({ message: "Etudiant non trouve" });
+    }
 
-			etud.dossier = dossier._id;
-			await etud.save();
+    // Create dossier
+    Dossier.create(
+      { sujet, etudiant: idEtudiant },
+      async function (err, dossier) {
+        if (err) {
+          return res
+            .json({
+              success: false,
+              message: "erreur lors de la creation du dossier",
+              error: err,
+            })
+            .status(500);
+        }
 
-			// Upload files
-			const etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
+        etud.dossier = dossier._id;
+        await etud.save();
 
-			if (process.env.USE_FIREBASE === "true") {
-				let i = 0, n = fileEntries.length;
+        // Upload files
+        const etudDir = `${etud.matricule} - ${new Date().getFullYear()}/`;
 
-				for (const [fileCat, fileCatObj] of fileEntries) {
-					const uploadPath = path.join(etudDir, fileCat + path.extname(fileCatObj.name));
-					const imageRef = ref(storage, uploadPath);
-					const fileMetadata = {
-						// cacheControl: 'public,max-age=86400',  // 24hrs = 86400s (1hr=3600s) 
-						contentType: fileCatObj.mimetype
-					};
-			
-					await uploadBytesResumable(imageRef, fileCatObj.data, fileMetadata)
-					.then(async (snapshot) => {
-						// console.log('Uploaded', snapshot.totalBytes, 'bytes.');
-						console.log('File metadata:', snapshot.metadata);
-				
-						// Let's get a download URL for the file.
-						await getDownloadURL(snapshot.ref).then(async (url) => {
-							console.log('File available at', url);
+        if (process.env.USE_FIREBASE === "true") {
+          let i = 0,
+            n = fileEntries.length;
 
-							await FichierDossier.create({ 
-								url,
-								categorie: fileCat,
-								dossier: dossier._id
-							});
+          for (const [fileCat, fileCatObj] of fileEntries) {
+            const uploadPath = path.join(
+              etudDir,
+              fileCat + path.extname(fileCatObj.name)
+            );
+            const imageRef = ref(storage, uploadPath);
+            const fileMetadata = {
+              // cacheControl: 'public,max-age=86400',  // 24hrs = 86400s (1hr=3600s)
+              contentType: fileCatObj.mimetype,
+            };
 
-							i++;
+            await uploadBytesResumable(imageRef, fileCatObj.data, fileMetadata)
+              .then(async (snapshot) => {
+                // console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                console.log("File metadata:", snapshot.metadata);
 
-							// Return response if for loop is over
-							if (i == n-1) 
-								return res.status(201).json({ 
-									success: true, 
-									message: 'Files uploaded!'
-								});
-						});
-					}).catch(error => {
-						console.error('Upload failed', error);
-						return res.status(500).json({ success: false, error });
-					});
-				}
-			} else {
-				let i = 0, n = fileEntries.length;
-				const basedir = process.env.basedir;
+                // Let's get a download URL for the file.
+                await getDownloadURL(snapshot.ref).then(async (url) => {
+                  console.log("File available at", url);
 
-				if (!basedir) {
-					console.error("Set 'basedir' in .env file");
-					process.exit(1);
-				}
+                  await FichierDossier.create({
+                    url,
+                    categorie: fileCat,
+                    dossier: dossier._id,
+                  });
 
-				const saveDir = path.join(basedir, etudDir);
-				
-				// Create student directory if it doesn't exist
-				// if (!fs.existsSync(saveDir)) {
-				//     fs.mkdirSync(saveDir);
-				// }
+                  i++;
 
-				for (const [fileCat, fileCatObj] of fileEntries) {
-					const uploadPath = path.join(saveDir, fileCat + path.extname(fileCatObj.name));
+                  // Return response if for loop is over
+                  if (i == n - 1)
+                    return res.status(201).json({
+                      success: true,
+                      message: "Files uploaded!",
+                    });
+                });
+              })
+              .catch((error) => {
+                console.error("Upload failed", error);
+                return res.status(500).json({ success: false, error });
+              });
+          }
+        } else {
+          let i = 0,
+            n = fileEntries.length;
+          const basedir = process.env.basedir;
 
-					// Use the mv() method to place the file somewhere on your server
-					fileCatObj.mv(uploadPath, async function(err) {
-						if (err)
-							return res.status(500).send(err);
+          if (!basedir) {
+            console.error("Set 'basedir' in .env file");
+            process.exit(1);
+          }
 
-						// Create file
-						await FichierDossier.create({ 
-							categorie: fileCat,
-							url: uploadPath,
-							dossier: dossier._id
-						});
+          const saveDir = path.join(basedir, etudDir);
 
-						i++;
+          // Create student directory if it doesn't exist
+          // if (!fs.existsSync(saveDir)) {
+          //     fs.mkdirSync(saveDir);
+          // }
 
-						// Return response if for loop is over
-						if (i == n-1) 
-							return res.json({ success: true, message: 'Files uploaded!'}).status(201);
-					});
-				}
-			}
-		});
-	});
-}
+          for (const [fileCat, fileCatObj] of fileEntries) {
+            const uploadPath = path.join(
+              saveDir,
+              fileCat + path.extname(fileCatObj.name)
+            );
 
+            // Use the mv() method to place the file somewhere on your server
+            fileCatObj.mv(uploadPath, async function (err) {
+              if (err) return res.status(500).send(err);
 
-exports.datesSoutenance = function(req,res) {
-	Etudiant.find({ dateSoutenance: { $ne: '' } }, (err, etuds) => {
-		if (err) {
-			return res.status(500).json({ success: false, error: err });
-		}
+              // Create file
+              await FichierDossier.create({
+                categorie: fileCat,
+                url: uploadPath,
+                dossier: dossier._id,
+              });
 
-		let result = {};
+              i++;
 
-		for (let etud of etuds) {
-			let date = etud.dateSoutenance;
-			let etudObj = { 
-				matricule: etud.matricule, 
-				nom: etud.nom, 
-				prenom: etud.prenom, 
-				niveau: etud.niveau
-			};
+              // Return response if for loop is over
+              if (i == n - 1)
+                return res
+                  .json({ success: true, message: "Files uploaded!" })
+                  .status(201);
+            });
+          }
+        }
+      }
+    );
+  });
+};
 
-			if (!(date in result)) {
-				result[date] = [etudObj];
-			} else {
-				result[date] = result[date].push(etudObj);
-			}
-		}
+exports.datesSoutenance = function (req, res) {
+  Etudiant.find({ dateSoutenance: { $ne: "" } }, (err, etuds) => {
+    if (err) {
+      return res.status(500).json({ success: false, error: err });
+    }
 
-		return res.json(result);
-	});
-}
+    let result = {};
 
+    for (let etud of etuds) {
+      const date = etud.dateSoutenance;
+      const etudObj = {
+        matricule: etud.matricule,
+        nom: etud.nom,
+        prenom: etud.prenom,
+        niveau: etud.niveau,
+      };
+
+      if (!(date in result)) {
+        result[date] = [etudObj];
+      } else {
+        result[date].push(etudObj);
+      }
+    }
+
+    return res.json(result);
+  });
+};
 
 exports.etapesDossier = async function (req, res) {
 	const idEtudiant = req.session.user._id;
@@ -495,3 +533,12 @@ exports.etapesDossier = async function (req, res) {
 	});
 }
 
+exports.checkUploaderDossier = async function (req, res) {
+	const idEtudiant = req.session.user._id;
+
+	let etud = await Etudiant.findById(idEtudiant);
+	if (!etud)
+		res.status(404).send("Etudiant non trouve");
+
+	res.send({ 'dejaUploade': Boolean(etud.dossier) });
+}
