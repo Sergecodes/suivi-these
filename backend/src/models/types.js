@@ -53,6 +53,8 @@ const Avis = Object.freeze({
     SOUTENANCE_FAVORABLE: "Soutenance favorable",
     FAVORABLE_SOUS_RESERVE: "Soutenance favorable sous reserve",
     DEFAVORABLE: "Défavorable",
+    // Autorisation de soutenance envoyee de l'admin au coordonateur 
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance"
 
 });
 
@@ -67,7 +69,8 @@ const AvisEmetteur = Object.freeze({
 
 
 const AvisDestinataire = Object.freeze({
-    ADMIN: ACTEURS.ADMIN
+    ADMIN: ACTEURS.ADMIN,
+    COORDONATEUR: ACTEURS.COORDONATEUR
  });
 
 

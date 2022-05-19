@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
-const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
 
@@ -63,6 +63,7 @@ app.use(session({
     cookie: {
         sameSite: 'none',
         maxAge: 2 * 24 * 60 * 60 * 1000,  // = 2days
+        httpOnly: true,
         secure: process.env.PRODUCTION === "true" || false
     },
     store: MongoStore.create({
@@ -70,7 +71,7 @@ app.use(session({
         ttl: 2 * 24 * 60 * 60   // = 2 days. Default is 14 days
     })
 }));
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,

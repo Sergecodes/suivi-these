@@ -105,6 +105,27 @@ JurySchema.methods.attribuerNote = async function(idDossier, categorie, valeur, 
 
 }   
 
+JurySchema.methods.donnerAvisAdmin = async function(
+    type, 
+    commentaire, 
+    rapport, 
+    idDossier
+) {
+    let donne = await this.verifierAvisDonne(idDossier);
+    if (donne)
+        throw "Ce membre de jury a deja envoye son avis a l'admin";
+
+    await Avis.create({
+        type,
+        commentaire,
+        rapport,
+        dossier: idDossier,
+        donnePar: this._id,
+        donneParModel: AvisEmetteur.JURY
+    });
+}
+
+
 // JurySchema.methods.verifierAvisDonne = async function(idDossier) {
 //     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
 //     return Boolean(donne);
