@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose')
 const { 
     CategorieFichierMaster, CategorieFichierThese, 
-    GerantEtapeDossier, StatutDossier, TypeNotification,
-    ModelNotif, CategorieNote, ActeurDossier, 
+    GerantEtapeDossier, StatutDossier,
+    CategorieNote, ActeurDossier, 
     EtapeDossier: EtapeDossierEnum,
 } = require('./types')
 
@@ -39,6 +39,13 @@ DossierSchema.virtual('etapes', {
     localField: '_id',
     foreignField: 'dossier'
 });
+
+DossierSchema.virtual('avis', {
+    ref: 'Avis',
+    localField: '_id',
+    foreignField: 'dossier'
+});
+
 
 
 // Operations
@@ -107,6 +114,7 @@ EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true } );
 // NoteDossier
 const NoteDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
+    avis: { type: Schema.Types.ObjectId, ref: 'Avis' },
     categorie: { type: String, required: true, enum: Object.values(CategorieNote) },
     valeur: { type: Number, required: true },
     notePar: { 
@@ -129,14 +137,14 @@ NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 /**
  * Envoyer une notification a l'administrateur
  */
-NoteDossierSchema.post('save', async function(doc) {
-    await Notification.create({
-        type: TypeNotification.NOTE_JURY,
-        destinataireModel: ModelNotif.ADMIN,
-        objetConcerne: doc._id,
-        objetConcerneModel: ModelNotif.NOTE_DOSSIER
-    });
-});
+// NoteDossierSchema.post('save', async function(doc) {
+//     await Notification.create({
+//         type: TypeNotification.NOTE_JURY,
+//         destinataireModel: ModelNotif.ADMIN,
+//         objetConcerne: doc._id,
+//         objetConcerneModel: ModelNotif.NOTE_DOSSIER
+//     });
+// });
 
 
 

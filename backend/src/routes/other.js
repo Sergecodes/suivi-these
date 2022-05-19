@@ -7,5 +7,7 @@ const controller = require('../controllers/common');
 router.route('/logout').post(controller.logout);
 
 
+
+
 module.exports = router;
 

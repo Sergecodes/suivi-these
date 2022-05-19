@@ -4,6 +4,7 @@ const Dossier = require('./models/Dossier');
 const Coordo = require('./modes/Coordonateur');
 
 
+
 exports.isEtudiant = function(req, res, next) {
     if (!req.session || !req.session.user) {
         return res.status(401).send("Not authenticated");
@@ -133,7 +134,7 @@ exports.getJuryAndDossier = async function (req, res, next) {
     const { idDossier } = req.body;
     let jury = await Jury.findById(req.session.user._id);
 	let dossier = await Dossier.findById(idDossier);
-
+    
 	if (!jury)
 		return res.status(404).send("Jury non trouve");
 	

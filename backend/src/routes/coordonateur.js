@@ -15,11 +15,14 @@ router.route('/rapports-etudiants-these').get(isCoordonateur, controller.rapport
 
 router.route('/notifications').get(isCoordonateur, controller.notifications);
 
-// router.route('/change-password').put(isCoordonateur, controller.changePassword);
-
 router.route('/verifier-avis-donne').get(isCoordonateur, controller.verifierAvisDonne);
 
 router.route('/donner-avis-admin').post(isCoordonateur, controller.donnerAvisAdmin);
+
+// router.route('/change-password').put(isCoordonateur, controller.changePassword);
+
+router.route('/change_password/:coordonator_id').put(controller.change_coordonator_pass);
+
 
 
 module.exports = router;
