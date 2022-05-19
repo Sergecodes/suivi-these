@@ -1,8 +1,8 @@
 // ModelTypes
 const Types = require('./models/types');
 
-const EMAILS_ADMIN = ['admin1@gmail.com'];
-const EMAILS_RECTORAT = ['recto1@gmail.com'];
+EMAILS_ADMIN = ['yannicksama037@gmail.com','mbidasama@gmail.com'];
+EMAILS_RECTORAT = [];
 
 
 module.exports = { Types, EMAILS_ADMIN, EMAILS_RECTORAT };
