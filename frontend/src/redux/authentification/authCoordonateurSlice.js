@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // recuperer un etudiant dans le local storage
-const coordonateur = JSON.parse(localStorage.getItem("departementInfo"));
+const coordonateur = localStorage.getItem("coordonateurtInfo");
 
 const initialState = {
   coordonateur: coordonateur ? coordonateur : null,
@@ -9,6 +9,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isRejected: false,
+  isConnexionSuccessful: false,
   message: "",
 };
 
@@ -18,15 +19,15 @@ export const loginCoordonateur = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/coordonateur/login-coordonateur",
+        "http://localhost:3001/api/coordonateurs/login-coord",
         {
-          matricule: data.email,
+          email: data.email,
           motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("departementInfos", JSON.stringify(value.data));
       // console.log(data);
-      alert(JSON.stringify(value.data));
+      // alert(JSON.stringify(value.data));
+      // alert(`La valeur contenue dans le localStorage est ${coordonateur}`)
       console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
@@ -46,6 +47,7 @@ export const authCoordonateurSlice = createSlice({
       state.isError = false;
       state.message = "";
       state.isRejected = false;
+      // state.coordonateur = null;
     },
     logoutCoordonateur: (state) => {
       localStorage.removeItem("coordonateurInfos");
@@ -66,13 +68,24 @@ export const authCoordonateurSlice = createSlice({
       })
       .addCase(loginCoordonateur.fulfilled, (state, action) => {
         // console.log("login fulfilled");
+
         state.isSuccess = true;
         state.coordonateur = action.payload;
         state.isLoading = false;
 
-        console.log("je suis dans le isloading");
+        console.log("je suis dans le s fulfilled");
 
-        state.isRejected = true;
+        if (JSON.parse(action.payload)._id) {
+          state.isSuccess = true;
+          localStorage.setItem(
+            "coordonateurtInfo",
+            JSON.stringify(JSON.parse(action.payload))
+          );
+        }
+        console.log(`les datas sont ${coordonateur}`);
+        console.log(JSON.parse(action.payload));
+
+        // state.isRejected = false;
         // state.message = action.payload.data.message;
         return state;
       })

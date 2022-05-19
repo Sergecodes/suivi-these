@@ -11,11 +11,20 @@ import { ImCross } from "react-icons/im";
 import { reset, logout } from "../../redux/authentification/authSlice";
 import { toast } from "react-toastify";
 
+// const StudentDashboard = (props) => {
+//   const dispatch = useDispatch();
+//   const files = useSelector((state) => state.dashboardDisplay);
+//   const { width } = useWindowSize();
+
+//   const nagivate = useNavigate();
+//   const handleLougout = () => {
+//     toast.success("Deconnexion Reussie");
+//     alert("Deconnexion Reussie");
+
 const StudentDashboard = (props) => {
   const dispatch = useDispatch();
   const files = useSelector((state) => state.dashboardDisplay);
   const { width } = useWindowSize();
-
   const nagivate = useNavigate();
   const handleLougout = () => {
     toast.success("Deconnexion Reussie");
@@ -24,6 +33,7 @@ const StudentDashboard = (props) => {
     dispatch(logout());
     Navigate("/");
   };
+  
   return (
     <section
       className="studentDashboard px-2"
@@ -49,6 +59,23 @@ const StudentDashboard = (props) => {
             alt=""
           />
         </div>
+        <div className="dashboardLinks mt-4">
+          <Link to="/account/depot">
+            <p>
+              <BsFolder /> Depot dossier
+            </p>
+          </Link>
+          <Link to="/account/dossier">
+            <p>
+              <BsArrowRepeat /> Changement de sujet
+            </p>
+          </Link>
+          <Link to="/account/dossier">
+            <p>
+              <BsArrowRepeat /> Changement d'encadreur
+            </p>
+          </Link>
+
         <div className="studentInfo" style={{ lineHeight: "1.4" }}>
           <p className="fs-6" style={{}}>
             {EtudiantData[0].nom}
@@ -79,28 +106,32 @@ const StudentDashboard = (props) => {
           </p>
         </Link>
 
-        <Link
-          to="/account/profil"
-          style={
-            props.url === "/account/profil"
-              ? { color: "#ff5821", borderColor: "#ff5821" }
-              : {}
-          }
-        >
-          <p>
-            <BsPerson /> Editer Profil
-          </p>
-        </Link>
-        <Link to="/account/evolution">
-          <p>
-            <BiRocket /> Evolution du dossier
-          </p>
-        </Link>
-        <Link to="/">
-          <p onClick={handleLougout}>
-            <FiLogOut /> Deconnexion
-          </p>
-        </Link>
+          <Link
+            to="/account/profil"
+            style={
+              props.url === "/account/profil"
+                ? {
+                    color: "var(--primaryColor)",
+                    borderColor: "var(--primaryColor)",
+                  }
+                : {}
+            }
+          >
+            <p>
+              <BsPerson /> Editer Profil
+            </p>
+          </Link>
+          <Link to="/account/evolution">
+            <p>
+              <BiRocket /> Evolution du dossier
+            </p>
+          </Link>
+          <Link to="/*">
+            <p>
+              <FiLogOut /> Deconnexion
+            </p>
+          </Link>
+        </div>
       </div>
     </section>
   );

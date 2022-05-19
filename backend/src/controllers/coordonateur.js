@@ -88,4 +88,3 @@ exports.login_coordonateur = async function(req,res){
         res.status(500).send("Something went wrong");
     }
 }
-

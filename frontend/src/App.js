@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
-//import Accueil from "./screen/Accueil";
-/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+import Accueil from "./screen/Accueil";
+import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
@@ -10,7 +10,7 @@ import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexion
 import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
+import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
 import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
@@ -20,10 +20,16 @@ import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexi
 
 /*import Soutenance from "./screen/Soutenance";
 import Jury from "./screen/Jury";
-import NotationMaster from "./components/pageJury/NotationMaster"
-import ProfilJury from "./components/pageJury/ProfilJury"
+import NotationMaster from "./components/pageJury/NotationMaster";
+import ProfilJury from "./components/pageJury/ProfilJury";
 import NotificationJury from "./components/pageJury/NotificationJury";
-import TableList from "./components/pageJury/TableList";*/
+import TableList from "./components/pageJury/TableList";
+import HomeCoordonateurDashboard from "./components/pageCoordonateur/HomeCoordonateurDashboard";
+import ProfilCoordonateur from "./components/pageCoordonateur/ProfilCoordonateur";
+import RapportAudition from "./components/pageCoordonateur/RapportAudition";
+import AutorisationDeSoutenance from "./components/pageCoordonateur/AutorisationDeSoutenance";
+import RapportEtudiant from "./components/pageCoordonateur/RapportEtudiant";
+import DateDeSoutenance from "./components/pageCoordonateur/DateDeSoutenance";
 
 /*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
 import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
@@ -36,21 +42,22 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-         { /*<Route path="/" element={<Accueil isLogin={isLogin} />} />
+          <Route path="/" element={<Accueil isLogin={isLogin} />} />
           <Route
             path="/soutenance"
             element={<Soutenance isLogin={isLogin} />}
-  />*/}
+          />
           <Route path="/account" element={<Etudiant />}>
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
           </Route>
+          <Route path="/acteur/jury" element={<Jury />}>
           <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
           ></Route>
-        { /* <Route path="/acteur/jury" element={<Jury />}>
+        { /* 
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
             <Route path="/acteur/jury/profil" element={<ProfilJury />} />
@@ -70,6 +77,36 @@ const App = () => {
               </div>
             }
           />
+
+          {/* Routes pour les coordonateurs */}
+          <Route
+            path="/acteur/coordonateur"
+            element={<HomeCoordonateurDashboard />}
+          ></Route>
+          <Route
+            path="/acteur/coordonateur/profil"
+            element={<ProfilCoordonateur />}
+          ></Route>
+          <Route
+            path="/acteur/coordonateur/audition"
+            element={<RapportAudition />}
+          ></Route>
+          <Route
+            path="/acteur/coordonateur/etudiant"
+            element={<RapportEtudiant />}
+          ></Route>
+          <Route
+            path="/acteur/coordonateur/autorisation"
+            element={<AutorisationDeSoutenance />}
+          ></Route>{" "}
+          <Route
+            path="/acteur/coordonateur/date"
+            element={<DateDeSoutenance />}
+          ></Route>
+          <Route
+            path="/acteur/coordonateur/notification"
+            element={<NotificationJury />}
+          ></Route>
           {/* <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
@@ -106,7 +143,6 @@ const App = () => {
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
           ></Route>
-          */}
           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
           <Route path="/canditature" element={<CandidatureScreen />}></Route>
           <Route
