@@ -24,10 +24,9 @@ export const loginJury = createAsyncThunk(
           motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("juryInfos", JSON.stringify(value.data));
+      // localStorage.setItem("juryInfos", JSON.stringify(value.data));
       // console.log(data);
-      alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
+      // console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);
@@ -65,14 +64,24 @@ export const authJurySlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginJury.fulfilled, (state, action) => {
-        // console.log("login fulfilled");
-        state.isSuccess = true;
-        state.etudiant = action.payload;
-        state.isLoading = false;
+        console.log(action.payload);
+        if (action.payload && JSON.parse(action.payload)._id) {
+          console.log(`le action payload est ${action.payload}`);
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.jury = action.payload;
 
-        console.log("je suis dans le isloading");
+          localStorage.setItem(
+            "juryInfos",
+            JSON.stringify(JSON.parse(action.payload))
+          );
+        } else {
+          state.isSuccess = false;
+          state.isLoading = false;
+          state.isRejected = true;
+          state.message = "Coodonateur Not Found";
+        }
 
-        state.isRejected = true;
         // state.message = action.payload.data.message;
         return state;
       })

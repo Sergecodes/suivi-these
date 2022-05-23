@@ -13,8 +13,6 @@ import {
 } from "../../redux/authentification/authCoordonateurSlice";
 
 function CoordonateurInscriptionScreen() {
-  // toast.configure();
-
   const [user, setUser] = useState({
     email: "",
     motDePasse: "",
@@ -30,14 +28,15 @@ function CoordonateurInscriptionScreen() {
     isLoading,
     isSuccess,
     isConnexionSuccessful,
+    isRejected,
   } = useSelector((state) => state.authCoordonateur);
   useEffect(() => {
-    if (isError) {
+    console.log(`le isError est a ${isError} et le isRejected ${isRejected}`);
+    if (isError || isRejected) {
       toast.error(message, { position: toast.POSITION.TOP_CENTER });
     }
-    if (isSuccess || coordonateur) {
-      // alert("Connexion Reussie");
 
+    if (isSuccess || coordonateur) {
       navigate("/acteur/coordonateur");
     }
     if (isLoading) {
@@ -53,6 +52,7 @@ function CoordonateurInscriptionScreen() {
     message,
     navigate,
     dispatch,
+    isRejected,
   ]);
 
   const SubmitHandle = (e) => {

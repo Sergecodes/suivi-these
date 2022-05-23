@@ -28,7 +28,7 @@ export const loginCoordonateur = createAsyncThunk(
       // console.log(data);
       // alert(JSON.stringify(value.data));
       // alert(`La valeur contenue dans le localStorage est ${coordonateur}`)
-      console.log(JSON.stringify(value.data));
+      // console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);
@@ -65,25 +65,29 @@ export const authCoordonateurSlice = createSlice({
       .addCase(loginCoordonateur.pending, (state, action) => {
         console.log("login pending");
         state.isLoading = true;
+        // setTimeout
       })
       .addCase(loginCoordonateur.fulfilled, (state, action) => {
-        // console.log("login fulfilled");
+        console.log(`le action payload est ${action.payload}`);
 
-        state.isSuccess = true;
-        state.coordonateur = action.payload;
-        state.isLoading = false;
-
-        console.log("je suis dans le s fulfilled");
-
-        if (JSON.parse(action.payload)._id) {
+        if (action.payload && JSON.parse(action.payload)._id) {
+          console.log("je suis dana le success");
+          state.isLoading = false;
+          console.log(`le JSON parse ici est ${action.payload}`);
           state.isSuccess = true;
+          state.coordonateur = action.payload;
+
           localStorage.setItem(
             "coordonateurtInfo",
             JSON.stringify(JSON.parse(action.payload))
           );
+        } else {
+          console.log("je suis danss le rejected");
+          state.isSuccess = false;
+          state.isLoading = false;
+          state.isRejected = true;
+          state.message = "Coordonateur Not Found";
         }
-        console.log(`les datas sont ${coordonateur}`);
-        console.log(JSON.parse(action.payload));
 
         // state.isRejected = false;
         // state.message = action.payload.data.message;
