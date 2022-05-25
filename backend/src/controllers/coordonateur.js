@@ -94,3 +94,25 @@ exports.change_coordonator_pass = function(req,res){
 	}
 }
 
+exports.change_email = function(req,res){
+	const {newEmail,id} = req.body;
+	
+	COORD.findById(id,function(err,coordonateur){
+		if(err){
+			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du coordonateur",error:err}).status(500);
+		}
+		//le coordonateur a ete trouver
+		if(req.body.newEmail){
+			coordonateur.email = newEmail;
+		}
+		coordonateur.save(function(err,new_coordonateur){
+			if(err){
+				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+				res.json({success:false,message:"Internal server error",error:err}).status(500);
+
+			}
+			res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_coordonateur.email});
+		})
+	})
+}
+

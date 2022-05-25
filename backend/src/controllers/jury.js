@@ -95,3 +95,25 @@ exports.change_jury_pass = function(req,res){
 		res.status(500).send("Internal Server Error");
 	}
 }
+
+exports.change_email = function(req,res){
+	const {newEmail,id} = req.body;
+	
+	JURY.findById(id,function(err,jury){
+		if(err){
+			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du jury",error:err}).status(500);
+		}
+		//le jury a ete trouver
+		if(req.body.newEmail){
+			jury.email = newEmail;
+		}
+		jury.save(function(err,new_jury){
+			if(err){
+				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+				res.json({success:false,message:"Internal server error",error:err}).status(500);
+
+			}
+			res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_jury.email});
+		})
+	})
+}
