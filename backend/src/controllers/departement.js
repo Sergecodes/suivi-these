@@ -121,3 +121,25 @@ exports.change_departement_pass = function(req,res){
 		res.status(500).send("Internal Server Error");
 	}
 }
+
+exports.change_email = function(req,res){
+	const {newEmail,id} = req.body;
+	
+	DEPART.findById(id,function(err,departement){
+		if(err){
+			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du departement",error:err}).status(500);
+		}
+		//le departement a ete trouver
+		if(req.body.newEmail){
+			departement.email = newEmail;
+		}
+		departement.save(function(err,new_departement){
+			if(err){
+				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+				res.json({success:false,message:"Internal server error",error:err}).status(500);
+
+			}
+			res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_departement.email});
+		})
+	})
+}

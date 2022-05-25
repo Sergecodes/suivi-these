@@ -133,3 +133,25 @@ exports.change_conseil_pass = function(req,res){
 	}
 }
 
+exports.change_email = function(req,res){
+	const {newEmail,id} = req.body;
+	
+	CONSEIL.findById(id,function(err,conseil){
+		if(err){
+			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du conseil",error:err}).status(500);
+		}
+		//le conseil a ete trouver
+		if(req.body.newEmail){
+			conseil.email = newEmail;
+		}
+		conseil.save(function(err,new_conseil){
+			if(err){
+				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+				res.json({success:false,message:"Internal server error",error:err}).status(500);
+
+			}
+			res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_conseil.email});
+		})
+	})
+}
+
