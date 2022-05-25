@@ -277,4 +277,3 @@ exports.donnerAvisAdmin = async function (req, res) {
    res.send("Succes!");
 }
 
-

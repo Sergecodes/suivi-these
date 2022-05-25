@@ -1,6 +1,6 @@
 import React from "react";
 import AdministratorsHeader from "../common/AdministratorsHeader";
-import {BsDownload} from "react-icons/bs";
+import { BsDownload } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const JuryHeader = () => {
@@ -18,7 +18,6 @@ const JuryHeader = () => {
             <BsDownload />
           </p>
         </Link>
-        
       </AdministratorsHeader>
     </>
   );
