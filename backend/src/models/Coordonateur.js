@@ -10,20 +10,17 @@ const CoordonateurSchema = new Schema({
         type: String,
         required: true, 
         index: { unique: true },
-        lowercase: true,
         trim: true,
         validate: {
             validator: email => isEmail(email),
             message: props => `${props.value} est un email invalide!`
         }
     },
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo encrypt before saving
+    motDePasse: { type: String, required: true },
     nom: { type: String, required: true }, 
     prenom: { type: String, required: true },
 });
+
 CoordonateurSchema.pre("save",function(next){
     const coordonateur = this;
     if(this.isModified("motDePasse") || this.isNew){
@@ -64,7 +61,20 @@ CoordonateurSchema.virtual('notifications', {
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
+    // todo also update etape 
+    
+    await Notification.create({
+        type: TypeNotification.SOUTENANCE_PROGRAMMEE,
+        destinataire: etudiant._id,
+        destinataireModel: ModelNotif.ETUDIANT,
+        message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
+    });
 };
+
+CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
+    return Boolean(donne);
+}   
 
 CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
     type, 
@@ -72,6 +82,10 @@ CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
     rapport, 
     idDossier
 ) {
+    let donne = await this.verifierAvisDonne(idDossier);
+    if (donne)
+        throw "Vous avez deja envoye votre avis a l'admin";
+
     await Avis.create({
         type,
         commentaire,

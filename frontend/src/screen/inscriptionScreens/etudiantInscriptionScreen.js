@@ -1,7 +1,86 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  registerEtudiant,
+  resetRegisterEtudiant,
+} from "../../redux/authentification/autEtudiantInscriptionSlice";
 import "../../Styles/Connexion.css";
 
+import LoadingScreen from "../LoadingScreen";
+
 function EtudiantInscriptionScreen() {
+  const [user, setUser] = useState({
+    matricule: "",
+    nom: "",
+    prenom: "",
+    motDePasse: "",
+    niveau: "",
+    email: "",
+    dateNaissance: "",
+    lieuNaissance: "",
+    numTelephone: "",
+    sexe: "",
+    urlPhotoProfil: "a revoir",
+    uniteRecherche: "",
+    encadreur: "",
+  });
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { message, coordonateur, isError, isLoading, isSuccess } = useSelector(
+    (state) => state.registerEtudiant
+  );
+  useEffect(() => {
+    if (isError) {
+      alert(message);
+    }
+    if (isSuccess) {
+      toast.success("Connexion Reussie");
+      alert("connexion Reussie");
+
+      // navigate("/account");
+    }
+    if (isLoading) {
+      return <LoadingScreen />;
+    }
+    dispatch(resetRegisterEtudiant());
+  }, [
+    coordonateur,
+    isLoading,
+    isSuccess,
+    isError,
+    message,
+    navigate,
+    dispatch,
+  ]);
+
+  const SubmitHandle = (e) => {
+    if (
+      user.motDePasse === "" ||
+      user.email === "" ||
+      user.nom === "" ||
+      user.prenom === "" ||
+      user.dateNaissance === "" ||
+      user.lieuNaissance === "" ||
+      user.encadreur === "" ||
+      user.sexe === "" ||
+      user.uniteRecherche === "" ||
+      user.matricule === ""
+    ) {
+      alert("renseignez toutes vos informations");
+      e.preventDefault();
+    } else {
+      console.log(user);
+
+      dispatch(registerEtudiant(user));
+    }
+
+    e.preventDefault();
+  };
+
   return (
     <div className="form-etudiant-container">
       <div
@@ -18,158 +97,200 @@ function EtudiantInscriptionScreen() {
 
                 {/* Pour le nom */}
                 <div className="col-md-6">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="nom" className="form-label">
                     Nom
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inputEmail4"
+                    id="nom"
+                    required
+                    onChange={(e) => setUser({ ...user, nom: e.target.value })}
                   />
                 </div>
                 {/* Pour le prenom */}
                 <div className="col-md-6">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="prenom" className="form-label">
                     Prenom
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inputEmail4"
+                    id="Prenom"
+                    onChange={(e) =>
+                      setUser({ ...user, prenom: e.target.value })
+                    }
                   />
                 </div>
                 {/* pour le matricule */}
                 <div className="col-md-12">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="Matricule" className="form-label">
                     Matricule
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inputEmail4"
+                    id="Matricule"
+                    onChange={(e) =>
+                      setUser({ ...user, matricule: e.target.value })
+                    }
                   />
                 </div>
                 {/* ------------------ */}
                 <div className="col-md-6">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="Email" className="form-label">
                     Email
                   </label>
                   <input
                     type="email"
                     className="form-control"
-                    id="inputEmail4"
+                    id="Email"
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="Numero" className="form-label">
                     Numero de telephone
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inputEmail4"
+                    id="Numero"
+                    onChange={(e) =>
+                      setUser({ ...user, numTelephone: e.target.value })
+                    }
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="inputPassword4" className="form-label">
+                  <label htmlFor="Password" className="form-label">
                     Password
                   </label>
                   <input
                     type="password"
                     className="form-control"
-                    id="inputPassword4"
+                    id="Password"
+                    onChange={(e) =>
+                      setUser({ ...user, motDePasse: e.target.value })
+                    }
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="inputPassword4" className="form-label">
+                  <label htmlFor="Confirm" className="form-label">
                     Confirm Password
                   </label>
                   <input
                     type="password"
                     className="form-control"
-                    id="inputPassword4"
+                    id="Confirm"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
                 {/* date de naissance */}
                 <div className="col-md-6">
-                  <label for="inputPassword4" className="form-label">
+                  <label htmlFor="Date" className="form-label">
                     Date de Naissance
                   </label>
                   <input
                     type="date"
                     className="form-control"
-                    id="inputPassword4"
+                    id="Date"
+                    onChange={(e) =>
+                      setUser({ ...user, dateNaissance: e.target.value })
+                    }
                   />
                 </div>
                 {/* Lieu de naissance */}
                 <div className="col-md-6">
-                  <label for="inputPassword4" className="form-label">
+                  <label htmlFor="Lieu" className="form-label">
                     Lieu de Naissance
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inputPassword4"
+                    id="Lieu"
+                    onChange={(e) =>
+                      setUser({ ...user, lieuNaissance: e.target.value })
+                    }
                   />
                 </div>
 
                 <div className="col-12">
-                  <label for="inputAddress" className="form-label">
+                  <label htmlFor="Encadreur" className="form-label">
                     Email Encadreur
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inputAddress"
+                    id="Encadreur"
+                    onChange={(e) =>
+                      setUser({ ...user, encadreur: e.target.value })
+                    }
                   />
                 </div>
 
                 <div className="col-md-6">
-                  <label for="inputCity" className="form-label">
+                  <label htmlFor="Unite" className="form-label">
                     Unite de Recherche
                   </label>
-                  <select id="inputState" className="form-select">
-                    <option selected>Unite 1</option>
-                    <option>Unite 2</option>
-                    <option>Unite 3</option>
+                  <select
+                    id="Unite"
+                    className="form-select"
+                    value={user.uniteRecherche}
+                    onChange={(e) =>
+                      setUser({ ...user, uniteRecherche: e.target.value })
+                    }
+                  >
+                    <option value="unite 2" selected>
+                      Unite 1
+                    </option>
+                    <option value="unite 2">Unite 2</option>
+                    <option value="unite 3">Unite 3</option>
                   </select>{" "}
                 </div>
                 <div className="col-md-4">
-                  <label for="inputState" className="form-label">
+                  <label htmlFor="Niveau" className="form-label">
                     Niveau
                   </label>
-                  <select id="inputState" className="form-select">
-                    <option selected>MASTER 2</option>
-                    <option>THESE</option>
+                  <select
+                    id="Niveau"
+                    className="form-select"
+                    value={user.niveau}
+                    onChange={(e) =>
+                      setUser({ ...user, niveau: e.target.value })
+                    }
+                  >
+                    <option selected value="MASTER 2">
+                      MASTER 2
+                    </option>
+                    <option value="DOCTORAT">DOCTORAT</option>
                   </select>
                 </div>
                 <div className="col-md-2">
-                  <label for="inputZip" className="form-label">
+                  <label htmlFor="Sex" className="form-label">
                     Sex
                   </label>
-                  <select id="inputState" className="form-select">
-                    <option selected>M</option>
-                    <option>F</option>
+                  <select
+                    id="Sex"
+                    value={user.sexe}
+                    className="form-select"
+                    onChange={(e) => setUser({ ...user, sexe: e.target.value })}
+                  >
+                    <option selected value="MASCULIN">
+                      M
+                    </option>
+                    <option value="FEMININ">F</option>
                   </select>{" "}
                 </div>
-                <div className="col-12">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="gridCheck"
-                    />
-                    <label className="form-check-label" for="gridCheck">
-                      Check me out
-                    </label>
-                  </div>
-                </div>
+
                 <div className="d-grid gap-2">
                   <button
                     className="btn btn-primary btn-connexion"
                     type="submit"
                     id="btn-color-orange"
                     // style={{ marginTop: "5px" }}
+                    onClick={SubmitHandle}
                   >
                     S'inscrire
                   </button>

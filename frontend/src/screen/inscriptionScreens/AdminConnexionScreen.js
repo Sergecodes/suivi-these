@@ -1,7 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  loginRectorat,
+  resetRectorat,
+} from "../../redux/authentification/authRectoratSlice";
 import "../../Styles/AdminConnexionScreen.css";
+import LoadingScreen from "../LoadingScreen";
+import "../../Styles/AdminConnexionScreen.css";
+import {
+  loginAdmin,
+  resetAdmin,
+} from "../../redux/authentification/authAdminSlice";
 
 function AdminConnexionScreen() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    email: "",
+    code1: "",
+    code2: "",
+  });
+
+  const { message, admin, isError, isLoading, isSuccess } = useSelector(
+    (state) => state.authRectorat
+  );
+  useEffect(() => {
+    if (isError) {
+      alert(message);
+    }
+    if (isSuccess) {
+      toast.success("Connexion Reussie");
+      alert("connexion Reussie");
+
+      navigate("/account");
+    }
+    if (isLoading) {
+      return <LoadingScreen />;
+    }
+    dispatch(resetAdmin());
+  }, [admin, isSuccess, isError, message, navigate, dispatch]);
+
+  const SubmitHandle = (e) => {
+    if (user.code1 === user.code2) {
+      dispatch(loginAdmin(user));
+    } else {
+      alert("les codes ne correspondent pas ");
+      console.log(
+        `les code 1 est ${user.code1} et le code 2 est ${user.code2} et l'email de cet utilisateur est ${user.email}`
+      );
+      e.preventDefault();
+    }
+    e.preventDefault();
+  };
   return (
     <div style={{ padding: "4%" }} className="container-connexion">
       <div className="container">
@@ -17,23 +69,42 @@ function AdminConnexionScreen() {
               <div className="col-md-6 container-data-connexion-right">
                 <form className="row g-3">
                   <div className="col-12">
-                    <label for="inputAddress" className="form-label">
+                    <label htmlFor="email" className="form-label">
+                      Adresse Email
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      onChange={(e) =>
+                        setUser({ ...user, email: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="col-12">
+                    <label htmlFor="codeSecret1" className="form-label">
                       Code secret 1
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id="inputAddress"
+                      id="codeSecret1"
+                      onChange={(e) =>
+                        setUser({ ...user, code1: e.target.value })
+                      }
                     />
                   </div>
                   <div className="col-12">
-                    <label for="inputAddress2" className="form-label">
+                    <label htmlFor="codeSecret2" className="form-label">
                       Code secret 2
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id="inputAddress2"
+                      id="codeSecret2"
+                      onChange={(e) =>
+                        setUser({ ...user, code2: e.target.value })
+                      }
                     />
                   </div>
                   <br />
@@ -42,15 +113,16 @@ function AdminConnexionScreen() {
                       className="btn btn-primary btn-connexion"
                       type="submit"
                       style={{ marginTop: "5px" }}
+                      onClick={SubmitHandle}
                     >
                       Se Connecter
                     </button>
                   </div>
                   {/* <div className="col-12">
-                    <button type="submit" className="btn btn-primary">
-                      Sign in
-                    </button>
-                  </div> */}
+                  <button type="submit" className="btn btn-primary">
+                    Sign in
+                  </button>
+                </div> */}
                 </form>
               </div>
             </div>

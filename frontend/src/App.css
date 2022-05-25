@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+/* Ne surtout pas modifier ce qui suit ps : Jocelyn  */
+.main {
+  grid-area: main;
+}
+.containere {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 0.8fr 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    "sidebar nav nav nav"
+    "sidebar main main main ";
+}
