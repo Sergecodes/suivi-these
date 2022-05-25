@@ -5,23 +5,20 @@ const bcrypt = require('bcrypt');
 
 const DepartementSchema = new Schema({
     nom: { type: String, required: true },
-    motDePasse: {
-        type: String,
-        required: true
-    },  // todo validate password length; encrypt password before saving (post method)
+    motDePasse: { type: String, required: true },
     email: {
         type: String,
         required: true, 
         index: { unique: true },
-        lowercase: true,
         trim: true,
         validate: {
             validator: email => isEmail(email),
             message: props => `${props.value} est un email invalide!`
         }
     },
-    // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
 });
+
 
 DepartementSchema.pre("save",function(next){
     const departement = this;
@@ -43,8 +40,21 @@ DepartementSchema.pre("save",function(next){
     }else{
         return next();
     }
+});
 
-})
+
+DepartementSchema.virtual('juries', {
+    ref: 'Jury',
+    localField: '_id',
+    foreignField: 'departement'
+});
+
+
+DepartementSchema.virtual('etudiants', {
+    ref: 'Etudiant',
+    localField: '_id',
+    foreignField: 'departement'
+});
 
 
 DepartementSchema.virtual('notifications', {

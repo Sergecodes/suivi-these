@@ -3,6 +3,7 @@ const {
     Avis, AvisEmetteur, AvisDestinataire, 
     ModelNotif, TypeNotification 
 } = require('./types')
+const Notification = require('./Notification');
 
 
 const AvisSchema = new Schema({
@@ -10,21 +11,9 @@ const AvisSchema = new Schema({
     rapport: String, 
     commentaire: String,  
     envoyeLe: { type: Date, default: Date.now, required: true },
-    donnePar: {
-        type: Schema.Types.ObjectId,
-        // required: true,
-        refPath: 'donneParModel'
-    },
-    donneParModel: {
-        type: String,
-        required: true,
-        enum: Object.values(AvisEmetteur)
-    },
-    destinataire: {
-        type: Schema.Types.ObjectId,
-        // required: true,
-        refPath: 'destinataireModel'
-    },
+    donnePar: { type: Schema.Types.ObjectId, refPath: 'donneParModel' },
+    donneParModel: { type: String, required: true, enum: Object.values(AvisEmetteur) },
+    destinataire: { type: Schema.Types.ObjectId, refPath: 'destinataireModel' },
     destinataireModel: {
         type: String,
         required: true,
@@ -41,7 +30,7 @@ const AvisSchema = new Schema({
 /**
  * Envoyer une notification au destinataire
  */
- AvisSchema.post('save', async function(avis) {
+ AvisSchema.post('save', async function(avis, next) {
     await Notification.create({
         type: TypeNotification.NOUVEL_AVIS,
         destinataire: avis.destinataire,
@@ -49,6 +38,8 @@ const AvisSchema = new Schema({
         objetConcerne: avis._id,
         objetConcerneModel: ModelNotif.AVIS
     });
+
+    next();
 });
 
 
