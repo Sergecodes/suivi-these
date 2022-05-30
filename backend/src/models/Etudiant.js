@@ -96,18 +96,19 @@ EtudiantSchema.virtual("notifications", {
   foreignField: "destinataire",
 });
 
+
 /**
  * Envoyer une notification a l'administrateur
  */
-// EtudiantSchema.post('save', async function(etudiant) {
-//     console.log(ModelNotif);
-//     await Notification.create({
-//         type: TypeNotification.NOUVEAU_ETUDIANT,
-//         destinataireModel: ModelNotif.ADMIN,
-//         objetConcerne: etudiant._id,
-//         objetConcerneModel: ModelNotif.ETUDIANT
-//     });
-// });
+EtudiantSchema.post('save', async function(etudiant) {
+    console.log(ModelNotif);
+    await Notification.create({
+        type: TypeNotification.NOUVEAU_ETUDIANT,
+        destinataireModel: ModelNotif.ADMIN,
+        objetConcerne: etudiant._id,
+        objetConcerneModel: ModelNotif.ETUDIANT
+    });
+});
 
 // Operations
 EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {

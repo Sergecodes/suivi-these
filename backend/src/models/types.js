@@ -114,7 +114,9 @@ const CategorieFichierThese = Object.freeze({
 const StatutDossier = Object.freeze({
     ATTENTE_VALIDATION: "En attente de validation",
     ACCEPTE_ADMIN: "Validé par l'admin",
-    REJETE_ADMIN: "Rejeté par l'admin"
+    ACCEPTE_DEPARTEMENT: "Validé par le departement",
+    REJETE_ADMIN: "Rejeté par l'admin",
+    REJETE_DEPARTEMENT: "Rejeté par le departement" // Pour les etudiants de master
 });
 
 

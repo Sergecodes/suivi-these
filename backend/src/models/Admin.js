@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
+const Notification = require('./Notification');
+const { StatutDossier, ModelNotif, TypeNotification } = require('./types')
 
 
 const AdminSchema = new Schema({
@@ -86,8 +88,6 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
         message: raison
     });
 }
-
-
 
 
 module.exports = model('Admin', AdminSchema, 'admin');

@@ -1,4 +1,7 @@
 const DEPART = require('../models/Departement');
+const Depart = require('../models/Departement');
+const Avis = require('../models/Avis');
+const EnvoiDossier = require('../models/EnvoiDossier');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
@@ -143,3 +146,65 @@ exports.change_email = function(req,res){
 		})
 	})
 }
+
+
+// -----
+exports.notifications = async function (req, res) {
+   let depart = await Depart.findById(req.session.user._id).populate('notifications');
+   res.json({ notifs: depart.notifications });
+}
+
+exports.dossiersEtudsMaster = async function (req, res) {
+   const { depart } = res.locals;
+
+	let envoisDossiers = await EnvoiDossier.find({
+		destinataire: depart.id,
+		destinataireModel: Types.ActeurDossier.DEPARTEMENT
+	}).populate({
+		path: 'dossier',
+		populate: {
+			path: 'etudiant',
+			select: '-motDePasse -niveau -dossier -departement -misAJourLe',
+			// match: { niveau: Types.Niveau.MASTER },
+			populate: 'juges'
+		}
+	});
+
+   return res.json({ envoisDossiers });
+}
+
+
+exports.validerDossier = async function (req, res) {
+	const { depart, dossier } = res.locals;
+	await depart.validerDossier(dossier);
+	res.send("Succes!");
+}
+
+
+exports.rejeterDossier = async function (req, res) {
+	const { depart, dossier } = res.locals;
+	const { raison } = req.body;
+	await depart.rejeterDossier(dossier, raison);
+	res.send("Succes!");
+}
+
+
+exports.verifierAvisDonne = async function (req, res) {
+   const { depart, dossier } = res.locals;
+   res.json({ dejaDonne: await depart.verifierAvisDonne(dossier._id) });
+}
+
+
+exports.donnerAvisAdmin = async function (req, res) {
+   const { typeAvis, commentaire, rapport } = req.body;
+   const { depart, dossier } = res.locals;
+
+   try {
+      await depart.donnerAvisAdmin(typeAvis, commentaire, rapport, dossier._id);
+   } catch (err) {
+      res.status(400).json(err);
+   }
+
+   res.send("Succes!");
+}
+
