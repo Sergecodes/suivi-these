@@ -1,7 +1,8 @@
 const { Types } = require('./constants');
 const Jury = require('./models/Jury');
 const Dossier = require('./models/Dossier');
-const Coordo = require('./modes/Coordonateur');
+const Coordo = require('./models/Coordonateur');
+const Depart = require('./models/Departement')
 
 
 
@@ -106,6 +107,17 @@ exports.getCoordonateur = async function (req, res, next) {
 }
 
 
+exports.getDepartement = async function (req, res, next) {
+    let depart = await Depart.findById(req.session.user._id);
+
+    if (!depart)
+        return res.status(404).send("Departement non trouve");
+
+    res.locals.depart = depart;
+    next();
+}
+
+
 exports.getJury = async function (req, res, next) {
     let jury = await Jury.findById(req.session.user._id);
 
@@ -129,7 +141,6 @@ exports.getDossierFromReq = async function (req, res, next) {
 }
 
 
-
 exports.getJuryAndDossier = async function (req, res, next) {
     const { idDossier } = req.body;
     let jury = await Jury.findById(req.session.user._id);
@@ -142,6 +153,24 @@ exports.getJuryAndDossier = async function (req, res, next) {
 		return res.status(404).send("Dossier non trouve");
 
     res.locals.jury = jury;
+    res.locals.dossier = dossier;
+
+    next();
+}
+
+
+exports.getDepartAndDossier = async function (req, res, next) {
+    const { idDossier } = req.body;
+    let depart = await Departement.findById(req.session.user._id);
+	let dossier = await Dossier.findById(idDossier);
+    
+	if (!depart)
+		return res.status(404).send("Departement non trouve");
+	
+	if (!dossier)
+		return res.status(404).send("Dossier non trouve");
+
+    res.locals.depart = depart;
     res.locals.dossier = dossier;
 
     next();

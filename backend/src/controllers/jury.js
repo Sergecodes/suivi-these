@@ -152,7 +152,7 @@ exports.change_email = function(req,res){
 
 // ------------
 exports.rapportsEtudsMaster = async function (req, res) {
-   const { jury } = res.locas;
+   const { jury } = res.locals;
 
    let avis = await Avis.find({ 
       donnePar: jury._id, 
