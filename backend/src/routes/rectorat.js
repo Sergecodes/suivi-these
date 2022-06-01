@@ -14,7 +14,7 @@ router.route('/change-password').put(isRectorat, controller.changePassword);
 
 router.route('/change-email').put(isRectorat, controller.changeEmail);
 
-router.route('/rapports-etudiants').get(isRectorat, controller.rapportsEtudsThese);
+router.route('/dossiers-etudiants-these').get(isRectorat, controller.dossiersEtudsThese);
 
 router.route('/programmer-date-soutenance').post(isRectorat, controller.programmerDateSoutenance);
 

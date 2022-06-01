@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { Types } = require("../constants");
 const { removePassword } = require("../utils");
 const Avis = require('../models/Avis');
+const EnvoiDossier = require('../models/EnvoiDossier');
 
 
 exports.register_coordonateur = function (req, res) {
@@ -129,24 +130,81 @@ exports.login_coordonateur = async function (req, res) {
 };
 
 
-exports.rapportsEtudsThese = async function (req, res) {
-  const { coordo } = res.locals;
-  let avis = await Avis.find({ 
-    donnePar: coordo._id, 
-    donneParModel: Types.AvisEmetteur.COORDONATEUR,
-    destinataireModel: Types.AvisDestinataire.ADMIN
-  }).populate({
-    path: 'dossier',
-    populate: {
-      path: 'etudiant',
-      select: '-juges -motDePasse -niveau -dateNaissance -urlPhotoProfil -dossier -creeLe -misAJourLe',
-      // Pas besoin de selectionner le niveau, car on doit avoir juste les etudiants de THESE 
-      // match: { niveau: Types.Niveau.THESE }
-    }
-  });
+exports.change_coordonator_pass = function(req,res){
+	try{
+		const {coordo} = res.locals;
+		const {actualPass,newPass} = req.body;
 
-  res.json({ avis });
-};
+		bcrypt.compare(actualPass,coordo.motDePasse,function(err,result){
+      if(err){
+        console.log("une erreur est survenue: " , err);
+        return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
+      }
+      if(result == true){
+        if(newPass == ''){
+          return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
+        }else{
+          if(passwordComplexity().validate(newPass).error){
+            return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+          }else{
+            console.log("mot de passe valide");
+
+          }
+        }
+        coordo.motDePasse = newPass;
+        coordo.save(function(err,new_coordonator){
+          if(err){
+            res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(400)
+          }else{
+            res.json({success:false,message:"Vos informations de connexion ont ete mise a jour",data:new_coordonator}).status(201);
+          }
+        })
+      }else{
+        res.json({message:"les mots de passe ne correspondent pas"})
+      }
+    })
+
+	} catch(error){
+		console.error(error);
+		res.status(500).send("Internal Server Error");
+	}
+}
+
+exports.change_email = function(req,res){
+  const { coordo } = res.locals;
+	const {newEmail} = req.body;
+	
+  if(req.body.newEmail){
+    coordo.email = newEmail;
+  }
+  coordo.save(function(err,new_coordonateur){
+    if(err){
+      console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+      return res.json({success:false,message:"Internal server error",error:err}).status(500);
+    }
+    return res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_coordonateur.email});
+  })
+}
+
+// ----------
+exports.dossiersEtudsThese = async function (req, res) {
+  const { coordo } = res.locals;
+
+ let envoisDossiers = await EnvoiDossier.find({
+   destinataire: coordo.id,
+   destinataireModel: Types.ActeurDossier.COORDONATEUR
+ }).populate({
+   path: 'dossier',
+   populate: {
+     path: 'etudiant',
+     select: '-motDePasse -niveau -dossier -departement -misAJourLe',
+     match: { niveau: Types.Niveau.THESE },
+     populate: 'juges'
+   }
+ });
+
+  return res.json({ envoisDossiers });
+}
 
 
 exports.autorisationsSoutenanceMaster = async function (req, res) {
@@ -209,76 +267,5 @@ exports.donnerAvisAdmin = async function (req, res) {
    }
 
    res.send("Succes!");
-}
-
-
-exports.change_coordonator_pass = function(req,res){
-	try{
-		const {id} = req.params;
-		const {actualPass,newPass} = req.body;
-
-		COORD.findById(id,function(err,coordonateur){
-			if(err){
-				console.log("Une erreur s'est produitr lors de la recuperation du coordonateur, ce dernier n'existe pas ou il a ete supprimer");
-				return res.json({success:false,message:"Une erreur s'est produitr lors de la recuperation du coordonateur, ce dernier n'existe pas ou il a ete supprimer",error:err}).status(400);
-			}
-			console.log(coordonateur);
-			//Utilisateur trouver;
-			bcrypt.compare(actualPass,coordonateur.motDePasse,function(err,result){
-				if(err){
-					console.log("une erreur est survenue: " , err);
-					return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
-				}
-				if(result == true){
-					if(newPass == ''){
-						return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
-					}else{
-						if(passwordComplexity().validate(newPass).error){
-							return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
-						}else{
-							console.log("mot de passe valide");
-
-						}
-					}
-					coordonateur.motDePasse = newPass;
-					coordonateur.save(function(err,new_coordonator){
-						if(err){
-							res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(400)
-						}else{
-							res.json({success:false,message:"Vos informations de connexion ont ete mise a jour",data:new_coordonator}).status(201);
-						}
-					})
-				}else{
-					res.json({message:"les mots de passe ne correspondent pas"})
-				}
-			})
-		})
-
-	} catch(error){
-		console.log(error);
-		res.status(500).send("Internal Server Error");
-	}
-}
-
-exports.change_email = function(req,res){
-	const {newEmail,id} = req.body;
-	
-	COORD.findById(id,function(err,coordonateur){
-		if(err){
-			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du coordonateur",error:err}).status(500);
-		}
-		//le coordonateur a ete trouver
-		if(req.body.newEmail){
-			coordonateur.email = newEmail;
-		}
-		coordonateur.save(function(err,new_coordonateur){
-			if(err){
-				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-				res.json({success:false,message:"Internal server error",error:err}).status(500);
-
-			}
-			res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_coordonateur.email});
-		})
-	})
 }
 
