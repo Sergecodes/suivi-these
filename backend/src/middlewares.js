@@ -3,6 +3,7 @@ const Jury = require('./models/Jury');
 const Dossier = require('./models/Dossier');
 const Coordo = require('./models/Coordonateur');
 const Depart = require('./models/Departement')
+const Etudiant = require('./models/Etudiant');
 
 
 

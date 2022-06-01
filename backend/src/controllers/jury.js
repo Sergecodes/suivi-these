@@ -1,7 +1,8 @@
 const JURY = require('../models/Jury');
 const bcrypt = require('bcrypt');
 const passwordComplexity = require("joi-password-complexity");
-const { Types } = require('../constants')
+const { Types } = require('../constants');
+const EnvoiDossier = require('../models/EnvoiDossier');
 const Jury = require('../models/Jury');
 const Avis = require('../models/Avis');
 const { removePassword } = require('../utils')
@@ -151,45 +152,26 @@ exports.change_email = function(req,res){
 
 
 // ------------
-exports.rapportsEtudsMaster = async function (req, res) {
+exports.dossiersEtudsMaster= async function (req, res) {
    const { jury } = res.locals;
+ 
+  let envoisDossiers = await EnvoiDossier.find({
+    destinataire: jury.id,
+    destinataireModel: Types.ActeurDossier.JURY
+  }).populate({
+    path: 'dossier',
+    populate: {
+      path: 'etudiant',
+      select: '-motDePasse -niveau -dossier -misAJourLe',
+      match: { niveau: Types.Niveau.MASTER },
+      populate: 'juges'
+    }
+  });
+ 
+   return res.json({ envoisDossiers });
+ }
 
-   let avis = await Avis.find({ 
-      donnePar: jury._id, 
-      donneParModel: Types.AvisEmetteur.JURY,
-      destinataireModel: Types.AvisDestinataire.ADMIN
-    }).populate({
-      path: 'dossier',
-      populate: {
-        path: 'etudiant',
-        select: '-juges -motDePasse -niveau -dateNaissance -urlPhotoProfil -dossier -creeLe -misAJourLe',
-        // match: { niveau: Types.Niveau.MASTER }
-      }
-    });
-  
-   return res.json({ avis });
-
-   // let jury = await Jury.findById(req.session.user._id)
-   //    .populate({
-   //       path: 'etudiants',
-   //       match: { niveau: Types.Niveau.MASTER },
-   //       populate: {
-   //          path: 'dossier',
-   //          populate: [
-   //             'notes',
-   //             {
-   //                path: 'fichiers',
-   //                select: 'url uploadeLe',
-   //                match: { categorie: Types.CategorieFichierMaster.MEMOIRE }
-   //             },
-   //          ]
-   //       }
-   //    });
-
-   // res.json({ etudiants: jury.etudiants });
-}
-
-
+ 
 exports.noterDossier = async function (req, res) {
    const { valeur } = req.body;
    const { jury, dossier } = res.locals;
@@ -299,4 +281,45 @@ exports.donnerAvisAdmin = async function (req, res) {
 
    res.send("Succes!");
 }
+
+
+ /*
+exports.rapportsEtudsMaster = async function (req, res) {
+   const { jury } = res.locals;
+
+   let avis = await Avis.find({ 
+      donnePar: jury._id, 
+      donneParModel: Types.AvisEmetteur.JURY,
+      destinataireModel: Types.AvisDestinataire.ADMIN
+    }).populate({
+      path: 'dossier',
+      populate: {
+        path: 'etudiant',
+        select: '-juges -motDePasse -niveau -dateNaissance -urlPhotoProfil -dossier -creeLe -misAJourLe',
+        // match: { niveau: Types.Niveau.MASTER }
+      }
+    });
+  
+   return res.json({ avis });
+
+   // let jury = await Jury.findById(req.session.user._id)
+   //    .populate({
+   //       path: 'etudiants',
+   //       match: { niveau: Types.Niveau.MASTER },
+   //       populate: {
+   //          path: 'dossier',
+   //          populate: [
+   //             'notes',
+   //             {
+   //                path: 'fichiers',
+   //                select: 'url uploadeLe',
+   //                match: { categorie: Types.CategorieFichierMaster.MEMOIRE }
+   //             },
+   //          ]
+   //       }
+   //    });
+
+   // res.json({ etudiants: jury.etudiants });
+}
+*/
 

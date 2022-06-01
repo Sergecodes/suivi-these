@@ -19,7 +19,9 @@ maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
 TODO: 
-    - conseil api, expert api, admin api
+    - update codebase to fix getEtudiantRapport and getAvis confusion
+    - conseil api, complete rectorat api, expert api, admin api
+    - update Yannick's imported model names
     - add gets to middleware, update yannick change password nd email routes..
     - add method to verify if user can update dossier. call this method 
     before updating dossier

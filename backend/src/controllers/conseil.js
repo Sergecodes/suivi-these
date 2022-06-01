@@ -1,8 +1,12 @@
 const CONSEIL = require('../models/Conseil');
+const Conseil = require('../models/Conseil');
+const Etudiant = require('../models/Etudiant');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants');
 const { removePassword } = require('../utils')
+const Avis = require('../models/Avis');
+const EnvoiDossier = require('../models/EnvoiDossier')
 
 
 exports.new_conseil = function(req,res){
@@ -85,6 +89,7 @@ exports.conseil_login = async function(req,res){
     }
 
 }
+
 exports.change_conseil_pass = function(req,res){
 	try{
 		const {id} = req.params;
@@ -154,4 +159,25 @@ exports.change_email = function(req,res){
 		})
 	})
 }
+
+
+// ------------
+exports.dossiersEtudsMaster = async function (req, res) {
+   const { conseil } = res.locals;
+ 
+  let envoisDossiers = await EnvoiDossier.find({
+    destinataire: conseil.id,
+    destinataireModel: Types.ActeurDossier.CONSEIL
+  }).populate({
+    path: 'dossier',
+    populate: {
+      path: 'etudiant',
+      select: '-motDePasse -niveau -dossier -misAJourLe',
+      match: { niveau: Types.Niveau.THESE },
+      populate: 'juges'
+    }
+  });
+ 
+   return res.json({ envoisDossiers });
+ }
 

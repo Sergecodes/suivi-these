@@ -9,8 +9,7 @@ router.route('/login-jury').post(controller.login_jury);
 
 router.route('/change_email').put(controller.change_email);
 
-router.route('/rapports-etudiants-master').get(isJury, controller.rapportsEtudsMaster);
-
+router.route('/dossiers-etudiants-master').get(isJury, controller.dossiersEtudsMaster);
 
 router.route('/noter-dossier').post(isJury, getJuryAndDossier, controller.noterDossier);
 
