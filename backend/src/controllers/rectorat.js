@@ -151,46 +151,58 @@ exports.notifications = async function (req, res) {
 
 exports.dossiersEtudsThese = async function (req, res) {
    const { rectorat } = res.locals;
- 
-  let envoisDossiers = await EnvoiDossier.find({
-    destinataire: rectorat.id,
-    destinataireModel: Types.ActeurDossier.RECTORAT
-  }).populate({
-    path: 'dossier',
-    populate: {
-      path: 'etudiant',
-      select: '-motDePasse -niveau -dossier -misAJourLe',
-      match: { niveau: Types.Niveau.THESE },
-      populate: 'juges'
-    }
-  });
- 
+
+   let envoisDossiers = await EnvoiDossier.find({
+      destinataire: rectorat.id,
+      destinataireModel: Types.ActeurDossier.RECTORAT
+   }).populate({
+      path: 'dossier',
+      populate: {
+         path: 'etudiant',
+         select: '-motDePasse -niveau -dossier -misAJourLe',
+         match: { niveau: Types.Niveau.THESE },
+         populate: 'juges'
+      }
+   });
+
    return res.json({ envoisDossiers });
- }
+}
 
 
-exports.programmerDateSoutenance = async function (req, res) {
-   const { idEtudiant, dateSoutient } = req.body;
-   let etud = await Etudiant.findById(idEtudiant);
-
-   if (!etud)
-      return res.status(404).send("Etudiant non trouve");
-
-   if (etud.niveau != Types.Niveau.THESE)
-      return res.status(400).json({ message: "L'etudiant doit etre un etudiant de these" });
-
-   let rectorat = await Rectorat.findById(req.session.user._id);
-   if (!rectorat)
-      return res.status(404).send("Rectorat non trouve");
+exports.programmerDateSoutenanceThese = async function (req, res) {
+   const { dateSoutient } = req.body;
+   const { rectorat, etudiant } = res.locals;
 
    try {
-      await rectorat.programmerDateSoutenanceThese(etud, dateSoutient);
+      await rectorat.programmerDateSoutenanceThese(etudiant, dateSoutient);
    } catch (err) {
-      return res.status(400).json({ err });
+      return res.status(400).json(err);
    }
 
-   res.send("Date de soutenance programmée!");
+   res.send("Date de soutenance programmee avec succes!");
 }
+
+
+exports.verifierAvisDonne = async function (req, res) {
+   const { rectorat, dossier } = res.locals;
+   res.json({ dejaDonne: await rectorat.verifierAvisDonne(dossier._id) });
+}
+
+
+// Rapport d'audition
+exports.donnerAvisAdmin = async function (req, res) {
+   const { typeAvis, commentaire, rapport } = req.body;
+   const { rectorat, dossier } = res.locals;
+
+   try {
+      await rectorat.donnerAvisTheseAdmin(typeAvis, commentaire, rapport, dossier._id);
+   } catch (err) {
+      res.status(400).json(err);
+   }
+
+   res.send("Succes!");
+}
+
 
 
 /*

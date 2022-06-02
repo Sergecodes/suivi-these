@@ -97,7 +97,5 @@ CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
 }
 
 
-
-
 module.exports = model('Coordonateur', CoordonateurSchema);
 
