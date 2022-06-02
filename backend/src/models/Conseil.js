@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
+const Avis = require('./Avis');
+const { AvisEmetteur } = require('./types')
 
 
 const ConseilSchema = new Schema({
@@ -46,6 +48,32 @@ ConseilSchema.virtual('notifications', {
     localField: '_id',
     foreignField: 'destinataire'
 });
+
+CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
+    return Boolean(donne);
+}   
+
+CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
+    type, 
+    commentaire, 
+    rapport, 
+    idDossier
+) {
+    let donne = await this.verifierAvisDonne(idDossier);
+    if (donne)
+        throw "Vous avez deja envoye votre avis a l'admin";
+
+    await Avis.create({
+        type,
+        commentaire,
+        rapport,
+        dossier: idDossier,
+        donnePar: this._id,
+        donneParModel: AvisEmetteur.CONSEIL
+    });
+}
+
 
 
 module.exports = model('Conseil', ConseilSchema);

@@ -4,7 +4,7 @@ const Dossier = require('./models/Dossier');
 const Coordo = require('./models/Coordonateur');
 const Depart = require('./models/Departement')
 const Etudiant = require('./models/Etudiant');
-
+const Conseil = require('./models/Conseil');
 
 
 exports.isEtudiant = function(req, res, next) {
@@ -104,6 +104,16 @@ exports.getCoordonateur = async function (req, res, next) {
         return res.status(404).send("Coordonateur non trouve");
 
     res.locals.coordo = coordo;
+    next();
+}
+
+exports.getConseil = async function (req, res, next) {
+    let conseil = await Conseil.findById(req.session.user._id);
+
+    if (!conseil)
+        return res.status(404).send("Conseil non trouve");
+
+    res.locals.conseil = conseil;
     next();
 }
 
