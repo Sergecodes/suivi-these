@@ -19,10 +19,11 @@ maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
 TODO: 
-    - update codebase to fix getEtudiantRapport and getAvis confusion
-    - conseil api, complete rectorat api, expert api, admin api
+    - expert api
     - update Yannick's imported model names
-    - add gets to middleware, update yannick change password nd email routes..
+    - change findById to use gets from middleware
+    - update yannick change password nd email routes..
+    - admin api
     - add method to verify if user can update dossier. call this method 
     before updating dossier
     - Use res.locals in all actors...

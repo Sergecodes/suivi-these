@@ -21,7 +21,7 @@ router.route('/change-email').put(isRectorat, controller.changeEmail);
 router.route('/programmer-date-soutenance-these').post(
    isRectorat, 
    getEtudiantFromReq,
-   getCoordonateur,
+   getRectorat,
    controller.programmerDateSoutenanceThese
 );
 
