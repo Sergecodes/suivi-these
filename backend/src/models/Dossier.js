@@ -134,7 +134,7 @@ const NoteDossierSchema = new Schema({
 
 NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 
-/**
+/*
  * Envoyer une notification a l'administrateur
  */
 // NoteDossierSchema.post('save', async function(doc) {

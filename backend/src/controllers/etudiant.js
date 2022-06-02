@@ -1,4 +1,3 @@
-const USERS = require("../models/Etudiant");
 const { Dossier, EtapeDossier, FichierDossier } = require("../models/Dossier");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
@@ -12,42 +11,42 @@ const { removePassword } = require('../utils')
 
 
 exports.register = function(req,res) {
-	var Etudiant = new USERS();
-	Etudiant.matricule = req.body.matricule;
-	Etudiant.nom = req.body.nom;
-	Etudiant.prenom = req.body.prenom;
-	Etudiant.motDePasse = req.body.motDePasse;
-	Etudiant.niveau = req.body.niveau;
-	Etudiant.email = req.body.email;
-	Etudiant.dateNaissance = req.body.dateNaissance;
-	Etudiant.lieuNaissance = req.body.lieuNaissance;
-	Etudiant.numTelephone = req.body.numTelephone;
-	Etudiant.sexe = req.body.sexe;
-	Etudiant.urlPhotoProfil = req.body.urlPhotoProfil;
-	Etudiant.departement = req.body.departement;
-	Etudiant.encadreur = req.body.encadreur;
+	let etud = new Etudiant();
+	etud.matricule = req.body.matricule;
+	etud.nom = req.body.nom;
+	etud.prenom = req.body.prenom;
+	etud.motDePasse = req.body.motDePasse;
+	etud.niveau = req.body.niveau;
+	etud.email = req.body.email;
+	etud.dateNaissance = req.body.dateNaissance;
+	etud.lieuNaissance = req.body.lieuNaissance;
+	etud.numTelephone = req.body.numTelephone;
+	etud.sexe = req.body.sexe;
+	etud.urlPhotoProfil = req.body.urlPhotoProfil;
+	etud.departement = req.body.departement;
+	etud.encadreur = req.body.encadreur;
 	
-	if(Etudiant.nom == ''){
+	if(etud.nom == ''){
 		return res.json({success:false,message:"Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
-	}else if(Etudiant.prenom == ''){
+	}else if(etud.prenom == ''){
 		return res.json({success:false,message:"Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter"}).status(500);
-	}else if(Etudiant.motDePasse == ''){
+	}else if(etud.motDePasse == ''){
 		return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
 		
-	}else if(Etudiant.motDePasse !== ''){
-		if(passwordComplexity().validate(Etudiant.motDePasse).error){
+	}else if(etud.motDePasse !== ''){
+		if(passwordComplexity().validate(etud.motDePasse).error){
 			return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
 		}else{
 			console.log("mot de passe valide")
 		}
-	}else if( Etudiant.dateNaissance == ''){
+	}else if( etud.dateNaissance == ''){
 		return res.json({success:false,message:'le champ date de naissance est vide'}).status(500);
-	}else if( Etudiant.lieuNaissance == ''){
+	}else if( etud.lieuNaissance == ''){
 		return res.json({success:false,message:'le champ Lieu de naissance est vide de naissance est vide'}).status(500);
-	}else if(Etudiant.numTelephone == ''){
+	}else if(etud.numTelephone == ''){
 		res.json({success:false,message:"le champs numero de telephone est vide veuillez entrer votre numero de telephone"}).status(500);
 	}
-	Etudiant.save(function(err,nouveau_etudiant){
+	etud.save(function(err,nouveau_etudiant){
 		if(err){
 			console.log(err);
 			return res.json({success:false,message:"Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur:err}).status(500);
@@ -70,7 +69,7 @@ exports.register = function(req,res) {
 exports.login_student = async function(req,res){
 	try{
 		const {matricule,motDePasse, niveau} = req.body;
-		let etudiant = await USERS.findOne({matricule, niveau});
+		let etudiant = await Etudiant.findOne({matricule, niveau});
 		if(!etudiant){return res.status(404).send("User Not found")};
 
 		bcrypt.compare(motDePasse, etudiant.motDePasse, function(err,result) {
@@ -112,7 +111,7 @@ exports.change_student_password = async function(req,res){
 		const id = req.session.user._id;
 		const {pass,newPass} = req.body;
 
-		USERS.findById(id,function(err,etudiant){
+		Etudiant.findById(id,function(err,etudiant){
 			if(err){
 				console.log("une erreur esr survenu lors de la recuperation de cet utilisateur, l'utilisateur n'existe pas ou a ete supprier")
 				return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
@@ -156,7 +155,7 @@ exports.change_student_password = async function(req,res){
 exports.changePhoneNumber = function(req,res){
 	const {newPhoneNumber} = req.body;
 
-	USERS.findById(req.session.user._id, function(err,etudiant){
+	Etudiant.findById(req.session.user._id, function(err,etudiant){
 		if(err){
 			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation de l'etudiant",error:err}).status(500);
 		}

@@ -1,4 +1,3 @@
-const JURY = require('../models/Jury');
 const bcrypt = require('bcrypt');
 const passwordComplexity = require("joi-password-complexity");
 const { Types } = require('../constants');
@@ -9,7 +8,7 @@ const { removePassword } = require('../utils')
 
 
 exports.register_jury = function (req, res) {
-   var jury = new JURY();
+   let jury = new Jury();
    jury.nom = req.body.nom;
    jury.prenom = req.body.prenom;
    jury.motDePasse = req.body.motDePasse;
@@ -42,7 +41,7 @@ exports.register_jury = function (req, res) {
 exports.login_jury = async function (req, res) {
    try {
       const { email, motDePasse } = req.body;
-      let jury = await JURY.findOne({ email });
+      let jury = await Jury.findOne({ email });
       if (!jury) { return res.status(404).send("Jury Not found") };
       bcrypt.compare(motDePasse, jury.motDePasse, function (err, result) {
          if (err) {
@@ -84,7 +83,7 @@ exports.change_jury_pass = function(req,res){
 		const {id} = req.params;
 		const {actualPass,newPass} = req.body;
 
-		JURY.findById(id,function(err,jury){
+		Jury.findById(id,function(err,jury){
 			if(err){
 				console.log("Une erreur s'est produitr lors de la recuperation du jury, ce dernier n'existe pas ou il a ete supprimer");
 				return res.json({success:false,message:"Une erreur s'est produitr lors de la recuperation du jury, ce dernier n'existe pas ou il a ete supprimer",error:err}).status(400);
@@ -131,7 +130,7 @@ exports.change_jury_pass = function(req,res){
 exports.change_email = function(req,res){
 	const {newEmail,id} = req.body;
 	
-	JURY.findById(id,function(err,jury){
+	Jury.findById(id,function(err,jury){
 		if(err){
 			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du jury",error:err}).status(500);
 		}

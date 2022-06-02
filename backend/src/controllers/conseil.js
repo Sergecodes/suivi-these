@@ -1,34 +1,31 @@
-const CONSEIL = require('../models/Conseil');
 const Conseil = require('../models/Conseil');
-const Etudiant = require('../models/Etudiant');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants');
 const { removePassword } = require('../utils')
-const Avis = require('../models/Avis');
 const EnvoiDossier = require('../models/EnvoiDossier')
 
 
 exports.new_conseil = function (req, res) {
-	var Conseil = new CONSEIL();
-	Conseil.email = req.body.email;
-	Conseil.motDePasse = req.body.motDePasse;
+	let conseil = new Conseil();
+	conseil.email = req.body.email;
+	conseil.motDePasse = req.body.motDePasse;
 
-	if (Conseil.email == '') {
+	if (conseil.email == '') {
 		return res.json({ success: false, message: "vous ne pouvez pas vous authentifier avec un email vide" }).status(500);
 
-	} else if (Conseil.motDePasse == '') {
+	} else if (conseil.motDePasse == '') {
 		return res.json({ success: false, message: "veuillez svp entrer un mot de passe" })
 
-	} else if (Conseil.motDePasse !== '') {
-		if (passwordComplexity().validate(Conseil.motDePasse).error) {
+	} else if (conseil.motDePasse !== '') {
+		if (passwordComplexity().validate(conseil.motDePasse).error) {
 			return res.json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," }).status(500)
 		} else {
 			console.log("mot de passe valide")
 		}
 	}
 
-	Conseil.save(function (err, nouveau_conseil) {
+	conseil.save(function (err, nouveau_conseil) {
 		if (err) {
 			console.log("erreur lors de l'enregistrement dun conseil scientifique");
 			return res.json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique", error: err }).status(500)
@@ -52,7 +49,7 @@ exports.new_conseil = function (req, res) {
 exports.conseil_login = async function (req, res) {
 	try {
 		const { email, motDePasse } = req.body;
-		let conseil = await CONSEIL.findOne({ email });
+		let conseil = await Conseil.findOne({ email });
 		if (!conseil) { return res.status(404).send("Conseil Not found") };
 
 		bcrypt.compare(motDePasse, conseil.motDePasse, function (err, result) {
@@ -95,7 +92,7 @@ exports.change_conseil_pass = function (req, res) {
 		const { id } = req.params;
 		const { actualPass, newPass } = req.body;
 
-		CONSEIL.findById(id, function (err, conseil) {
+		Conseil.findById(id, function (err, conseil) {
 			if (err) {
 				console.log("Une erreur s'est produitr lors de la recuperation du conseil, ce dernier n'existe pas ou il a ete supprimer");
 				return res.json({ success: false, message: "Une erreur s'est produitr lors de la recuperation du conseil, ce dernier n'existe pas ou il a ete supprimer", error: err }).status(400);
@@ -141,7 +138,7 @@ exports.change_conseil_pass = function (req, res) {
 exports.change_email = function (req, res) {
 	const { newEmail, id } = req.body;
 
-	CONSEIL.findById(id, function (err, conseil) {
+	Conseil.findById(id, function (err, conseil) {
 		if (err) {
 			return res.json({ success: false, message: "quelque chose nas pas marcher lors de la recuperation du conseil", error: err }).status(500);
 		}

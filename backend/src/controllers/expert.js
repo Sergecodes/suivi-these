@@ -1,4 +1,3 @@
-const EXPERT = require('../models/Expert');
 const Expert = require('../models/Expert');
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants')
@@ -7,7 +6,7 @@ const EnvoiDossier = require('../models/EnvoiDossier')
 
 
 exports.register_expert = function (req, res) {
-	var expert = new EXPERT();
+	let expert = new Expert();
 	expert.nom = req.body.nom;
 	expert.prenom = req.body.prenom;
 	expert.motDePasse = req.body.motDePasse;
@@ -40,7 +39,7 @@ exports.register_expert = function (req, res) {
 exports.login_expert = async function (req, res) {
 	try {
 		const { email, motDePasse } = req.body;
-		let expert = await EXPERT.findOne({ email });
+		let expert = await Expert.findOne({ email });
 		if (!expert) { return res.status(404).send("Expert Not found") };
 		bcrypt.compare(motDePasse, expert.motDePasse, function (err, result) {
 			if (err) {
@@ -81,7 +80,7 @@ exports.change_expert_pass = function (req, res) {
 		const { id } = req.params;
 		const { actualPass, newPass } = req.body;
 
-		EXPERT.findById(id, function (err, expert) {
+		Expert.findById(id, function (err, expert) {
 			if (err) {
 				console.log("Une erreur s'est produitr lors de la recuperation du expert, ce dernier n'existe pas ou il a ete supprimer");
 				return res.json({ success: false, message: "Une erreur s'est produitr lors de la recuperation du expert, ce dernier n'existe pas ou il a ete supprimer", error: err }).status(400);
@@ -128,7 +127,7 @@ exports.change_expert_pass = function (req, res) {
 exports.change_email = function (req, res) {
 	const { newEmail, id } = req.body;
 
-	EXPERT.findById(id, function (err, expert) {
+	Expert.findById(id, function (err, expert) {
 		if (err) {
 			return res.json({ success: false, message: "quelque chose nas pas marcher lors de la recuperation du expert", error: err }).status(500);
 		}

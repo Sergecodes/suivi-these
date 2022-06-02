@@ -49,12 +49,12 @@ ConseilSchema.virtual('notifications', {
     foreignField: 'destinataire'
 });
 
-CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+ConseilSchema.methods.verifierAvisDonne = async function(idDossier) {
     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
     return Boolean(donne);
 }   
 
-CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
+ConseilSchema.methods.donnerAvisTheseAdmin = async function(
     type, 
     commentaire, 
     rapport, 

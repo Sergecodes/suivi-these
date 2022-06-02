@@ -1,5 +1,4 @@
-const DEPART = require('../models/Departement');
-const Depart = require('../models/Departement');
+const Departement = require('../models/Departement');
 const Avis = require('../models/Avis');
 const EnvoiDossier = require('../models/EnvoiDossier');
 const passwordComplexity = require("joi-password-complexity");
@@ -8,9 +7,8 @@ const { Types } = require('../constants')
 const { removePassword } = require('../utils')
 
 
-
 exports.register_departement = function(req,res){
-    var departement = new DEPART();
+    var departement = new Departement();
 	departement.nom = req.body.nom;
 	departement.motDePasse = req.body.motDePasse;
 	departement.email = req.body.email;
@@ -40,7 +38,7 @@ exports.register_departement = function(req,res){
 exports.login_departement = async function(req,res){
     try{
         const {email,motDePasse} = req.body;
-        let departement = await DEPART.findOne({email});
+        let departement = await Departement.findOne({email});
         if(!departement){return res.status(404).send("Departement Not found")};
         bcrypt.compare(motDePasse, departement.motDePasse, function(err,result) {
 			if(err){
@@ -82,7 +80,7 @@ exports.change_departement_pass = function(req,res){
 		const {id} = req.params;
 		const {actualPass,newPass} = req.body;
 
-		DEPART.findById(id,function(err,departement){
+		Departement.findById(id,function(err,departement){
 			if(err){
 				console.log("Une erreur s'est produitr lors de la recuperation du departement, ce dernier n'existe pas ou il a ete supprimer");
 				return res.json({success:false,message:"Une erreur s'est produitr lors de la recuperation du departement, ce dernier n'existe pas ou il a ete supprimer",error:err}).status(400);
@@ -128,7 +126,7 @@ exports.change_departement_pass = function(req,res){
 exports.change_email = function(req,res){
 	const {newEmail,id} = req.body;
 	
-	DEPART.findById(id,function(err,departement){
+	Departement.findById(id,function(err,departement){
 		if(err){
 			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du departement",error:err}).status(500);
 		}
@@ -150,7 +148,7 @@ exports.change_email = function(req,res){
 
 // -----
 exports.notifications = async function (req, res) {
-   let depart = await Depart.findById(req.session.user._id).populate('notifications');
+   let depart = await Departement.findById(req.session.user._id).populate('notifications');
    res.json({ notifs: depart.notifications });
 }
 
