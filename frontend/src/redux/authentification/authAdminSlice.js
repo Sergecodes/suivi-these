@@ -65,15 +65,25 @@ export const authAdminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
-        // console.log("login fulfilled");
-        state.isSuccess = true;
-        state.etudiant = action.payload;
-        state.isLoading = false;
+        if (action.payload && JSON.parse(action.payload)._id) {
+          console.log("je suis dana le success");
+          state.isLoading = false;
+          console.log(`le JSON parse ici est ${action.payload}`);
+          state.isSuccess = true;
+          state.admin = action.payload;
 
-        console.log("je suis dans le isloading");
+          localStorage.setItem(
+            "coordonateurtInfo",
+            JSON.stringify(JSON.parse(action.payload))
+          );
+        } else {
+          console.log("je suis danss le rejected");
+          state.isSuccess = false;
+          state.isLoading = false;
+          state.isRejected = true;
+          state.message = "Admin Not Found";
+        }
 
-        state.isRejected = true;
-        // state.message = action.payload.data.message;
         return state;
       })
       .addCase(loginAdmin.rejected, (state, action) => {
