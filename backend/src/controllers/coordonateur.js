@@ -93,7 +93,7 @@ exports.login_coordonateur = async function (req, res) {
     if (!coordonateur) {
       return res.status(404).send("Coordonateur Not found");
     }
-    
+
     bcrypt.compare(motDePasse, coordonateur.motDePasse, function (err, result) {
       if (err) {
         console.log("une erreur interne est suvenue: ", err);
@@ -130,59 +130,59 @@ exports.login_coordonateur = async function (req, res) {
 };
 
 
-exports.change_coordonator_pass = function(req,res){
-	try{
-		const {coordo} = res.locals;
-		const {actualPass,newPass} = req.body;
+exports.change_coordonator_pass = function (req, res) {
+  try {
+    const { coordo } = res.locals;
+    const { actualPass, newPass } = req.body;
 
-		bcrypt.compare(actualPass,coordo.motDePasse,function(err,result){
-      if(err){
-        console.log("une erreur est survenue: " , err);
-        return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
+    bcrypt.compare(actualPass, coordo.motDePasse, function (err, result) {
+      if (err) {
+        console.log("une erreur est survenue: ", err);
+        return res.json({ success: false, message: "Une erreur est survenue", error: err }).status(400);
       }
-      if(result == true){
-        if(newPass == ''){
-          return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
-        }else{
-          if(passwordComplexity().validate(newPass).error){
-            return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
-          }else{
+      if (result == true) {
+        if (newPass == '') {
+          return res.json({ success: false, message: "veuillez svp entrer un mot de passe" })
+        } else {
+          if (passwordComplexity().validate(newPass).error) {
+            return res.json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," }).status(500)
+          } else {
             console.log("mot de passe valide");
 
           }
         }
         coordo.motDePasse = newPass;
-        coordo.save(function(err,new_coordonator){
-          if(err){
-            res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(400)
-          }else{
-            res.json({success:false,message:"Vos informations de connexion ont ete mise a jour",data:new_coordonator}).status(201);
+        coordo.save(function (err, new_coordonator) {
+          if (err) {
+            res.json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err }).status(400)
+          } else {
+            res.json({ success: false, message: "Vos informations de connexion ont ete mise a jour", data: new_coordonator }).status(201);
           }
         })
-      }else{
-        res.json({message:"les mots de passe ne correspondent pas"})
+      } else {
+        res.json({ message: "les mots de passe ne correspondent pas" })
       }
     })
 
-	} catch(error){
-		console.error(error);
-		res.status(500).send("Internal Server Error");
-	}
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 }
 
-exports.change_email = function(req,res){
+exports.change_email = function (req, res) {
   const { coordo } = res.locals;
-	const {newEmail} = req.body;
-	
-  if(req.body.newEmail){
+  const { newEmail } = req.body;
+
+  if (req.body.newEmail) {
     coordo.email = newEmail;
   }
-  coordo.save(function(err,new_coordonateur){
-    if(err){
+  coordo.save(function (err, new_coordonateur) {
+    if (err) {
       console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-      return res.json({success:false,message:"Internal server error",error:err}).status(500);
+      return res.json({ success: false, message: "Internal server error", error: err }).status(500);
     }
-    return res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_coordonateur.email});
+    return res.json({ success: true, message: "la nouvelle adresse email a ete modifier avec success", data: new_coordonateur.email });
   })
 }
 
@@ -190,18 +190,18 @@ exports.change_email = function(req,res){
 exports.dossiersEtudsThese = async function (req, res) {
   const { coordo } = res.locals;
 
- let envoisDossiers = await EnvoiDossier.find({
-   destinataire: coordo.id,
-   destinataireModel: Types.ActeurDossier.COORDONATEUR
- }).populate({
-   path: 'dossier',
-   populate: {
-     path: 'etudiant',
-     select: '-motDePasse -niveau -dossier -departement -misAJourLe',
-     match: { niveau: Types.Niveau.THESE },
-     populate: 'juges'
-   }
- });
+  let envoisDossiers = await EnvoiDossier.find({
+    destinataire: coordo.id,
+    destinataireModel: Types.ActeurDossier.COORDONATEUR
+  }).populate({
+    path: 'dossier',
+    populate: {
+      path: 'etudiant',
+      select: '-motDePasse -niveau -dossier -departement -misAJourLe',
+      match: { niveau: Types.Niveau.THESE },
+      populate: 'juges'
+    }
+  });
 
   return res.json({ envoisDossiers });
 }
@@ -209,7 +209,7 @@ exports.dossiersEtudsThese = async function (req, res) {
 
 exports.autorisationsSoutenanceMaster = async function (req, res) {
   const { coordo } = res.locals;
-  let avis = await Avis.find({ 
+  let avis = await Avis.find({
     type: Types.Avis.AUTORISATION_SOUTENANCE,
     // donnePar: admin._id, 
     donneParModel: Types.AvisEmetteur.ADMIN,
@@ -236,16 +236,16 @@ exports.notifications = async function (req, res) {
 
 
 exports.programmerDateSoutenanceMaster = async function (req, res) {
-   const { dateSoutient } = req.body;
-   const { coordo, etudiant } = res.locals; 
+  const { dateSoutient } = req.body;
+  const { coordo, etudiant } = res.locals;
 
-   try {
-      await coordo.programmerDateSoutenanceMaster(etudiant, dateSoutient);
-   } catch (err) {
-      return res.status(400).json(err);
-   }
+  try {
+    await coordo.programmerDateSoutenanceMaster(etudiant, dateSoutient);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
 
-   res.send("Date de soutenance programmee avec succes!");
+  res.send("Date de soutenance programmee avec succes!");
 }
 
 
@@ -257,15 +257,15 @@ exports.verifierAvisDonne = async function (req, res) {
 
 // Rapport d'audition
 exports.donnerAvisAdmin = async function (req, res) {
-   const { typeAvis, commentaire, rapport } = req.body;
-   const { coordo, dossier } = res.locals;
+  const { typeAvis, commentaire, rapport } = req.body;
+  const { coordo, dossier } = res.locals;
 
-   try {
-      await coordo.donnerAvisTheseAdmin(typeAvis, commentaire, rapport, dossier._id);
-   } catch (err) {
-      res.status(400).json(err);
-   }
+  try {
+    await coordo.donnerAvisTheseAdmin(typeAvis, commentaire, rapport, dossier._id);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 
-   res.send("Succes!");
+  res.send("Succes!");
 }
 
