@@ -2,9 +2,12 @@ const { Schema, model } = require('mongoose')
 const { 
     CategorieFichierMaster, CategorieFichierThese, 
     GerantEtapeDossier, StatutDossier,
-    CategorieNote, ActeurDossier, 
+    CategorieNote, ActeurDossier, ModelNotif,
     EtapeDossier: EtapeDossierEnum,
-} = require('./types')
+} = require('./types');
+const Avis = require('./Avis');
+const EnvoiDossier = require('./EnvoiDossier');
+const Notification = require('./Notification');
 
 
 const DossierSchema = new Schema({
@@ -47,8 +50,23 @@ DossierSchema.virtual('avis', {
 });
 
 
+// pre- remove middleware
+// Delete etapes, notes and fichiers when dossier is deleted
+DossierSchema.pre('remove', function(next) {
+    EtapeDossier.remove({ dossier: this._id }).exec();
+    NoteDossier.remove({ dossier: this._id }).exec();
+    FichierDossier.remove({ dossier: this._id }).exec();
+    Avis.remove({ dossier: this._id }).exec();
+    EnvoiDossier.remove({ dossier: this._id }).exec();
+    Notification.remove({ 
+        objetConcerne: this._id, 
+        objetConcerneModel: ModelNotif.DOSSIER 
+    }).exec();
 
-// Operations
+    next();
+});
+
+
 DossierSchema.virtual('etapeActuelle').get(async function() {
     await this.populate('etapes');
     return this.etapes.at(-1);
@@ -134,7 +152,7 @@ const NoteDossierSchema = new Schema({
 
 NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 
-/**
+/*
  * Envoyer une notification a l'administrateur
  */
 // NoteDossierSchema.post('save', async function(doc) {

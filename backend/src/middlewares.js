@@ -1,11 +1,13 @@
 const { Types } = require('./constants');
 const Jury = require('./models/Jury');
+const Expert = require('./models/Expert');
 const Dossier = require('./models/Dossier');
 const Coordo = require('./models/Coordonateur');
 const Depart = require('./models/Departement')
 const Etudiant = require('./models/Etudiant');
 const Conseil = require('./models/Conseil');
 const Rectorat = require('./models/Rectorat');
+// const Notification = require('./models/Notification');
 
 
 exports.isEtudiant = function(req, res, next) {
@@ -87,17 +89,6 @@ exports.isAdmin = function(req, res, next) {
     next();
 }
 
-exports.getEtudiantFromReq = async function (req, res, next) {
-    const { idEtudiant } = req.body;
-    let etudiant = await Etudiant.findById(idEtudiant);
-
-    if (!etudiant)
-        return res.status(404).send("Etudiant non trouve");
-
-    res.locals.etudiant = etudiant;
-    next();
-}
-
 exports.getCoordonateur = async function (req, res, next) {
     let coordo = await Coordo.findById(req.session.user._id);
 
@@ -115,6 +106,16 @@ exports.getConseil = async function (req, res, next) {
         return res.status(404).send("Conseil non trouve");
 
     res.locals.conseil = conseil;
+    next();
+}
+
+exports.getExpert = async function (req, res, next) {
+    let expert = await Expert.findById(req.session.user._id);
+
+    if (!expert)
+        return res.status(404).send("Expert non trouve");
+
+    res.locals.expert = expert;
     next();
 }
 
@@ -150,6 +151,28 @@ exports.getJury = async function (req, res, next) {
     next();
 }
 
+exports.getEtudiantFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let etudiant = await Etudiant.findById(id);
+
+    if (!etudiant)
+        return res.status(404).send("Etudiant non trouve");
+
+    res.locals.etudiant = etudiant;
+    next();
+}
+
+exports.getEtudiantFromReq = async function (req, res, next) {
+    const { idEtudiant } = req.body;
+    let etudiant = await Etudiant.findById(idEtudiant);
+
+    if (!etudiant)
+        return res.status(404).send("Etudiant non trouve");
+
+    res.locals.etudiant = etudiant;
+    next();
+}
+
 
 exports.getDossierFromReq = async function (req, res, next) {
     const { idDossier } = req.body;
@@ -159,42 +182,6 @@ exports.getDossierFromReq = async function (req, res, next) {
         return res.status(404).send("Dossier non trouve");
 
     res.locals.dossier = dossier;
-    next();
-}
-
-
-exports.getJuryAndDossier = async function (req, res, next) {
-    const { idDossier } = req.body;
-    let jury = await Jury.findById(req.session.user._id);
-	let dossier = await Dossier.findById(idDossier);
-    
-	if (!jury)
-		return res.status(404).send("Jury non trouve");
-	
-	if (!dossier)
-		return res.status(404).send("Dossier non trouve");
-
-    res.locals.jury = jury;
-    res.locals.dossier = dossier;
-
-    next();
-}
-
-
-exports.getDepartAndDossier = async function (req, res, next) {
-    const { idDossier } = req.body;
-    let depart = await Departement.findById(req.session.user._id);
-	let dossier = await Dossier.findById(idDossier);
-    
-	if (!depart)
-		return res.status(404).send("Departement non trouve");
-	
-	if (!dossier)
-		return res.status(404).send("Dossier non trouve");
-
-    res.locals.depart = depart;
-    res.locals.dossier = dossier;
-
     next();
 }
 

@@ -8,7 +8,7 @@ const EnvoiDossier = require('../models/EnvoiDossier');
 
 
 exports.register_rectorat = function (req, res) {
-   var rectorat = new Rectorat();
+   let rectorat = new Rectorat();
    rectorat.motDePasse = req.body.motDePasse;
    rectorat.email = req.body.email;
 
@@ -38,7 +38,7 @@ exports.login_rectorat = async function (req, res) {
    try {
       const { email, motDePasse } = req.body;
       let rectorat = await Rectorat.findOne({ email });
-      if (!rectorat) { return res.status(400).send("Invalid credentials") };
+      if (!rectorat) { return res.status(404).send("Invalid credentials") };
 
       bcrypt.compare(motDePasse, rectorat.motDePasse, function (err, result) {
          if (err) {
@@ -78,38 +78,29 @@ exports.login_rectorat = async function (req, res) {
 
 exports.changePassword = function (req, res) {
    try {
-      const id = req.session.user._id;
+      const { rectorat } = res.locals;
       const { pass, newPass } = req.body;
 
-      Rectorat.findById(id, function (err, rectorat) {
+      bcrypt.compare(pass, rectorat.motDePasse, function (err, result) {
          if (err) {
-            return res.json({ success: false, error: err }).status(500);
+            return res.status(500).json({ success: false, message: "une erreur interne est survenue", error: err });
          }
+         if (result === true) {
+            rectorat.motDePasse = newPass;
+            rectorat.save(function (err, newRectorat) {
+               if (err) {
+                  console.log(err);
+                  res.json({ success: false, erreur: err }).status(500);
+               }
 
-         if (!rectorat)
-            return res.status(404).send("Non trouve");
+               if (req.session)
+                  req.session.destroy();
 
-         bcrypt.compare(pass, rectorat.motDePasse, function (err, result) {
-            if (err) {
-               return res.status(500).json({ success: false, message: "une erreur interne est survenue", error: err });
-            }
-            if (result === true) {
-               rectorat.motDePasse = newPass;
-               rectorat.save(function (err, newRectorat) {
-                  if (err) {
-                     console.log(err);
-                     res.json({ success: false, erreur: err }).status(500);
-                  }
-
-                  if (req.session)
-                     req.session.destroy();
-
-                  res.json({ success: true, message: "Vous avez ete deconnecte" });
-               })
-            } else {
-               res.status(400).json({ message: "les mots de passe ne correspondent pas" })
-            }
-         })
+               res.json({ success: true, message: "Vous avez ete deconnecte" });
+            })
+         } else {
+            res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
+         }
       })
 
    } catch (error) {
@@ -121,32 +112,38 @@ exports.changePassword = function (req, res) {
 
 exports.changeEmail = function (req, res) {
    const { newEmail } = req.body;
+   const { rectorat } = res.locals;
 
-   Rectorat.findById(req.session.user._id, function (err, rectorat) {
+   if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+
+	if (rectorat.email === newEmail) {
+		if (req.session)
+			req.session.destroy();
+
+		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+	}
+
+   rectorat.email = newEmail;
+   rectorat.save(function (err, newRectorat) {
       if (err) {
-         return res.json({ success: false, error: err }).status(500);
+         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
       }
 
-      if (req.body.newEmail) {
-         rectorat.email = newEmail;
-      }
-      rectorat.save(function (err, newRectorat) {
-         if (err) {
-            res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
-         }
-         res.json({ success: true, newEmail: newRectorat.email });
-      })
-   })
+      if (req.session)
+         req.session.destroy();
+
+      return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
+   });
 }
 
 
 // -------------------
 
 exports.notifications = async function (req, res) {
-   let notifs = await Notification.find({
-      destinataireModel: Types.ModelNotif.RECTORAT
-   });
-   res.json({ notifs });
+   let { rectorat } = res.locals;
+   await rectorat.populate('notifications');
+   res.json({ notifs: rectorat.notifications });
 }
 
 exports.dossiersEtudsThese = async function (req, res) {

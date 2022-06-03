@@ -1,4 +1,4 @@
-const COORD = require("../models/Coordonateur");
+const Coordonateur = require("../models/Coordonateur");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 const { Types } = require("../constants");
@@ -8,26 +8,26 @@ const EnvoiDossier = require('../models/EnvoiDossier');
 
 
 exports.register_coordonateur = function (req, res) {
-  let coordonateur = new COORD();
-  coordonateur.email = req.body.email;
-  coordonateur.motDePasse = req.body.motDePasse;
-  coordonateur.nom = req.body.nom;
-  coordonateur.prenom = req.body.prenom;
+  let coordo = new Coordonateur();
+  coordo.email = req.body.email;
+  coordo.motDePasse = req.body.motDePasse;
+  coordo.nom = req.body.nom;
+  coordo.prenom = req.body.prenom;
 
-  if (coordonateur.email == "") {
+  if (coordo.email == "") {
     return res
       .json({
         success: false,
         message: "vous ne pouvez pas vous authentifier avec un email vide",
       })
       .status(500);
-  } else if (coordonateur.motDePasse == "") {
+  } else if (coordo.motDePasse == "") {
     return res.json({
       success: false,
       message: "veuillez svp entrer un mot de passe",
     });
-  } else if (coordonateur.motDePasse !== "") {
-    if (passwordComplexity().validate(coordonateur.motDePasse).error) {
+  } else if (coordo.motDePasse !== "") {
+    if (passwordComplexity().validate(coordo.motDePasse).error) {
       return res
         .json({
           success: false,
@@ -38,7 +38,7 @@ exports.register_coordonateur = function (req, res) {
     } else {
       console.log("mot de passe valide");
     }
-  } else if (coordonateur.nom == "") {
+  } else if (coordo.nom == "") {
     return res
       .json({
         success: false,
@@ -46,7 +46,7 @@ exports.register_coordonateur = function (req, res) {
           "Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter",
       })
       .status(500);
-  } else if (coordonateur.prenom == "") {
+  } else if (coordo.prenom == "") {
     return res
       .json({
         success: false,
@@ -56,7 +56,7 @@ exports.register_coordonateur = function (req, res) {
       .status(500);
   }
 
-  coordonateur.save((err, coordo) => {
+  coordo.save((err, coordo) => {
     if (err) {
       console.log("erreur lors de l'enregistrement dun coordonateur");
       return res
@@ -89,12 +89,12 @@ exports.register_coordonateur = function (req, res) {
 exports.login_coordonateur = async function (req, res) {
   try {
     const { email, motDePasse } = req.body;
-    let coordonateur = await COORD.findOne({ email });
-    if (!coordonateur) {
+    let coordo = await Coordonateur.findOne({ email });
+    if (!coordo) {
       return res.status(404).send("Coordonateur Not found");
     }
 
-    bcrypt.compare(motDePasse, coordonateur.motDePasse, function (err, result) {
+    bcrypt.compare(motDePasse, coordo.motDePasse, function (err, result) {
       if (err) {
         console.log("une erreur interne est suvenue: ", err);
         return res.status(500).json({
@@ -112,14 +112,14 @@ exports.login_coordonateur = async function (req, res) {
       } else {
         // Create user session
         req.session.user = {
-          _id: coordonateur._id,
+          _id: coordo._id,
           model: Types.ACTEURS.COORDONATEUR,
         };
 
         res.json({
           success: true,
           message: "Connexion reussie",
-          data: removePassword(coordonateur.toJSON()),
+          data: removePassword(coordo.toJSON()),
         });
       }
     });
@@ -156,11 +156,14 @@ exports.change_coordonator_pass = function (req, res) {
           if (err) {
             res.json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err }).status(400)
           } else {
-            res.json({ success: false, message: "Vos informations de connexion ont ete mise a jour", data: new_coordonator }).status(201);
+            if (req.session)
+              req.session.destroy();
+
+            res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
           }
         })
       } else {
-        res.json({ message: "les mots de passe ne correspondent pas" })
+        res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
       }
     })
 
@@ -174,15 +177,26 @@ exports.change_email = function (req, res) {
   const { coordo } = res.locals;
   const { newEmail } = req.body;
 
-  if (req.body.newEmail) {
-    coordo.email = newEmail;
-  }
+  if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+
+	if (coordo.email === newEmail) {
+		if (req.session)
+			req.session.destroy();
+
+		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+	}
+
+  coordo.email = newEmail;
   coordo.save(function (err, new_coordonateur) {
     if (err) {
       console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
       return res.json({ success: false, message: "Internal server error", error: err }).status(500);
     }
-    return res.json({ success: true, message: "la nouvelle adresse email a ete modifier avec success", data: new_coordonateur.email });
+    if (req.session)
+      req.session.destroy();
+
+    return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
   })
 }
 
@@ -231,6 +245,7 @@ exports.autorisationsSoutenanceMaster = async function (req, res) {
 
 exports.notifications = async function (req, res) {
   const { coordo } = res.locals;
+  await coordo.populate('notifications');
   res.json({ notifs: coordo.notifications });
 };
 
