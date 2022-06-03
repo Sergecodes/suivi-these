@@ -169,7 +169,7 @@ exports.changePhoneNumber = function (req, res) {
  * creer son dossier a partir de ceux-ci.
  *
  */
-exports.updatePhoto = function (req, res) {
+exports.updatePhoto = async function (req, res) {
    const { etudiant } = res.locals;
 
    if (!req.files || Object.keys(req.files).length === 0) {
@@ -470,10 +470,10 @@ exports.datesSoutenance = function (req, res) {
 };
 
 exports.etapesDossier = async function (req, res) {
-   const { dossier } = res.locals;
+   const { etudiant } = res.locals;
 
    try {
-      let etapes = await EtapeDossier.find({ dossier: dossier._id });
+      let etapes = await EtapeDossier.find({ dossier: etudiant.dossier });
       res.json(etapes);
    } catch (error) {
       console.error(error);

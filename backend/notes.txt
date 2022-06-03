@@ -19,8 +19,6 @@ maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
 TODO: 
-    - implement notification crud
-
     * In case of 500 error, don't send error to client. just send message like
      (une erreur interne est survenue) with 500 code
      

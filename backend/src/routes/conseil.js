@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controller = require('../controllers/conseil');
-const { isAdmin, isConseil, getConseil } = require('../middlewares')
+const { isAdmin, isConseil, getConseil, getDossierFromReq } = require('../middlewares')
 
 
 router.route('/new-conseil').post(isAdmin, controller.new_conseil);

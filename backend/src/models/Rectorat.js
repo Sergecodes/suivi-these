@@ -68,12 +68,12 @@ RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, 
 };
 
 
-CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+RectoratSchema.methods.verifierAvisDonne = async function(idDossier) {
     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
     return Boolean(donne);
 }   
 
-CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
+RectoratSchema.methods.donnerAvisTheseAdmin = async function(
     type, 
     commentaire, 
     rapport, 

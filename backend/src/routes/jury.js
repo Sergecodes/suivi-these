@@ -22,7 +22,7 @@ router.route('/verifier-dossier-note').get(
 
 router.route('/notifications').get(isJury, controller.notifications);
 
-router.route('/change-password').put(isJury, controller.changePassword);
+router.route('/change-password').put(isJury, controller.change_jury_pass);
 
 router.route('/change-number').put(isJury, controller.changePhoneNumber);
 

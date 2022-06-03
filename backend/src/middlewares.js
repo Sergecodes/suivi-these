@@ -1,12 +1,13 @@
 const { Types } = require('./constants');
 const Jury = require('./models/Jury');
+const Expert = require('./models/Expert');
 const Dossier = require('./models/Dossier');
 const Coordo = require('./models/Coordonateur');
 const Depart = require('./models/Departement')
 const Etudiant = require('./models/Etudiant');
 const Conseil = require('./models/Conseil');
 const Rectorat = require('./models/Rectorat');
-const Notification = reqire('./models/Notification');
+// const Notification = require('./models/Notification');
 
 
 exports.isEtudiant = function(req, res, next) {
@@ -108,6 +109,16 @@ exports.getConseil = async function (req, res, next) {
     next();
 }
 
+exports.getExpert = async function (req, res, next) {
+    let expert = await Expert.findById(req.session.user._id);
+
+    if (!expert)
+        return res.status(404).send("Expert non trouve");
+
+    res.locals.expert = expert;
+    next();
+}
+
 exports.getRectorat = async function (req, res, next) {
     let rectorat = await Rectorat.findById(req.session.user._id);
 
@@ -137,6 +148,17 @@ exports.getJury = async function (req, res, next) {
         return res.status(404).send("Jury non trouve");
 
     res.locals.jury = jury;
+    next();
+}
+
+exports.getEtudiantFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let etudiant = await Etudiant.findById(id);
+
+    if (!etudiant)
+        return res.status(404).send("Etudiant non trouve");
+
+    res.locals.etudiant = etudiant;
     next();
 }
 
