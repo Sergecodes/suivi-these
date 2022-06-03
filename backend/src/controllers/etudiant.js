@@ -10,6 +10,16 @@ const Etudiant = require('../models/Etudiant');
 const { removePassword } = require('../utils')
 
 
+// exports.getEtudiant = async function (req, res) {
+//    const { id } = req.params;
+//    let etudiant = await Etudiant.findById(id);
+
+//    if (!etudiant)
+//       return res.status(404).send("Etudiant non trouve");
+
+//    res.json(etudiant);
+// }
+
 exports.register = function (req, res) {
    let etud = new Etudiant();
    etud.matricule = req.body.matricule;
@@ -176,11 +186,11 @@ exports.changePhoneNumber = function (req, res) {
    if (!newPhoneNumber)
 		return res.send("newPhoneNumber n'est pas dans la requete").status(400);
 
-   if (etudiant.telephone === newPhoneNumber) {
+   if (etudiant.numTelephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
 	}
 
-   etudiant.telephone = newPhoneNumber;
+   etudiant.numTelephone = newPhoneNumber;
    etudiant.save(function (err, newStudent) {
       if (err) {
          console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);

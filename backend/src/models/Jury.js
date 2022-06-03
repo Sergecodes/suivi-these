@@ -21,7 +21,7 @@ const JurySchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    telephone: { type: String, required: true },
+    numTelephone: { type: String, required: true },
     grade: { 
         type: Number, 
         required: true, 

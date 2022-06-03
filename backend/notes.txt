@@ -23,6 +23,8 @@ TODO:
      (une erreur interne est survenue) with 500 code
      
     - admin api
+    - create crud for all actors(in their various controllers)
+
     - add method to verify if user can update dossier. call this method 
     before updating dossier
     - validate model string dates to yyyy/mm/dd
