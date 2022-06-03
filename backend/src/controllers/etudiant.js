@@ -142,18 +142,45 @@ exports.change_student_password = async function (req, res) {
 }
 
 
+exports.changeEmail = function (req, res) {
+   const { newEmail } = req.body;
+   const { etudiant } = res.locals;
+
+   if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+
+	if (etudiant.email === newEmail) {
+		if (req.session)
+			req.session.destroy();
+
+		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+	}
+
+   etudiant.email = newEmail;
+   etudiant.save(function (err, newEtudiant) {
+      if (err) {
+         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
+      }
+
+      if (req.session)
+         req.session.destroy();
+
+      return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
+   });
+}
+
 exports.changePhoneNumber = function (req, res) {
    const { etudiant } = res.locals;
    const { newPhoneNumber } = req.body;
+
+   if (!newPhoneNumber)
+		return res.send("newPhoneNumber n'est pas dans la requete").status(400);
 
    if (etudiant.telephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
 	}
 
-   if (newPhoneNumber) {
-      etudiant.numTelephone = newPhoneNumber;
-   }
-
+   etudiant.telephone = newPhoneNumber;
    etudiant.save(function (err, newStudent) {
       if (err) {
          console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
@@ -493,9 +520,3 @@ exports.reinitialiser = async function (req, res) {
    res.send('Success');
 }
 
-// exports.checkUploaderDossier = async function (req, res) {
-//    const { etudiant } = res.locals;
-
-//    // todo verifier etape
-//    res.send({ 'dejaUploade': Boolean(etudiant.dossier) });
-// }

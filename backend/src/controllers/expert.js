@@ -123,7 +123,9 @@ exports.change_email = function (req, res) {
 	const { expert } = res.locals;
 	const { newEmail } = req.body;
 
-	// If email is same as before
+	if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+		
 	if (expert.email === newEmail) {
 		if (req.session)
 			req.session.destroy();
@@ -131,6 +133,7 @@ exports.change_email = function (req, res) {
 		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
 	}
 
+	expert.email = newEmail;
 	expert.save(function (err, new_expert) {
 		if (err) {
 			console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);

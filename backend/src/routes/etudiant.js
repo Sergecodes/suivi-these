@@ -5,7 +5,9 @@ const { isEtudiant, getEtudiantFromParam } = require('../middlewares')
 
 router.route('/login-etudiant').post(controller.login_student);
 
-router.route('/register-etudiant').post(controller.register)
+router.route('/register-etudiant').post(controller.register);
+
+router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
 
 router.route('/:id/change-password').put(isEtudiant, getEtudiantFromParam, controller.change_student_password);
 
@@ -21,7 +23,7 @@ router.route('/:id/etapes-dossier').get(isEtudiant, getEtudiantFromParam, contro
 
 router.route('/:id/peut-uploader').get(isEtudiant, getEtudiantFromParam, controller.peutUploaderDossier);
 
-// router.route('/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
+router.route('/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
 
 
 module.exports = router;

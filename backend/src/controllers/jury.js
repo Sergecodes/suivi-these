@@ -126,7 +126,9 @@ exports.change_email = function(req,res){
    const { jury } = res.locals;
 	const { newEmail } = req.body;
 
-	// If email is same as before
+	if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+
 	if (jury.email === newEmail) {
 		if (req.session)
 			req.session.destroy();
@@ -134,6 +136,7 @@ exports.change_email = function(req,res){
 		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
 	}
 	
+   jury.email = newEmail;
    jury.save(function(err,new_jury){
       if(err){
          console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
@@ -152,22 +155,22 @@ exports.changePhoneNumber = function (req, res) {
    const { jury } = res.locals;
    const { newPhoneNumber } = req.body;
 
+   if (!newPhoneNumber)
+		return res.send("newPhoneNumber n'est pas dans la requete").status(400);
+
    if (jury.telephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
 	}
 
-   if (newPhoneNumber) {
-      jury.telephone = newPhoneNumber; 
+   jury.telephone = newPhoneNumber; 
+   jury.save(function (err, newJury) {
+      if (err) {
+         console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err }).status(500);
+      }
 
-      jury.save(function (err, newJury) {
-         if (err) {
-            console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-            res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err }).status(500);
-         }
-
-         res.json({ success: true, message: "le nouveau numero de telephone a ete enregistrer avec success", data: newJury.telephone });
-      });
-   }
+      res.json({ success: true, message: "le nouveau numero de telephone a ete enregistrer avec success", data: newJury.telephone });
+   });
 }
 
 

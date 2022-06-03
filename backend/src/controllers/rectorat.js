@@ -114,7 +114,9 @@ exports.changeEmail = function (req, res) {
    const { newEmail } = req.body;
    const { rectorat } = res.locals;
 
-   // If email is same as before
+   if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+
 	if (rectorat.email === newEmail) {
 		if (req.session)
 			req.session.destroy();
@@ -122,19 +124,17 @@ exports.changeEmail = function (req, res) {
 		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
 	}
 
-   if (newEmail) {
-      rectorat.email = newEmail;
-      rectorat.save(function (err, newRectorat) {
-         if (err) {
-            res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
-         }
+   rectorat.email = newEmail;
+   rectorat.save(function (err, newRectorat) {
+      if (err) {
+         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
+      }
 
-         if (req.session)
-            req.session.destroy();
+      if (req.session)
+         req.session.destroy();
 
-         return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
-      })
-   }
+      return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
+   });
 }
 
 

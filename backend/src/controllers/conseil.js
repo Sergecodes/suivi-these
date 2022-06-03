@@ -133,7 +133,9 @@ exports.change_email = function (req, res) {
 	const { conseil } = res.locals;
 	const { newEmail } = req.body;
 
-	// If email is same as before
+	if (!newEmail)
+		return res.send("newEmail n'est pas dans la requete").status(400);
+
 	if (conseil.email === newEmail) {
 		if (req.session)
 			req.session.destroy();
@@ -141,9 +143,7 @@ exports.change_email = function (req, res) {
 		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
 	}
 
-	if (newEmail) {
-		conseil.email = newEmail;
-	}
+	conseil.email = newEmail;
 	conseil.save(function (err, new_conseil) {
 		if (err) {
 			console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau email", err);
