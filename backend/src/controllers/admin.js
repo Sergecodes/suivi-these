@@ -40,7 +40,7 @@ exports.register_coordonateur = function (req, res) {
     if (Is_authorized === undefined) {
         res.json({ success: false, message: "Desoler mais seuls les admins sont autorisees a efectuer cette requette, veuillez contacter votre administrateur" })
     } else {//2.1 il est autauriser
-        var coordonateur = new Coordonateur();
+        let coordonateur = new Coordonateur();
         coordonateur.email = req.body.email;
         coordonateur.motDePasse = req.body.motDePasse;
         coordonateur.nom = req.body.nom;
@@ -126,7 +126,7 @@ exports.add_jury = function (req, res) {
     if (Is_authorized === undefined) {
         res.json({ success: false, message: "Desoler mais seuls les admins sont autorisees a efectuer cette requette, veuillez contacter votre administrateur" })
     } else {
-        var jury = new Jury();
+        let jury = new Jury();
         jury.nom = req.body.nom;
         jury.prenom = req.body.prenom;
         jury.motDePasse = req.body.motDePasse;
@@ -209,7 +209,7 @@ exports.add_conseil = function (req, res) {
     if (Is_authorized === undefined) {
         res.json({ success: false, message: "Desoler mais seuls les admins sont autorisees a efectuer cette requette, veuillez contacter votre administrateur" })
     } else {
-        var Conseil = new Conseil();
+        let Conseil = new Conseil();
         Conseil.email = req.body.email;
         Conseil.motDePasse = req.body.motDePasse;
         if (Conseil.email == '') {
@@ -289,7 +289,7 @@ exports.add_expert = function (req, res) {
     if (Is_authorized === undefined) {
         res.json({ success: false, message: "Desoler mais seuls les admins sont autorisees a efectuer cette requette, veuillez contacter votre administrateur" })
     } else {
-        var expert = new Expert();
+        let expert = new Expert();
         expert.nom = req.body.nom;
         expert.prenom = req.body.prenom;
         expert.motDePasse = req.body.motDePasse;
@@ -404,7 +404,7 @@ exports.Verification_rapport_expertise = function (req, res) {
 /********************************************************************************/
 
 exports.register_admin = function (req, res) {
-    var admin = new Admin();
+    let admin = new Admin();
     admin.motDePasse = req.body.motDePasse;
     admin.email = req.body.email;
 

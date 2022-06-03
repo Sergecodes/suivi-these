@@ -10,6 +10,14 @@ router.route('/register-coord').post(isAdmin, controller.register_coordonateur);
 
 router.route('/login-coord').post(controller.login_coordonateur);
 
+router.route('/change-password').put(
+   isCoordonateur, 
+   getCoordonateur, 
+   controller.change_coordonator_pass
+);
+
+router.route('/change-email').put(isCoordonateur, getCoordonateur, controller.change_email);
+
 router.route('/programmer-date-soutenance-master').post(
    isCoordonateur, 
    getEtudiantFromReq,
@@ -46,14 +54,6 @@ router.route('/donner-avis-admin').post(
    getCoordonateur,
    controller.donnerAvisAdmin
 );
-
-router.route('/change-password').put(
-   isCoordonateur, 
-   getCoordonateur, 
-   controller.change_coordonator_pass
-);
-
-router.route('/change-email').put(isCoordonateur, getCoordonateur, controller.change_email);
 
 
 module.exports = router;

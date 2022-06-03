@@ -47,8 +47,17 @@ DossierSchema.virtual('avis', {
 });
 
 
+// pre- remove middleware
+// Delete etapes, notes and fichiers when dossier is deleted
+DossierSchema.pre('remove', function(next) {
+    EtapeDossier.remove({ dossier: this._id }).exec();
+    NoteDossier.remove({ dossier: this._id }).exec();
+    FichierDossier.remove({ dossier: this._id }).exec();
 
-// Operations
+    next();
+});
+
+
 DossierSchema.virtual('etapeActuelle').get(async function() {
     await this.populate('etapes');
     return this.etapes.at(-1);

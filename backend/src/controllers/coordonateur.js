@@ -156,11 +156,14 @@ exports.change_coordonator_pass = function (req, res) {
           if (err) {
             res.json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err }).status(400)
           } else {
-            res.json({ success: false, message: "Vos informations de connexion ont ete mise a jour", data: new_coordonator }).status(201);
+            if (req.session)
+              req.session.destroy();
+
+            res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
           }
         })
       } else {
-        res.json({ message: "les mots de passe ne correspondent pas" })
+        res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
       }
     })
 
@@ -174,15 +177,23 @@ exports.change_email = function (req, res) {
   const { coordo } = res.locals;
   const { newEmail } = req.body;
 
-  if (req.body.newEmail) {
-    coordo.email = newEmail;
-  }
+  // If email is same as before
+	if (coordo.email === newEmail) {
+		if (req.session)
+			req.session.destroy();
+
+		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+	}
+
   coordo.save(function (err, new_coordonateur) {
     if (err) {
       console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
       return res.json({ success: false, message: "Internal server error", error: err }).status(500);
     }
-    return res.json({ success: true, message: "la nouvelle adresse email a ete modifier avec success", data: new_coordonateur.email });
+    if (req.session)
+      req.session.destroy();
+
+    return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
   })
 }
 
@@ -231,6 +242,7 @@ exports.autorisationsSoutenanceMaster = async function (req, res) {
 
 exports.notifications = async function (req, res) {
   const { coordo } = res.locals;
+  coordo = coordo.populate('notifications');
   res.json({ notifs: coordo.notifications });
 };
 

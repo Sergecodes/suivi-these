@@ -45,7 +45,6 @@ exports.new_conseil = function (req, res) {
 	})
 }
 
-
 exports.conseil_login = async function (req, res) {
 	try {
 		const { email, motDePasse } = req.body;
@@ -89,78 +88,80 @@ exports.conseil_login = async function (req, res) {
 
 exports.change_conseil_pass = function (req, res) {
 	try {
-		const { id } = req.params;
+		const { conseil } = res.locals;
 		const { actualPass, newPass } = req.body;
 
-		Conseil.findById(id, function (err, conseil) {
+		bcrypt.compare(actualPass, conseil.motDePasse, function (err, result) {
 			if (err) {
-				console.log("Une erreur s'est produitr lors de la recuperation du conseil, ce dernier n'existe pas ou il a ete supprimer");
-				return res.json({ success: false, message: "Une erreur s'est produitr lors de la recuperation du conseil, ce dernier n'existe pas ou il a ete supprimer", error: err }).status(400);
+				console.log("une erreur est survenue: ", err);
+				return res.json({ success: false, message: "Une erreur est survenue", error: err }).status(400);
 			}
-			console.log(conseil);
-			//Utilisateur trouver;
-			bcrypt.compare(actualPass, conseil.motDePasse, function (err, result) {
-				if (err) {
-					console.log("une erreur est survenue: ", err);
-					return res.json({ success: false, message: "Une erreur est survenue", error: err }).status(400);
-				}
-				if (result == true) {
-					if (newPass == '') {
-						return res.json({ success: false, message: "veuillez svp entrer un mot de passe" })
-					} else {
-						if (passwordComplexity().validate(newPass).error) {
-							return res.json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," }).status(500)
-						} else {
-							console.log("mot de passe valide");
-
-						}
-					}
-					conseil.motDePasse = newPass;
-					conseil.save(function (err, new_conseil) {
-						if (err) {
-							res.json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err }).status(400)
-						} else {
-							res.json({ success: false, message: "Vos informations de connexion ont ete mise a jour", data: new_conseil }).status(201);
-						}
-					})
+			if (result == true) {
+				if (newPass == '') {
+					return res.json({ success: false, message: "veuillez svp entrer un mot de passe" })
 				} else {
-					res.json({ message: "les mots de passe ne correspondent pas" })
+					if (passwordComplexity().validate(newPass).error) {
+						return res.json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," }).status(500)
+					} else {
+						console.log("mot de passe valide");
+
+					}
 				}
-			})
+				conseil.motDePasse = newPass;
+				conseil.save(function (err, new_conseil) {
+					if (err) {
+						res.json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err }).status(400)
+					} else {
+						if (req.session)
+							req.session.destroy();
+
+						res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
+					}
+				})
+			} else {
+				res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
+			}
 		})
 
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		res.status(500).send("Internal Server Error");
 	}
 }
 
 exports.change_email = function (req, res) {
-	const { newEmail, id } = req.body;
+	const { conseil } = res.locals;
+	const { newEmail } = req.body;
 
-	Conseil.findById(id, function (err, conseil) {
+	// If email is same as before
+	if (conseil.email === newEmail) {
+		if (req.session)
+			req.session.destroy();
+
+		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+	}
+
+	if (newEmail) {
+		conseil.email = newEmail;
+	}
+	conseil.save(function (err, new_conseil) {
 		if (err) {
-			return res.json({ success: false, message: "quelque chose nas pas marcher lors de la recuperation du conseil", error: err }).status(500);
+			console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau email", err);
+			res.json({ success: false, message: "Internal server error", error: err }).status(500);
 		}
-		//le conseil a ete trouver
-		if (req.body.newEmail) {
-			conseil.email = newEmail;
-		}
-		conseil.save(function (err, new_conseil) {
-			if (err) {
-				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-				res.json({ success: false, message: "Internal server error", error: err }).status(500);
 
-			}
-			res.json({ success: true, message: "la nouvelle adresse email a ete modifier avec success", data: new_conseil.email });
-		})
+		if (req.session)
+			req.session.destroy();
+
+		res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte" });
 	})
 }
 
 
-// ------------
 exports.notifications = async function (req, res) {
-	const { conseil } = res.locals;
+	let { conseil } = res.locals;
+	conseil = conseil.populate('notifications');
+
 	res.json({ notifs: conseil.notifications });
 };
 

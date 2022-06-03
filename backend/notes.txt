@@ -19,16 +19,14 @@ maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
 TODO: 
-    - expert api
-    - update Yannick's imported model names
-    - change findById to use gets from middleware
-    - update yannick change password nd email routes..
+    - implement notification crud
+
+    * In case of 500 error, don't send error to client. just send message like
+     (une erreur interne est survenue) with 500 code
+     
     - admin api
     - add method to verify if user can update dossier. call this method 
     before updating dossier
-    - Use res.locals in all actors...
     - validate model string dates to yyyy/mm/dd
-    * In case of 500 error, don't send error to client. just send message like
-     (une erreur interne est survenue) with 500 code
     - add required for refPath attributes ?
     - prevent server from crashing when error

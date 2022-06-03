@@ -8,7 +8,7 @@ const { removePassword } = require('../utils')
 
 
 exports.register_departement = function(req,res){
-    var departement = new Departement();
+    let departement = new Departement();
 	departement.nom = req.body.nom;
 	departement.motDePasse = req.body.motDePasse;
 	departement.email = req.body.email;
@@ -77,45 +77,40 @@ exports.login_departement = async function(req,res){
 
 exports.change_departement_pass = function(req,res){
 	try{
-		const {id} = req.params;
-		const {actualPass,newPass} = req.body;
+		const { depart } = res.locals;
+		const { actualPass, newPass } = req.body;
 
-		Departement.findById(id,function(err,departement){
+		bcrypt.compare(actualPass,depart.motDePasse,function(err,result){
 			if(err){
-				console.log("Une erreur s'est produitr lors de la recuperation du departement, ce dernier n'existe pas ou il a ete supprimer");
-				return res.json({success:false,message:"Une erreur s'est produitr lors de la recuperation du departement, ce dernier n'existe pas ou il a ete supprimer",error:err}).status(400);
+				console.log("une erreur est survenue: " , err);
+				return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
 			}
-			console.log(departement);
-			//Utilisateur trouver;
-			bcrypt.compare(actualPass,departement.motDePasse,function(err,result){
-				if(err){
-					console.log("une erreur est survenue: " , err);
-					return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
-				}
-				if(result == true){
-					if(newPass == ''){
-						return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
-					}else{
-						if(passwordComplexity().validate(newPass).error){
-							return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
-						}else{
-							console.log("mot de passe valide");
-
-						}
-					}
-					departement.motDePasse = newPass;
-					departement.save(function(err,new_departement){
-						if(err){
-							res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(400)
-						}else{
-							res.json({success:false,message:"Vos informations de connexion ont ete mise a jour",data:new_departement}).status(201);
-						}
-					})
+			if(result == true){
+				if(newPass == ''){
+					return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
 				}else{
-					res.json({message:"les mots de passe ne correspondent pas"})
+					if(passwordComplexity().validate(newPass).error){
+						return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+					}else{
+						console.log("mot de passe valide");
+
+					}
 				}
-			})
-		})
+				depart.motDePasse = newPass;
+				depart.save(function(err,new_departement){
+					if(err){
+						res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(400)
+					}else{
+						if (req.session)
+							req.session.destroy();
+
+						res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
+					}
+				})
+			}else{
+				res.json({message:"les mots de passe ne correspondent pas"}).status(401);
+			}
+		});
 
 	} catch(error){
 		console.log(error);
@@ -124,31 +119,35 @@ exports.change_departement_pass = function(req,res){
 }
 
 exports.change_email = function(req,res){
-	const {newEmail,id} = req.body;
-	
-	Departement.findById(id,function(err,departement){
-		if(err){
-			return res.json({success:false,message:"quelque chose nas pas marcher lors de la recuperation du departement",error:err}).status(500);
-		}
-		//le departement a ete trouver
-		if(req.body.newEmail){
-			departement.email = newEmail;
-		}
-		departement.save(function(err,new_departement){
-			if(err){
-				console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-				res.json({success:false,message:"Internal server error",error:err}).status(500);
+	const { newEmail } = req.body;
+	const { depart } = res.locals;
 
-			}
-			res.json({success:true,message:"la nouvelle adresse email a ete modifier avec success",data:new_departement.email});
-		})
-	})
+	// If email is same as before
+	if (depart.email === newEmail) {
+		if (req.session)
+			req.session.destroy();
+
+		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+	}
+	
+	depart.save(function(err,new_departement){
+		if(err){
+			console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+			res.json({success:false,message:"Internal server error",error:err}).status(500);
+		}
+
+		if (req.session)
+			req.session.destroy();
+
+		res.json({success:true, message:"Email mis a jour, vous avez ete deconnecte"});
+	});
 }
 
 
 // -----
 exports.notifications = async function (req, res) {
-   let depart = await Departement.findById(req.session.user._id).populate('notifications');
+	let { depart } = res.locals;
+	depart = depart.populate('notifications');
    res.json({ notifs: depart.notifications });
 }
 

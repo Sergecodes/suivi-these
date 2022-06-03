@@ -1,8 +1,12 @@
 const { Schema, model } = require("mongoose");
 const isEmail = require("validator/lib/isEmail");
-const { Niveau, Sexe, ActeurDossier } = require("./types");
+const { 
+   Niveau, Sexe, ActeurDossier, TypeNotification, 
+   ModelNotif, EtapeDossier 
+} = require("./types");
 const EnvoiDossier = require("./EnvoiDossier");
-const { Dossier }  = require("./Dossier");
+const { Dossier } = require("./Dossier");
+const Notification = require('./Notification');
 const { validerMatricule } = require("../validators");
 const bcrypt = require("bcrypt");
 
@@ -91,6 +95,20 @@ EtudiantSchema.virtual("sujet").get(async function () {
    return await this.dossierObj.sujet;
 });
 
+EtudiantSchema.virtual('peutUploader').get = async function () {
+   // si l'utilisateur est a la premiere etape ou si il n'a pas de dossier
+   // il peut uploader. 
+   // sinon il ne peut pas
+
+   let dossier = await this.dossierObj;
+
+   if (!dossier || await dossier.etapeActuelle === EtapeDossier.UNE)
+      return true;
+
+   return false;
+}
+
+
 EtudiantSchema.virtual("notifications", {
    ref: "Notification",
    localField: "_id",
@@ -102,7 +120,6 @@ EtudiantSchema.virtual("notifications", {
  * Envoyer une notification a l'administrateur
  */
 EtudiantSchema.post('save', async function (etudiant) {
-   console.log(ModelNotif);
    await Notification.create({
       type: TypeNotification.NOUVEAU_ETUDIANT,
       destinataireModel: ModelNotif.ADMIN,
@@ -111,7 +128,17 @@ EtudiantSchema.post('save', async function (etudiant) {
    });
 });
 
+
 // Operations
+
+EtudiantSchema.methods.reinitialiser = async function () {
+   // Reset everything, i.e. user restarts the entire process.
+   // this may happen if user's file was previously rejected.
+   // 
+   if (this.dossier)
+      Dossier.findByIdAndDelete(this.dossier);
+}
+
 EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {
    // if (this.niveau != Niveau.MASTER) {
    //     throw new Error("L'etudiant doit etre en Masteur pour avoir un encadreur");
@@ -137,5 +164,7 @@ EtudiantSchema.methods.envoyerDossier = async function (
       destinataireModel,
    });
 };
+
+
 
 module.exports = model("Etudiant", EtudiantSchema);

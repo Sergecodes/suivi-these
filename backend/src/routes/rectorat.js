@@ -12,11 +12,11 @@ router.route('/login-rectorat').post(controller.login_rectorat);
 
 router.route('/register-rectorat').post(controller.register_rectorat);
 
-router.route('/notifications').get(isRectorat, controller.notifications);
+router.route('/notifications').get(isRectorat, getRectorat, controller.notifications);
 
-router.route('/change-password').put(isRectorat, controller.changePassword);
+router.route('/change-password').put(isRectorat, getRectorat, controller.changePassword);
 
-router.route('/change-email').put(isRectorat, controller.changeEmail);
+router.route('/change-email').put(isRectorat, getRectorat, controller.changeEmail);
 
 router.route('/programmer-date-soutenance-these').post(
    isRectorat, 
