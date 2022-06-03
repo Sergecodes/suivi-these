@@ -160,7 +160,7 @@ exports.change_email = function (req, res) {
 
 exports.notifications = async function (req, res) {
 	let { conseil } = res.locals;
-	conseil = conseil.populate('notifications');
+	await conseil.populate('notifications');
 
 	res.json({ notifs: conseil.notifications });
 };

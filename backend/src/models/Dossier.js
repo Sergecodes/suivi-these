@@ -2,9 +2,12 @@ const { Schema, model } = require('mongoose')
 const { 
     CategorieFichierMaster, CategorieFichierThese, 
     GerantEtapeDossier, StatutDossier,
-    CategorieNote, ActeurDossier, 
+    CategorieNote, ActeurDossier, ModelNotif,
     EtapeDossier: EtapeDossierEnum,
-} = require('./types')
+} = require('./types');
+const Avis = require('./Avis');
+const EnvoiDossier = require('./EnvoiDossier');
+const Notification = require('./Notification');
 
 
 const DossierSchema = new Schema({
@@ -53,6 +56,12 @@ DossierSchema.pre('remove', function(next) {
     EtapeDossier.remove({ dossier: this._id }).exec();
     NoteDossier.remove({ dossier: this._id }).exec();
     FichierDossier.remove({ dossier: this._id }).exec();
+    Avis.remove({ dossier: this._id }).exec();
+    EnvoiDossier.remove({ dossier: this._id }).exec();
+    Notification.remove({ 
+        objetConcerne: this._id, 
+        objetConcerneModel: ModelNotif.DOSSIER 
+    }).exec();
 
     next();
 });

@@ -214,7 +214,7 @@ exports.verifierNoterDossier = async function (req, res) {
 
 exports.notifications = async function (req, res) {
    let { jury } = res.locals;
-   jury = jury.populate('notifications');
+   await jury.populate('notifications');
    res.json({ notifs: jury.notifications });
 }
 

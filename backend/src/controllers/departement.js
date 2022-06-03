@@ -147,7 +147,7 @@ exports.change_email = function(req,res){
 // -----
 exports.notifications = async function (req, res) {
 	let { depart } = res.locals;
-	depart = depart.populate('notifications');
+	await depart.populate('notifications');
    res.json({ notifs: depart.notifications });
 }
 

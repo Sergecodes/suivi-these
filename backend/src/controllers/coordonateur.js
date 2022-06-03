@@ -242,7 +242,7 @@ exports.autorisationsSoutenanceMaster = async function (req, res) {
 
 exports.notifications = async function (req, res) {
   const { coordo } = res.locals;
-  coordo = coordo.populate('notifications');
+  await coordo.populate('notifications');
   res.json({ notifs: coordo.notifications });
 };
 
