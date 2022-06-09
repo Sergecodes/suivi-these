@@ -18,7 +18,7 @@ import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
 import Soutenance from "./screen/Soutenance";*/
 
-/*
+
 import Jury from "./screen/Jury";
 import NotationMaster from "./components/pageJury/NotationMaster"
 import ProfilJury from "./components/pageJury/ProfilJury"
@@ -36,7 +36,7 @@ import ProceduredeSoutenanceScreen from "./screen/InfotmationScreens/Procedurede
 import TheseEnCotutelleScreen from "./screen/InfotmationScreens/TheseEnCotutelleScreen";
 import TheseEnCoursScreen from "./screen/InfotmationScreens/TheseEnCoursScreen";
 import UnitesRechercheScreen from "./screen/InfotmationScreens/UnitesRechercheScreen";
-import ConseilScientifiqueInscriptionScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/
+import ConseilScientifiqueInscriptionScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"
 
 
 const App = () => {
@@ -60,7 +60,7 @@ const App = () => {
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
           ></Route>*/}
-          {/* <Route path="/acteur/jury" element={<Jury />}>
+           <Route path="/acteur/jury" element={<Jury />}>
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
             <Route path="/acteur/jury/profil" element={<ProfilJury />} />
@@ -68,7 +68,7 @@ const App = () => {
               path="/acteur/jury/notifications"
               element={<NotificationJury />}
             />
-  </Route>*/}
+  </Route>
          
           {/* <Route
             path="/connexion/admin"
@@ -108,7 +108,7 @@ const App = () => {
           ></Route>
            
           */}
-          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
+          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres*/}
           <Route path="/candidature" element={<CandidatureScreen />}></Route>
           <Route path="/document" element={<DocumentImportantScreen />}></Route>
           <Route path="/equipe" element={<EquipeScreen />}></Route>
@@ -132,7 +132,7 @@ const App = () => {
            <Route
             path="/conseil"
             element={<ConseilScientifiqueInscriptionScreen />}
-          ></Route>*/}
+          ></Route>
            <Route
             path="/*"
             element={

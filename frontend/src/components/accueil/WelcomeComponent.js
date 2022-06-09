@@ -19,7 +19,7 @@ const WelcomeComponent = (props) => {
                       Se connecter
                     
                </button></Link>
-               <Link to="/*"> <button className=" rounded-pill welcomeButtonEmpty " style={props.isLogin===true?{display:"none"}:{}}>
+               <Link to="/*"> <button className=" rounded-pill welcomeButtonFill" style={props.isLogin===true?{display:"none"}:{}}>
                     <FaArrowRight className="me-2 mb-1"/>
                      Informations
                     

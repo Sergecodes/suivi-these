@@ -21,7 +21,7 @@ const UnitéComponent = () => {
         <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <RiComputerLine style={{height:"30px",width:"30px"}}/></div>
-                <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
+                <div className="d-flex justify-content-center flex-column align-items-center py-5 px-2" style={{textAlign:"center"}}>
                   <h5>URFD MIBA</h5> 
                       <p>Description des differentes unités principales ainsi 
                           qu'une icone principale correspondant à l'unité</p>
@@ -31,7 +31,7 @@ const UnitéComponent = () => {
         <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <GiMaterialsScience style={{height:"30px",width:"30px"}}/></div>
-                <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
+                <div className="d-flex justify-content-center flex-column align-items-center py-5 px-2" style={{textAlign:"center"}}>
                   <h5>URFD PA</h5> 
                       <p>Description des differentes unités principales ainsi 
                           qu'une icone principale correspondant à l'unité</p>
@@ -41,7 +41,7 @@ const UnitéComponent = () => {
         <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <MdScience style={{height:"30px",width:"30px"}}/></div>
-                <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
+                <div className="d-flex justify-content-center flex-column align-items-center py-5 px-2" style={{textAlign:"center"}}>
                   <h5>URFD CA</h5> 
                       <p>Description des differentes unités principales ainsi 
                           qu'une icone principale correspondant à l'unité</p>
@@ -51,7 +51,7 @@ const UnitéComponent = () => {
         <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <ImEarth style={{height:"30px",width:"30px"}}/></div>
-                <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
+                <div className="d-flex justify-content-center flex-column align-items-center py-5 px-2" style={{textAlign:"center"}}>
                   <h5>URFD GA</h5> 
                       <p>Description des differentes unités principales ainsi 
                           qu'une icone principale correspondant à l'unité</p>
@@ -61,7 +61,7 @@ const UnitéComponent = () => {
         <div data-aos="fade-up" className=" my-4 col-12 col-sm-6 col-lg-4 " style={{backgroundColor:"transparent"}}>
             <div className="mx-2 my-2 unitéCard  d-flex flex-column align-items-center justify-content-center" style={{border:"none",backgroundColor:"white"}}>
               <div className="unitéCardIcon rounded-circle d-flex justify-content-center align-items-center"> <IoBarChartSharp style={{height:"30px",width:"30px"}}/></div>
-                <div className="d-flex justify-content-center flex-column align-items-center py-5" style={{textAlign:"center"}}>
+                <div className="d-flex justify-content-center flex-column align-items-center py-5 px-2" style={{textAlign:"center"}}>
                   <h5>URFD SIA</h5> 
                       <p>Description des differentes unités principales ainsi 
                           qu'une icone principale correspondant à l'unité</p>
