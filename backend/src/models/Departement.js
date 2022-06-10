@@ -75,9 +75,9 @@ DepartementSchema.virtual('notifications', {
  */
  DepartementSchema.methods.validerDossier = async function (dossier) {
     dossier.statut = StatutDossier.VALIDE_DEPARTEMENT;
-    await dossier.save();
-
-    // todo Update etape of dossier...
+    await dossier.incrementerEtape();
+    // No need to call save() since the method above saves the dossier object
+    // await dossier.save();
 
     // Notifier l'etudiant
     await Notification.create({

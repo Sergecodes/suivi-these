@@ -23,7 +23,7 @@ router.route('/:id/etapes-dossier').get(isEtudiant, getEtudiantFromParam, contro
 
 router.route('/:id/peut-uploader').get(isEtudiant, getEtudiantFromParam, controller.peutUploaderDossier);
 
-router.route('/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
+router.route('/:id/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
 
 
 module.exports = router;

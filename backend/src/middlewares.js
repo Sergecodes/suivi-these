@@ -89,6 +89,16 @@ exports.isAdmin = function(req, res, next) {
     next();
 }
 
+exports.getAdmin = async function (req, res, next) {
+    let admin = await Admin.findById(req.session.user._id);
+
+    if (!admin)
+        return res.status(404).send("Admin non trouve");
+
+    res.locals.admin = admin;
+    next();
+}
+
 exports.getCoordonateur = async function (req, res, next) {
     let coordo = await Coordo.findById(req.session.user._id);
 
@@ -148,6 +158,16 @@ exports.getJury = async function (req, res, next) {
         return res.status(404).send("Jury non trouve");
 
     res.locals.jury = jury;
+    next();
+}
+
+exports.getEtudiant = async function (req, res, next) {
+    let etudiant = await Etudiant.findById(req.session.user._id);
+
+    if (!etudiant)
+        return res.status(404).send("Etudiant non trouve");
+
+    res.locals.etudiant = etudiant;
     next();
 }
 

@@ -54,8 +54,7 @@ RectoratSchema.virtual('notifications', {
 RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-
-    // todo also update etape
+    await etudiant.incrementerEtape();
     
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
