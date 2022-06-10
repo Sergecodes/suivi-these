@@ -16,9 +16,9 @@ import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
 
-import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
+// import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 
-/*import Soutenance from "./screen/Soutenance";
+import Soutenance from "./screen/Soutenance";
 import Jury from "./screen/Jury";
 import NotationMaster from "./components/pageJury/NotationMaster";
 import ProfilJury from "./components/pageJury/ProfilJury";
@@ -31,9 +31,9 @@ import AutorisationDeSoutenance from "./components/pageCoordonateur/Autorisation
 import RapportEtudiant from "./components/pageCoordonateur/RapportEtudiant";
 import DateDeSoutenance from "./components/pageCoordonateur/DateDeSoutenance";
 
-/*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
+import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
 import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
-import ConseilScientifiqueInscriptionScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/
+import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
 
 const App = () => {
   const isLogin = true;
@@ -52,7 +52,7 @@ const App = () => {
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
           </Route>
-          <Route path="/acteur/jury" element={<Jury />}>
+          <Route path="/acteur/jury" element={<Jury/>}> </Route>
           <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
@@ -105,9 +105,9 @@ const App = () => {
           ></Route>
           <Route
             path="/acteur/coordonateur/notification"
-            element={<NotificationJury />}
+            element={<NotificationCoordonateur />}
           ></Route>
-          {/* <Route
+           <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
           ></Route>
@@ -143,14 +143,14 @@ const App = () => {
             path="/connexion/departement"
             element={<DepartementConnexionScreen />}
           ></Route>
-          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
+          Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
           <Route path="/canditature" element={<CandidatureScreen />}></Route>
           <Route
             path="/conseil"
             element={<ConseilScientifiqueInscriptionScreen />}
           ></Route>
-          <Route path="/document" element={<DocumentImportantScreen />}></Route> */}
-          {/* <Route path="/equipe" element={<EquipeScreen />}></Route>
+          <Route path="/document" element={<DocumentImportantScreen />}></Route> 
+          {/* <Route path="/equipe" element={<EquipeScreen/>}></Route>
         <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
         <Route path="/Inscription" element={<InscriptionScreen />}></Route>
         <Route path="/presentation" element={<Presentation />}></Route>
@@ -167,7 +167,7 @@ const App = () => {
         <Route
           path="/unites-recherche"
           element={<UnitesRechercheScreen />}
-        ></Route> */}
+        ></Route>  */}
         </Routes>
       </div>
     </BrowserRouter>
