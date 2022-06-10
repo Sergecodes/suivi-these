@@ -15,7 +15,7 @@ const Admin = require('../models/Admin');
 const { removePassword } = require('../utils');
 
 
-exports.registerAdmin = function (req, res) {
+exports.register = function (req, res) {
     let admin = new Admin();
     admin.motDePasse = req.body.motDePasse;
     admin.email = req.body.email;

@@ -3,9 +3,11 @@ const controller = require('../controllers/etudiant');
 const { isEtudiant, getEtudiantFromParam } = require('../middlewares')
 
 
-router.route('/login-etudiant').post(controller.login_student);
+router.route('/login').post(controller.login_student);
 
-router.route('/register-etudiant').post(controller.register);
+router.route('/register').post(controller.register);
+
+router.route('/moi').get(isEtudiant, controller.getInfo);
 
 router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
 
