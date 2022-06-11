@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const isEmail = require("validator/lib/isEmail");
+const isDate = require("validator/lib/isDate");
 const { 
    Niveau, Sexe, ActeurDossier, TypeNotification, 
    ModelNotif, EtapeDossier 
@@ -36,8 +37,17 @@ const EtudiantSchema = new Schema({
          message: props => `${props.value} est un email invalide!`
       }
    },
-   // todo validate date (yyyy/mm/dd)
-   dateNaissance: { type: String, required: true },
+   dateNaissance: { 
+      type: String, 
+      required: true,
+      validate: {
+         validator: (date) => isDate(date, { strictMode: true }),
+         message: (props) => `
+            ${props.value} est une date invalide. 
+            Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
+         `,
+      },
+   },
    dateSoutenance: String,
    lieuNaissance: { type: String, required: true },
    numTelephone: { type: String, required: true },
@@ -88,12 +98,17 @@ EtudiantSchema.methods.verifyPassword = function (motDePasse, cb) {
 };
 
 EtudiantSchema.virtual("dossierObj").get(async function () {
-   return await Dossier.findById(this.dossier);
+   if (this.dossier)
+      return await Dossier.findById(this.dossier);
 });
 
 EtudiantSchema.virtual("sujet").get(async function () {
    return await this.dossierObj.sujet;
 });
+
+EtudiantSchema.virtual('etapeActuelle').get = async function () {
+   return await this.dossierObj.etapeActuelle;
+}
 
 EtudiantSchema.virtual('peutUploader').get = async function () {
    // si l'utilisateur est a la premiere etape ou si il n'a pas de dossier
@@ -137,6 +152,11 @@ EtudiantSchema.methods.reinitialiser = async function () {
    // 
    if (this.dossier)
       Dossier.findByIdAndDelete(this.dossier);
+}
+
+EtudiantSchema.methods.incrementerEtape = async function () {
+   if (this.dossier)
+      return await this.dossierObj.incrementerEtape();
 }
 
 EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {

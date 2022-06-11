@@ -135,7 +135,7 @@ exports.change_email = function(req,res){
 	depart.email = newEmail;
 	depart.save(function(err,new_departement){
 		if(err){
-			console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+			console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau email: ", err);
 			res.json({success:false,message:"Internal server error",error:err}).status(500);
 		}
 

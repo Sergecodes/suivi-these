@@ -10,17 +10,29 @@ const Etudiant = require('../models/Etudiant');
 const { removePassword } = require('../utils')
 
 
-// exports.getEtudiant = async function (req, res) {
-//    const { id } = req.params;
-//    let etudiant = await Etudiant.findById(id);
-
-//    if (!etudiant)
-//       return res.status(404).send("Etudiant non trouve");
-
-//    res.json(etudiant);
-// }
+exports.getInfo = async function (req, res) {
+   res.json(res.locals.etudiant);
+}
 
 exports.register = function (req, res) {
+   let isValid = (function () {
+      let validParams = [
+         'matricule', 'nom', 'prenom', 'motDePasse', 'niveau',
+         'email', 'dateNaissance', 'lieuNaissance',  'sexe',
+         'numTelephone', 'departement', 'encadreur'
+      ]
+
+      for (let ele of validParams) {
+         if (!(ele in req.body))
+            return ele;
+      }
+
+      return true;
+   })();
+
+   if (isValid !== true)
+      return res.status(400).send(`${isValid} is not in the request body`);
+
    let etud = new Etudiant();
    etud.matricule = req.body.matricule;
    etud.nom = req.body.nom;
@@ -32,34 +44,29 @@ exports.register = function (req, res) {
    etud.lieuNaissance = req.body.lieuNaissance;
    etud.numTelephone = req.body.numTelephone;
    etud.sexe = req.body.sexe;
-   etud.urlPhotoProfil = req.body.urlPhotoProfil;
+   // etud.urlPhotoProfil = req.body.urlPhotoProfil;
    etud.departement = req.body.departement;
    etud.encadreur = req.body.encadreur;
 
-   if (etud.nom == '') {
-      return res.json({ success: false, message: "Vous devez entrez votre nom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter" }).status(500);
-   } else if (etud.prenom == '') {
-      return res.json({ success: false, message: "Vous devez entrez votre prenom pour pouvoir vous enregistrer svp, Il est recommander d'ecrire votre nom complet tel quel est sur l'acte de naissance de peur que votre dossier soit rejetter" }).status(500);
-   } else if (etud.motDePasse == '') {
-      return res.json({ success: false, message: "veuillez svp entrer un mot de passe" })
-
-   } else if (etud.motDePasse !== '') {
+   if (etud.motDePasse !== '') {
       if (passwordComplexity().validate(etud.motDePasse).error) {
-         return res.json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," }).status(500)
+         return res.json({ 
+            success: false, 
+            message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," 
+         }).status(400);
       } else {
-         console.log("mot de passe valide")
+         console.log("mot de passe valide");
       }
-   } else if (etud.dateNaissance == '') {
-      return res.json({ success: false, message: 'le champ date de naissance est vide' }).status(500);
-   } else if (etud.lieuNaissance == '') {
-      return res.json({ success: false, message: 'le champ Lieu de naissance est vide de naissance est vide' }).status(500);
-   } else if (etud.numTelephone == '') {
-      res.json({ success: false, message: "le champs numero de telephone est vide veuillez entrer votre numero de telephone" }).status(500);
-   }
+   } 
+
    etud.save(function (err, nouveau_etudiant) {
       if (err) {
-         console.log(err);
-         return res.json({ success: false, message: "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur: err }).status(500);
+         console.error(err);
+         return res.json({ 
+            success: false, 
+            message: "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", 
+            erreur: err 
+         }).status(500);
       }
 
       // Create user session
@@ -79,7 +86,10 @@ exports.register = function (req, res) {
 exports.login_student = async function (req, res) {
    try {
       const { matricule, motDePasse, niveau } = req.body;
-      let etudiant = await Etudiant.findOne({ matricule, niveau });
+      let etudiant = await Etudiant.findOne({ 
+         matricule: matricule.toUpperCase(), 
+         niveau: niveau.toUpperCase()
+      });
       if (!etudiant) { return res.status(404).send("User Not found") };
 
       bcrypt.compare(motDePasse, etudiant.motDePasse, function (err, result) {
@@ -92,10 +102,7 @@ exports.login_student = async function (req, res) {
          }
 
          if (!result) {
-            res.json({
-               success: false,
-               message: "Invalid credentials"
-            })
+            return res.status(404).send("User Not found")
          } else {
             // Create user session
             req.session.user = {
