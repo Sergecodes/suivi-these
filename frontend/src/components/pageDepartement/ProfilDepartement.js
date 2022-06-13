@@ -1,27 +1,12 @@
-import React,{useState} from 'react';
-import { JuryData } from '../../constants/Constant';
+import React, { useState } from "react";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
-import axios from 'axios';
+import { DepartementData } from "../../constants/Constant";
 
-
-const ProfilJury = () => {
-  const [tel, setTel] = useState(JuryData.numTelephone);
+const ProfilDepartement = () => {
+  const [tel, setTel] = useState(DepartementData.numTelephone);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    console.log('entrer')
-    var formData = new FormData();
-    formData.append("newPhoneNumber",tel);
-    axios.put('http://localhost:3001/api/jury/change-number',formData,{widthCredentials:true})
-    .then(res=>{
-      console.log(res);
-    })
-    .catch(err=>{
-      console.error(err);
-    })
-  }
   return (
     <section className="my-5">
       <div
@@ -30,7 +15,7 @@ const ProfilJury = () => {
       >
         <div className="col-12 col-sm-8  modifInfo pt-3 pb-5">
           <p
-            className="text-center fs-5 fw-light "
+            className="text-center fs-5 fw-light py-2"
             style={{ color: "rgb(87, 84, 84)" }}
           >
             Modifier les informations
@@ -42,28 +27,27 @@ const ProfilJury = () => {
                 style={{ height: "90px", width: "90px", color: "darkgray" }}
               />
               <p className="my-2">
-                <BsPencilFill className="me-1"/>
+                <BsPencilFill />
                 Modifier votre photo
               </p>
             </div>
-            <div className="col-12 col-md-6  ">
+            <div className="col-12 col-md-6 py-2 ">
               <div className="acteurInputDisabled">
                 <p> matricule</p>
                 <input
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.matricule}
+                  defaultValue={DepartementData.matricule}
                 ></input>
               </div>
-              <div className="acteurInputDisabled"  >
+              <div className="acteurInputDisabled">
                 <p> Email</p>
                 <input
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.email}
-                 
+                  defaultValue={DepartementData.email}
                 ></input>
               </div>
               <div className="acteurInputDisabled">
@@ -72,7 +56,7 @@ const ProfilJury = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.nom}
+                  defaultValue={DepartementData.nom}
                 ></input>
               </div>
               <div className="acteurInputDisabled">
@@ -81,7 +65,7 @@ const ProfilJury = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.prenom}
+                  defaultValue={DepartementData.prenom}
                 ></input>
               </div>
               <div className="acteurInput">
@@ -130,7 +114,7 @@ const ProfilJury = () => {
             <button type="button" className="btn acteurInfoBtnBack">
               Retour
             </button>
-            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+            <button type="button" className="btn acteurInfoBtnSubmit">
               Confirmer
             </button>
           </div>
@@ -138,6 +122,6 @@ const ProfilJury = () => {
       </div>
     </section>
   );
-}
+};
 
-export default ProfilJury
+export default ProfilDepartement;

@@ -61,6 +61,8 @@ exports.isExpert = function(req, res, next) {
 
 
 exports.isJury = function(req, res, next) {
+    console.log(req.session);
+    console.log(req.headers);
     if (!req.session || !req.session.user) {
         return res.status(401).send("Not authenticated");
     } else if (req.session.user.model !== Types.ACTEURS.JURY) {

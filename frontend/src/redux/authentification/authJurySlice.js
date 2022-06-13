@@ -22,6 +22,9 @@ export const loginJury = createAsyncThunk(
         {
           email: data.email,
           motDePasse: data.motDePasse,
+        },
+        {
+          withCredentials:true
         }
       );
       // localStorage.setItem("juryInfos", JSON.stringify(value.data));

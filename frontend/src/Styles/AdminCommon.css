@@ -1,0 +1,219 @@
+/*AdministraorsHeader*/
+.adminHeader {
+  /* background-image:linear-gradient(var(--secondaryColor), #4b3a6e);*/
+  background-color: var(--secondaryColor);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  margin: 0;
+}
+
+.adminOptions {
+  font-size: 25px;
+}
+.icons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.icons a,
+.icons > div > p {
+  font-size: 15px;
+  color: white;
+}
+
+@media (min-width: 580px) {
+  .logoGraduation,
+  .welcomeName {
+    font-size: 18px !important;
+  }
+}
+
+.profileOptions {
+  background-color: rgb(248, 244, 244);
+  z-index: 15;
+  color: var(--secondaryColor);
+  position: absolute;
+  right: 2%;
+  top: 95%;
+  width: 180px;
+  border-radius: 15px;
+  padding: 10px 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  font-size: 16px;
+}
+
+.profileOptions a {
+  color: rgb(129, 128, 128);
+}
+
+.profileOptions a:hover {
+  color: var(--secondaryColor);
+}
+
+/*notification*/
+
+.actionsNotification p {
+  cursor: pointer;
+}
+.actionsNotification p:hover {
+  color: rgb(147, 207, 235);
+}
+
+.actionsNotification button {
+  border: 1px solid var(--secondaryColor);
+  color: var(--secondaryColor);
+  box-shadow: none !important;
+}
+
+.actionsNotification button:hover {
+  background-color: #7d68c9;
+  border: 1px solid transparent;
+}
+
+.contentNotification {
+  border: 1px solid transparent;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: rgb(243, 242, 242);
+  border-radius: 15px;
+}
+
+/**Profil des differents administrateurs de la plateforme***/
+
+.modifInfo {
+  background-color: white;
+}
+.modifPhotoActeur p {
+  color: rgb(87, 84, 84);
+  font-weight: 300;
+  cursor: pointer;
+}
+.modifPhotoActeur p:hover {
+  color: var(--secondaryColor);
+}
+.acteurInput,.acteurInputDisabled{
+  margin:0 0;
+  margin-bottom:12px;
+}
+.acteurInput p,.acteurInputDisabled p{
+    color:rgb(61, 60, 60);
+   margin:0px;
+   font-size: 12px;
+}
+
+.acteurInput input, .acteurInputDisabled input{
+    border: 1px solid darkgray;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    padding:5px 3px !important;
+    background-color: transparent !important;
+    font-size: 15px;
+    box-shadow: none !important;
+}
+
+.acteurInput input{
+  color:black;
+}
+
+.acteurInputDisabled input{
+  color:darkgray;
+}
+
+.acteurInfoBtnBack{
+  background-color: rgb(196, 190, 190);
+  color:black;
+  padding:5px 8px;
+}
+.acteurInfoBtnSubmit{
+  background-color:var(--secondaryColor);
+  color:white;
+  padding:5px 13px;
+}
+
+.acteurInfoBtnSubmit:hover{
+  background-color:transparent;
+  border:1px solid var(--secondaryColor);
+  color:var(--secondaryColor);
+}
+.acteurInfoBtnBack:hover{
+  background-color: darkgray;
+}
+
+/*sidenav admin*/
+.sidenav{
+  height:100vh;
+  width:235px;
+  background-image:linear-gradient(#2a1c5a, #4b3a6e);
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  color:white;
+  position:sticky;
+  top:0;
+  left:0;
+  z-index:999;
+}
+hr{
+  margin-bottom:10px;
+}
+.title{
+  font-size:18px;
+  padding-top:13px;
+  font-weight:500;
+  text-align: center;
+}
+.actorInfo div p{
+  margin:0px;
+  font-weight: 500;
+  padding:0px 15px;
+}
+
+.actorInfo >p{
+  font-style:italic;
+  font-weight: 300;
+  padding:0px 15px;
+}
+
+.sidenavItem{
+  cursor:pointer;
+  margin:2px 0px;
+  border-radius: 3px;
+}
+.sidenavItem a{
+  font-size:14px;
+  font-weight: bold;
+  color:white;
+  display:flex;
+  align-items:center;
+  padding:7px 7px;
+}
+
+.sidenavItem a:hover{
+  background-color: white;
+  color:#2a1c5a;
+  border-radius: 5px;
+  margin:0px 3px;
+}
+
+@media (width<922px){
+  .sidenav{
+      position:fixed;
+      top:0;
+      right:0;
+  }
+}
+
+
+.sidenavTitle > p{
+  color:gray;
+  font-size: 18px;
+  font-weight: 490;
+}
+
+/* navar admin*/
+.adminNavbar img{
+  height:35px;
+  width:35px;
+  border-radius: 50px;
+}

@@ -16,6 +16,26 @@ import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
 
+import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";*/
+
+/*import Soutenance from "./screen/Soutenance";
+
+import Expert from "./screen/Expert";
+import NotationThese from "./components/pageExpert/NotationThese";
+import ProfilExpert from "./components/pageExpert/ProfilExpert";
+import DashboardExpert from "./components/pageExpert/dashBoardExpert"
+import NotificationExpert from "./components/pageExpert/NotificationExpert"
+import Departement from "./screen/Departement";
+import ProfilDepartement from "./components/pageDepartement/ProfilDepartement";
+import DashboardDepartement from "./components/pageDepartement/DashboardDepartement"
+import NotificationDepartement from "./components/pageDepartement/NotificationDepartement";
+import VerificationMaster from "./components/pageDepartement/VerificationMaster";x
+import Rectorat from "./screen/Rectorat";
+import ProfilRectorat from "./components/pageRectorat/ProfilRectorat";
+import DashboardRectorat from "./components/pageRectorat/DashboardRectorat"
+import NotificationRectorat from "./components/pageRectorat/NotificationRectorat";
+import Programmation from "./components/pageRectorat/Programmation";*/
+
 // import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 
 import Soutenance from "./screen/Soutenance";
@@ -24,6 +44,12 @@ import NotationMaster from "./components/pageJury/NotationMaster";
 import ProfilJury from "./components/pageJury/ProfilJury";
 import NotificationJury from "./components/pageJury/NotificationJury";
 import TableList from "./components/pageJury/TableList";
+import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";*/
+/*-----------*/
+
+/*-----------*/
+import Admin from "./screen/Admin";
+/*-----------*/
 import HomeCoordonateurDashboard from "./components/pageCoordonateur/HomeCoordonateurDashboard";
 import ProfilCoordonateur from "./components/pageCoordonateur/ProfilCoordonateur";
 import RapportAudition from "./components/pageCoordonateur/RapportAudition";
@@ -57,6 +83,8 @@ const App = () => {
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
           ></Route>
+          <Route path="/acteur/jury" element={<Jury />}>
+          ></Route>
         { /* 
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
@@ -65,7 +93,45 @@ const App = () => {
               path="/acteur/jury/notifications"
               element={<NotificationJury />}
             />
-  </Route>*/}
+          </Route>
+           <Route
+            path="/connexion/jury"
+            element={<JuryInscriptionScreen />}
+          ></Route> */}
+          { /* <Route path="/acteur/expert" element={<Expert />}>
+            <Route path="/acteur/expert/dashboard" element={<TableList />} />
+            <Route path="/acteur/expert/notation" element={<NotationThese />} />
+            <Route path="/acteur/expert/profil" element={<ProfilJury />} />
+            <Route
+              path="/acteur/expert/notifications"
+              element={<NotificationExpert />}
+            />
+          </Route>
+           <Route path="/acteur/departement" element={<Departement />}>
+            <Route path="/acteur/departement/dashboard" element={<DashboardDepartement />} />
+            <Route path="/acteur/departement/profil" element={<ProfilDepartement />} />
+            <Route path="/acteur/departement/verification" element={<VerificationMaster />} />
+
+            <Route
+              path="/acteur/departement/notifications"
+              element={<NotificationDepartement />}
+            />
+          </Route>
+          <Route path="/acteur/rectorat" element={<Rectorat />}>
+            <Route path="/acteur/rectorat/dashboard" element={<DashboardRectorat />} />
+            <Route path="/acteur/rectorat/profil" element={<ProfilRectorat />} />
+
+
+            <Route
+              path="/acteur/rectorat/notifications"
+              element={<NotificationRectorat />}
+            />
+            <Route
+              path="/acteur/rectorat/programmation"
+              element={<Programmation />}
+            />
+          </Route>*/}
+          <Route path="/acteur/admin" element={<Admin/>} />
           <Route
             path="/*"
             element={

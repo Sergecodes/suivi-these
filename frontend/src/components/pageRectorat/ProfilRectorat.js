@@ -1,27 +1,12 @@
-import React,{useState} from 'react';
-import { JuryData } from '../../constants/Constant';
+import React, { useState } from "react";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
-import axios from 'axios';
+import { RectoratData } from "../../constants/Constant";
 
-
-const ProfilJury = () => {
-  const [tel, setTel] = useState(JuryData.numTelephone);
+const ProfileRectorat = () => {
+  const [tel, setTel] = useState(RectoratData.numTelephone);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    console.log('entrer')
-    var formData = new FormData();
-    formData.append("newPhoneNumber",tel);
-    axios.put('http://localhost:3001/api/jury/change-number',formData,{widthCredentials:true})
-    .then(res=>{
-      console.log(res);
-    })
-    .catch(err=>{
-      console.error(err);
-    })
-  }
   return (
     <section className="my-5">
       <div
@@ -53,7 +38,7 @@ const ProfilJury = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.matricule}
+                  defaultValue={RectoratData.matricule}
                 ></input>
               </div>
               <div className="acteurInputDisabled"  >
@@ -62,7 +47,7 @@ const ProfilJury = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.email}
+                  defaultValue={RectoratData.email}
                  
                 ></input>
               </div>
@@ -72,7 +57,7 @@ const ProfilJury = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.nom}
+                  defaultValue={RectoratData.nom}
                 ></input>
               </div>
               <div className="acteurInputDisabled">
@@ -81,7 +66,7 @@ const ProfilJury = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.prenom}
+                  defaultValue={RectoratData.prenom}
                 ></input>
               </div>
               <div className="acteurInput">
@@ -130,7 +115,7 @@ const ProfilJury = () => {
             <button type="button" className="btn acteurInfoBtnBack">
               Retour
             </button>
-            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+            <button type="button" className="btn acteurInfoBtnSubmit">
               Confirmer
             </button>
           </div>
@@ -138,6 +123,6 @@ const ProfilJury = () => {
       </div>
     </section>
   );
-}
+};
 
-export default ProfilJury
+export default ProfileRectorat;
