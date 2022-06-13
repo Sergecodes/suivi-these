@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 
+
+
 /*
 import Accueil from "./screen/Accueil";*/
 /*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
@@ -39,15 +41,18 @@ import NotificationRectorat from "./components/pageRectorat/NotificationRectorat
 import Programmation from "./components/pageRectorat/Programmation";*/
 
 
-/*-----------*/
+/*-----------
 import Jury from "./screen/Jury";
 import NotationMaster from "./components/pageJury/NotationMaster";
 import ProfilJury from "./components/pageJury/ProfilJury";
 import NotificationJury from "./components/pageJury/NotificationJury";
 import TableList from "./components/pageJury/TableList";
-import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
+import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";*/
 /*-----------*/
 
+/*-----------*/
+import Admin from "./screen/Admin";
+/*-----------*/
 
 /*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
 import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
@@ -74,6 +79,7 @@ const App = () => {
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
           ></Route>*/}
+        {/*
           <Route path="/acteur/jury" element={<Jury />}>
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
@@ -86,7 +92,7 @@ const App = () => {
            <Route
             path="/connexion/jury"
             element={<JuryInscriptionScreen />}
-          ></Route>
+          ></Route> */}
           { /* <Route path="/acteur/expert" element={<Expert />}>
             <Route path="/acteur/expert/dashboard" element={<TableList />} />
             <Route path="/acteur/expert/notation" element={<NotationThese />} />
@@ -120,6 +126,7 @@ const App = () => {
               element={<Programmation />}
             />
           </Route>*/}
+          <Route path="/acteur/admin" element={<Admin/>} />
           <Route
             path="/*"
             element={
