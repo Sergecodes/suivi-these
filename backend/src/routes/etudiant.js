@@ -1,25 +1,31 @@
 const router = require('express').Router();
 const controller = require('../controllers/etudiant');
-const { isEtudiant } = require('../middlewares')
+const { isEtudiant, getEtudiantFromParam } = require('../middlewares')
 
 
-router.route('/login-etudiant').post(controller.login_student);
+router.route('/login').post(controller.login_student);
 
-router.route('/register-etudiant').post(controller.register)
+router.route('/register').post(controller.register);
 
-router.route('/change-password').put(isEtudiant, controller.change_student_password);
+router.route('/moi').get(isEtudiant, controller.getInfo);
 
-router.route('/change-phone-number').put(isEtudiant, controller.changePhoneNumber)
+router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
 
-router.route('/uploader-fichiers').post(isEtudiant, controller.uploadFiles);
+router.route('/:id/change-password').put(isEtudiant, getEtudiantFromParam, controller.change_student_password);
 
-router.route('/update-photo').put(isEtudiant, controller.updatePhoto)
+router.route('/:id/change-phone-number').put(isEtudiant, getEtudiantFromParam, controller.changePhoneNumber)
+
+router.route('/:id/uploader-fichiers').put(isEtudiant, getEtudiantFromParam, controller.uploadFiles);
+
+router.route('/:id/update-photo').put(isEtudiant, getEtudiantFromParam, controller.updatePhoto)
 
 router.route('/dates-soutenance').get(controller.datesSoutenance);
 
-router.route('/etapes-dossier').get(isEtudiant, controller.etapesDossier);
+router.route('/:id/etapes-dossier').get(isEtudiant, getEtudiantFromParam, controller.etapesDossier);
 
-router.route('/check-dossier').get(isEtudiant, controller.checkUploaderDossier);
+router.route('/:id/peut-uploader').get(isEtudiant, getEtudiantFromParam, controller.peutUploaderDossier);
+
+router.route('/:id/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
 
 
 module.exports = router;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import LoadingScreen from "../LoadingScreen";
 import {
   loginJury,
@@ -9,37 +8,50 @@ import {
 } from "../../redux/authentification/authJurySlice";
 import "../../Styles/AdminConnexionScreen.css"
 import "../../Styles/Connexion.css"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function JuryConnexionScreen() {
+  const jutyInfos = localStorage.getItem("jutyInfos");
+
   const [user, setUser] = useState({
     email: "",
     motDePasse: "",
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { message, jury, isError, isLoading, isSuccess } = useSelector(
-    (state) => state.authJury
-  );
+  const { message, jury, isError, isLoading, isSuccess, isRejected } =
+    useSelector((state) => state.authJury);
   useEffect(() => {
-    if (isError) {
-      alert(message);
+    if (isError || isRejected) {
+      toast.error(message);
     }
-    if (isSuccess) {
+    if (isSuccess || jury) {
       toast.success("Connexion Reussie");
       alert("connexion Reussie");
 
       navigate("/acteur/jury");
       //navigate("/account")
+      
     }
     if (isLoading) {
       return <LoadingScreen />;
     }
     dispatch(resetJury());
-  }, [jury, isLoading, isSuccess, isError, message, navigate, dispatch]);
+  }, [
+    jury,
+    isLoading,
+    isSuccess,
+    isError,
+    message,
+    navigate,
+    dispatch,
+    isRejected,
+  ]);
 
   const SubmitHandle = (e) => {
     if (user.motDePasse === "" || user.email === "") {
-      alert("renseignez toutes vos informations");
+      toast.warning("renseignez toutes vos informations");
       e.preventDefault();
     } else {
       dispatch(loginJury(user));
@@ -49,10 +61,12 @@ function JuryConnexionScreen() {
   };
   return (
     <div>
-      {isLoading == "true" ? (
+      {isLoading === true ? (
         <LoadingScreen />
       ) : (
         <div>
+          <ToastContainer />
+
           <div style={{ padding: "4%" }} className="container-connexion">
             <div className="container">
               <h1 className="inscription-etudiant-title">Connexion Jury</h1>

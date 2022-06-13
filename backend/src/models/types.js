@@ -29,8 +29,10 @@ const TypeNotification = Object.freeze({
     RAPPEL: "Rappel",
     NOUVEAU_ETUDIANT: "Nouveau étudiant",
     NOUVEL_AVIS: 'Nouvel avis dossier',
+    DOSSIER_VALIDE: "Dossier de l'étudiant validé",
     DOSSIER_REJETE: "Dossier de l'étudiant rejeté",
     COMPTE_REJETE: "Compte de l'étudiant rejeté",
+    COMPTE_VALIDE: "Compte de l'étudiant validé",
     NOTE_JURY: "Nouvelle note de jury",
     SOUTENANCE_PROGRAMMEE: "Date de soutenance programmeé",
     AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
@@ -53,6 +55,8 @@ const Avis = Object.freeze({
     SOUTENANCE_FAVORABLE: "Soutenance favorable",
     FAVORABLE_SOUS_RESERVE: "Soutenance favorable sous reserve",
     DEFAVORABLE: "Défavorable",
+    // Autorisation de soutenance envoyee de l'admin au coordonateur 
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance"
 
 });
 
@@ -67,7 +71,8 @@ const AvisEmetteur = Object.freeze({
 
 
 const AvisDestinataire = Object.freeze({
-    ADMIN: ACTEURS.ADMIN
+    ADMIN: ACTEURS.ADMIN,
+    COORDONATEUR: ACTEURS.COORDONATEUR
  });
 
 
@@ -111,7 +116,9 @@ const CategorieFichierThese = Object.freeze({
 const StatutDossier = Object.freeze({
     ATTENTE_VALIDATION: "En attente de validation",
     ACCEPTE_ADMIN: "Validé par l'admin",
-    REJETE_ADMIN: "Rejeté par l'admin"
+    ACCEPTE_DEPARTEMENT: "Validé par le departement",
+    REJETE_ADMIN: "Rejeté par l'admin",
+    REJETE_DEPARTEMENT: "Rejeté par le departement" // Pour les etudiants de master
 });
 
 
@@ -132,12 +139,25 @@ const GradeExpert = GradeJury;
 
 
 const EtapeDossier = Object.freeze({
-    UNE: 1,
-    DEUX: 2,
-    TROIS: 3,
-    QUATRE: 4,
+    ZERO: 0,  // Attente validation de l'etudiant par admin
+    UNE: 1,     // Attente de validation du dossier par admin
+    DEUX_MASTER: 2, 
+    DEUX_THESE: 2,
+    TROIS_MASTER: 3,
+    TROIS_THESE: 3,
+    QUATRE_MASTER: 4,
+    QUATRE_THESE: 4,
     CINQ: 5,
     SIX: 6
+});
+
+
+const EtapeDossierMaster = Object.freeze({
+    
+});
+
+const EtapeDossierThese = Object.freeze({
+    
 });
 
 

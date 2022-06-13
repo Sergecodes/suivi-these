@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
+const Avis = require('./Avis');
 const { ModelNotif, AvisEmetteur, TypeNotification } = require('./types');
 
 
@@ -53,8 +54,7 @@ RectoratSchema.virtual('notifications', {
 RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-
-    // todo also update etape
+    await etudiant.incrementerEtape();
     
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
@@ -66,21 +66,32 @@ RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, 
     });
 };
 
-// RectoratSchema.methods.donnerAvisTheseAdmin = async function(
-//     type, 
-//     commentaire, 
-//     rapport, 
-//     idDossier
-// ) {
-//     await Avis.create({
-//         type,
-//         commentaire,
-//         rapport,
-//         dossier: idDossier,
-//         donnePar: this._id,
-//         donneParModel: AvisEmetteur.
-//     });
-// }
+
+RectoratSchema.methods.verifierAvisDonne = async function(idDossier) {
+    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
+    return Boolean(donne);
+}   
+
+RectoratSchema.methods.donnerAvisTheseAdmin = async function(
+    type, 
+    commentaire, 
+    rapport, 
+    idDossier
+) {
+    let donne = await this.verifierAvisDonne(idDossier);
+    if (donne)
+        throw "Vous avez deja envoye votre avis a l'admin";
+
+    await Avis.create({
+        type,
+        commentaire,
+        rapport,
+        dossier: idDossier,
+        donnePar: this._id,
+        donneParModel: AvisEmetteur.COORDONATEUR
+    });
+}
+
 
 module.exports = model('Rectorat', RectoratSchema, 'rectorat');
 

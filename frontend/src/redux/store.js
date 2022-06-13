@@ -11,6 +11,8 @@ import authRectoratSlice from "./authentification/authRectoratSlice";
 import authDepartementSlice from "./authentification/authDepartementSlice";
 import authCoordonateurSlice from "./authentification/authCoordonateurSlice";
 import autEtudiantInscriptionSlice from "./authentification/autEtudiantInscriptionSlice";
+import getNotificationSlice from "./CooordonateurManagmentSllice";
+import changeEmailCoordonateur  from "./coordonateur/ChangePasswordCoordoSlice";
 
 export default configureStore({
   reducer: {
@@ -26,9 +28,12 @@ export default configureStore({
     authDepartement: authDepartementSlice,
     registerEtudiant: autEtudiantInscriptionSlice,
     authCoordonateur: authCoordonateurSlice,
+    notificationCoordonateur:getNotificationSlice,
+    changePasswordCoordonateur:changeEmailCoordonateur,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 });
+ 

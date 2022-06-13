@@ -5,7 +5,7 @@ const { removePassword } = require('../utils');
 
 
 exports.register_unite = function(req,res){
-   var unite = new Unite();
+   let unite = new Unite();
 
   unite.intitule = req.body.intitule;
   unite.coordonateur = req.body.coordonateur;
