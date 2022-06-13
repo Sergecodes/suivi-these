@@ -6,6 +6,7 @@ import Equipe from '../components/accueil/Equipe';
 import Header from "../screen/Header";
 import Footer from "../screen/Footer";
 import Map from '../components/accueil/Map';
+import "../index.css";
 
 
 

@@ -1,0 +1,25 @@
+.containere {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 0.3fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    "sidebar nav"
+    "sidebar main";
+}
+/* :root {
+    --primaryColor: #ff5821;
+    --secondaryColor: #2a1c5a;
+  } */
+@media only screen and (max-width: 978px) {
+  #sidebar {
+    display: none;
+  }
+  .containere {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 3fr;
+    grid-template-areas:
+      "nav nav "
+      "main main ";
+  }
+}

@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
+const Notification = require('./Notification');
+const { StatutDossier, ModelNotif, TypeNotification } = require('./types')
 
 
 const AdminSchema = new Schema({
@@ -18,18 +20,18 @@ const AdminSchema = new Schema({
 });
 
 AdminSchema.pre("save",function(next){
-    const conseil = this;
+    const admin = this;
     if(this.isModified("motDePasse") || this.isNew){
         bcrypt.genSalt(10,function(saltError,salt){
             if(saltError){
                 return next(saltError)
             }else{
-                bcrypt.hash(conseil.motDePasse,salt,function(hashError,hash){
+                bcrypt.hash(admin.motDePasse,salt,function(hashError,hash){
                     if(hashError){
                         return next(hashError)
                     }
-                    conseil.motDePasse = hash;
-                    console.log(conseil.motDePasse);
+                    admin.motDePasse = hash;
+                    console.log(admin.motDePasse);
                     next()
                 })
             }
@@ -69,6 +71,28 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
     });
 }
 
+/**
+ * Valider l'inscription d'un etudiant
+ */
+ AdminSchema.methods.validerEtudiant = async function (etudiant, raison) {
+    try {
+        await etudiant.incrementerEtape();
+        await Notification.create({
+            type: TypeNotification.COMPTE_VALIDE,
+            destinataire: etudiant,
+            destinataireModel: ModelNotif.ETUDIANT,
+            objetConcerne: etudiant._id,
+            objetConcerneModel: ModelNotif.ETUDIANT,
+            message: raison
+        });
+
+        return res.send("Success");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Something went wrong");
+    }
+}
+
 
 /**
  * Rejeter l'inscription d'un etudiant
@@ -86,8 +110,6 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
         message: raison
     });
 }
-
-
 
 
 module.exports = model('Admin', AdminSchema, 'admin');

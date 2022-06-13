@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// toast.configure()
 import LoadingScreen from "../LoadingScreen";
 
 import {
@@ -16,18 +19,25 @@ function CoordonateurInscriptionScreen() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { message, coordonateur, isError, isLoading, isSuccess } = useSelector(
-    (state) => state.authDepartement
-  );
-  useEffect(() => {
-    if (isError) {
-      alert(message);
-    }
-    if (isSuccess) {
-      toast.success("Connexion Reussie");
-      alert("connexion Reussie");
+  const coordonateurInfos = localStorage.getItem("coordonateurtInfo");
 
-      navigate("/account");
+  const {
+    message,
+    coordonateur,
+    isError,
+    isLoading,
+    isSuccess,
+    isConnexionSuccessful,
+    isRejected,
+  } = useSelector((state) => state.authCoordonateur);
+  useEffect(() => {
+    console.log(`le isError est a ${isError} et le isRejected ${isRejected}`);
+    if (isError || isRejected) {
+      toast.error(message, { position: toast.POSITION.TOP_CENTER });
+    }
+
+    if (isSuccess || coordonateur) {
+      navigate("/acteur/coordonateur");
     }
     if (isLoading) {
       return <LoadingScreen />;
@@ -35,19 +45,23 @@ function CoordonateurInscriptionScreen() {
     dispatch(resetCoordonateur());
   }, [
     coordonateur,
+    isConnexionSuccessful,
     isLoading,
     isSuccess,
     isError,
     message,
     navigate,
     dispatch,
+    isRejected,
   ]);
 
   const SubmitHandle = (e) => {
     if (user.motDePasse === "" || user.email === "") {
-      alert("renseignez toutes vos informations");
+      toast.warning("renseignez toutes vos informations");
       e.preventDefault();
     } else {
+      console.log(user);
+
       dispatch(loginCoordonateur(user));
     }
 
@@ -56,10 +70,12 @@ function CoordonateurInscriptionScreen() {
 
   return (
     <div>
-      {isLoading == "true" ? (
+      {isLoading === true ? (
         <LoadingScreen />
       ) : (
         <div>
+          <ToastContainer />
+
           <div style={{ padding: "4%" }} className="container-connexion">
             <div className="container">
               <h1 className="inscription-etudiant-title">
@@ -117,7 +133,9 @@ function CoordonateurInscriptionScreen() {
                             style={{ marginTop: "5px" }}
                             onClick={SubmitHandle}
                           >
-                            Se Connecter
+                            {isLoading === true
+                              ? "Connexion..."
+                              : "Se Connecter"}
                           </button>
                         </div>
                         {/* <div className="col-12">

@@ -1,0 +1,57 @@
+# docker-compose --env-file .docker.env run
+
+version: "3.7"
+
+services:
+  api-server:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: api-server
+    ports:
+      - 3001:3001
+    depends_on:
+      - database-server
+    networks:
+      - backend
+    volumes:
+      - students-data:/dossiers-etudiants
+  react-app:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    image: react-app
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
+
+  database-server:
+    image: mongo:4.4.12
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    volumes:
+      - db-data:/suivi-these-db/data
+    env_file:
+      - .docker.env
+    environment: 
+      # These variables will be taken from the .docker.env file
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+
+networks:
+  # frontend:
+  #   driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
+  students-data:
+    driver: local
+    

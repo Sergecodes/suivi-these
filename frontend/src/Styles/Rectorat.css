@@ -1,0 +1,38 @@
+.dateDescription >h4{
+    color:rgb(61, 60, 60);
+    margin:0px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.dateDescription p{
+    font-size: 14px;
+    color:darkgray;
+    margin:5px 0px;
+}
+
+.dateInput p{
+    color:var(--secondaryColor);
+    font-size: 14px;
+    margin:0;
+}
+
+.dateInput input{
+    margin: 8px 0px;
+    border:none;
+    width:100%;
+    border-bottom: 1px solid var(--secondaryColor);
+}
+
+.dateButton button{
+    margin:8px 0px;
+    background-color:var(--secondaryColor);
+    color:white;
+    padding:4px 10px;
+  }
+  
+  .dateButton button:hover{
+    background-color:transparent;
+    border:1px solid var(--secondaryColor);
+    color:var(--secondaryColor);
+  }

@@ -61,7 +61,7 @@ CoordonateurSchema.virtual('notifications', {
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-    // todo also update etape 
+    await etudiant.incrementerEtape();
     
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
@@ -71,12 +71,21 @@ CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudi
     });
 };
 
+CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
+    return Boolean(donne);
+}   
+
 CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
     type, 
     commentaire, 
     rapport, 
     idDossier
 ) {
+    let donne = await this.verifierAvisDonne(idDossier);
+    if (donne)
+        throw "Vous avez deja envoye votre avis a l'admin";
+
     await Avis.create({
         type,
         commentaire,
@@ -86,8 +95,6 @@ CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
         donneParModel: AvisEmetteur.COORDONATEUR
     });
 }
-
-
 
 
 module.exports = model('Coordonateur', CoordonateurSchema);

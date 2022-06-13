@@ -82,7 +82,7 @@ const NavbarHeader = (props) => {
               </Link>
               <div className="navContentCascader">
                 <Menu onClick={onClick} mode="vertical" items={items} /> 
-                </div>
+              </div>
               <Link
                 to="/soutenance"
                 style={
@@ -93,8 +93,16 @@ const NavbarHeader = (props) => {
               >
                 Soutenances
               </Link>
-              
-             
+              <Link
+                to="/*"
+                style={
+                  location.pathname === "/information"
+                    ? { color: "var(--primaryColor)" }
+                    : {}
+                }
+              >
+                Informations
+              </Link>
             </div>
             <Dropdown>
               <Dropdown.Toggle

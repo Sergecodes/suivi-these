@@ -347,7 +347,7 @@ const data = [
 
 const TableList = () => {
   return (
-    <div className=" tableList mx-3 my-3">
+    <div className=" mx-3 my-3" style={{overflow:"scroll"}}>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
     </div>
   );
