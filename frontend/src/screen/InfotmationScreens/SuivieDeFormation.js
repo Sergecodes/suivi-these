@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function SuivieDeFormation() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h2>Parrain de thèse ou référent</h2>

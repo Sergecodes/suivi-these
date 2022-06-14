@@ -22,16 +22,16 @@ const TopHeader = (props) => {
         </span>
       </div>
       <div className="d-flex justify-content-end">
-        <Link to="/*">
+        <Link to="/connexion/etudiant">
           <button
             className="my-1 me-1 headerIconEmpty rounded-pill"
             style={props.isLogin === false ? { display: "none" } : {}}
           >
             {" "}
-            <Link to="/connexion/etudiant"> Se connecter</Link>
+             Se connecter
           </button>
         </Link>
-        <Link to="/*">
+        <Link to="/inscription/etudiant">
           <button
             className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
             style={props.isLogin === false ? { display: "none" } : {}}

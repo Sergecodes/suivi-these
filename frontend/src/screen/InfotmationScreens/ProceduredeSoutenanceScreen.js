@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function ProceduredeSoutenanceScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h3 className="gris">Procédure de soutenance de thèse</h3>

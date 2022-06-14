@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function EquipeScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h2>L'équipe</h2>

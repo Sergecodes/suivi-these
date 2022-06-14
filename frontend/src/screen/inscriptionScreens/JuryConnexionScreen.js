@@ -6,6 +6,8 @@ import {
   loginJury,
   resetJury,
 } from "../../redux/authentification/authJurySlice";
+import "../../Styles/AdminConnexionScreen.css"
+import "../../Styles/Connexion.css"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,6 +31,8 @@ function JuryConnexionScreen() {
       alert("connexion Reussie");
 
       navigate("/acteur/jury");
+      //navigate("/account")
+      
     }
     if (isLoading) {
       return <LoadingScreen />;
@@ -77,7 +81,7 @@ function JuryConnexionScreen() {
                     <div className="col-md-6 container-data-connexion-right">
                       <form className="row g-3">
                         <div className="col-12">
-                          <label for="email" className="form-label">
+                          <label htmlFor="email" className="form-label">
                             Email
                           </label>
                           <input
@@ -94,7 +98,7 @@ function JuryConnexionScreen() {
                           />
                         </div>
                         <div className="col-12">
-                          <label for="motDePasse" className="form-label">
+                          <label htmlFor="motDePasse" className="form-label">
                             Mot de Passe
                           </label>
                           <input

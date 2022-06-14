@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function ConseilScientifiqueScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h1 className="color-orange">

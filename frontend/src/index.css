@@ -15,39 +15,48 @@ body {
 .topHeader {
   color: #cdd6d5;
   background-color: #595656;
-  display:flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  
 }
 
-.topHeaderInfo span{
-  margin-right : 30px;
+.topHeaderInfo span {
+  margin-right: 30px;
 }
 
-.headerIconEmpty,.headerIconFull{
-  padding:5px 15px;
+.headerIconEmpty,
+.headerIconFull {
+  padding: 4px 15px;
 }
 
-.headerIconFull{
+.headerIconFull {
   background-color: var(--primaryColor);
-  border:2px solid var(--primaryColor);
-  color:#373f50;
+  border: 2px solid var(--primaryColor);
+  color: #373f50;
 }
 
-.headerIconEmpty{
-  border:2px solid var(--primaryColor);
-  color:var(--primaryColor);
+.headerIconEmpty {
+  border: 2px solid var(--primaryColor);
+  color: var(--primaryColor);
   background-color: #595656;
 }
-@media (max-width:1080px) {
-  .topHeader{
+@media (max-width: 1080px) {
+  .topHeader {
     display: none;
   }
 }
 
-
 /* Navbar Header*/
+
+.navbarHeader {
+  position: sticky;
+
+  top: 0px;
+  padding-top: 2px !important;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 
 .logo img {
   height: 50px;
@@ -69,32 +78,49 @@ body {
   line-height: 1;
 }
 
-
 .navContent a {
   font-size: 17px;
-  margin:0px 30px;
+  margin: 0px 30px;
 }
 
-.logo:hover a,.logo:hover{
-  color:#595656;
-  cursor:pointer;
+.logo:hover a,
+.logo:hover {
+  color: #595656;
+  cursor: pointer;
 }
 
 .navContent a:hover {
   color: var(--primaryColor);
 }
 
-.language{
-  height:30px;
-  width:30px;
-  color:#595656;
-  
+.language {
+  height: 30px;
+  width: 30px;
+  color: #595656;
 }
 
+.navContentCascader {
+  margin: none;
+  padding: none;
+  z-index: 10000000;
+}
 
-@media (max-width:991px){
-  .options{
-    margin-left:20px;
+.navContentCascader span.ant-menu-title-content,
+.navContentCascader .ant-menu-submenu-arrow {
+  font-size: 17px;
+  color: #595656;
+  font-weight: 500;
+}
+
+.navContentCascader:hover span.ant-menu-title-content,
+.navContentCascader:hover .ant-menu-submenu-arrow::before,
+.navContentCascader:hover .ant-menu-submenu-arrow::after {
+  color: var(--primaryColor) !important;
+}
+
+@media (max-width: 991px) {
+  .options {
+    margin-left: 20px;
   }
 }
 /*NavbarMobileView*/
@@ -112,7 +138,7 @@ body {
 .options:hover,
 .cross:hover {
   color: var(--primaryColor);
-  cursor  : pointer;
+  cursor: pointer;
 }
 
 .navMobile {
@@ -170,7 +196,7 @@ body {
 
 /*WelcomeComponent*/
 .welcome {
-  height: 75vh;
+  height: 80vh;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("../public/dom-fou-YRMWVcdyhmI-unsplash\ \(1\).jpg");
   background-repeat: no-repeat;
@@ -178,56 +204,47 @@ body {
   background-size: cover;
   background-attachment: fixed;
   z-index: 0;
-  color: white;
   position: relative;
+  align-items: center;
+  text-align: center;
 }
 
-.welcomeText {
-  position: absolute;
-  top: 30%;
-  left: 5%;
-  animation-name: welcome-animation;
-  animation-duration: 2s;
-  animation-timing-function: ease-in-out;
+.welcomeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 95%;
 }
 
-/**animation**/
-@keyframes welcome-animation {
-  0% {
-    left: -30%;
-    top: 30%;
-  }
+.welcomeContent h4,
+.welcomeContent h1 {
+  color: white !important;
+}
+/* .welcomeContent h4{
 
-  50% {
-    left: -10%;
-    top: 30%;
-  }
+} */
 
-  100% {
-    left: 5%;
-    top: 30%;
-  }
+.welcomeContent h1 {
+  font-size: 53px;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 15px;
 }
 
-/**animation**/
-.welcomeText{
-  color:white;
-}
-.welcomeText h1 {
-  font-weight: 700;
-  font-size: 50px;
-}
-
-.welcomeText h4 {
-  margin-bottom: 5%;
+.welcomeContent h4 {
+  font-size: 25px;
+  font-weight: 600;
+  padding-bottom: 25px;
 }
 
 .welcomeButtonEmpty,
 .welcomeButtonFill {
   text-align: center;
-  position: relative;
-  padding: 6px 20px;
-  
+  padding: 4px 18px;
+  font-size: 18px;
+  margin: 0px 15px;
 }
 
 .welcomeButtonEmpty {
@@ -237,29 +254,47 @@ body {
 }
 
 .welcomeButtonFill {
-  border:3px solid var(--primaryColor);
-  background-color: var(--primaryColor);
-  color: #111111;
-
-}
-
-
-.welcomeButtonFill:hover ,.headerIconFull:hover {
-    box-shadow: 0px 0px 2px 2px #f8997a;
-}
-.welcomeButtonEmpty:hover, .headerIconEmpty:hover{
+  border: 3px solid var(--primaryColor);
   background-color: var(--primaryColor);
   color: #111111;
 }
-.welcomeButtonEmpty{
-  border:3px solid var(--primaryColor);
+.welcomeButtonFill:hover,
+.headerIconFull:hover,
+.welcomeButtonEmpty:hover,
+.headerIconEmpty:hover {
+  box-shadow: 0px 0px 2px 2px #f8997a;
 }
 
+@media (max-width: 1000px) and (min-width: 801px) {
+  .welcomeContent h1 {
+    font-size: 45px;
+  }
+}
+
+@media (max-width: 800px) and (min-width: 651px) {
+  .welcomeContent h1 {
+    font-size: 40px;
+  }
+  .welcomeContent h4 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .welcomeContent h1 {
+    font-size: 34px;
+  }
+  .welcomeContent h4 {
+    font-size: 16px;
+    padding-bottom: 10px;
+  }
+  .welcomeButtonEmpty,
+  .welcomeButtonFill {
+    font-size: 15px;
+  }
+}
 
 /*Utility Component*/
-
-/**************espace entre les bootstrap colons********************/
-
 
 .contactCard {
   box-sizing: border-box;
@@ -267,43 +302,53 @@ body {
   background-clip: padding-box;
 }
 
-.prior,
 .second {
   border-radius: 25px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
- background-color: white;
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: white;
 }
 
+.prior {
+  background-color: var(--primaryColor);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  border-radius: 25px;
+}
+
+.prior a {
+  color: rgb(44, 43, 43);
+  font-size: 15px;
+}
+.prior a:hover,
+.prior button:hover {
+  color: rgb(44, 43, 43);
+  box-shadow: 0px 0px 2px 2px #f8997a;
+  border-radius: 25px !important;
+}
 .prior h2 {
-  color: #373f50;
-  padding-bottom: 5%;
+  color: #2b2c2c;
 }
 
 .prior p {
-  color: white;
-  padding-bottom: 5%;
+  font-size: 17px;
+  text-overflow: ellipsis;
 }
-
 .prior button {
-  padding:8px 25px;
-  background-color: #f8997a;
-  border: none;
-  font-size: 18px;
+  padding: 5px 15px;
+  border: 2px solid rgb(44, 43, 43);
+  background-color: transparent;
 }
-
-
-.prior button:hover {
-  background-color: white;
-  color: var(--primaryColor);
-}
-
 /*Unity Component*/
 .unité {
-  background-color: #FFF9F7;
+  background-color: rgb(255, 253, 251);
 }
 
 .unitéText h2,
-.unitéText p {
+.unitéText p,
+.equipe > h2 {
   color: #635551;
   text-align: center;
 }
@@ -316,7 +361,7 @@ body {
 .unitéCard {
   position: relative;
   color: #635551;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .unitéCardIcon {
@@ -402,8 +447,72 @@ body {
   color: var(--primaryColor);
 }
 
-.footerCol h6 {}
+.adminModalButton,
+.adminModal {
+  font-size: 18px;
+}
 
-/*
-  aos
-*/
+.adminModalButton {
+  box-shadow: none !important;
+  background-color: var(--primaryColor);
+  color: white;
+  padding: 6px 15px;
+}
+
+.adminModalButton:hover {
+  color: white;
+  box-shadow: 0px 0px 2px 2px #f8997a !important;
+  border: none !important;
+}
+.adminModal {
+  border-color: var(--primaryColor) !important;
+  color: #595656;
+  margin: 5px 0px;
+  padding: 4px 10px;
+}
+
+.adminProfileSection {
+  padding: 5px 5px;
+  font-size: 10px;
+}
+
+.adminProfileSection:hover {
+  cursor: pointer;
+}
+
+.adminProfileSection:hover p {
+  color: var(--primaryColor);
+}
+
+.adminProfileSection img {
+  border: 1px solid var(--primaryColor);
+  width: 50px;
+  height: 50px;
+}
+.adminProfileSection p {
+  margin: 3px 0;
+}
+
+/*Equipe*/
+
+.equipeMember {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.equipeMember .img {
+  background-image: url("https://media.istockphoto.com/vectors/profile-picture-vector-illustration-vector-id587805078?k=20&m=587805078&s=612x612&w=0&h=lG42-xD-t1uYYficY4DQmHoACnx739xELZsvpyevLgg=");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 170px;
+  background-attachment: fixed;
+}
+.equipeMember:hover {
+  cursor: pointer;
+}
+
+/*Map*/
+.leaflet-container {
+  width: 90vw;
+  height: 70vh;
+}
