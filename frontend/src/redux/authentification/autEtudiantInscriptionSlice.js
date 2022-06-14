@@ -19,7 +19,6 @@ export const registerEtudiant = createAsyncThunk(
     try {
       const value = await axios.post(
         "http://localhost:3001/api/etudiants/register-etudiant",
-
         {
           matricule: data.matricule,
           nom: data.nom,
@@ -32,7 +31,7 @@ export const registerEtudiant = createAsyncThunk(
           numTelephone: data.numTelephone,
           sexe: data.sexe,
           urlPhotoProfil: data.urlPhotoProfil,
-          uniteRecherche: data.uniteRecherche,
+          departement: data.departement,
           encadreur: data.encadreur,
         }
       );

@@ -1,0 +1,59 @@
+# docker-compose --env-file .docker.env up --build
+
+version: "3.7"
+
+services:
+  api-server:
+    container_name: suivi-these_api-server
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: api-server
+    ports:
+      - 3001:3001
+    depends_on:
+      - database-server
+    networks:
+      - suivi-these-app
+    volumes:
+      - students-data:/dossiers-etudiants
+
+  # react-app:
+    # container_name: suivi-these_frontend
+  #   build:
+  #     context: frontend
+  #     dockerfile: Dockerfile
+  #   image: react-app
+  #   stdin_open: true
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - suivi-these-app
+
+  database-server:
+    container_name: suivi-these_database-server
+    image: mongo:4.0.16
+    restart: always
+    ports:
+      - 27017
+    networks:
+      - suivi-these-app
+    volumes:
+      - db-data:/data/db
+    # env_file:
+    #   - .docker.env
+    # environment: 
+      # These variables will be taken from the .docker.env file
+      # - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      # - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      # - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+
+networks:
+  suivi-these-app:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
+  students-data:
+    driver: local

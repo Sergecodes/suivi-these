@@ -67,6 +67,9 @@ const EtudiantSchema = new Schema({
    { timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' } }
 );
 
+// Unique together constraint
+EtudiantSchema.index( { matricule: 1, niveau: 1 }, { unique: true } );
+
 
 EtudiantSchema.pre("save", function (next) {
    const user = this;

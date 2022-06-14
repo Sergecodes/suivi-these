@@ -26,8 +26,23 @@ const commonRoutes = require('./src/routes/common')
 
 // Connexion a la base de donnees
 const urlBd = process.env.URL_BD;
+console.log(urlBd);
 
-mongoose.connect(urlBd).then(() => {
+mongoose.connect(urlBd).then((mongooseObj) => {
+    // if (process.env.USE_DOCKER === "true") {
+    //     const db = mongooseObj.connection.db;
+    //     db.addUser(
+    //         {
+    //             user: process.env.MONGO_INITDB_ROOT_USERNAME,
+    //             pwd: process.env.MONGO_INITDB_ROOT_PASSWORD,
+    //             roles: [ { 
+    //                 role: "userAdminAnyDatabase", 
+    //                 db: process.env.MONGO_INITDB_DATABASE 
+    //             } ]
+    //         }
+    //     );
+    // }
+    
     console.log("Connexion a la base de donnees reussie");    
 }).catch(err => {
     console.error('Connexion a la base de donnes echouee. Erreur:', err);
