@@ -23,7 +23,7 @@ function EtudiantInscriptionScreen() {
     numTelephone: "",
     sexe: "",
     urlPhotoProfil: "a revoir",
-    uniteRecherche: "",
+    departement: "",
     encadreur: "",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -67,7 +67,7 @@ function EtudiantInscriptionScreen() {
       user.lieuNaissance === "" ||
       user.encadreur === "" ||
       user.sexe === "" ||
-      user.uniteRecherche === "" ||
+      user.departement === "" ||
       user.matricule === ""
     ) {
       alert("renseignez toutes vos informations");
@@ -231,22 +231,22 @@ function EtudiantInscriptionScreen() {
                 </div>
 
                 <div className="col-md-6">
-                  <label htmlFor="Unite" className="form-label">
-                    Unite de Recherche
+                  <label htmlFor="Departement" className="form-label">
+                    Departement
                   </label>
                   <select
-                    id="Unite"
+                    id="Departement"
                     className="form-select"
-                    value={user.uniteRecherche}
+                    value={user.departement}
                     onChange={(e) =>
-                      setUser({ ...user, uniteRecherche: e.target.value })
+                      setUser({ ...user, departement: e.target.value })
                     }
                   >
                     <option value="unite 2" selected>
-                      Unite 1
+                      Departement 1
                     </option>
-                    <option value="unite 2">Unite 2</option>
-                    <option value="unite 3">Unite 3</option>
+                    <option value="unite 2">Departement 2</option>
+                    <option value="unite 3">Departement 3</option>
                   </select>{" "}
                 </div>
                 <div className="col-md-4">

@@ -161,7 +161,7 @@ export default EtudiantConnexionScreen;
 //     "numTelephone":"690456392",
 //     "sexe":"masculin",
 //     "urlPhotoProfil":"urlPhotoProfil",
-//     "uniteRecherche":"uniteRecherche",
+//     "departement":"departement",
 //     "encadreur":"encadreur"
 
 // "matricule":"19m2429",
@@ -175,5 +175,5 @@ export default EtudiantConnexionScreen;
 //     "numTelephone":"690456392",
 //     "sexe":"masculin",
 //     "urlPhotoProfil":"urlPhotoProfil",
-//     "uniteRecherche":"uniteRecherche",
+//     "departement":"departement",
 //     "encadreur":"encadreur"

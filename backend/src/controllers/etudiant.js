@@ -38,7 +38,7 @@ exports.register = function (req, res) {
    etud.nom = req.body.nom;
    etud.prenom = req.body.prenom;
    etud.motDePasse = req.body.motDePasse;
-   etud.niveau = req.body.niveau;
+   etud.niveau = req.body.niveau.toUpperCase();
    etud.email = req.body.email;
    etud.dateNaissance = req.body.dateNaissance;
    etud.lieuNaissance = req.body.lieuNaissance;
@@ -50,10 +50,11 @@ exports.register = function (req, res) {
 
    if (etud.motDePasse !== '') {
       if (passwordComplexity().validate(etud.motDePasse).error) {
-         return res.json({ 
+         return res.status(400).json({ 
             success: false, 
+            type: 'INVALID_PASSWORD',
             message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," 
-         }).status(400);
+         });
       } else {
          console.log("mot de passe valide");
       }
@@ -62,11 +63,11 @@ exports.register = function (req, res) {
    etud.save(function (err, nouveau_etudiant) {
       if (err) {
          console.error(err);
-         return res.json({ 
+         return res.status(500).json({ 
             success: false, 
             message: "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", 
             erreur: err 
-         }).status(500);
+         });
       }
 
       // Create user session
@@ -75,11 +76,11 @@ exports.register = function (req, res) {
          model: Types.ACTEURS.ETUDIANT
       };
 
-      res.json({
+      res.status(201).json({
          success: true,
          message: "Enregistre avec succes",
          data: removePassword(nouveau_etudiant.toJSON())
-      }).status(201);
+      });
    })
 }
 
