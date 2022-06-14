@@ -4,7 +4,7 @@ version: "3.7"
 
 services:
   api-server:
-    container_name: suivi-these_api-server
+    container_name: suivi-these-backend
     build:
       context: backend
       dockerfile: Dockerfile
@@ -18,20 +18,20 @@ services:
     volumes:
       - students-data:/dossiers-etudiants
 
-  # react-app:
-    # container_name: suivi-these_frontend
-  #   build:
-  #     context: frontend
-  #     dockerfile: Dockerfile
-  #   image: react-app
-  #   stdin_open: true
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - suivi-these-app
+  react-app:
+    container_name: suivi-these-frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    image: react-app
+    stdin_open: true
+    ports:
+      - 3000:3000
+    networks:
+      - suivi-these-app
 
   database-server:
-    container_name: suivi-these_database-server
+    container_name: suivi-these-db
     image: mongo:4.0.16
     restart: always
     ports:
