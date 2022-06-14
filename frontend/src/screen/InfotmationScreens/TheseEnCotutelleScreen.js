@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function TheseEnCotutelleScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h2>Co-tutelle de thèse (ED 482)</h2>

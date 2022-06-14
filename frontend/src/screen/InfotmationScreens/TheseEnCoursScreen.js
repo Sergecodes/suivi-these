@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function TheseEnCoursScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <h1 className="color-orange">
         POUR LE MOMENT PAS ENCORE DE THESE REPERTORIES
       </h1>

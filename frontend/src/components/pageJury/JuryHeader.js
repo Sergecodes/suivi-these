@@ -12,7 +12,6 @@ const JuryHeader = () => {
         acteur={"JURY"}
         notification={"/acteur/jury/notifications"}
         profil={"/acteur/jury/profil"}
-      />
       >
         <Link to="/">
           <p style={{ margin: "0px" }}>

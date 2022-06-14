@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function InscriptionScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h2>Modalités d'inscription en Doctorat</h2>

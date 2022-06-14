@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function UnitesRechercheScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h2>Unites de Recherche</h2>

@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function FormationEnTheseScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <div className="formation-these">

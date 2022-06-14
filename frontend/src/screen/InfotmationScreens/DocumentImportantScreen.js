@@ -3,7 +3,7 @@ import "../../Styles/informations.css";
 
 function DocumentImportantScreen() {
   return (
-    <div>
+    <div className="informationScreen">
       <div className="container">
         <div className="row">
           <h2>Documents à fournir au secrétariat de l'Ecole Doctorale ..</h2>

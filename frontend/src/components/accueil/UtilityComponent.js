@@ -15,7 +15,7 @@ const UtilityComponent = () => {
     <section data-aos="fade-up" className="aos" style={{position:"relative"}}>
         <div  className=" d-flex justify-content-center row mx-4 " style={{position:"absolute",top:"-40px"}}>
             <div className=" my-3 px-3 col-12 col-md-6 col-lg-4" style={{backgroundColor:"transparent"}}  >
-               <div className="prior  d-flex px-4 py-4 flex-column align-items-center ">
+               <div className="prior d-flex px-4 py-4 flex-column align-items-center ">
                     <h2>A quoi sert cette plateforme?</h2>
                     <p>
                         Cette plateforme est un miroir refletant l'ecole doctorale. Elle vous aidera à ...

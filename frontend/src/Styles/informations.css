@@ -1,15 +1,15 @@
-h1 {
+.informationScreen h1 {
   font-size: 1.6rem;
   padding: 5px 10px;
   text-align: left;
 }
-h2 {
+.informationScreen h2 {
   font-size: 1.2rem;
   padding: 5px;
   color: var(--primaryColor);
   margin-bottom: -1rem;
 }
-hr {
+.informationScreen hr {
   color: var(--primaryColor);
 }
 .color-orange {
@@ -21,23 +21,23 @@ hr {
 .gras {
   font-weight: bold;
 }
-p {
+.informationScreen p {
   text-align: left !important;
 }
-h3 {
+.informationScreen h3 {
   font-size: 1.2rem;
 }
-ol li,
-ul li {
+.informationScreen h3 ol li,
+.informationScreen h3 ul li {
   list-style: var(--primaryColor);
   line-height: 1.8rem;
 }
-ol li::marker,
-ul li::marker {
+.informationScreen ol li::marker,
+.informationScreen ul li::marker {
   color: var(--primaryColor);
   background-color: var(--primaryColor);
 }
-h4 {
+.informationScreen h4 {
   font-size: 1rem;
   color: gray;
 }
