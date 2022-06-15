@@ -39,7 +39,7 @@ function ProfilCoordonateur() {
     setSidebarOpen(false);
   };
   useEffect(() => {
-    // dataRequired();
+    dataRequired();
     console.log(`la valeur de user est ${user}`);
   }, [navigate, coodonateurInfos]);
   const handleSetPassword =()=>{
