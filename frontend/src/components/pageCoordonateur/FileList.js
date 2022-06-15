@@ -1,5 +1,6 @@
 import React from "react";
 import { AiFillEye } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import "../../Styles/coordonateurPage/autorisationDeSoutenance.css";
 
@@ -32,6 +33,12 @@ const FileList = ({ files, removeFile }) => {
                       <IoSend style={{ marginRight: "2px" }} />
                       Envoyer
                     </button>
+                    <button className="btn-dele button" onClick={ (e)=>removeFile(f.name)}>
+                      {" "}
+                      <FaTrash style={{ marginRight: "2px" }} />
+                      supprimer
+                    </button>
+                    
                   </div>
                 </div>
               </div>
