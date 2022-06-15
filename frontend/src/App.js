@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 
     /*************************************page accueil************************************/
-import Accueil from "./screen/Accueil";
+//import Accueil from "./screen/Accueil";
     /**************************************************************************************************/
 
     /*************************************page soutenance************************************/
@@ -81,7 +81,8 @@ import TableList from "./components/pageJury/TableList";*/
     /**************************************************************************************************/
 
     /************************************************page admin************************************/
-    //import Admin from "./screen/Admin";
+    import Admin from "./screen/Admin";
+    import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
     /**************************************************************************************************/
 
 
@@ -108,8 +109,7 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil isLogin={isLogin} />} />
-
+         {/* <Route path="/" element={<Accueil isLogin={isLogin} />} />*/}
           { /**     
           <Route
             path="/soutenance"
@@ -178,11 +178,11 @@ const App = () => {
             />
           </Route>
           */}
-          {
-            /**
-             *  <Route path="/acteur/admin" element={<Admin/>} />
-             */
-          }
+  
+               <Route path="/acteur/admin" element={<Admin/>} >
+                <Route path="/acteur/admin/dashboard" element={<DashboardAdmin />} />
+               </Route>
+             
           <Route
             path="/*"
             element={
