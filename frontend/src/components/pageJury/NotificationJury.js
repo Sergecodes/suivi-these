@@ -36,7 +36,7 @@ const notificationsJury = [
 const NotificationJury = () => {
 
   useEffect(()=>{
-    axios.get("http://localhost:3001/api/jury/notifications",{withCredentials:true})
+    axios.get("/jury/notifications",{withCredentials:true})
     .then(res=>{
       console.log(res);
     })

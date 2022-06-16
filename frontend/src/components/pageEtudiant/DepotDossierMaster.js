@@ -91,8 +91,8 @@ const DepotDossierMaster = () => {
       }
       formData.append("sujet","rapport presoutenance");
       formData.append("niveau","MASTER 2");
-        //http://localhost:3001/api/etudiants/uploader-fichiers
-        axios.post('http://localhost:3001/api/etudiants/uploader-fichiers',formData)
+        ///etudiants/uploader-fichiers
+        axios.post('/etudiants/uploader-fichiers',formData)
         .then(res=>{
           console.log(res);
         })

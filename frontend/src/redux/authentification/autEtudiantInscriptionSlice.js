@@ -18,7 +18,7 @@ export const registerEtudiant = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/etudiants/register-etudiant",
+        "/etudiants/register-etudiant",
         {
           matricule: data.matricule,
           nom: data.nom,

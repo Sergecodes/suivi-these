@@ -18,7 +18,7 @@ export const login = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/etudiants/login-etudiant",
+        "/etudiants/login-etudiant",
         {
           matricule: data.matricule,
           motDePasse: data.motDePasse,

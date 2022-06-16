@@ -176,7 +176,7 @@ const EtapeDossierSchema = new Schema({
 });
 
 // Set description to Etape Dossier
-EtapeDossierSchema.pre("save", function(next) {
+EtapeDossierSchema.pre("save", async function(next) {
    if(this.isNew) {
       this.description = getEtapeWording(this.numEtape, );
       await this.save();
