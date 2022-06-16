@@ -16,7 +16,6 @@ const EtudiantSchema = new Schema({
    matricule: {
       type: String,
       required: true,
-      // index: true,
       index: { unique: false },
       uppercase: true,
       validate: {

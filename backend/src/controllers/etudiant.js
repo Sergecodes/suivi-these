@@ -2,12 +2,13 @@ const { Dossier, EtapeDossier, FichierDossier } = require("../models/Dossier");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 const path = require("path");
-// const fs = require('fs')
-const { storage } = require('../../firebase.config')
+// const fs = require('fs');
+const { storage } = require('../../firebase.config');
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
-const { removePassword } = require('../utils')
+const Notification = require('../models/Notification');
+const { removePassword } = require('../utils');
 
 
 exports.getAll = async function (req, res) {
@@ -34,7 +35,7 @@ exports.delete = function (req, res) {
 	});
 }
 
-exports.register = function (req, res) {
+exports.register = async function (req, res) {
    let isValid = (function () {
       let validParams = [
          'matricule', 'nom', 'prenom', 'motDePasse', 'niveau',
@@ -58,7 +59,7 @@ exports.register = function (req, res) {
    etud.nom = req.body.nom;
    etud.prenom = req.body.prenom;
    etud.motDePasse = req.body.motDePasse;
-   etud.niveau = req.body.niveau.toUpperCase();
+   etud.niveau = req.body.niveau;
    etud.email = req.body.email;
    etud.dateNaissance = req.body.dateNaissance;
    etud.lieuNaissance = req.body.lieuNaissance;
@@ -88,6 +89,14 @@ exports.register = function (req, res) {
             erreur: err 
          });
       }
+
+      // Send notification to admin
+      await Notification.create({
+         type: Types.TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: Types.ModelNotif.ADMIN,
+         objetConcerne: etud._id,
+         objetConcerneModel: Types.ModelNotif.ETUDIANT
+      });
 
       // Create user session
       req.session.user = {

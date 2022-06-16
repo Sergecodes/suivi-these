@@ -204,7 +204,7 @@ exports.dossiersEtudsMaster= async function (req, res) {
    const { jury } = res.locals;
  
   let envoisDossiers = await EnvoiDossier.find({
-    destinataire: jury.id,
+    destinataire: jury._id,
     destinataireModel: Types.ActeurDossier.JURY
   }).populate({
     path: 'dossier',

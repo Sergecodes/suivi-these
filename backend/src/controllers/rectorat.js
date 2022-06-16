@@ -174,7 +174,7 @@ exports.dossiersEtudsThese = async function (req, res) {
    const { rectorat } = res.locals;
 
    let envoisDossiers = await EnvoiDossier.find({
-      destinataire: rectorat.id,
+      destinataire: rectorat._id,
       destinataireModel: Types.ActeurDossier.RECTORAT
    }).populate({
       path: 'dossier',

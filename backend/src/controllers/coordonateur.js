@@ -228,7 +228,7 @@ exports.dossiersEtudsThese = async function (req, res) {
   const { coordo } = res.locals;
 
   let envoisDossiers = await EnvoiDossier.find({
-    destinataire: coordo.id,
+    destinataire: coordo._id,
     destinataireModel: Types.ActeurDossier.COORDONATEUR
   }).populate({
     path: 'dossier',
