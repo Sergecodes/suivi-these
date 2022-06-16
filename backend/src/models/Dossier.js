@@ -6,6 +6,7 @@ const {
     EtapeDossier: EtapeDossierEnum,
 } = require('./types');
 const Avis = require('./Avis');
+const { getEtapeWording } = require('../utils');
 const isDate = require("validator/lib/isDate");
 const EnvoiDossier = require('./EnvoiDossier');
 const Notification = require('./Notification');
@@ -77,9 +78,15 @@ DossierSchema.virtual('etapeActuelle').get(async function() {
 });
 
 
-DossierSchema.methods.incrementerEtape = async function(niveau, description) {
+DossierSchema.methods.incrementerEtape = async function() {
+   await this.populate({
+      path: 'etudiant',
+      select: 'niveau'
+   });
     const numDerniereEtape = (function () {
-        return niveau === Niveau.MASTER ? FINAL_NUM_ETAPE_MASTER : FINAL_NUM_ETAPE_THESE
+        return this.etudiant.niveau === Niveau.MASTER ? 
+            FINAL_NUM_ETAPE_MASTER : 
+            FINAL_NUM_ETAPE_THESE
     })();
 
     let etapeActu = await this.etapeActuelle;
@@ -95,7 +102,6 @@ DossierSchema.methods.incrementerEtape = async function(niveau, description) {
         await EtapeDossier.create({
             dossier: this._id,
             numEtape: etapeActu.numEtape + 1,
-            description
         });
     }
 }
@@ -169,6 +175,15 @@ const EtapeDossierSchema = new Schema({
     extra: String,
 });
 
+// Set description to Etape Dossier
+EtapeDossierSchema.pre("save", function(next) {
+   if(this.isNew) {
+      this.description = getEtapeWording(this.numEtape, );
+      await this.save();
+   }
+   return next();
+});
+
 
 EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true } );
 
@@ -200,6 +215,7 @@ NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
  * Envoyer une notification a l'administrateur
  */
 // NoteDossierSchema.post('save', async function(doc) {
+      // if(this.isNew)
 //     await Notification.create({
 //         type: TypeNotification.NOTE_JURY,
 //         destinataireModel: ModelNotif.ADMIN,

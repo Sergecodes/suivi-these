@@ -50,7 +50,6 @@ AdminSchema.virtual('notifications', {
 });
 
 
-
 /**
  * Rejeter le dossier d'un etudiant
  * @param dossier: L'objet document
@@ -71,26 +70,34 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
     });
 }
 
+AdminSchema.methods.accepterDossier = async function (dossier) {
+    dossier.statut = StatutDossier.ACCEPTE_ADMIN;
+    dossier.raisonStatut = '';
+    await dossier.save();
+    await dossier.incrementerEtape();
+
+    // Notifier l'etudiant
+    await Notification.create({
+        type: TypeNotification.DOSSIER_VALIDE,
+        destinataire: dossier.etudiant,
+        destinataireModel: ModelNotif.ETUDIANT,
+        objetConcerne: dossier._id,
+        objetConcerneModel: ModelNotif.DOSSIER
+    });
+}
+
 /**
  * Valider l'inscription d'un etudiant
  */
- AdminSchema.methods.validerEtudiant = async function (etudiant, raison) {
-    try {
-        await etudiant.incrementerEtape();
-        await Notification.create({
-            type: TypeNotification.COMPTE_VALIDE,
-            destinataire: etudiant,
-            destinataireModel: ModelNotif.ETUDIANT,
-            objetConcerne: etudiant._id,
-            objetConcerneModel: ModelNotif.ETUDIANT,
-            message: raison
-        });
-
-        return res.send("Success");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Something went wrong");
-    }
+ AdminSchema.methods.accepterEtudiant = async function (etudiant) {
+    await etudiant.incrementerEtape();
+    await Notification.create({
+        type: TypeNotification.COMPTE_VALIDE,
+        destinataire: etudiant,
+        destinataireModel: ModelNotif.ETUDIANT,
+        objetConcerne: etudiant._id,
+        objetConcerneModel: ModelNotif.ETUDIANT,
+    });
 }
 
 

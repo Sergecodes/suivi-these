@@ -1,4 +1,5 @@
 const { Types } = require('./constants');
+const Admin = require('./models/Admin');
 const Jury = require('./models/Jury');
 const Expert = require('./models/Expert');
 const Dossier = require('./models/Dossier');

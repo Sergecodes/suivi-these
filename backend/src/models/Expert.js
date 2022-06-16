@@ -46,7 +46,7 @@ ExpertSchema.pre("save",function(next){
                     }
                     expert.motDePasse = hash;
                     console.log(expert.motDePasse);
-                    next()
+                    return next();
                 })
             }
         })

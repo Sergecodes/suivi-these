@@ -84,7 +84,7 @@ EtudiantSchema.pre("save", function (next) {
                }
                user.motDePasse = hash;
                console.log(user.motDePasse);
-               next()
+               return next();
             })
          }
       })
@@ -138,12 +138,13 @@ EtudiantSchema.virtual("notifications", {
  * Envoyer une notification a l'administrateur
  */
 EtudiantSchema.post('save', async function (etudiant) {
-   await Notification.create({
-      type: TypeNotification.NOUVEAU_ETUDIANT,
-      destinataireModel: ModelNotif.ADMIN,
-      objetConcerne: etudiant._id,
-      objetConcerneModel: ModelNotif.ETUDIANT
-   });
+   if (this.isNew)
+      await Notification.create({
+         type: TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: ModelNotif.ADMIN,
+         objetConcerne: etudiant._id,
+         objetConcerneModel: ModelNotif.ETUDIANT
+      });
 });
 
 
@@ -154,7 +155,7 @@ EtudiantSchema.methods.reinitialiser = async function () {
    // this may happen if user's file was previously rejected.
    // 
    if (this.dossier)
-      Dossier.findByIdAndDelete(this.dossier);
+      return await Dossier.findByIdAndDelete(this.dossier);
 }
 
 EtudiantSchema.methods.incrementerEtape = async function () {

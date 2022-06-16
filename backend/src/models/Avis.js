@@ -31,13 +31,14 @@ const AvisSchema = new Schema({
  * Envoyer une notification au destinataire
  */
  AvisSchema.post('save', async function(avis, next) {
-    await Notification.create({
-        type: TypeNotification.NOUVEL_AVIS,
-        destinataire: avis.destinataire,
-        destinataireModel: avis.destinataireModel,
-        objetConcerne: avis._id,
-        objetConcerneModel: ModelNotif.AVIS
-    });
+    if (this.isNew)
+        await Notification.create({
+            type: TypeNotification.NOUVEL_AVIS,
+            destinataire: avis.destinataire,
+            destinataireModel: avis.destinataireModel,
+            objetConcerne: avis._id,
+            objetConcerneModel: ModelNotif.AVIS
+        });
 
     next();
 });
