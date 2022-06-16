@@ -28,7 +28,7 @@ import Accueil from "./screen/Accueil";
 /**************************************************************************************************/
 
     /*************************************pages inscription et connexion************************************/
-/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
@@ -36,7 +36,7 @@ import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexion
 import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
+import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
     /**************************************************************************************************/
 
 
@@ -194,6 +194,14 @@ const App = () => {
               </div>
             }
           />
+           <Route
+            path="/inscription/etudiant"
+            element={<EtudiantInscriptionScreen />}
+          ></Route>
+          <Route
+            path="/connexion/etudiant"
+            element={<EtudiantConnexionScreen />}
+          ></Route>
           
 
           {/* Routes pour les coordonateurs
