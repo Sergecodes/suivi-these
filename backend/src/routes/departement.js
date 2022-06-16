@@ -3,17 +3,17 @@ const controller = require('../controllers/departement');
 const { isAdmin, isDepartement, getDepartement, getDossierFromReq } = require('../middlewares');
 
 
-router.route('/register-departement').post(isAdmin, controller.register_departement)
+router.route('/register').post(isAdmin, controller.register_departement)
 
-router.route('/login-department').post(controller.login_departement);
+router.route('/login').post(controller.login_departement);
 
-router.route('/change_password').put(
+router.route('/change-password').put(
    isDepartement, 
    getDepartement,
    controller.change_departement_pass
 );
 
-router.route('/change_email').put(
+router.route('/change-email').put(
    isDepartement,
    getDepartement,
    controller.change_email

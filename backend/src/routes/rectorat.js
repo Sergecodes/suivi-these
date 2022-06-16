@@ -8,9 +8,9 @@ const {
 } = require('../middlewares');
 
 
-router.route('/login-rectorat').post(controller.login_rectorat);
+router.route('/login').post(controller.login_rectorat);
 
-router.route('/register-rectorat').post(controller.register_rectorat);
+router.route('/register').post(controller.register_rectorat);
 
 router.route('/notifications').get(isRectorat, getRectorat, controller.notifications);
 

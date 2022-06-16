@@ -28,15 +28,15 @@ import Accueil from "./screen/Accueil";
 /**************************************************************************************************/
 
     /*************************************pages inscription et connexion************************************/
-/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
-import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
-import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
+// import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+// import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
+// import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
-import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
-import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
-import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
-import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
+// import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
+// import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
+// import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
+// import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
+// import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
     /**************************************************************************************************/
 
 
@@ -236,15 +236,16 @@ const App = () => {
           <Route
             path="/connexion/expert"
             element={<ExpertInscriptionScreen />}
-          ></Route>
+        ></Route> */}
           <Route
             path="/inscription/etudiant"
             element={<EtudiantInscriptionScreen />}
           ></Route>
-          <Route
+          {/* <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
-          ></Route>
+          ></Route> */}
+          { /*
           <Route
             path="/connexion/rectorat"
             element={<RectoratInscriptionScreen />}

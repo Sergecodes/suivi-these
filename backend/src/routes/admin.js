@@ -3,8 +3,8 @@ const controller = require('../controllers/admin');
 const {isAdmin} = require('../middlewares');
 
 
-router.route('/login-admin').post(controller.login);
-router.route('/register-admin').post(controller.register);
+router.route('/login').post(controller.login);
+router.route('/register').post(controller.register);
 
 // router.route('/add_coordonator').post(isAdmin,controller.register_coordonateur);
 // router.route('/delete_coordonator/:coord_id').delete(isAdmin,controller.deleteCoordonator);

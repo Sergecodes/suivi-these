@@ -3,13 +3,13 @@ const controller = require('../controllers/expert');
 const { isAdmin, isExpert, getExpert, getDossierFromReq } = require('../middlewares');
 
 
-router.route('/new-expert').post(isAdmin, controller.register_expert);
+router.route('/register').post(isAdmin, controller.register_expert);
 
-router.route('/login-expert').post(controller.login_expert);
+router.route('/login').post(controller.login_expert);
 
-router.route('/change_password').put(isExpert, getExpert, controller.change_expert_pass);
+router.route('/change-password').put(isExpert, getExpert, controller.change_expert_pass);
 
-router.route('/change_email').put(isExpert, getExpert, controller.change_email);
+router.route('/change-email').put(isExpert, getExpert, controller.change_email);
 
 router.route('/dossiers-etudiants-these').get(isExpert, controller.dossiersEtudsThese);
 

@@ -6,9 +6,9 @@ const {
 } = require('../middlewares');
 
 
-router.route('/register-coord').post(isAdmin, controller.register_coordonateur);
+router.route('/register').post(isAdmin, controller.register_coordonateur);
 
-router.route('/login-coord').post(controller.login_coordonateur);
+router.route('/login').post(controller.login_coordonateur);
 
 router.route('/change-password').put(
    isCoordonateur, 

@@ -3,11 +3,11 @@ const controller = require('../controllers/jury');
 const { isAdmin, isJury, getJury, getDossierFromReq } = require('../middlewares');
 
 
-router.route('/register-jury').post(isAdmin, controller.register_jury);
+router.route('/register').post(isAdmin, controller.register_jury);
 
-router.route('/login-jury').post(controller.login_jury);
+router.route('/login').post(controller.login_jury);
 
-router.route('/change_email').put(isJury, getJury, controller.change_email);
+router.route('/change-email').put(isJury, getJury, controller.change_email);
 
 router.route('/dossiers-etudiants-master').get(isJury, getJury, controller.dossiersEtudsMaster);
 
