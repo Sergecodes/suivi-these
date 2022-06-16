@@ -1,15 +1,24 @@
 const router = require('express').Router();
 const controller = require('../controllers/expert');
-const { isAdmin, isExpert, getExpert, getDossierFromReq } = require('../middlewares');
+const { 
+   isAdmin, isExpert, getExpert, 
+   getDossierFromReq, getExpertFromParam 
+} = require('../middlewares');
 
 
-router.route('/new-expert').post(isAdmin, controller.register_expert);
+router.route('').get(controller.getAll);
 
-router.route('/login-expert').post(controller.login_expert);
+router.route('/moi').get(getExpert, controller.getOne);
 
-router.route('/change_password').put(isExpert, getExpert, controller.change_expert_pass);
+router.route('/:id').get(getExpertFromParam, controller.getOne).delete(controller.delete);
 
-router.route('/change_email').put(isExpert, getExpert, controller.change_email);
+router.route('/register').post(isAdmin, controller.register_expert);
+
+router.route('/login').post(controller.login_expert);
+
+router.route('/change-password').put(isExpert, getExpert, controller.change_expert_pass);
+
+router.route('/change-email').put(isExpert, getExpert, controller.change_email);
 
 router.route('/dossiers-etudiants-these').get(isExpert, controller.dossiersEtudsThese);
 

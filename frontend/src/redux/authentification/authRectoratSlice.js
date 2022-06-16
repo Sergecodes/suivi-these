@@ -18,7 +18,7 @@ export const loginRectorat = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/rectorat/login-rectorat",
+        "/rectorat/login-rectorat",
         {
           email: data.email,
           code: data.code,

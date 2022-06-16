@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require( 'validator/lib/isEmail')
 const Avis = require('./Avis')
+const Notification = require('./Notification')
 const { AvisEmetteur } = require('./types')
 const bcrypt = require('bcrypt');
 

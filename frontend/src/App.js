@@ -28,15 +28,15 @@ import Accueil from "./screen/Accueil";
 /**************************************************************************************************/
 
     /*************************************pages inscription et connexion************************************/
-/*import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
-import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
-import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
+// import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
+// import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
+// import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
-import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
-import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
-import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
+// import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
+// import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
+// import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
-import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";*/
+// import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
     /**************************************************************************************************/
 
 
@@ -97,6 +97,10 @@ import TableList from "./components/pageJury/TableList";*/
     /**************************************************************************************************/
 
 
+// Configurer les options par defaut d'axios
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.API_BASE_URL || "http://localhost:8001/api/";
 
 
 
@@ -189,7 +193,7 @@ const App = () => {
               <div className="d-flex flex-column align-items-center text-align-center">
                 <h1 style={{ color: "red" }}>ERROR !</h1>
                 <h2 style={{ fontWeight: "none" }}>
-                  Fonctionnalité pas encore developée
+                  Lien non activé
                 </h2>
               </div>
             }
@@ -232,7 +236,7 @@ const App = () => {
           <Route
             path="/connexion/expert"
             element={<ExpertInscriptionScreen />}
-          ></Route>
+        ></Route> */}
           <Route
             path="/inscription/etudiant"
             element={<EtudiantInscriptionScreen />}
@@ -241,6 +245,7 @@ const App = () => {
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
           ></Route>
+          { /*
           <Route
             path="/connexion/rectorat"
             element={<RectoratInscriptionScreen />}

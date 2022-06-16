@@ -90,6 +90,8 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
  * Valider l'inscription d'un etudiant
  */
  AdminSchema.methods.accepterEtudiant = async function (etudiant) {
+    etudiant.compteValideLe = new Date.now();
+    await etudiant.save();
     await etudiant.incrementerEtape();
     await Notification.create({
         type: TypeNotification.COMPTE_VALIDE,

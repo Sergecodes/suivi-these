@@ -17,7 +17,7 @@ export const changeEmailCoordonateur = createAsyncThunk("coordonateur/editEmail"
         console.log("je suis dans la fonction");
 
         const value =await axios.put(
-            "http://localhost:3001/api/coordonateurs/change-password",{
+            "/coordonateurs/change-password",{
                 actualPass:data.actualPass, newPass:data.newPass
             }
         )

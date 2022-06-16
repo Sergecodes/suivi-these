@@ -22,12 +22,10 @@ const NotificationSchema = new Schema({
     },
     objetConcerne: {
         type: Schema.Types.ObjectId,
-        // required: true,
         refPath: 'objetConcerneModel'
     },
     objetConcerneModel: {
         type: String,
-        required: true,
         enum: acteursNotifs
     },
     message: String,

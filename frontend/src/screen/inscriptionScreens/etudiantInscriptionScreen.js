@@ -16,15 +16,14 @@ function EtudiantInscriptionScreen() {
     nom: "",
     prenom: "",
     motDePasse: "",
-    niveau: "",
+    niveau: "MASTER 2",
     email: "",
     dateNaissance: "",
     lieuNaissance: "",
     numTelephone: "",
-    sexe: "",
-    urlPhotoProfil: "a revoir",
-    departement: "",
-    encadreur: "",
+    sexe: "Mâle",
+    departement: "departement 1",
+    encadreur: "encadreur 1",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -33,13 +32,17 @@ function EtudiantInscriptionScreen() {
   const { message, coordonateur, isError, isLoading, isSuccess } = useSelector(
     (state) => state.registerEtudiant
   );
+
+  // todo Obtenir la liste des departements, puis des juries
+
+
   useEffect(() => {
     if (isError) {
       alert(message);
     }
     if (isSuccess) {
       toast.success("Connexion Reussie");
-      alert("connexion Reussie");
+      alert("Connexion Reussie");
 
       // navigate("/account");
     }
@@ -68,12 +71,16 @@ function EtudiantInscriptionScreen() {
       user.encadreur === "" ||
       user.sexe === "" ||
       user.departement === "" ||
-      user.matricule === ""
+      user.matricule === "" ||
+      user.niveau === ""
     ) {
       alert("renseignez toutes vos informations");
-      e.preventDefault();
+      console.log(user);
     } else {
       console.log(user);
+      user.departement = "62a355963e067975f0bb3d9d";
+      user.encadreur = "62a357a03e067975f0bb3daf";
+      user.dateNaissance = '2022/06/08';
 
       dispatch(registerEtudiant(user));
     }
@@ -84,8 +91,7 @@ function EtudiantInscriptionScreen() {
   return (
     <div className="form-etudiant-container">
       <div
-        className="container
-      "
+        className="container"
         style={{ padding: "5%" }}
       >
         <div className="row">
@@ -217,20 +223,6 @@ function EtudiantInscriptionScreen() {
                 </div>
 
                 <div className="col-12">
-                  <label htmlFor="Encadreur" className="form-label">
-                    Email Encadreur
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="Encadreur"
-                    onChange={(e) =>
-                      setUser({ ...user, encadreur: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="col-md-6">
                   <label htmlFor="Departement" className="form-label">
                     Departement
                   </label>
@@ -242,14 +234,48 @@ function EtudiantInscriptionScreen() {
                       setUser({ ...user, departement: e.target.value })
                     }
                   >
-                    <option value="unite 2" selected>
+                    <option value="departement 1">
                       Departement 1
                     </option>
-                    <option value="unite 2">Departement 2</option>
-                    <option value="unite 3">Departement 3</option>
+                    <option value="departement 2">Departement 2</option>
+                    <option value="departement 3">Departement 3</option>
                   </select>{" "}
                 </div>
-                <div className="col-md-4">
+
+                <div className="col-12">
+                  <label htmlFor="Encadreur" className="form-label">
+                    Encadreur
+                  </label>
+                  <select
+                    id="Encadreur"
+                    className="form-select"
+                    value={user.encadreur}
+                    onChange={(e) =>
+                      setUser({ ...user, encadreur: e.target.value })
+                    }
+                  >
+                    <option value="encadreur 1">
+                      Encadreur 1
+                    </option>
+                    <option value="encadreur 2">Encadreur 2</option>
+                    <option value="encadreur 3">Encadreur 3</option>
+                  </select>{" "}
+                </div>
+                {/* <div className="col-12">
+                  <label htmlFor="Encadreur" className="form-label">
+                    Email Encadreur
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="Encadreur"
+                    onChange={(e) =>
+                      setUser({ ...user, encadreur: e.target.value })
+                    }
+                  />
+                </div> */}
+
+                <div className="col-md-7">
                   <label htmlFor="Niveau" className="form-label">
                     Niveau
                   </label>
@@ -261,26 +287,26 @@ function EtudiantInscriptionScreen() {
                       setUser({ ...user, niveau: e.target.value })
                     }
                   >
-                    <option selected value="MASTER 2">
+                    <option value="MASTER 2">
                       MASTER 2
                     </option>
                     <option value="DOCTORAT">DOCTORAT</option>
                   </select>
                 </div>
-                <div className="col-md-2">
-                  <label htmlFor="Sex" className="form-label">
-                    Sex
+                <div className="col-md-5">
+                  <label htmlFor="Sexe" className="form-label">
+                    Sexe
                   </label>
                   <select
-                    id="Sex"
+                    id="Sexe"
                     value={user.sexe}
                     className="form-select"
                     onChange={(e) => setUser({ ...user, sexe: e.target.value })}
                   >
-                    <option selected value="MASCULIN">
+                    <option value="Mâle">
                       M
                     </option>
-                    <option value="FEMININ">F</option>
+                    <option value="Femelle">F</option>
                   </select>{" "}
                 </div>
 

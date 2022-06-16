@@ -16,7 +16,7 @@ const EtudiantSchema = new Schema({
    matricule: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       uppercase: true,
       validate: {
          validator: (mat) => validerMatricule(mat),
@@ -30,7 +30,7 @@ const EtudiantSchema = new Schema({
    email: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       trim: true,
       validate: {
          validator: email => isEmail(email),
@@ -41,7 +41,7 @@ const EtudiantSchema = new Schema({
       type: String, 
       required: true,
       validate: {
-         validator: (date) => isDate(date, { strictMode: true }),
+         validator: (date) => isDate(date),
          message: (props) => `
             ${props.value} est une date invalide. 
             Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD

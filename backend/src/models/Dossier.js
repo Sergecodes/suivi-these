@@ -154,7 +154,7 @@ const EtapeDossierSchema = new Schema({
         type: String, 
         required: true,
         validate: {
-           validator: (date) => isDate(date, { strictMode: true }),
+           validator: (date) => isDate(date),
            message: (props) => `
               ${props.value} est une date invalide. 
               Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
@@ -165,7 +165,7 @@ const EtapeDossierSchema = new Schema({
         type: String, 
         required: true,
         validate: {
-           validator: (date) => isDate(date, { strictMode: true }),
+           validator: (date) => isDate(date),
            message: (props) => `
               ${props.value} est une date invalide. 
               Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
@@ -176,7 +176,7 @@ const EtapeDossierSchema = new Schema({
 });
 
 // Set description to Etape Dossier
-EtapeDossierSchema.pre("save", function(next) {
+EtapeDossierSchema.pre("save", async function(next) {
    if(this.isNew) {
       this.description = getEtapeWording(this.numEtape, );
       await this.save();

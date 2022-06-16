@@ -1,16 +1,20 @@
 const router = require('express').Router();
 const controller = require('../controllers/rectorat');
 const { 
-   isRectorat, 
-   getRectorat, 
-   getEtudiantFromReq, 
-   getDossierFromReq 
+   isRectorat, getRectorat, getEtudiantFromReq, 
+   getDossierFromReq, getRectoratFromParam
 } = require('../middlewares');
 
 
-router.route('/login-rectorat').post(controller.login_rectorat);
+router.route('').get(controller.getAll);
 
-router.route('/register-rectorat').post(controller.register_rectorat);
+router.route('/moi').get(getRectorat, controller.getOne);
+
+router.route('/:id').get(getRectoratFromParam, controller.getOne).delete(controller.delete);
+
+router.route('/login').post(controller.login_rectorat);
+
+router.route('/register').post(controller.register_rectorat);
 
 router.route('/notifications').get(isRectorat, getRectorat, controller.notifications);
 

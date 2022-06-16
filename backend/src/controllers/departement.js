@@ -1,4 +1,5 @@
 const Departement = require('../models/Departement');
+const Jury = require('../models/Jury');
 const Avis = require('../models/Avis');
 const EnvoiDossier = require('../models/EnvoiDossier');
 const passwordComplexity = require("joi-password-complexity");
@@ -7,8 +8,37 @@ const { Types } = require('../constants')
 const { removePassword } = require('../utils')
 
 
+exports.getAll = async function (req, res) {
+	res.json( await Departement.find({}) );
+}
+
+exports.getJuries = async function (req, res) {
+   res.json( await Jury.find({ departement: req.params.id }) );
+}
+
+exports.getOne = function (req, res) {
+	const { depart } = res.locals;
+	res.json(depart);
+}
+
+exports.delete = function (req, res) {
+	Departement.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
+
 exports.register_departement = function(req,res){
-    let departement = new Departement();
+   let departement = new Departement();
 	departement.nom = req.body.nom;
 	departement.motDePasse = req.body.motDePasse;
 	departement.email = req.body.email;
@@ -158,7 +188,7 @@ exports.dossiersEtudsMaster = async function (req, res) {
    const { depart } = res.locals;
 
 	let envoisDossiers = await EnvoiDossier.find({
-		destinataire: depart.id,
+		destinataire: depart._id,
 		destinataireModel: Types.ActeurDossier.DEPARTEMENT
 	}).populate({
 		path: 'dossier',

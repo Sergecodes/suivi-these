@@ -2,19 +2,40 @@ const { Dossier, EtapeDossier, FichierDossier } = require("../models/Dossier");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 const path = require("path");
-// const fs = require('fs')
-const { storage } = require('../../firebase.config')
+// const fs = require('fs');
+const { storage } = require('../../firebase.config');
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
-const { removePassword } = require('../utils')
+const Notification = require('../models/Notification');
+const { removePassword } = require('../utils');
 
 
-exports.getInfo = async function (req, res) {
-   res.json(res.locals.etudiant);
+exports.getAll = async function (req, res) {
+	res.json( await Etudiant.find({}) );
 }
 
-exports.register = function (req, res) {
+exports.getOne = function (req, res) {
+	const { etudiant } = res.locals;
+	res.json(etudiant);
+}
+
+exports.delete = function (req, res) {
+	Etudiant.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
+exports.register = async function (req, res) {
    let isValid = (function () {
       let validParams = [
          'matricule', 'nom', 'prenom', 'motDePasse', 'niveau',
@@ -38,13 +59,12 @@ exports.register = function (req, res) {
    etud.nom = req.body.nom;
    etud.prenom = req.body.prenom;
    etud.motDePasse = req.body.motDePasse;
-   etud.niveau = req.body.niveau.toUpperCase();
+   etud.niveau = req.body.niveau;
    etud.email = req.body.email;
    etud.dateNaissance = req.body.dateNaissance;
    etud.lieuNaissance = req.body.lieuNaissance;
    etud.numTelephone = req.body.numTelephone;
    etud.sexe = req.body.sexe;
-   // etud.urlPhotoProfil = req.body.urlPhotoProfil;
    etud.departement = req.body.departement;
    etud.encadreur = req.body.encadreur;
 
@@ -70,6 +90,14 @@ exports.register = function (req, res) {
          });
       }
 
+      // Send notification to admin
+      await Notification.create({
+         type: Types.TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: Types.ModelNotif.ADMIN,
+         objetConcerne: etud._id,
+         objetConcerneModel: Types.ModelNotif.ETUDIANT
+      });
+
       // Create user session
       req.session.user = {
          _id: nouveau_etudiant._id,
@@ -86,12 +114,17 @@ exports.register = function (req, res) {
 
 exports.login_student = async function (req, res) {
    try {
-      const { matricule, motDePasse, niveau } = req.body;
+      const { matricule, motDePasse, niveau, email } = req.body;
       let etudiant = await Etudiant.findOne({ 
-         matricule: matricule.toUpperCase(), 
-         niveau: niveau.toUpperCase()
+         email,
+         niveau,
+         matricule: matricule.toUpperCase()
       });
+      console.log(req.body);
+      console.log(await Etudiant.find({}));
+
       if (!etudiant) { return res.status(404).send("User Not found") };
+      console.log("to validate");
 
       bcrypt.compare(motDePasse, etudiant.motDePasse, function (err, result) {
          if (err) {
