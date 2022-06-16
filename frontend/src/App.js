@@ -83,6 +83,7 @@ import TableList from "./components/pageJury/TableList";*/
     /************************************************page admin************************************/
     import Admin from "./screen/Admin";
     import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
+    import ListeAttente from "./components/pageAdmin/ListeAttente";
     /**************************************************************************************************/
 
 
@@ -181,6 +182,7 @@ const App = () => {
   
                <Route path="/acteur/admin" element={<Admin/>} >
                 <Route path="/acteur/admin/dashboard" element={<DashboardAdmin />} />
+                <Route path="/acteur/admin/liste-attente" element={<ListeAttente/>}/>
                </Route>
              
           <Route

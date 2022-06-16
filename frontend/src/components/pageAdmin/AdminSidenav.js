@@ -19,7 +19,7 @@ const AdminSidenav = () => {
                 <Link to="/acteur/admin/dashboard"><MdDashboard className="me-3"/> DASHBOARD</Link>
             </SidenavItem>
             <SidenavItem>
-                <Link to="/acteur/admin/notation"><BsFillFileEarmarkSpreadsheetFill className="me-3"/> NOTATION ETUDIANT</Link>
+                <Link to="/acteur/admin/liste-attente"><BsFillFileEarmarkSpreadsheetFill className="me-3"/> LISTE D'ATTENTE</Link>
             </SidenavItem>
         </SidenavTitle>
         <SidenavTitle titre="loic">
