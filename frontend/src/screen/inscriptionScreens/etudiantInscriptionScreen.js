@@ -32,13 +32,17 @@ function EtudiantInscriptionScreen() {
   const { message, coordonateur, isError, isLoading, isSuccess } = useSelector(
     (state) => state.registerEtudiant
   );
+
+  // todo Obtenir la liste des departements, puis des juries
+
+
   useEffect(() => {
     if (isError) {
       alert(message);
     }
     if (isSuccess) {
       toast.success("Connexion Reussie");
-      alert("connexion Reussie");
+      alert("Connexion Reussie");
 
       // navigate("/account");
     }
@@ -72,9 +76,11 @@ function EtudiantInscriptionScreen() {
     ) {
       alert("renseignez toutes vos informations");
       console.log(user);
-      e.preventDefault();
     } else {
       console.log(user);
+      user.departement = "62a355963e067975f0bb3d9d";
+      user.encadreur = "62a357a03e067975f0bb3daf";
+      user.dateNaissance = '2022/06/08';
 
       dispatch(registerEtudiant(user));
     }
@@ -85,8 +91,7 @@ function EtudiantInscriptionScreen() {
   return (
     <div className="form-etudiant-container">
       <div
-        className="container
-      "
+        className="container"
         style={{ padding: "5%" }}
       >
         <div className="row">

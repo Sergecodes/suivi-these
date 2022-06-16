@@ -35,7 +35,7 @@ import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscr
 // import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
 // import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 // import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
-// import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
+import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 // import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
     /**************************************************************************************************/
 
@@ -193,7 +193,7 @@ const App = () => {
               <div className="d-flex flex-column align-items-center text-align-center">
                 <h1 style={{ color: "red" }}>ERROR !</h1>
                 <h2 style={{ fontWeight: "none" }}>
-                  Fonctionnalité pas encore developée
+                  Lien non activé
                 </h2>
               </div>
             }
@@ -241,10 +241,10 @@ const App = () => {
             path="/inscription/etudiant"
             element={<EtudiantInscriptionScreen />}
           ></Route>
-          {/* <Route
+          <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
-          ></Route> */}
+          ></Route>
           { /*
           <Route
             path="/connexion/rectorat"

@@ -44,7 +44,6 @@ exports.register = function (req, res) {
    etud.lieuNaissance = req.body.lieuNaissance;
    etud.numTelephone = req.body.numTelephone;
    etud.sexe = req.body.sexe;
-   // etud.urlPhotoProfil = req.body.urlPhotoProfil;
    etud.departement = req.body.departement;
    etud.encadreur = req.body.encadreur;
 
@@ -86,12 +85,17 @@ exports.register = function (req, res) {
 
 exports.login_student = async function (req, res) {
    try {
-      const { matricule, motDePasse, niveau } = req.body;
+      const { matricule, motDePasse, niveau, email } = req.body;
       let etudiant = await Etudiant.findOne({ 
-         matricule: matricule.toUpperCase(), 
-         niveau: niveau.toUpperCase()
+         email,
+         niveau,
+         matricule: matricule.toUpperCase()
       });
+      console.log(req.body);
+      console.log(await Etudiant.find({}));
+
       if (!etudiant) { return res.status(404).send("User Not found") };
+      console.log("to validate");
 
       bcrypt.compare(motDePasse, etudiant.motDePasse, function (err, result) {
          if (err) {

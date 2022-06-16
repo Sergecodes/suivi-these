@@ -18,11 +18,12 @@ export const login = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "/etudiants/login-etudiant",
+        "/etudiants/login",
         {
           matricule: data.matricule,
           motDePasse: data.motDePasse,
           niveau: data.niveau,
+          email: data.email
         }
       );
       localStorage.setItem("etudiantInfos", JSON.stringify(value.data));

@@ -16,7 +16,8 @@ const EtudiantSchema = new Schema({
    matricule: {
       type: String,
       required: true,
-      index: true,
+      // index: true,
+      index: { unique: false },
       uppercase: true,
       validate: {
          validator: (mat) => validerMatricule(mat),
@@ -30,7 +31,7 @@ const EtudiantSchema = new Schema({
    email: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       trim: true,
       validate: {
          validator: email => isEmail(email),
