@@ -44,7 +44,7 @@ JurySchema.pre("save",function(next){
                     }
                     jury.motDePasse = hash;
                     console.log(jury.motDePasse);
-                    next()
+                    return next();
                 })
             }
         })

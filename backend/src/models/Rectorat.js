@@ -33,7 +33,7 @@ RectoratSchema.pre("save",function(next){
                     }
                     conseil.motDePasse = hash;
                     console.log(conseil.motDePasse);
-                    next()
+                    return next();
                 })
             }
         })
