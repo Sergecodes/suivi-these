@@ -1,13 +1,19 @@
 const router = require('express').Router();
 const controller = require('../controllers/etudiant');
-const { isEtudiant, getEtudiantFromParam } = require('../middlewares')
+const { isEtudiant, getEtudiant, getEtudiantFromParam } = require('../middlewares')
 
+
+router.route('').get(controller.getAll);
+
+router.route('/moi').get(getEtudiant, controller.getOne);
+
+router.route('/:id').get(getEtudiantFromParam, controller.getOne).delete(controller.delete);
 
 router.route('/login').post(controller.login_student);
 
 router.route('/register').post(controller.register);
 
-router.route('/moi').get(isEtudiant, controller.getInfo);
+// router.route('/moi').get(isEtudiant, controller.getInfo);
 
 router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
 

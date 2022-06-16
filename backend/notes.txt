@@ -19,17 +19,13 @@ maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
 TODO FOR INTEGRATION (ASAP):
-    - getdepartements, getjuries(by optional departement too)
     - verify date validation. it refuses 2022-06-08
     - non unique index on Etudiant matricule and email
     - send notification to admin after user is registered
 
 TODO: 
     * Document controllers au fur et a mesure (eg. specify required and optional values)
-    * In case of 500 error, don't send error to client. just send message like
-     (une erreur interne est survenue) with 500 code
     - continue admin api
-    - create crud for all actors(in their various controllers)
     - transfer EnvoiDossier to models/Dossier
     - correct .id to ._id 
     - convert res.send & res.json to use res.status() first in all controllers

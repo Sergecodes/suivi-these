@@ -1,7 +1,18 @@
 const router = require('express').Router();
 const controller = require('../controllers/departement');
-const { isAdmin, isDepartement, getDepartement, getDossierFromReq } = require('../middlewares');
+const { 
+   isAdmin, isDepartement, getDepartement, 
+   getDossierFromReq, getDepartementFromParam 
+} = require('../middlewares');
 
+
+router.route('').get(controller.getAll);
+
+router.route('/moi').get(getDepartement, controller.getOne);
+
+router.route('/:id/juries').get(controller.getJuries);
+
+router.route('/:id').get(getDepartementFromParam, controller.getOne).delete(controller.delete);
 
 router.route('/register').post(isAdmin, controller.register_departement)
 

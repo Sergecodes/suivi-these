@@ -1,7 +1,16 @@
 const router = require('express').Router();
 const controller = require('../controllers/jury');
-const { isAdmin, isJury, getJury, getDossierFromReq } = require('../middlewares');
+const { 
+   isAdmin, isJury, getJury, 
+   getDossierFromReq, getJuryFromParam 
+} = require('../middlewares');
 
+
+router.route('').get(controller.getAll);
+
+router.route('/moi').get(getJury, controller.getOne);
+
+router.route('/:id').get(getJuryFromParam, controller.getOne).delete(controller.delete);
 
 router.route('/register').post(isAdmin, controller.register_jury);
 

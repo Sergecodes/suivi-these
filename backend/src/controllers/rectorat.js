@@ -7,6 +7,30 @@ const Etudiant = require('../models/Etudiant');
 const EnvoiDossier = require('../models/EnvoiDossier');
 
 
+exports.getAll = async function (req, res) {
+	res.json( await Rectorat.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { rectorat } = res.locals;
+	res.json(rectorat);
+}
+
+exports.delete = function (req, res) {
+	Rectorat.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
 exports.register_rectorat = function (req, res) {
    let rectorat = new Rectorat();
    rectorat.motDePasse = req.body.motDePasse;

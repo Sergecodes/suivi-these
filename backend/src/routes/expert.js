@@ -1,7 +1,16 @@
 const router = require('express').Router();
 const controller = require('../controllers/expert');
-const { isAdmin, isExpert, getExpert, getDossierFromReq } = require('../middlewares');
+const { 
+   isAdmin, isExpert, getExpert, 
+   getDossierFromReq, getExpertFromParam 
+} = require('../middlewares');
 
+
+router.route('').get(controller.getAll);
+
+router.route('/moi').get(getExpert, controller.getOne);
+
+router.route('/:id').get(getExpertFromParam, controller.getOne).delete(controller.delete);
 
 router.route('/register').post(isAdmin, controller.register_expert);
 

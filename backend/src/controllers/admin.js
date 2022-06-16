@@ -16,6 +16,30 @@ const Admin = require('../models/Admin');
 const { removePassword } = require('../utils');
 
 
+exports.getAll = async function (req, res) {
+	res.json( await Admin.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { admin } = res.locals;
+	res.json(admin);
+}
+
+exports.delete = function (req, res) {
+	Admin.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
 exports.register = function (req, res) {
     let admin = new Admin();
     admin.motDePasse = req.body.motDePasse;

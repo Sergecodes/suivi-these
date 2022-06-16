@@ -1,9 +1,16 @@
 const router = require('express').Router();
 const controller = require('../controllers/admin');
-const {isAdmin} = require('../middlewares');
+const { isAdmin, getAdmin, getAdminFromParam } = require('../middlewares');
 
+
+router.route('').get(controller.getAll);
+
+router.route('/moi').get(getAdmin, controller.getOne);
+
+router.route('/:id').get(getAdminFromParam, controller.getOne).delete(controller.delete);
 
 router.route('/login').post(controller.login);
+
 router.route('/register').post(controller.register);
 
 // router.route('/add_coordonator').post(isAdmin,controller.register_coordonateur);

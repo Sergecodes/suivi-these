@@ -10,8 +10,28 @@ const Etudiant = require('../models/Etudiant');
 const { removePassword } = require('../utils')
 
 
-exports.getInfo = async function (req, res) {
-   res.json(res.locals.etudiant);
+exports.getAll = async function (req, res) {
+	res.json( await Etudiant.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { etudiant } = res.locals;
+	res.json(etudiant);
+}
+
+exports.delete = function (req, res) {
+	Etudiant.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
 }
 
 exports.register = function (req, res) {

@@ -5,6 +5,30 @@ const { removePassword } = require('../utils')
 const EnvoiDossier = require('../models/EnvoiDossier')
 
 
+exports.getAll = async function (req, res) {
+	res.json( await Expert.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { expert } = res.locals;
+	res.json(expert);
+}
+
+exports.delete = function (req, res) {
+	Expert.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
 exports.register_expert = function (req, res) {
 	let expert = new Expert();
 	expert.nom = req.body.nom;

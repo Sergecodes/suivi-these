@@ -7,6 +7,31 @@ const Avis = require('../models/Avis');
 const { removePassword } = require('../utils')
 
 
+exports.getAll = async function (req, res) {
+	res.json( await Jury.find({}) );
+}
+
+
+exports.getOne = function (req, res) {
+	const { jury } = res.locals;
+	res.json(jury);
+}
+
+exports.delete = function (req, res) {
+	Jury.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
 exports.register_jury = function (req, res) {
    let jury = new Jury();
    jury.nom = req.body.nom;
