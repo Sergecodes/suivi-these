@@ -42,7 +42,7 @@ const EtudiantSchema = new Schema({
       type: String, 
       required: true,
       validate: {
-         validator: (date) => isDate(date, { strictMode: true }),
+         validator: (date) => isDate(date),
          message: (props) => `
             ${props.value} est une date invalide. 
             Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
