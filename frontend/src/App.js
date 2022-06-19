@@ -100,8 +100,8 @@ import TableList from "./components/pageJury/TableList";*/
 // Configurer les options par defaut d'axios
 import axios from "axios";
 
-axios.defaults.baseURL = process.env.API_BASE_URL || "http://localhost:8001/api/";
-
+axios.defaults.baseURL = process.env.API_BASE_URL || "http://localhost:8001/api";
+axios.defaults.withCredentials = true;
 
 
 
@@ -193,7 +193,7 @@ const App = () => {
               <div className="d-flex flex-column align-items-center text-align-center">
                 <h1 style={{ color: "red" }}>ERROR !</h1>
                 <h2 style={{ fontWeight: "none" }}>
-                  Lien non activé
+                  Lien non existant ou non activé
                 </h2>
               </div>
             }

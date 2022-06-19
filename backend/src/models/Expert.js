@@ -91,6 +91,8 @@ ExpertSchema.methods.donnerAvisAdmin = async function(
 }
 
 
+ExpertSchema.set('toObject', { virtuals: true });
+ExpertSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Expert', ExpertSchema);
-
-

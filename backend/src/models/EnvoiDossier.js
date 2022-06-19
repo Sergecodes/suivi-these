@@ -76,5 +76,9 @@ EnvoiDossierSchema.post('save', async function(envDossier) {
 });
 
 
+EnvoiDossierSchema.set('toObject', { virtuals: true });
+EnvoiDossierSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('EnvoiDossier', EnvoiDossierSchema, 'envois_dossiers');
 

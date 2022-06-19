@@ -93,5 +93,9 @@ RectoratSchema.methods.donnerAvisTheseAdmin = async function(
 }
 
 
+RectoratSchema.set('toObject', { virtuals: true });
+RectoratSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Rectorat', RectoratSchema, 'rectorat');
 

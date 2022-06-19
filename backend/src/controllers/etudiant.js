@@ -35,7 +35,7 @@ exports.delete = function (req, res) {
 	});
 }
 
-exports.register = async function (req, res) {
+exports.register = function (req, res) {
    let isValid = (function () {
       let validParams = [
          'matricule', 'nom', 'prenom', 'motDePasse', 'niveau',
@@ -80,7 +80,7 @@ exports.register = async function (req, res) {
       }
    } 
 
-   etud.save(function (err, nouveau_etudiant) {
+   etud.save(async function (err, nouveau_etudiant) {
       if (err) {
          console.error(err);
          return res.status(500).json({ 
