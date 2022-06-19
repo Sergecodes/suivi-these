@@ -1,7 +1,6 @@
 import { Table } from "antd";
 import React from "react";
 import moment from "moment";
-import { BsCheck, BsX } from "react-icons/bs";
 
 const columns = [
   {
@@ -33,31 +32,13 @@ const columns = [
     },
   },
   {
-    title: <div className="text-center">Niveau</div>,
-    dataIndex: "niveau",
-    sorter: {
-      compare: (a, b) => a.name.localeCompare(b.name),
-    },
-  },
-  {
     title: <div className="text-center">Date de creation</div>,
     dataIndex: "dateCreation",
     sorter: {
       compare: (a, b) =>
         moment(a.dateCreation).unix() - moment(b.dateCreation).unix(),
     },
-  },
-  {
-    title:"Actions",
-    render:(record) => {
-      return (
-        <div className="d-flex fs-3 justify-content-center ">
-          <BsCheck className="mx-1 correct" onClick={()=>{alert('vous voulez confirmer la demande de '+record.matricule)}} style={{ color: "green" }} />
-          <BsX className="mx-1 wrong" onClick={()=>{alert('vous voulez annuler la demande de '+record.matricule)}} style={{ color: "red" }} />
-        </div>
-      );
-    },
-  },
+  }
 ];
 var today = new Date();
 
@@ -68,7 +49,6 @@ const data = [
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
     email: "admin@gmail.com",
-    niveau: "master",
     dateCreation: today.toLocaleString("en-US"),
   },
   {
@@ -77,7 +57,6 @@ const data = [
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
     email: "admin@gmail.com",
-    niveau: "master",
     dateCreation: today.toLocaleString("en-US"),
   },
   {
@@ -86,19 +65,17 @@ const data = [
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
     email: "admin@gmail.com",
-    niveau: "master",
     dateCreation: today.toLocaleString("en-US"),
   },
 ];
 
-const ListeAttente = () => {
+const ListeEtudiantsMaster = () => {
   return (
     <div className=" mx-3 my-3">
       <div className="tableTitleDisplay">
-        <h5>ATTENTE</h5>
+        <h5>MASTER</h5>
         <p>
-          Liste des étudiants en attente de validation de leurs demandes
-          d'inscription
+          Liste des étudiants en master
         </p>
       </div>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
@@ -106,4 +83,4 @@ const ListeAttente = () => {
   );
 };
 
-export default ListeAttente;
+export default ListeEtudiantsMaster;

@@ -1,0 +1,47 @@
+/*liste attente*/
+
+.correct:hover, .wrong:hover{
+    cursor:pointer
+}
+
+.tableTitleDisplay{
+    background-color:#513e8f;
+    padding:15px 10px;
+    border-radius: 10px;
+    margin:5px 0px;
+}
+
+.tableTitleDisplay h5{
+    color:white;
+    font-size: 17px;
+    margin:0px;
+}
+
+.tableTitleDisplay p{
+    color:darkgray;
+    margin:0px;
+}
+
+.details{
+    color:#513e8f;
+}
+
+.details:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.autorisationButton{
+    padding:4px 6px;
+}
+.autorisationButton{
+    color:#513e8f;
+    border:1px solid #513e8f;
+    background-color: transparent;
+   
+}
+
+.autorisationButton:hover{
+    background-color:#513e8f;
+    color:white;
+    border:1px solid transparent;
+}

@@ -2,6 +2,8 @@ import React from "react";
 import AdminSidenav from "../components/pageAdmin/AdminSidenav";
 import NavbarAdmin from "../components/pageAdmin/NavbarAdmin";
 import "../Styles/AdminCommon.css";
+import "../Styles/Admin.css";
+import "../Styles/Jury.css";
 import { useWindowSize } from "react-use";
 import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";

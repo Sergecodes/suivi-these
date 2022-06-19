@@ -21,6 +21,12 @@ const AdminSidenav = () => {
             <SidenavItem>
                 <Link to="/acteur/admin/liste-attente"><BsFillFileEarmarkSpreadsheetFill className="me-3"/> LISTE D'ATTENTE</Link>
             </SidenavItem>
+            <SidenavItem>
+                <Link to="/acteur/admin/liste-etudiants"><BsFillFileEarmarkSpreadsheetFill className="me-3"/> LISTE DES ETUDIANTS</Link>
+            </SidenavItem>
+            <SidenavItem>
+                <Link to="/acteur/admin/notes-lecture"><BsFillFileEarmarkSpreadsheetFill className="me-3"/> NOTE DE LECTURE</Link>
+            </SidenavItem>
         </SidenavTitle>
         <SidenavTitle titre="loic">
             <SidenavItem>

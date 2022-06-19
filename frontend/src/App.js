@@ -84,6 +84,10 @@ import TableList from "./components/pageJury/TableList";*/
     import Admin from "./screen/Admin";
     import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
     import ListeAttente from "./components/pageAdmin/ListeAttente";
+    import ListeEtudiants from "./components/pageAdmin/ListeEtudiants";
+    import NoteLecture from "./components/pageAdmin/NoteLecture";
+    import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
+    import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
     /**************************************************************************************************/
 
 
@@ -183,6 +187,10 @@ const App = () => {
                <Route path="/acteur/admin" element={<Admin/>} >
                 <Route path="/acteur/admin/dashboard" element={<DashboardAdmin />} />
                 <Route path="/acteur/admin/liste-attente" element={<ListeAttente/>}/>
+                <Route path="/acteur/admin/liste-etudiants" element={<ListeEtudiants/>}/>
+                <Route path="/acteur/admin/notes-lecture" element={<NoteLecture/>}/>
+                <Route path="/acteur/admin/detail-notation" element={<DetailsNotation/>}/>
+                <Route path="/acteur/admin/rapport-soutenance" element={<RapportSoutenance/>}/>
                </Route>
              
           <Route
