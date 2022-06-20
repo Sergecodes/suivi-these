@@ -418,3 +418,66 @@ exports.Verification_rapport_expertise = function (req, res) {
 
 }
 ------------------------------------------------------------------------------------
+
+$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche
+coordo id: 62b0505bd82053a907904e22
+unite id: 62b054d3d82053a907904e25
+depart 1 id: 62b055d6d82053a907904e35
+depart 2 id: 62b0563dd82053a907904e36
+/** 
+* Paste one or more documents here
+*/
+[
+  {
+  "_id": {
+    "$oid": "62b05939d82053a907904e40"
+  },
+"nom": "jury1_nom",
+"prenom": "jury1_prenom",
+"departement": "62b055d6d82053a907904e35",
+"email": "jury1@gmail.com",
+"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
+"numTelephone": "671111111",
+"grade": 1
+},
+
+{
+  "_id": {
+    "$oid": "62b0569ed82053a907904e3f"
+  },
+"nom": "jury2_nom",
+"prenom": "jury2_prenom",
+"departement": "62b055d6d82053a907904e35",
+"email": "jury2@gmail.com",
+"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
+"numTelephone": "67222222",
+"grade": 1
+},
+
+ {
+  "_id": {
+    "$oid": "62b058d5d82053a907904e3e"
+  },
+"nom": "jury3_nom",
+"prenom": "jury3_prenom",
+"departement": "62b0563dd82053a907904e36",
+"email": "jury3@gmail.com",
+"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
+"numTelephone": "6733333333",
+"grade": 1
+},
+
+{
+  "_id": {
+    "$oid": "62b0590dd82053a907904e3f"
+  },
+"nom": "jury4_nom",
+"prenom": "jury4_prenom",
+"departement": "62b0563dd82053a907904e36",
+"email": "jury4@gmail.com",
+"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
+"numTelephone": "6744444444",
+"grade": 2
+}
+
+]
