@@ -133,5 +133,8 @@ JurySchema.methods.donnerAvisAdmin = async function(
 }
 
 
-module.exports = model('Jury', JurySchema, 'juries');
+JurySchema.set('toObject', { virtuals: true });
+JurySchema.set('toJSON', { virtuals: true });
 
+
+module.exports = model('Jury', JurySchema, 'juries');

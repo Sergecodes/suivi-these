@@ -225,6 +225,19 @@ NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 // });
 
 
+DossierSchema.set('toObject', { virtuals: true });
+DossierSchema.set('toJSON', { virtuals: true });
+
+FichierDossierSchema.set('toObject', { virtuals: true });
+FichierDossierSchema.set('toJSON', { virtuals: true });
+
+EtapeDossierSchema.set('toObject', { virtuals: true });
+EtapeDossierSchema.set('toJSON', { virtuals: true });
+
+NoteDossierSchema.set('toObject', { virtuals: true });
+NoteDossierSchema.set('toJSON', { virtuals: true });
+
+
 const Dossier = model('Dossier', DossierSchema);
 const FichierDossier = model('FichierDossier', FichierDossierSchema, 'fichiers_dossiers');
 const EtapeDossier = model('EtapeDossier', EtapeDossierSchema, 'etapes_dossiers');

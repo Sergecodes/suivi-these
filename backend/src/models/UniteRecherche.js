@@ -21,5 +21,10 @@ UniteRechercheSchema.virtual('departements', {
 });
 
 
+
+UniteRechercheSchema.set('toObject', { virtuals: true });
+UniteRechercheSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('UniteRecherche', UniteRechercheSchema, 'unites_recherche');
 

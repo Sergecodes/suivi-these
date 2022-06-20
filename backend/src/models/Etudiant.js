@@ -190,5 +190,8 @@ EtudiantSchema.methods.envoyerDossier = async function (
 };
 
 
+EtudiantSchema.set('toObject', { virtuals: true });
+EtudiantSchema.set('toJSON', { virtuals: true });
+
 
 module.exports = model("Etudiant", EtudiantSchema);

@@ -121,5 +121,9 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
 }
 
 
+AdminSchema.set('toObject', { virtuals: true });
+AdminSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Admin', AdminSchema, 'admin');
 

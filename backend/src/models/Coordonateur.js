@@ -98,5 +98,9 @@ CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
 }
 
 
+CoordonateurSchema.set('toObject', { virtuals: true });
+CoordonateurSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Coordonateur', CoordonateurSchema);
 

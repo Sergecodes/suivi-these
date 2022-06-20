@@ -9,7 +9,7 @@ const { removePassword } = require('../utils')
 
 
 exports.getAll = async function (req, res) {
-	res.json( await Departement.find({}) );
+	res.json( await Departement.find({}).populate('juries') );
 }
 
 exports.getJuries = async function (req, res) {
