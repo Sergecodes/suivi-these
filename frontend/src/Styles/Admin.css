@@ -32,8 +32,6 @@
 }
 .autorisationButton{
     padding:4px 6px;
-}
-.autorisationButton{
     color:#513e8f;
     border:1px solid #513e8f;
     background-color: transparent;
@@ -44,4 +42,35 @@
     background-color:#513e8f;
     color:white;
     border:1px solid transparent;
+}
+
+/*Rapport soutenance*/
+.btnFull{
+    padding:3px 5px;
+    background-color:#513e8f;
+    color:white;
+    border:1px solid transparent;
+}
+
+.btnFull:hover,.btnFull:hover{
+    opacity: 0.9;
+    cursor:pointer
+}
+.btnFull:hover{
+    color:white
+}
+
+.btnEmpty:hover{
+    color:#513e8f
+}
+.btnEmpty{
+    padding:3px 5px;
+    color:#513e8f;
+    border:1px solid #513e8f;
+    background-color: transparent;
+}
+
+.ql-container.ql-snow{
+    min-height: 25vh;
+    
 }

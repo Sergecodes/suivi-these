@@ -34,7 +34,7 @@ const columns = [
       return (
         <div className="d-flex justify-content-around align-items-center ">
        <Link to="/acteur/admin/detail-notation" state={{matricule:record.matricule}}> <p className="details pt-2">plus de details</p></Link>
-       <Link to="/acteur/admin/rapport-soutenance" state={{matricule:record.matricule}}> <button className="btn autorisationButton">Autoriser</button></Link>
+       <Link to="/acteur/admin/rapport-soutenance" state={{etudiantInfo:{matricule:record.matricule, nom:record.name}}}> <button className="btn autorisationButton">Autoriser</button></Link>
         </div>
       );
     },
