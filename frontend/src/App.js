@@ -12,7 +12,7 @@ import Accueil from "./screen/Accueil";
 
     
     /********************************************page info ecole doctorale*********************************/
-   import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
+  /* import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
     import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
     import EquipeScreen from "./screen/InfotmationScreens/EquipeScreen";
     import SuivieDeFormation from "./screen/InfotmationScreens/SuivieDeFormation";
@@ -23,7 +23,7 @@ import Accueil from "./screen/Accueil";
     import TheseEnCotutelleScreen from "./screen/InfotmationScreens/TheseEnCotutelleScreen";
     import TheseEnCoursScreen from "./screen/InfotmationScreens/TheseEnCoursScreen";
     import UnitesRechercheScreen from "./screen/InfotmationScreens/UnitesRechercheScreen";
-    import ConseilScientifiqueScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"
+    import ConseilScientifiqueScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/
     
 /**************************************************************************************************/
 
@@ -31,11 +31,11 @@ import Accueil from "./screen/Accueil";
 // import AdminInscriptionScreen from "./screen/inscriptionScreens/AdminConnexionScreen.js";
 // import ConseilScientifiqueInscriptionScreen from "./screen/inscriptionScreens/ConseilScientifiqueConnexionScreen.js";
 // import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
-import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
+//import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
 // import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
 // import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 // import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
-import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
+//import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 // import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
     /**************************************************************************************************/
 
@@ -73,11 +73,11 @@ import Programmation from "./components/pageRectorat/Programmation";*/
     /**************************************************************************************************/
 
      /************************************************page jury************************************/
-/*import Jury from "./screen/Jury";
+import Jury from "./screen/Jury";
 import NotationMaster from "./components/pageJury/NotationMaster";
 import ProfilJury from "./components/pageJury/ProfilJury";
 import NotificationJury from "./components/pageJury/NotificationJury";
-import TableList from "./components/pageJury/TableList";*/
+import TableList from "./components/pageJury/TableList";
     /**************************************************************************************************/
 
     /************************************************page admin************************************/
@@ -132,7 +132,7 @@ const App = () => {
            */ }
          
 
-          { /*<Route path="/acteur/jury" element={<Jury />}>
+          { /**/}<Route path="/acteur/jury" element={<Jury />}>
 
             <Route path="/acteur/jury/dashboard" element={<TableList />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
@@ -141,7 +141,7 @@ const App = () => {
               path="/acteur/jury/notifications"
               element={<NotificationJury />}
             />
-          </Route>*/}
+          </Route>
        
         
           { /* <Route path="/acteur/expert" element={<Expert />}>
@@ -198,14 +198,6 @@ const App = () => {
               </div>
             }
           />
-           <Route
-            path="/inscription/etudiant"
-            element={<EtudiantInscriptionScreen />}
-          ></Route>
-          <Route
-            path="/connexion/etudiant"
-            element={<EtudiantConnexionScreen />}
-          ></Route>
           
 
           {/* Routes pour les coordonateurs
@@ -244,7 +236,7 @@ const App = () => {
           <Route
             path="/connexion/expert"
             element={<ExpertInscriptionScreen />}
-        ></Route> */}
+        ></Route> 
           <Route
             path="/inscription/etudiant"
             element={<EtudiantInscriptionScreen />}
@@ -252,7 +244,7 @@ const App = () => {
           <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
-          ></Route>
+          ></Route>*/}
           { /*
           <Route
             path="/connexion/rectorat"
@@ -275,7 +267,7 @@ const App = () => {
             element={<DepartementConnexionScreen />}
           ></Route> */}
         
-           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres*/}
+           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
            <Route path="/candidature" element={<CandidatureScreen />}></Route>
             <Route path="/document" element={<DocumentImportantScreen />}></Route>
             <Route path="/equipe" element={<EquipeScreen />}></Route>
@@ -290,7 +282,7 @@ const App = () => {
             <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
             <Route path="/unites-recherche" element={<UnitesRechercheScreen />}></Route>
             <Route path="/conseil" element={<ConseilScientifiqueScreen />}></Route>
-            <Route path="/document" element={<DocumentImportantScreen />}></Route> 
+            <Route path="/document" element={<DocumentImportantScreen />}></Route> */}
          
         </Routes>
       </div>
