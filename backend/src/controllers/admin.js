@@ -11,9 +11,34 @@ const bcrypt = require('bcrypt');
 // const saltRounds = 10;
 // const CONSTANTES = require('../constants')
 const { Types } = require('../constants');
+const EnvoiDossier = require('../models/EnvoiDossier');
 const Admin = require('../models/Admin');
 const { removePassword } = require('../utils');
 
+
+exports.getAll = async function (req, res) {
+	res.json( await Admin.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { admin } = res.locals;
+	res.json(admin);
+}
+
+exports.delete = function (req, res) {
+	Admin.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
 
 exports.register = function (req, res) {
     let admin = new Admin();
@@ -176,12 +201,148 @@ exports.demandesInscription = async function (req, res) {
    res.json({ demandes: etudiants });
 }
 
-
-// todo
 exports.accepterInscriptionEtudiant = async function (req, res) {
-   const { etudiant } = res.locals;
+   const { admin, etudiant } = res.locals;
+   try {
+      await admin.accepterEtudiant(etudiant);
+      res.send("Succes");
+   } catch (err) {
+      console.error(error);
+      res.status(500).send("Something went wrong");
+   }
+}
+
+exports.rejeterInscriptionEtudiant = async function (req, res) {
+   const { admin, etudiant } = res.locals;
+   const { raison } = req.body.raison;
+
+   try {
+      await admin.rejeterEtudiant(etudiant, raison);
+      res.send("Succes");
+   } catch (err) {
+      console.error(error);
+      res.status(500).send("Something went wrong");
+   }
+}
+
+exports.accepterDossierEtudiant = async function (req, res) {
+   const { admin, dossier } = res.locals;
+   try {
+      await admin.accepterDossier(dossier);
+      // todo Send dossier to coordonateur if etudiant is from these
+      res.send("Succes, dossier envoye au coordonateur");
+   } catch (err) {
+      console.error(error);
+      res.status(500).send("Something went wrong");
+   }
+}
+
+exports.rejeterDossierEtudiant = async function (req, res) {
+   const { admin, dossier } = res.locals;
+   const { raison } = req.body.raison;
+
+   try {
+      await admin.rejeterDossier(dossier, raison);
+      res.send("Succes");
+   } catch (err) {
+      console.error(error);
+      res.status(500).send("Something went wrong");
+   }
+}
+
+exports.dossiersEtudiantsMaster = async function (req, res) {
+   const { admin } = res.locals;
+ 
+   let envoisDossiers = await EnvoiDossier.find({
+      destinataire: admin._id,
+      destinataireModel: Types.ActeurDossier.ADMIN
+      }).populate({
+      path: 'dossier',
+      populate: {
+         path: 'etudiant',
+         select: '-motDePasse -niveau -dossier -misAJourLe',
+         match: { niveau: Types.Niveau.MASTER },
+         populate: 'juges departement'
+      }
+   });
+ 
+   return res.json({ envoisDossiers });
+}
+
+exports.dossiersEtudiantsMaster = async function (req, res) {
+   const { admin } = res.locals;
+
+   let envoisDossiers = await EnvoiDossier.find({
+      destinataire: admin._id,
+      destinataireModel: Types.ActeurDossier.ADMIN
+      }).populate({
+      path: 'dossier',
+      populate: {
+         path: 'etudiant',
+         select: '-motDePasse -niveau -dossier -misAJourLe',
+         match: { niveau: Types.Niveau.THESE },
+         populate: 'juges departement'
+      }
+   });
+
+   return res.json({ envoisDossiers });
 }
 
 
+exports.envoyerRapportActeur = async function (req, res) {
+   const { admin, dossier } = res.locals;
+   const { rapport, type, destinataireId, destinataireModel } = req.body;
 
+   try {
+      await Avis.create({
+         type,
+         rapport,
+         commentaire: req.body.commentaire || '',
+         donnePar: admin._id,
+         donneParModel: Types.AvisEmetteur.ADMIN,
+         dossier,
+         destinataire: destinataireId,
+         destinataireModel: destinataireModel
+      });
+      res.send("Succes");
+   } catch (err) {
+      console.error(err);
+      res.status(500).send("Something went wrong");
+   }
+}
+
+exports.getActeursAvis = async function (req, res) {
+   const { admin } = res.locals;
+   const { acteurId, acteurModel } = req.body;
+
+   let avis = await Avis.find({
+      donnePar: acteurId,
+      donneParModel: acteurModel,
+      destinataire: admin._id,
+      destinataireModel: Types.AvisDestinataire.ADMIN
+   });
+
+   res.json({ avis });
+}
+
+
+// exports.envoyerDossierActeur = async function (req, res) {
+//    const { admin, dossier } = res.locals;
+//    const { message, destinataireId, destinataireModel } = req.body;
+
+//    try {
+//       await EnvoiDossier.create({
+//          message,
+//          dossier,
+//          envoyePar: admin._id,
+//          envoyeParModel: Types.ActeurDossier.ADMIN,
+//          destinataire: destinataireId,
+//          destinataireModel: destinataireModel
+//       });
+//       res.send("Succes");
+//    } catch (err) {
+//       console.error(err);
+//       res.status(500).send("Something went wrong");
+//    }
+// }
 

@@ -18,7 +18,7 @@ export const loginJury = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/jury/login-jury",
+        "/jury/login-jury",
         {
           email: data.email,
           motDePasse: data.motDePasse,

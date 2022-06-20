@@ -4,6 +4,30 @@ const Unite = require('../models/UniteRecherche');
 const { removePassword } = require('../utils');
 
 
+exports.getAll = async function (req, res) {
+	res.json( await Unite.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { unite } = res.locals;
+	res.json(unite);
+}
+
+exports.delete = function (req, res) {
+	Unite.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
+
 exports.register_unite = function(req,res){
    let unite = new Unite();
 

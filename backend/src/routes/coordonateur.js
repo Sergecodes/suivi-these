@@ -2,13 +2,20 @@ const router = require('express').Router();
 const controller = require('../controllers/coordonateur');
 const { 
    isAdmin, isCoordonateur, getCoordonateur, 
-   getEtudiantFromReq, getDossierFromReq 
+   getEtudiantFromReq, getDossierFromReq,
+   getCoordonateurFromParam
 } = require('../middlewares');
 
 
-router.route('/register-coord').post(isAdmin, controller.register_coordonateur);
+router.route('').get(controller.getAll);
 
-router.route('/login-coord').post(controller.login_coordonateur);
+router.route('/moi').get(getCoordonateur, controller.getOne);
+
+router.route('/:id').get(getCoordonateurFromParam, controller.getOne).delete(controller.delete);
+
+router.route('/register').post(isAdmin, controller.register_coordonateur);
+
+router.route('/login').post(controller.login_coordonateur);
 
 router.route('/change-password').put(
    isCoordonateur, 

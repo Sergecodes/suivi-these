@@ -16,7 +16,7 @@ const EtudiantSchema = new Schema({
    matricule: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       uppercase: true,
       validate: {
          validator: (mat) => validerMatricule(mat),
@@ -30,7 +30,7 @@ const EtudiantSchema = new Schema({
    email: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       trim: true,
       validate: {
          validator: email => isEmail(email),
@@ -41,7 +41,7 @@ const EtudiantSchema = new Schema({
       type: String, 
       required: true,
       validate: {
-         validator: (date) => isDate(date, { strictMode: true }),
+         validator: (date) => isDate(date),
          message: (props) => `
             ${props.value} est une date invalide. 
             Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
@@ -84,7 +84,7 @@ EtudiantSchema.pre("save", function (next) {
                }
                user.motDePasse = hash;
                console.log(user.motDePasse);
-               next()
+               return next();
             })
          }
       })
@@ -138,12 +138,13 @@ EtudiantSchema.virtual("notifications", {
  * Envoyer une notification a l'administrateur
  */
 EtudiantSchema.post('save', async function (etudiant) {
-   await Notification.create({
-      type: TypeNotification.NOUVEAU_ETUDIANT,
-      destinataireModel: ModelNotif.ADMIN,
-      objetConcerne: etudiant._id,
-      objetConcerneModel: ModelNotif.ETUDIANT
-   });
+   if (this.isNew)
+      await Notification.create({
+         type: TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: ModelNotif.ADMIN,
+         objetConcerne: etudiant._id,
+         objetConcerneModel: ModelNotif.ETUDIANT
+      });
 });
 
 
@@ -154,7 +155,7 @@ EtudiantSchema.methods.reinitialiser = async function () {
    // this may happen if user's file was previously rejected.
    // 
    if (this.dossier)
-      Dossier.findByIdAndDelete(this.dossier);
+      return await Dossier.findByIdAndDelete(this.dossier);
 }
 
 EtudiantSchema.methods.incrementerEtape = async function () {
@@ -188,6 +189,9 @@ EtudiantSchema.methods.envoyerDossier = async function (
    });
 };
 
+
+EtudiantSchema.set('toObject', { virtuals: true });
+EtudiantSchema.set('toJSON', { virtuals: true });
 
 
 module.exports = model("Etudiant", EtudiantSchema);

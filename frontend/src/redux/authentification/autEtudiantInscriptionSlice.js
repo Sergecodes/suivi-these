@@ -18,7 +18,7 @@ export const registerEtudiant = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/etudiants/register-etudiant",
+        "/etudiants/register",
         {
           matricule: data.matricule,
           nom: data.nom,
@@ -30,15 +30,13 @@ export const registerEtudiant = createAsyncThunk(
           lieuNaissance: data.lieuNaissance,
           numTelephone: data.numTelephone,
           sexe: data.sexe,
-          urlPhotoProfil: data.urlPhotoProfil,
           departement: data.departement,
           encadreur: data.encadreur,
         }
       );
+
       localStorage.setItem("etudiantInfos", JSON.stringify(value.data));
-      // console.log(data);
       alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);

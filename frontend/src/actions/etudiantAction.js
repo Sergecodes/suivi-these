@@ -12,7 +12,7 @@ export const signin = (matricule, motDePasse, niveau) => async (dispatch) => {
     payload: { matricule, motDePasse, niveau },
   });
   try {
-    const data = await Axios.post("/api/etudiants/login-etudiant", {
+    const data = await Axios.post("/etudiants/login", {
       matricule,
       motDePasse,
       niveau,

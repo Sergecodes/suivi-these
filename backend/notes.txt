@@ -18,21 +18,24 @@
 maybe eventually i.e to have a master2 and doctorat account in the system
 * etudiant login: email ou matricule, password, niveau
 
+TODO FOR INTEGRATION (ASAP):
+    - 
+
 TODO: 
-    * In case of 500 error, don't send error to client. just send message like
-     (une erreur interne est survenue) with 500 code
-     
-    - validate model string dates to yyyy/mm/dd
-    - create crud for all actors(in their various controllers)
+    * Document controllers au fur et a mesure (eg. specify required and optional values)
     - continue admin api
+    - transfer EnvoiDossier to models/Dossier
+    - convert res.send & res.json to use res.status() first in all controllers
+
     - seems mongoose virtual get & set do not support async functions. so use methods instead
     (OR use exec() OR use callbacks within the functions that are within the virtuals)
-    - add endpoints getListeJuries & getEtudiantJuries to Departement
+    - add endpoints getJuries, getExperts & getEtudiantJuries to Departement
 
     - add method to verify if user can update dossier. call this method 
     before updating dossier
     - add required for refPath attributes ?
     - prevent server from crashing when error
+    - use callbacks ... where necessary, also improve queries
 
 
 previous admin.js...

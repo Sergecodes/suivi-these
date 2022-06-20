@@ -16,7 +16,7 @@ export const  getNotifications=createAsyncThunk(
     async ({rejectWithValue})=>{
         try{
             console.log("je suis dans la fonction getNotification");
-            const value =await axios.get("http://localhost:3001/api/coordonateurs/notifications")
+            const value =await axios.get("/coordonateurs/notifications")
             localStorage.setItem("notificationsCoordonateur", JSON.stringify(value.data));
             console.log(`les datas des notification sont ${value}`);
             return JSON.stringify(value.notifs);

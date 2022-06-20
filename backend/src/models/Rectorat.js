@@ -33,7 +33,7 @@ RectoratSchema.pre("save",function(next){
                     }
                     conseil.motDePasse = hash;
                     console.log(conseil.motDePasse);
-                    next()
+                    return next();
                 })
             }
         })
@@ -91,6 +91,10 @@ RectoratSchema.methods.donnerAvisTheseAdmin = async function(
         donneParModel: AvisEmetteur.COORDONATEUR
     });
 }
+
+
+RectoratSchema.set('toObject', { virtuals: true });
+RectoratSchema.set('toJSON', { virtuals: true });
 
 
 module.exports = model('Rectorat', RectoratSchema, 'rectorat');

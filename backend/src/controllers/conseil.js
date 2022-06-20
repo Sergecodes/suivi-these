@@ -2,9 +2,33 @@ const Conseil = require('../models/Conseil');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
 const { Types } = require('../constants');
-const { removePassword } = require('../utils')
-const EnvoiDossier = require('../models/EnvoiDossier')
+const { removePassword } = require('../utils');
+const EnvoiDossier = require('../models/EnvoiDossier');
 
+
+exports.getAll = async function (req, res) {
+	res.json(await Conseil.find({}));
+}
+
+exports.getOne = function (req, res) {
+	const { conseil } = res.locals;
+	res.json(conseil);
+}
+
+exports.delete = function (req, res) {
+	Conseil.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
 
 exports.new_conseil = function (req, res) {
 	let conseil = new Conseil();
@@ -170,7 +194,7 @@ exports.dossiersEtudsThese = async function (req, res) {
 	const { conseil } = res.locals;
 
 	let envoisDossiers = await EnvoiDossier.find({
-		destinataire: conseil.id,
+		destinataire: conseil._id,
 		destinataireModel: Types.ActeurDossier.CONSEIL
 	}).populate({
 		path: 'dossier',

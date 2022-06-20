@@ -19,7 +19,7 @@ export const loginCoordonateur = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/coordonateurs/login-coord",
+        "/coordonateurs/login-coord",
         {
           email: data.email,
           motDePasse: data.motDePasse,

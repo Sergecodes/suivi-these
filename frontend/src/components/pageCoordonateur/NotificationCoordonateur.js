@@ -30,7 +30,7 @@ function NotificationCoordonateur() {
     setSidebarOpen(false);
   };
   useEffect(() => {
-    // dataRequired();
+    dataRequired();
     dispatch(getNotifications())
   }, [navigate, coodonateurInfos]);
   return (
@@ -55,7 +55,7 @@ function NotificationCoordonateur() {
             {/* <div className=""></div> */}
             
                 <div className="notification-item ">
-                  <p>je ne suis pas aid</p>
+                  <p>Mr Essowa presente Jeudi le 15 mai </p>
                   <div>
                   <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
                   <button className="btn-lu">Marquer comme lu</button>
@@ -64,7 +64,7 @@ function NotificationCoordonateur() {
                 </div>
               {/* new item */}
                 <div className="notification-item ">
-                  <p>je ne suis pas aid</p>
+                  <p>Mr Essowa presente Jeudi le 15 mai </p>
                   <div>
                   <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
                   <button className="btn-lu">Marquer comme lu</button>
@@ -73,7 +73,7 @@ function NotificationCoordonateur() {
                 </div>
               {/* new item */}
                 <div className="notification-item ">
-                  <p>je ne suis pas aid</p>
+                  <p>Mr Essowa presente Jeudi le 15 mai </p>
                   <div>
                   <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
                   <button className="btn-lu">Marquer comme lu</button>
@@ -82,7 +82,7 @@ function NotificationCoordonateur() {
                 </div>
               {/* new item */}
                 <div className="notification-item ">
-                  <p>je ne suis pas aid</p>
+                  <p>Mr Essowa presente Jeudi le 15 mai </p>
                   <div>
                   <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
                   <button className="btn-lu">Marquer comme lu</button>
@@ -91,7 +91,7 @@ function NotificationCoordonateur() {
                 </div>
               {/* new item */}
                 <div className="notification-item ">
-                  <p>je ne suis pas aid</p>
+                  <p>Mr Essowa presente Jeudi le 15 mai </p>
                   <div>
                   <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
                   <button className="btn-lu">Marquer comme lu</button>
@@ -101,7 +101,7 @@ function NotificationCoordonateur() {
                 </div>
               {/* new item */}
                 <div className="notification-item ">
-                  <p>je ne suis pas aid</p>
+                  <p>Mr Essowa presente Jeudi le 15 mai </p>
                   <div>
                     <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
                     
