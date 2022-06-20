@@ -93,16 +93,6 @@ const NavbarHeader = (props) => {
               >
                 Soutenances
               </Link>
-              <Link
-                to="/*"
-                style={
-                  location.pathname === "/information"
-                    ? { color: "var(--primaryColor)" }
-                    : {}
-                }
-              >
-                Informations
-              </Link>
             </div>
             <Dropdown>
               <Dropdown.Toggle
