@@ -91,6 +91,8 @@ import TableList from "./components/pageJury/TableList";*/
     import NoteLecture from "./components/pageAdmin/NoteLecture";
     import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
     import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
+    import ListeJury from "./components/pageAdmin/Liste/ListeJury";
+    import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
     /**************************************************************************************************/
 
 
@@ -194,6 +196,8 @@ const App = () => {
                 <Route path="/acteur/admin/notes-lecture" element={<NoteLecture/>}/>
                 <Route path="/acteur/admin/detail-notation" element={<DetailsNotation/>}/>
                 <Route path="/acteur/admin/rapport-soutenance" element={<RapportSoutenance/>}/>
+                <Route path="/acteur/admin/liste-jury" element={<ListeJury/>}/>
+                <Route path="/acteur/admin/liste-departement" element={<ListeDepartement/>}/>
                </Route>
              
           <Route
