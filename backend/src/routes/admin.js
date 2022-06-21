@@ -7,11 +7,12 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getAdmin, controller.getOne);
 
-router.route('/:id').get(getAdminFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/login').post(controller.login);
 
 router.route('/register').post(controller.register);
+
+router.route('/:id').get(getAdminFromParam, controller.getOne).delete(controller.delete);
+
 
 // router.route('/add_coordonator').post(isAdmin,controller.register_coordonateur);
 // router.route('/delete_coordonator/:coord_id').delete(isAdmin,controller.deleteCoordonator);

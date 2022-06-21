@@ -7,13 +7,11 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getEtudiant, controller.getOne);
 
-router.route('/:id').get(getEtudiantFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/login').post(controller.login_student);
 
 router.route('/register').post(controller.register);
 
-// router.route('/moi').get(isEtudiant, controller.getInfo);
+router.route('/dates-soutenance').get(controller.datesSoutenance);
 
 router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
 
@@ -25,13 +23,13 @@ router.route('/:id/uploader-fichiers').put(isEtudiant, getEtudiantFromParam, con
 
 router.route('/:id/update-photo').put(isEtudiant, getEtudiantFromParam, controller.updatePhoto)
 
-router.route('/dates-soutenance').get(controller.datesSoutenance);
-
 router.route('/:id/etapes-dossier').get(isEtudiant, getEtudiantFromParam, controller.etapesDossier);
 
 router.route('/:id/peut-uploader').get(isEtudiant, getEtudiantFromParam, controller.peutUploaderDossier);
 
 router.route('/:id/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
+
+router.route('/:id').get(getEtudiantFromParam, controller.getOne).delete(controller.delete);
 
 
 module.exports = router;
