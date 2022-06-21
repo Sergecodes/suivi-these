@@ -18,7 +18,8 @@ export const signin = (matricule, motDePasse, niveau) => async (dispatch) => {
       niveau,
     });
     dispatch({ type: ETUDIANT_SIGNIN_SUCCESS, payload: data });
-    localStorage.setItem("etudiantInfo", JSON.stringify(data));
+    localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("actor", 'etudiant');
   } catch (error) {
     dispatch({
       type: ETUDIANT_SIGNIN_FAIL,

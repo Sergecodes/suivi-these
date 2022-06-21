@@ -12,33 +12,30 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function JuryConnexionScreen() {
-  const jutyInfos = localStorage.getItem("jutyInfos");
-
   const [user, setUser] = useState({
     email: "",
     motDePasse: "",
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { message, jury, isError, isLoading, isSuccess, isRejected } =
+  const {jury, isError, isLoading, isSuccess,message } =
     useSelector((state) => state.authJury);
-  useEffect(() => {
-    if (isError || isRejected) {
-      toast.error(message);
-    }
-    if (isSuccess || jury) {
-      toast.success("Connexion Reussie");
-      alert("connexion Reussie");
-
-      navigate("/acteur/jury");
-      //navigate("/account")
-      
-    }
-    if (isLoading) {
-      return <LoadingScreen />;
-    }
-    dispatch(resetJury());
-  }, [
+  
+    useEffect(() => {
+      if (isError ) {
+        toast.error(message);
+      }
+      if (isSuccess) {
+        toast.success("Connexion Reussie");
+        navigate("/acteur/jury");
+        //navigate("/account")
+        
+      }
+      if (isLoading) {
+        return <LoadingScreen />;
+      }
+      dispatch(resetJury());
+    }, [
     jury,
     isLoading,
     isSuccess,
@@ -46,8 +43,7 @@ function JuryConnexionScreen() {
     message,
     navigate,
     dispatch,
-    isRejected,
-  ]);
+    ]);
 
   const SubmitHandle = (e) => {
     if (user.motDePasse === "" || user.email === "") {

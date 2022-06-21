@@ -7,7 +7,7 @@ import Accueil from "./screen/Accueil";
     /**************************************************************************************************/
 
     /*************************************page soutenance************************************/
-//import Soutenance from "./screen/Soutenance";
+import Soutenance from "./screen/Soutenance";
     /**************************************************************************************************/
 
     
@@ -112,14 +112,11 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil isLogin={isLogin} />}/>
-
-          { /**     
+          <Route path="/" element={<Accueil isLogin={isLogin} />} />
           <Route
             path="/soutenance"
             element={<Soutenance isLogin={isLogin} />}
-          />*/ }
-            
+          /> 
 
           {
             /** 

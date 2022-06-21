@@ -24,7 +24,8 @@ export const loginRectorat = createAsyncThunk(
           code: data.code,
         }
       );
-      localStorage.setItem("rectoratInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'rectorat');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));

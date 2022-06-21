@@ -185,11 +185,11 @@ exports.changePhoneNumber = function (req, res) {
    if (!newPhoneNumber)
 		return res.send("newPhoneNumber n'est pas dans la requete").status(400);
 
-   if (jury.telephone === newPhoneNumber) {
+   if (jury.numTelephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
 	}
 
-   jury.telephone = newPhoneNumber; 
+   jury.numTelephone = newPhoneNumber; 
    jury.save(function (err, newJury) {
       if (err) {
          console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);

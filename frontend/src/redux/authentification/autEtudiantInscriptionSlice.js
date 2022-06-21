@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // recuperer un etudiant dans le local storage
-// const etudiant = JSON.parse(localStorage.getItem("etudiantInfos"));
+// const etudiant = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   etudiant: null,
@@ -35,7 +35,8 @@ export const registerEtudiant = createAsyncThunk(
         }
       );
 
-      localStorage.setItem("etudiantInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem("actor", 'etudiant');
       alert(JSON.stringify(value.data));
       return JSON.stringify(JSON.stringify(value.data));
     } catch (err) {
@@ -57,7 +58,8 @@ export const registerEtudiantSlice = createSlice({
       state.isRejected = false;
     },
     logoutRegisterEtudiant: (state) => {
-      localStorage.removeItem("etudiantInfos");
+      localStorage.removeItem("user");
+      localStorage.removeItem("actor");
       state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;

@@ -4,7 +4,7 @@ import axios from "axios";
 const jury = JSON.parse(localStorage.getItem("juryInfos"));
 
 const initialState = {
-  jury: jury ? jury : null,
+  jury: jury || null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -18,18 +18,15 @@ export const loginJury = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "/jury/login-jury",
+        "/jury/login",
         {
           email: data.email,
           motDePasse: data.motDePasse,
-        },
-        {
-          withCredentials:true
         }
       );
-      // localStorage.setItem("juryInfos", JSON.stringify(value.data));
+      
       // console.log(data);
-      // console.log(JSON.stringify(value.data));
+      console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);
@@ -50,7 +47,8 @@ export const authJurySlice = createSlice({
       state.isRejected = false;
     },
     logoutJury: (state) => {
-      localStorage.removeItem("juryInfos");
+      localStorage.removeItem("jury");
+      localStorage.removeItem("actor");
       state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
@@ -75,9 +73,10 @@ export const authJurySlice = createSlice({
           state.jury = action.payload;
 
           localStorage.setItem(
-            "juryInfos",
+            "user",
             JSON.stringify(JSON.parse(action.payload))
           );
+          localStorage.setItem('actor', 'jury');
         } else {
           state.isSuccess = false;
           state.isLoading = false;

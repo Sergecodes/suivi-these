@@ -11,23 +11,27 @@ router.route('/login').post(controller.login_student);
 
 router.route('/register').post(controller.register);
 
+router.route('/notifications').get(isEtudiant, getEtudiant, controller.notifications);
+
 router.route('/dates-soutenance').get(controller.datesSoutenance);
 
-router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
+router.route('/change-email').put(isEtudiant, getEtudiant, controller.changeEmail);
 
-router.route('/:id/change-password').put(isEtudiant, getEtudiantFromParam, controller.change_student_password);
+router.route('/change-password').put(isEtudiant, getEtudiant, controller.change_student_password);
 
-router.route('/:id/change-phone-number').put(isEtudiant, getEtudiantFromParam, controller.changePhoneNumber)
+router.route('/change-phone-number').put(isEtudiant, getEtudiant, controller.changePhoneNumber);
 
-router.route('/:id/uploader-fichiers').put(isEtudiant, getEtudiantFromParam, controller.uploadFiles);
+router.route('/uploader-fichiers').put(isEtudiant, getEtudiant, controller.uploadFiles);
 
-router.route('/:id/update-photo').put(isEtudiant, getEtudiantFromParam, controller.updatePhoto)
+router.route('/update-photo').put(isEtudiant, getEtudiant, controller.updatePhoto)
 
-router.route('/:id/etapes-dossier').get(isEtudiant, getEtudiantFromParam, controller.etapesDossier);
+router.route('/etapes-dossier').get(isEtudiant, getEtudiant, controller.etapesDossier);
 
-router.route('/:id/peut-uploader').get(isEtudiant, getEtudiantFromParam, controller.peutUploaderDossier);
+router.route('/peut-uploader').get(isEtudiant, getEtudiant, controller.peutUploaderDossier);
 
-router.route('/:id/reinitialiser').put(isEtudiant, getEtudiantFromParam, controller.reinitialiser);
+router.route('/reinitialiser').put(isEtudiant, getEtudiant, controller.reinitialiser);
+
+router.route('/:id/set-juges').put(getEtudiantFromParam, controller.setJuges);
 
 router.route('/:id').get(getEtudiantFromParam, controller.getOne).delete(controller.delete);
 

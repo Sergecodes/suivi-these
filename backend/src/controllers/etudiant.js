@@ -20,6 +20,13 @@ exports.getOne = function (req, res) {
 	res.json(etudiant);
 }
 
+exports.notifications = async function (req, res) {
+   let { etudiant } = res.locals;
+   await etudiant.populate('notifications');
+   res.json({ notifs: etudiant.notifications });
+}
+
+
 exports.delete = function (req, res) {
 	Etudiant.findByIdAndRemove(req.params.id, (err, doc) => {
 		if (!doc) {
@@ -119,14 +126,19 @@ exports.login_student = async function (req, res) {
          email,
          niveau,
          matricule: matricule.toUpperCase()
+      })
+      .populate('encadreur', 'departement')
+      .populate({
+         path: 'departement',
+         populate: {
+            path: 'uniteRecherche'
+         }
       });
-      console.log(req.body);
-      console.log(await Etudiant.find({}));
 
       if (!etudiant) { return res.status(404).send("User Not found") };
-      console.log("to validate");
+      console.log("to validate password");
 
-      bcrypt.compare(motDePasse, etudiant.motDePasse, function (err, result) {
+      bcrypt.compare(motDePasse, etudiant.motDePasse, async function (err, result) {
          if (err) {
             console.log("une erreur interne est suvenue: ", err);
             return res.status(500).json({
@@ -155,6 +167,17 @@ exports.login_student = async function (req, res) {
    } catch (error) {
       res.status(500).send(error);
    }
+}
+
+exports.setJuges = async function (req, res) {
+   const { etudiant } = res.locals;
+   if (etudiant.niveau !== Types.Niveau.MASTER) {
+      return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
+   }
+
+   etudiant.juges = req.body.juges;
+   await etudiant.save();
+   res.send("Succes");
 }
 
 exports.change_student_password = async function (req, res) {
@@ -191,7 +214,6 @@ exports.change_student_password = async function (req, res) {
       res.status(500).send("Something went wrong")
    }
 }
-
 
 exports.changeEmail = function (req, res) {
    const { newEmail } = req.body;
@@ -561,7 +583,7 @@ exports.etapesDossier = async function (req, res) {
 
 exports.peutUploaderDossier = async function (req, res) {
    const { etudiant } = res.locals;
-   res.send({ peutUploade: await etudiant.peutUploader });
+   res.json({ peutUploader: await etudiant.peutUploader() });
 }
 
 
