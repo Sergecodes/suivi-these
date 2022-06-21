@@ -27,11 +27,11 @@ router.route('/verifier-dossier-note').get(
    controller.verifierNoterDossier
 );
 
-router.route('/notifications').get(isJury, controller.notifications);
+router.route('/notifications').get(isJury, getJury, controller.notifications);
 
-router.route('/change-password').put(isJury, controller.change_jury_pass);
+router.route('/change-password').put(isJury, getJury, controller.change_jury_pass);
 
-router.route('/change-number').put(isJury, controller.changePhoneNumber);
+router.route('/change-number').put(isJury, getJury, controller.changePhoneNumber);
 
 router.route('/verifier-avis-donne').get(
    isJury, 
