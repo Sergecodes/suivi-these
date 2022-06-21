@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import StudentDashboard from '../components/pageEtudiant/StudentDashboard';
 import "../components/pageEtudiant/etudiant.css";
 import NavbarEtudiant from '../components/pageEtudiant/NavbarEtudiant';
@@ -11,11 +11,13 @@ import EtudiantConnexionScreen from '../screen/inscriptionScreens/EtudiantConnex
 
 const Etudiant = () => {
   const navigate = useNavigate();
-  const dispatch=useDispatch();
-  const files=useSelector(state=>state.dashboardDisplay);
-  const handeClick=()=>{
-    if( files.clicked===true){
-      dispatch(setClicked())
+  const dispatch=  useDispatch();
+  const files = useSelector(state => state.dashboardDisplay);
+  const [isAuth, setIsAuth] = useState(false);
+
+  const handeClick = () => {
+    if(files.clicked === true) {
+      dispatch(setClicked());
     }
   }
 
@@ -29,17 +31,20 @@ const Etudiant = () => {
   //   return <EtudiantConnexionScreen />;
   // }
 
-  // useEffect(() => {
-  //   console.log(localStorage);
-  //   const actor = localStorage.getItem("actor");
+  useEffect(() => {
+    console.log(localStorage);
+    const actor = localStorage.getItem("actor");
 
-  //   if (actor !== 'etudiant') {
-  //     alert("Not authenticated");
-  //     navigate("/connexion/etudiant", { replace: true });
-  //   }
-  // }, []);
+    if (actor !== 'etudiant') {
+      console.log("Not authenticated");
+      navigate("/connexion/etudiant");
+      // navigate("/connexion/etudiant", { replace: true });
+    } else {
+      setIsAuth(true);
+    }
+  }, []);
 
-  return (
+  return isAuth && (
     <section className="d-flex" >
       <StudentDashboard />
       <div className="studentContent" onClick={handeClick}>

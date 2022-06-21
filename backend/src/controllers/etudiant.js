@@ -215,7 +215,6 @@ exports.change_student_password = async function (req, res) {
    }
 }
 
-
 exports.changeEmail = function (req, res) {
    const { newEmail } = req.body;
    const { etudiant } = res.locals;
@@ -584,7 +583,7 @@ exports.etapesDossier = async function (req, res) {
 
 exports.peutUploaderDossier = async function (req, res) {
    const { etudiant } = res.locals;
-   res.send({ peutUploade: await etudiant.peutUploader });
+   res.json({ peutUploader: await etudiant.peutUploader() });
 }
 
 

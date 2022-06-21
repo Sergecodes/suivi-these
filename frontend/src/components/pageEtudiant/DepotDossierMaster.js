@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Steps, Button, message } from "antd";
+import { useState, useEffect } from "react";
+import { Steps, Button, message, Result } from "antd";
 import FirstStep from "./EtapesMaster/FirstStep";
 import SecondStep from "./EtapesMaster/SecondStep";
 import ThirdStep from "./EtapesMaster/ThirdStep";
@@ -13,6 +13,19 @@ const { Step } = Steps;
 const DepotDossierMaster = () => {
   const [current, setCurrent] = useState(0);
   const files = useSelector(state=>state.masterFilesUpload);
+  const [canUpload, setCanUpload] = useState(false);
+
+  // Verifier si l'etudiant peut uploader
+  useEffect(() => {
+    axios.get('/etudiants/peut-uploader')
+      .then(res => {
+        console.log(res);
+        setCanUpload(res.data.peutUploader);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }, []);
 
   const steps = [
     {
@@ -81,7 +94,7 @@ const DepotDossierMaster = () => {
     else if(prop==="cv" ) return CategorieFichierMaster.CV
   }
 
-  const handleSubmit= () =>{
+  const handleSubmit= () => {
     console.log(files);
     if(verification()){
       var formData = new FormData();
@@ -105,61 +118,68 @@ const DepotDossierMaster = () => {
     else{
       message.error("un ou plusieurs fichiers manquants");
     }
-   
-
   }
 
-  return (
-    <section className="depotDossier pt-4">
-      <Steps
-        progressDot
-        className="d-none d-sm-flex"
-        current={current}
-        size="small"
-        style={{ width: "88%" }}
-      >
-        {steps.map((item) => (
-          <Step
-            className=""
-            key={item.title}
-            title={item.title}
-            style={{ width: "70px", margin: "0px 15px", padding: "0px" }}
-          />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[current].content}</div>
-
-      <div className="steps-action d-flex justify-content-around my-5">
-        {current > 0 && (
-          <Button
-            style={{
-              border: "1px solid var(--primaryColor)",
-              color: "var(--primaryColor)",
-              margin: "0 8px",
-            }}
-            onClick={() => prev()}
+  const getReturnOutput = () => {
+    if (canUpload) {
+      return (
+        <section className="depotDossier pt-4">
+          <Steps
+            progressDot
+            className="d-none d-sm-flex"
+            current={current}
+            size="small"
+            style={{ width: "88%" }}
           >
-            Précédent
-          </Button>
-        )}
+            {steps.map((item) => (
+              <Step
+                className=""
+                key={item.title}
+                title={item.title}
+                style={{ width: "70px", margin: "0px 15px", padding: "0px" }}
+              />
+            ))}
+          </Steps>
+          <div className="steps-content">{steps[current].content}</div>
 
-        {current === steps.length - 1 && (
-          <Button
-            type="primary"
-            className="buttonSuivant"
-            onClick={handleSubmit}
-          >
-            Envoyer
-          </Button>
-        )}
-        {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
-            Suivant
-          </Button>
-        )}
-      </div>
-    </section>
-  );
+          <div className="steps-action d-flex justify-content-around my-5">
+            {current > 0 && (
+              <Button
+                style={{
+                  border: "1px solid var(--primaryColor)",
+                  color: "var(--primaryColor)",
+                  margin: "0 8px",
+                }}
+                onClick={() => prev()}
+              >
+                Précédent
+              </Button>
+            )}
+
+            {current === steps.length - 1 && (
+              <Button
+                type="primary"
+                className="buttonSuivant"
+                onClick={handleSubmit}
+              >
+                Envoyer
+              </Button>
+            )}
+            {current < steps.length - 1 && (
+              <Button type="primary" onClick={() => next()}>
+                Suivant
+              </Button>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    return <Result title="Vous avez deja uploadé votre dossier!" />;
+  }
+
+  return getReturnOutput();
 };
+
 
 export default DepotDossierMaster;
