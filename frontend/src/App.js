@@ -7,7 +7,7 @@ import Accueil from "./screen/Accueil";
     /**************************************************************************************************/
 
     /*************************************page soutenance************************************/
-//import Soutenance from "./screen/Soutenance";
+import Soutenance from "./screen/Soutenance";
     /**************************************************************************************************/
 
     
@@ -41,7 +41,7 @@ import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexi
 
 
     /************************************************page etudiant************************************/
-/**/import Etudiant from "./screen/Etudiant";
+import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
@@ -112,25 +112,17 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil isLogin={isLogin} />}/>
-
-          { /**     
+          <Route path="/" element={<Accueil isLogin={isLogin} />} />
           <Route
             path="/soutenance"
             element={<Soutenance isLogin={isLogin} />}
-          />*/ }
-            
+          /> 
 
-          {
-            /** 
-             * */ }<Route path="/account" element={<Etudiant />}>
+          <Route path="/account" element={<Etudiant />}>
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
-          </Route>
-           
-           
-         
+          </Route>        
 
           { /*<Route path="/acteur/jury" element={<Jury />}>
 
