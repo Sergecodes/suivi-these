@@ -20,6 +20,13 @@ exports.getOne = function (req, res) {
 	res.json(etudiant);
 }
 
+exports.notifications = async function (req, res) {
+   let { etudiant } = res.locals;
+   await etudiant.populate('notifications');
+   res.json({ notifs: etudiant.notifications });
+}
+
+
 exports.delete = function (req, res) {
 	Etudiant.findByIdAndRemove(req.params.id, (err, doc) => {
 		if (!doc) {

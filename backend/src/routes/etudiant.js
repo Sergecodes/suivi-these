@@ -11,6 +11,8 @@ router.route('/login').post(controller.login_student);
 
 router.route('/register').post(controller.register);
 
+router.route('/notifications').get(isEtudiant, getEtudiant, controller.notifications);
+
 router.route('/dates-soutenance').get(controller.datesSoutenance);
 
 router.route('/:id/change-email').put(isEtudiant, getEtudiantFromParam, controller.changeEmail);
