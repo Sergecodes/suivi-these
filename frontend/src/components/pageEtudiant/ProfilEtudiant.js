@@ -9,12 +9,13 @@ const StudentProfile = () => {
   const [tel,setTel]=useState(EtudiantData[0].numTelephone);
   const [newPassword, setNewPassword]=useState("");
   const [confirmPassword, setConfirmPassword]= useState("");
-  const [modification,setModification]=useState(false)
+  const [modification,setModification]=useState(false);
+  const etudiant = JSON.parse(localStorage.getItem('user'));
 
   return (
     <section className="mx-3 mt-3 mb-5">
         <div className="ModifiedProfileImg  align-items-center " style={modification===false?{display:"flex"}:{display:"none"}}>
-            <img src={EtudiantData[0].urlPhotoProfil } alt="#" className=""></img>
+            <img src={etudiant.urlPhotoProfil } alt="#" className=""></img>
             <p className="fs-6 fw-lighter ms-2">
                 Cliquez sur modifier pour pouvoir modifier votre photo de profil
             </p>
