@@ -64,6 +64,8 @@ exports.register_jury = function (req, res) {
 
 
 exports.login_jury = async function (req, res) {
+   console.log(req.session);
+   console.log(req.headers);
    try {
       const { email, motDePasse } = req.body;
       let jury = await Jury.findOne({ email });

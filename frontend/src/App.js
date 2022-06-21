@@ -33,7 +33,7 @@ import Accueil from "./screen/Accueil";
 // import CoordonateurInscriptionScreen from "./screen/inscriptionScreens/CoordonateurConnexionScreen.js";
 //import EtudiantInscriptionScreen from "./screen/inscriptionScreens/etudiantInscriptionScreen.js";
 // import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
-// import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
+ import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 // import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
 //import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 // import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
@@ -41,10 +41,10 @@ import Accueil from "./screen/Accueil";
 
 
     /************************************************page etudiant************************************/
-/*import Etudiant from "./screen/Etudiant";
+import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
-import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";*/
+import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
     /**************************************************************************************************/
 
     /************************************************page expert************************************/
@@ -123,13 +123,13 @@ const App = () => {
 
           {
             /** 
-             * <Route path="/account" element={<Etudiant />}>
+             *  */ }<Route path="/account" element={<Etudiant />}>
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
           </Route>
            
-           */ }
+          
          
 
           { /**/}<Route path="/acteur/jury" element={<Jury />}>
@@ -245,6 +245,10 @@ const App = () => {
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
           ></Route>*/}
+           <Route
+            path="/connexion/jury"
+            element={<JuryInscriptionScreen />}
+          ></Route>
           { /*
           <Route
             path="/connexion/rectorat"
