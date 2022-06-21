@@ -37,7 +37,7 @@ export const registerEtudiant = createAsyncThunk(
 
       localStorage.setItem("etudiantInfos", JSON.stringify(value.data));
       alert(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      return JSON.stringify(JSON.stringify(value.data));
     } catch (err) {
       console.log(err.response.data);
       return rejectWithValue(err.response.data);
@@ -63,7 +63,6 @@ export const registerEtudiantSlice = createSlice({
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
-
       state.message = "";
     },
   },
@@ -74,23 +73,19 @@ export const registerEtudiantSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(registerEtudiant.fulfilled, (state, action) => {
-        // console.log("login fulfilled");
+        console.log("login fulfilled");
         state.isSuccess = true;
         state.etudiant = action.payload;
         state.isLoading = false;
-
-        console.log("je suis dans le isloading");
-
-        state.isRejected = true;
+        state.isRejected = false;
         // state.message = action.payload.data.message;
         return state;
       })
       .addCase(registerEtudiant.rejected, (state, action) => {
-        // console.log("login rejected");
+        console.log("login rejected");
         state.isLoading = false;
         state.etudiant = null;
         state.isRejected = true;
-
         state.isError = true;
         state.message = action.payload;
       });
