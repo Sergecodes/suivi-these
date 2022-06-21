@@ -10,10 +10,6 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getDepartement, controller.getOne);
 
-router.route('/:id/juries').get(controller.getJuries);
-
-router.route('/:id').get(getDepartementFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/register').post(isAdmin, controller.register_departement)
 
 router.route('/login').post(controller.login_departement);
@@ -52,6 +48,9 @@ router.route('/donner-avis-admin').post(
    controller.donnerAvisAdmin
 );
 
+router.route('/:id/juries').get(controller.getJuries);
+
+router.route('/:id').get(getDepartementFromParam, controller.getOne).delete(controller.delete);
 
 
 

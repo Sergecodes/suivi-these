@@ -10,8 +10,6 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getExpert, controller.getOne);
 
-router.route('/:id').get(getExpertFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/register').post(isAdmin, controller.register_expert);
 
 router.route('/login').post(controller.login_expert);
@@ -37,6 +35,8 @@ router.route('/donner-avis-admin').post(
    getExpert, 
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getExpertFromParam, controller.getOne).delete(controller.delete);
 
 
 module.exports = router;

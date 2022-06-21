@@ -10,8 +10,6 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getRectorat, controller.getOne);
 
-router.route('/:id').get(getRectoratFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/login').post(controller.login_rectorat);
 
 router.route('/register').post(controller.register_rectorat);
@@ -49,6 +47,8 @@ router.route('/donner-avis-admin').post(
    getRectorat,
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getRectoratFromParam, controller.getOne).delete(controller.delete);
 
 
 module.exports = router;
