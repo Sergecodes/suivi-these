@@ -127,11 +127,13 @@ exports.login_student = async function (req, res) {
          niveau,
          matricule: matricule.toUpperCase()
       })
-      .populate('encadreur', 'departement')
+      .populate('encadreur', '-motDePasse')
       .populate({
          path: 'departement',
+         select: '-motDePasse',
          populate: {
-            path: 'uniteRecherche'
+            path: 'uniteRecherche',
+            select: '-motDePasse'
          }
       });
 
