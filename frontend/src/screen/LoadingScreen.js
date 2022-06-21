@@ -3,8 +3,8 @@ import "../Styles/laoding.css";
 function LoadingScreen() {
   return (
     <div className="body-spiner">
-      <div class="cs-loader">
-        <div class="cs-loader-inner">
+      <div className="cs-loader">
+        <div className="cs-loader-inner">
           <label>●</label>
           <label>●</label>
           <label>●</label>
