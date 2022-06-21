@@ -12,7 +12,7 @@ import Soutenance from "./screen/Soutenance";
 
     
     /********************************************page info ecole doctorale*********************************/
-   /*import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
+   import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
     import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
     import EquipeScreen from "./screen/InfotmationScreens/EquipeScreen";
     import SuivieDeFormation from "./screen/InfotmationScreens/SuivieDeFormation";
@@ -23,7 +23,7 @@ import Soutenance from "./screen/Soutenance";
     import TheseEnCotutelleScreen from "./screen/InfotmationScreens/TheseEnCotutelleScreen";
     import TheseEnCoursScreen from "./screen/InfotmationScreens/TheseEnCoursScreen";
     import UnitesRechercheScreen from "./screen/InfotmationScreens/UnitesRechercheScreen";
-    import ConseilScientifiqueScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/ 
+    import ConseilScientifiqueScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"
     
 /**************************************************************************************************/
 
@@ -113,7 +113,6 @@ const App = () => {
       <div className="App">
         <Routes>
           <Route path="/" element={<Accueil isLogin={isLogin} />} />
-   
           <Route
             path="/soutenance"
             element={<Soutenance isLogin={isLogin} />}
@@ -123,8 +122,7 @@ const App = () => {
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
-          </Route>
-         
+          </Route>        
 
           { /*<Route path="/acteur/jury" element={<Jury />}>
 
@@ -192,6 +190,14 @@ const App = () => {
               </div>
             }
           />
+           <Route
+            path="/inscription/etudiant"
+            element={<EtudiantInscriptionScreen />}
+          ></Route>
+          <Route
+            path="/connexion/etudiant"
+            element={<EtudiantConnexionScreen />}
+          ></Route>
           
 
           {/* Routes pour les coordonateurs
@@ -261,22 +267,23 @@ const App = () => {
             element={<DepartementConnexionScreen />}
           ></Route> */}
         
-          {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
-          <Route path="/candidature" element={<CandidatureScreen />}></Route>
-          <Route path="/document" element={<DocumentImportantScreen />}></Route>
-          <Route path="/equipe" element={<EquipeScreen />}></Route>
-          <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
-          <Route path="/Inscription" element={<InscriptionScreen />}></Route>
-          <Route path="/presentation" element={<Presentation />}></Route>
-          <Route path="/canditature" element={<CandidatureScreen />}></Route>
-          <Route path="/Procedure"  element={<ProceduredeSoutenanceScreen />}
-          ></Route>
-          <Route path="/Suivie" element={<SuivieDeFormation />}></Route>
-          <Route path="/these-cotutelle" element={<TheseEnCotutelleScreen />} ></Route>
-          <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
-          <Route path="/unites-recherche" element={<UnitesRechercheScreen />}></Route>
-          <Route path="/conseil" element={<ConseilScientifiqueScreen />}></Route>
-          <Route path="/document" element={<DocumentImportantScreen />}></Route> */}
+           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres*/}
+           <Route path="/candidature" element={<CandidatureScreen />}></Route>
+            <Route path="/document" element={<DocumentImportantScreen />}></Route>
+            <Route path="/equipe" element={<EquipeScreen />}></Route>
+            <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
+            <Route path="/Inscription" element={<InscriptionScreen />}></Route>
+            <Route path="/presentation" element={<Presentation />}></Route>
+            <Route path="/canditature" element={<CandidatureScreen />}></Route>
+            <Route path="/Procedure"  element={<ProceduredeSoutenanceScreen />}
+            ></Route>
+            <Route path="/Suivie" element={<SuivieDeFormation />}></Route>
+            <Route path="/these-cotutelle" element={<TheseEnCotutelleScreen />} ></Route>
+            <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
+            <Route path="/unites-recherche" element={<UnitesRechercheScreen />}></Route>
+            <Route path="/conseil" element={<ConseilScientifiqueScreen />}></Route>
+            <Route path="/document" element={<DocumentImportantScreen />}></Route> 
+         
         </Routes>
       </div>
     </BrowserRouter>

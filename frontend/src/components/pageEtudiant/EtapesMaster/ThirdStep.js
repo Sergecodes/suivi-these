@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Select} from 'antd'
 /*import {
   addFirstEnseignant,
   addSecondEnseignant,
@@ -10,126 +11,55 @@ const ThirdStep = (props) => {
   //const dispatch = useDispatch();
 
  // const files = useSelector((state) => state.masterFilesUpload);
-  const [enseignant, setEnseignant] = useState({
-    nom: "nom enseignant",
-    prenom: "prenom enseignant",
-    email: "email",
-    telephone: "telephone",
-    grade: "grade",
-  });
-  const [enseignant2, setEnseignant2] = useState({
-    nom: "nom enseignant2",
-    prenom: "prenom enseignant2",
-    email: "email2",
-    telephone: "telephone2",
-    grade: "grade2",
-  });
-  const [enseignant3, setEnseignant3] = useState({
-    nom: "nom enseignant3",
-    prenom: "prenom enseignant3",
-    email: "email3",
-    telephone: "telephone3",
-    grade: "grade3",
-  });
+ const {Option}=Select;
+ const [liste,setListe]=useState(['atangana',"mbarga","serge","loic"])
+ const [choixJury, setChoixJury]= useState([{jury:liste[0]}, {jury:liste[1]!==undefined?liste[1]:liste[0]},{jury:liste[2]!==undefined?liste[2]:liste[0]}]);
 
-  const getEnseignant = () => {
-    if (props.numero === 1) {
-      return enseignant;
-    } else if (props.numero === 2) {
-      return enseignant2;
-    } else if (props.numero === 3) {
-      return enseignant3;
-    }
-  };
+ const handleChange=(value, index)=>{
 
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    if (props.numero === 1) setEnseignant({ ...enseignant, [name]: value });
-    else if (props.numero === 2)
-      setEnseignant2({ ...enseignant, [name]: value });
-    else if (props.numero === 3)
-      setEnseignant3({ ...enseignant, [name]: value });
-  };
+  const newChoix= [...choixJury];
+  newChoix[index].jury=value;
+  setChoixJury(newChoix);
+  let newListe=[...liste];
+  newListe=newListe.filter(elt=>elt!==value);
+  setListe(newListe)
+
+ }
 
 
+ 
   return (
     <section className="mx-3 mt-3 mb-5 step">
       <h2>
         Cette partie consiste à renseigner les informations sur les enseignants
         qui vont faire partie des membres du jury
       </h2>
-
-      <div className="">
-        <p className="fw-bold">Informations sur l'enseignant {props.numero}</p>
-        <form>
-          <div className="profileBlockInfo row">
-            <div className="col-12 col-sm-6">
-              <div className=" ">
-                <p> Nom</p>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={getEnseignant().nom}
-                  name="nom"
-                  onChange={handleChange}
-                ></input>
-              </div>
+      <div className="my-4 d-flex justify-content-around">
+        {
+          choixJury.map((elt,index)=>{
+           return(
+            <div key={index}>
+              <label htmlFor={index} className="me-2 " style={{fontSize:"16px",fontWeight:"500"}}>Informations jury {index +1}: </label>
+              <Select
+                value={elt.jury}
+                style={{
+                  width: 120,
+                }}
+                onChange={(e)=>handleChange(e,index)}
+                name={index}
+              >
+                {
+                  liste.map((elt,index)=>{
+                    return(
+                      <Option key={index} value={elt}>{elt}</Option>
+                    )
+                  })
+                }
+              </Select>
             </div>
-            <div className="col-12 col-sm-6 ">
-              <div className=" ">
-                <p> Prenom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  value={getEnseignant().prenom}
-                  name="prenom"
-                  onChange={handleChange}
-                ></input>
-              </div>
-            </div>
-          </div>
-          <div className="profileBlockInfo row">
-            <div className="col-12 col-sm-6">
-              <div className=" ">
-                <p> Email</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  value={getEnseignant().email}
-                  name="email"
-                  onChange={handleChange}
-                ></input>
-              </div>
-            </div>
-            <div className="col-12 col-sm-6">
-              <div className=" ">
-                <p> Telephone</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  value={getEnseignant().telephone}
-                  name="telephone"
-                  onChange={handleChange}
-                ></input>
-              </div>
-            </div>
-          </div>
-          <div className="profileBlockInfo row">
-            <div className="col-12 col-sm-6">
-              <div className=" ">
-                <p> Grade</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  value={getEnseignant().grade}
-                  name="grade"
-                  onChange={handleChange}
-                ></input>
-              </div>
-            </div>
-          </div>
-        </form>
+           )
+          })
+        }
       </div>
     </section>
   );

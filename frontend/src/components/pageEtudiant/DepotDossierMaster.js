@@ -47,17 +47,7 @@ const DepotDossierMaster = () => {
     {
       title: <p style={current === 2 ? { color: "var(--primaryColor)" } : {}}>Etape 3</p>,
       content: <ThirdStep numero={1} />,
-    },
-
-    {
-      title: <p style={current === 3 ? { color: "var(--primaryColor)" } : {}}>Etape 4</p>,
-      content: <ThirdStep numero={2} />,
-    },
-
-    {
-      title: <p style={current === 4 ? { color: "var(--primaryColor)" } : {}}>Etape 5</p>,
-      content: <ThirdStep numero={3} />,
-    },
+    }
   ];
 
   const next = () => {
