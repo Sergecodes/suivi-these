@@ -27,7 +27,6 @@ router.route('/programmer-date-soutenance-these').post(
    controller.programmerDateSoutenanceThese
 );
 
-
 router.route('/dossiers-etudiants-these').get(
    isRectorat, 
    getRectorat, 

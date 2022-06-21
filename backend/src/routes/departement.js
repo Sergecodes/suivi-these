@@ -28,11 +28,26 @@ router.route('/change-email').put(
 
 router.route('/notifications').get(isDepartement, getDepartement, controller.notifications);
 
-router.route('/dossiers-etudiants-master').get(isDepartement, controller.dossiersEtudsMaster);
+router.route('/dossiers-etudiants-master').get(
+   isDepartement,
+   getDossierFromReq, 
+   getDepartement, 
+   controller.dossiersEtudsMaster
+);
 
-router.route('/valider-dossier').get(isDepartement, controller.validerDossier);
+router.route('/valider-dossier').get(
+   isDepartement, 
+   getDossierFromReq,
+   getDepartement,
+   controller.validerDossier
+);
 
-router.route('/rejeter-dossier').get(isDepartement, controller.rejeterDossier);
+router.route('/rejeter-dossier').get(
+   isDepartement, 
+   getDossierFromReq,
+   getDepartement,
+   controller.rejeterDossier
+);
 
 router.route('/verifier-avis-donne').get(
    isDepartement, 
