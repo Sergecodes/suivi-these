@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { Result } from 'antd';
+import { Button, Result } from 'antd';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -34,60 +33,22 @@ function EtudiantInscriptionScreen() {
   const dispatch = useDispatch();
   const [departements, setDepartements] = useState([]);
   const [encadreurs, setEncadreurs] = useState([]);
+  const [showResult, setShowResult] = useState(false);
   const { isLoading, isSuccess } = useSelector(
     (state) => state.registerEtudiant
   );
-
-  const handleDepartementChange = e => {
-    const departVal = e.target.value;
-    
-    // Mettre a jour la liste des encadreurs
-    let encArr = [];
-    for (let dep of departements) {
-      if (dep._id === departVal) {
-        for (let jury of dep.juries) {
-          encArr.push(jury);
-          // encArr.push({
-          //   id: jury._id,
-          //   nomComplet: jury.nom + ' ' + jury.prenom
-          // });
-        }
-        break;
-      }
-    }
-
-    setUser({ ...user, departement: departVal, encadreur: encArr[0]._id });
-    setEncadreurs(encArr);
-  }
 
   // Obtenir la liste des departements
   useEffect(() => {
     axios.get('/departements')
       .then(res => {
         console.log(res);
-
-        // let depArr = [];
-        // for (let dep of res.data) {
-        //   depArr.push({
-        //     id: dep._id,
-        //     nom: dep.nom
-        //   });
-        // }
-
         let depart1 = res.data[0];
         setDepartements(res.data);
 
-        // Set default encadreurs
-        let encArr = [];
-        for (let jury of depart1.juries) {
-          encArr.push(jury);
-          // encArr.push({
-          //   id: jury._id,
-          //   nomComplet: jury.nom + ' ' + jury.prenom
-          // });
-        }
-        setEncadreurs(encArr);
-        setUser({ ...user, departement: depart1._id, encadreur: encArr[0]._id });
+        let juries1 = depart1.juries;
+        setEncadreurs(juries1);
+        setUser({ ...user, departement: depart1._id, encadreur: juries1[0]._id });
       })
       .catch(err => {
         console.error(err);
@@ -95,11 +56,27 @@ function EtudiantInscriptionScreen() {
   }, []);
 
   useEffect(() => {
-    dispatch(resetRegisterEtudiant());
-  }, [isSuccess, dispatch]);
+    if (isSuccess) {
+      setShowResult(true);
+    }
+  }, [isSuccess]);
 
 
-  const SubmitHandle = (e) => {
+  const handleDepartementChange = e => {
+    const departVal = e.target.value;
+    
+    // Mettre a jour la liste des encadreurs
+    for (let dep of departements) {
+      if (dep._id === departVal) {
+        let juries = dep.juries;
+        setEncadreurs(juries);
+        setUser({ ...user, departement: departVal, encadreur: juries[0]._id });
+        break;
+      }
+    }
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
@@ -128,11 +105,17 @@ function EtudiantInscriptionScreen() {
     }
   };
 
+  const handleResultClick = () => {
+    setShowResult(false);
+    dispatch(resetRegisterEtudiant());
+  }
+
   const getReturnOutput = () => {
     console.log("in getReturnOutput()");
-    if (isLoading) {
+
+    if (isLoading && !showResult) {
       return <LoadingScreen />;
-    } else if (!isSuccess) {
+    } else if (!isSuccess && !showResult) {
       return (
         <>
           <div className="form-etudiant-container">
@@ -358,7 +341,7 @@ function EtudiantInscriptionScreen() {
                           type="submit"
                           id="btn-color-orange"
                           // style={{ marginTop: "5px" }}
-                          onClick={SubmitHandle}
+                          onClick={handleSubmit}
                         >
                           S'inscrire
                         </button>
@@ -373,9 +356,21 @@ function EtudiantInscriptionScreen() {
           <ToastContainer />
         </>
       );
-    } else if (isSuccess) {
+    } else if (showResult) {
       console.log("in is success")
-      return <Result status="success" title="Demande d'ouverture de compte envoye!" />;
+      return (
+        <Result 
+          status="success" 
+          title="Demande de création de compte envoyée!" 
+          subTitle={`
+            Vous recevrez un email dès que votre compte sera crée. \n
+            N'oubliez pas votre mot de passe.
+          `}
+          extra={
+            <Button type="primary" key="ok" onClick={handleResultClick}>OK</Button>
+          }
+        />
+      );
     }
   }
 
