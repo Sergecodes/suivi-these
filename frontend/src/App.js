@@ -77,7 +77,7 @@ import Jury from "./screen/Jury";
 import NotationMaster from "./components/pageJury/NotationMaster";
 import ProfilJury from "./components/pageJury/ProfilJury";
 import NotificationJury from "./components/pageJury/NotificationJury";
-import TableList from "./components/pageJury/TableList";
+import DashboardJury from "./components/pageJury/DashboardJury";
     /**************************************************************************************************/
 
     /************************************************page admin************************************/
@@ -134,7 +134,7 @@ const App = () => {
 
           { /**/}<Route path="/acteur/jury" element={<Jury />}>
 
-            <Route path="/acteur/jury/dashboard" element={<TableList />} />
+            <Route path="/acteur/jury/dashboard" element={<DashboardJury />} />
             <Route path="/acteur/jury/notation" element={<NotationMaster />} />
             <Route path="/acteur/jury/profil" element={<ProfilJury />} />
             <Route

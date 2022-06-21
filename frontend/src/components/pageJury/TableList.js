@@ -9,7 +9,7 @@ const columns = [
   {
     title: "Photo ",
     dataIndex: "photo",
-    align:"center"
+    align: "center",
   },
   {
     title: "Matricule",
@@ -17,7 +17,7 @@ const columns = [
     sorter: {
       compare: (a, b) => a.matricule.localeCompare(b.matricule),
     },
-    align:'center'
+    align: "center",
   },
   {
     title: "Nom et Prenom",
@@ -25,7 +25,7 @@ const columns = [
     sorter: {
       compare: (a, b) => a.name.localeCompare(b.name),
     },
-    align:"center"
+    align: "center",
   },
   {
     title: "Date Envoi",
@@ -34,7 +34,7 @@ const columns = [
       compare: (a, b) =>
         moment(a.dateEnvoi).unix() - moment(b.dateEnvoi).unix(),
     },
-    align:"center"
+    align: "center",
   },
   {
     title: "Date Notation",
@@ -43,16 +43,16 @@ const columns = [
       compare: (a, b) =>
         moment(a.dateEnvoi).unix() - moment(b.dateEnvoi).unix(),
     },
-    align:"center"
+    align: "center",
   },
   {
     title: <div>Statut</div>,
     render: (record) => {
-      console.log(record)
+      console.log(record);
       return (
-        <div >
-         <div style={record.dateNotation!=="---"?{display:"none"}:{}}>
-          <Link to="/acteur/jury/notation">
+        <div>
+          <div style={record.dateNotation !== "---" ? { display: "none" } : {}}>
+            <Link to="/acteur/jury/notation">
               <button
                 type="button"
                 className="btn py-1"
@@ -66,7 +66,7 @@ const columns = [
               </button>
             </Link>
           </div>
-          <div style={record.dateNotation==="---"?{display:"none"}:{}}>
+          <div style={record.dateNotation === "---" ? { display: "none" } : {}}>
             <Link to="/acteur/jury/notation">
               <button
                 type="button"
@@ -100,7 +100,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
@@ -115,7 +115,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
@@ -130,7 +130,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
@@ -145,7 +145,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
@@ -160,7 +160,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
@@ -175,7 +175,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
@@ -190,7 +190,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
@@ -205,7 +205,7 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
@@ -220,12 +220,11 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule:"19M2214",
+    matricule: "19M2214",
     name: "Nchouwet Mfouapon Kuntz Stephane",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
   },
- 
 ];
 
 /*function onChange(pagination, filters, sorter, extra) {
@@ -235,6 +234,11 @@ const data = [
 const TableList = () => {
   return (
     <div className=" mx-3 my-3" style={{ overflow: "scroll" }}>
+      <div style={{backgroundColor: "#2a1c5a",borderRadius:"10px" }}>
+        <h5  className="text-center py-3" style={{color:"white"}}>
+          LISTE DES DOSSIERS ETUDIANTS
+        </h5>
+      </div>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
     </div>
   );
