@@ -72,10 +72,10 @@ DossierSchema.pre('remove', function(next) {
 });
 
 
-DossierSchema.virtual('etapeActuelle').get(async function() {
+DossierSchema.methods.getEtapeActuelle = async function() {
     await this.populate('etapes');
     return this.etapes.at(-1);
-});
+};
 
 
 DossierSchema.methods.incrementerEtape = async function() {

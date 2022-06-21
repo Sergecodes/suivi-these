@@ -78,9 +78,10 @@ export const authCoordonateurSlice = createSlice({
           state.coordonateur = action.payload;
 
           localStorage.setItem(
-            "coordonateurtInfo",
+            "user",
             JSON.stringify(JSON.parse(action.payload))
           );
+          localStorage.setItem('actor', 'coordonateur'); 
         } else {
           console.log("je suis danss le rejected");
           state.isSuccess = false;

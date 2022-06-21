@@ -26,13 +26,13 @@ export const login = createAsyncThunk(
           email: data.email
         }
       );
-      localStorage.setItem("etudiantInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'etudiant');
       // console.log(data);
-      alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      return JSON.stringify(value.data);
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err.response);
       return rejectWithValue(err.response.data);
     }
   }
@@ -50,7 +50,8 @@ export const authSlice = createSlice({
       state.isRejected = false;
     },
     logout: (state) => {
-      localStorage.removeItem("etudiantInfos");
+      localStorage.removeItem("user");
+      localStorage.removeItem('actor');
       state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
