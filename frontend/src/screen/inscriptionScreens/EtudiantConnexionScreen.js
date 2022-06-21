@@ -4,6 +4,9 @@ import { login, reset } from "../../redux/authentification/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingScreen from "../LoadingScreen.js";
+import "../../Styles/AdminConnexionScreen.css"
+import "../../Styles/Connexion.css"
+import "react-toastify/dist/ReactToastify.css";
 
 
 function EtudiantConnexionScreen() {
