@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { EtudiantData } from "../../constants/EtudiantData";
 import { BsFolder, BsPerson, BsArrowRepeat } from "react-icons/bs";
@@ -8,8 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setClicked } from "../../redux/DashboardDisplaySlice";
 import { ImCross } from "react-icons/im";
-import {  logout } from "../../redux/authentification/authSlice";
+import { logout } from "../../redux/authentification/authSlice";
 import { toast } from "react-toastify";
+import axios from 'axios';
 
 
 const StudentDashboard = (props) => {
@@ -17,7 +18,9 @@ const StudentDashboard = (props) => {
   const files = useSelector((state) => state.dashboardDisplay);
   const { width } = useWindowSize();
   const navigate = useNavigate();
-  const handleLougout = () => {
+  const etudiant = JSON.parse(localStorage.getItem('user'));
+
+  const handleLogout = () => {
     toast.success("Deconnexion Reussie");
     alert("Deconnexion Reussie");
 
@@ -46,21 +49,21 @@ const StudentDashboard = (props) => {
         <div className="d-flex justify-content-center">
           <img
             className="studentPicture"
-            src={EtudiantData[0].urlPhotoProfil}
+            src={etudiant.urlPhotoProfil}
             alt=""
           />
        
       </div>
       <div className="studentInfo" style={{ lineHeight: "1.4" }}>
           <p className="fs-6" style={{}}>
-            {EtudiantData[0].nom}
+            {etudiant.nom}
           </p>
           <p className="fs-6" style={{}}>
-            {EtudiantData[0].prenom}
+            {etudiant.prenom}
           </p>
-          <p>Niveau: {EtudiantData[0].niveau}</p>
+          <p>Niveau: {etudiant.niveau}</p>
           <p className="fw-light" style={{}}>
-            Unité: {EtudiantData[0].uniteRecherche.code}
+            Unité: {etudiant.departement.uniteRecherche.code}
           </p>
         </div>
       <div className="dashboardLinks mt-4">
@@ -102,7 +105,7 @@ const StudentDashboard = (props) => {
           </Link>
           <Link to="/*">
             <p>
-              <FiLogOut onClick={()=>handleLougout()} /> Deconnexion
+              <FiLogOut onClick={()=>handleLogout()} /> Deconnexion
             </p>
           </Link>
         </div>
@@ -112,3 +115,4 @@ const StudentDashboard = (props) => {
 };
 
 export default StudentDashboard;
+
