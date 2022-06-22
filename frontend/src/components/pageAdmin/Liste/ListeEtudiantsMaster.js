@@ -38,13 +38,13 @@ const columns = [
       compare: (a, b) =>
         moment(a.dateCreation).unix() - moment(b.dateCreation).unix(),
     },
-  }
+  },
 ];
 var today = new Date();
 
 const data = [
   {
-    key:"1",
+    key: "1",
     matricule: "19M2216",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
@@ -52,7 +52,7 @@ const data = [
     dateCreation: today.toLocaleString("en-US"),
   },
   {
-    key:"2",
+    key: "2",
     matricule: "19M2217",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
@@ -60,7 +60,7 @@ const data = [
     dateCreation: today.toLocaleString("en-US"),
   },
   {
-    key:"3",
+    key: "3",
     matricule: "19M2218",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
@@ -74,9 +74,7 @@ const ListeEtudiantsMaster = () => {
     <div className=" mx-3 my-3">
       <div className="tableTitleDisplay">
         <h5>MASTER</h5>
-        <p>
-          Liste des étudiants en master
-        </p>
+        <p>Liste des étudiants en master</p>
       </div>
       <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
     </div>
