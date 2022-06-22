@@ -94,7 +94,7 @@ exports.login_departement = async function(req,res){
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data: nouveauPassword(departement.toJSON())
+					data: removePassword(departement.toJSON())
 				});
 			}
 		})
