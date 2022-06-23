@@ -23,8 +23,102 @@ LE DOCTORAT
 DIVERS
 - Documents importants
 
+import React, { useState } from "react";
+import {Select} from 'antd'
 
-## API INTEGRATION 
-# ETUDIANT:
-- page inscription: filter encadreur(jury) list on select of departement
+const { Option } = Select;
+
+const ThirdStep = (props) => {
+   const getNextListe = (curListe) => {
+      return curListe.slice(1);
+   }
+
+   const allJuries = [
+      { idx: 0, id: 'adf', nom: 'atangana', prenom: 'atangano' }, 
+      { idx: 1, id: 'aadfv', nom: 'mbarga', prenom: 'mbarga' }, 
+      { idx: 2, id: 'tdg', nom: 'loic', prenom: 'loic' },
+      { idx: 3, id: 'ave', nom: 'serge', prenom: 'serge'}
+   ];
+   const [listeJuries1, setListeJuries1] = useState(allJuries.slice());
+   const [listeJuries2, setListeJuries2] = useState(allJuries.slice(1));
+   const [listeJuries3, setListeJuries3] = useState(allJuries.slice(2));
+   // const [listeJuries2, setListeJuries2] = useState(getNextListe(listeJuries1));
+   // const [listeJuries3, setListeJuries3] = useState(getNextListe(listeJuries2));
+   console.log(listeJuries1);
+   console.log(listeJuries2);
+   console.log(listeJuries3);
+
+   /**
+    * Swap the first element of `list` with `index`
+    */
+   const swapFirstElement = (list, index) => {
+      const item = list[index];
+      list[index] = list[0];
+      list[0] = item;
+      return list;
+   }
+
+   const handleChange = (value, option, index) => {
+      console.log(value);
+      console.log(option);
+      console.log(index);
+
+      const curJury = option.jury;
+      const idxJury = curJury.idx;
+
+      // Si la premiere liste a ete modifie
+      if (index === 0) {
+         setListeJuries1(swapFirstElement(listeJuries1, idxJury));
+         setListeJuries2(listeJuries2.filter(jury => jury.id !== curJury.id));
+         setListeJuries3(listeJuries3.filter(jury => jury.id !== curJury.id));
+      } else if (index === 1) {
+         setListeJuries2(swapFirstElement(listeJuries1.slice(1), idxJury));
+         setListeJuries1(listeJuries1.filter(jury => jury.id !== curJury.id));
+         setListeJuries3(listeJuries3.filter(jury => jury.id !== curJury.id));
+      } else if (index === 2) {
+         setListeJuries3(swapFirstElement(listeJuries2.slice(1), idxJury));
+         setListeJuries1(listeJuries1.filter(jury => jury.id !== curJury.id));
+         setListeJuries2(listeJuries2.filter(jury => jury.id !== curJury.id));
+      }
+
+   }
+
+  return (
+    <section className="mx-3 mt-3 mb-5 step">
+      <h2>
+        Cette partie consiste à renseigner les informations sur les enseignants
+        qui vont faire partie des membres du jury
+      </h2>
+      <div className="my-4 d-flex justify-content-around">
+        {
+          [listeJuries1, listeJuries2, listeJuries3].map((liste, index) => {
+           return (
+            <div key={index}>
+              <label htmlFor={index} className="me-2" style={{ fontSize:"16px", fontWeight:"500" }}>
+                Informations jury {index + 1}: 
+              </label>
+              <Select
+                style={{ width: 120, }}
+                defaultValue={liste[0].nom + ' ' + liste[0].prenom}
+                onChange={(value, option) => handleChange(value, option, index)}
+                name={index}
+              >
+                {liste.map((elt, index) => 
+                 (
+                   <Option key={elt.id} value={elt.id} jury={elt}>
+                     {elt.nom + ' ' + elt.prenom}
+                  </Option>
+                 )
+               )}
+              </Select>
+            </div>
+           )
+          })
+        }
+      </div>
+    </section>
+  );
+};
+
+export default ThirdStep;
 

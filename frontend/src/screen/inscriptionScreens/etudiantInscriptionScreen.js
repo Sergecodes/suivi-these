@@ -3,7 +3,7 @@ import { Button, Result } from 'antd';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import {
   registerEtudiant,
   resetRegisterEtudiant,
@@ -118,6 +118,7 @@ function EtudiantInscriptionScreen() {
     } else if (!isSuccess && !showResult) {
       return (
         <>
+          <ToastContainer />
           <div className="form-etudiant-container">
             <div
               className="container"
@@ -353,7 +354,6 @@ function EtudiantInscriptionScreen() {
               </div>
             </div>
           </div>
-          <ToastContainer />
         </>
       );
     } else if (showResult) {

@@ -29,10 +29,9 @@ TODO:
 
     - seems mongoose virtual get & set do not support async functions. so use methods instead
     (OR use exec() OR use callbacks within the functions that are within the virtuals)
-    - add endpoints getJuries, getExperts & getEtudiantJuries to Departement
 
-    - add method to verify if user can update dossier. call this method 
-    before updating dossier
+    - add method to verify if user can upload dossier. call this method 
+    before uploading dossier
     - add required for refPath attributes ?
     - prevent server from crashing when error
     - use callbacks ... where necessary, also improve queries
