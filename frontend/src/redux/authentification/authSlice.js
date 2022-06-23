@@ -26,12 +26,13 @@ export const login = createAsyncThunk(
           email: data.email
         }
       );
+      console.log(value)
 
       // console.log(data);
       console.log(JSON.stringify(value.data));
       return value.data.data;
     } catch (err) {
-      console.error(err.response);
+      console.error(err);
       return rejectWithValue(err.response.data);
     }
   }

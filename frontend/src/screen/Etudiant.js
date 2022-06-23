@@ -33,12 +33,10 @@ const Etudiant = () => {
 
   useEffect(() => {
     console.log(localStorage);
-    const actor = localStorage.getItem("actor");
 
     if (actor !== 'etudiant') {
       console.log("Not authenticated");
       navigate("/connexion/etudiant");
-      // navigate("/connexion/etudiant", { replace: true });
     } else {
       setIsAuth(true);
     }

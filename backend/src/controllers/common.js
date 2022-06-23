@@ -5,6 +5,7 @@ exports.logout = function (req, res) {
     if (req.session)
         req.session.destroy();
 
+    console.log(req.session);
     res.send("Logged out");
 }
 

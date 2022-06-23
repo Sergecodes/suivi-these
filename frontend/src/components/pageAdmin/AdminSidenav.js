@@ -5,17 +5,33 @@ import SidenavTitle from '../common/sidenav/SidenavTitle';
 import { Link } from 'react-router-dom';
 import {MdDashboard} from "react-icons/md";
 import {BsPersonCircle, BsPersonFill,BsPersonPlusFill,BsFillFileEarmarkSpreadsheetFill} from "react-icons/bs";
+import {FaArrowRight} from "react-icons/fa"
 import {MdComputer} from "react-icons/md";
-
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 import {ImHammer2} from "react-icons/im";
-
 import {JuryData} from "../../constants/Constant";
 import {  useSelector } from "react-redux";
 
 
 const AdminSidenav = () => {
     const files = useSelector((state) => state.dashboardDisplay);
+    const navigate = useNavigate();
     const display=files.adminClicked;
+
+    const handleLogout = () => {
+        axios.post('/logout')
+          .then(res => {
+            console.log(res);
+            localStorage.removeItem("user");
+            localStorage.removeItem('actor');
+            navigate('/');
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+
   return (
     <Sidenav  acteur="ADMIN" nom={JuryData.nom} prenom={JuryData.prenom} display={display}>
         <SidenavTitle titre="">
@@ -41,6 +57,14 @@ const AdminSidenav = () => {
             </SidenavItem>
             <SidenavItem>
                 <Link to="/acteur/admin/liste-coordo"><BsPersonCircle className="me-3"/> LISTE COORDONATEURS</Link>
+            </SidenavItem>
+        </SidenavTitle>
+        <SidenavTitle titre="">
+            <SidenavItem>
+                <p style={{ cursor: 'pointer' }} className="ms-2" onClick={handleLogout}>
+                    <FaArrowRight className="me-3"/> DECONNEXION
+                </p>
+                
             </SidenavItem>
         </SidenavTitle>
       

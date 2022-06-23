@@ -21,13 +21,14 @@ const StudentDashboard = (props) => {
   const etudiant = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
-    toast.success("Deconnexion Reussie");
-    alert("Deconnexion Reussie");
-
+    console.log("in logout")
     axios.post('/logout')
       .then(res => {
         console.log(res);
         dispatch(logout());
+        toast.success("Deconnexion Reussie");
+        localStorage.removeItem('user');
+        localStorage.removeItem('actor');
         navigate("/");
       })
       .catch(err => {
@@ -110,11 +111,9 @@ const StudentDashboard = (props) => {
               <BiRocket /> Evolution du dossier
             </p>
           </Link>
-          <Link to="/*">
-            <p>
-              <FiLogOut onClick={()=>handleLogout()} /> Deconnexion
-            </p>
-          </Link>
+          <p onClick={handleLogout} style={{ cursor: 'pointer' }}>
+            <FiLogOut  /> Deconnexion
+          </p>
         </div>
       </div>
     </section>

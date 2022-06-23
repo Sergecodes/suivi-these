@@ -120,7 +120,7 @@ const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const isLogin = Boolean(user);
   console.log(isLogin)
-  document.title = "Accueil - Ecole Doctorale STG";
+  document.title = "Ecole Doctorale STG";
 
   return (
     <BrowserRouter>
