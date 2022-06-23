@@ -12,10 +12,23 @@ const Unite = require('./models/UniteRecherche');
 // const Notification = require('./models/Notification');
 
 
-exports.isEtudiant = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+exports.isLoggedIn = function (req, res, next) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.ETUDIANT) {
+    }
+    next();
+}
+
+exports.isEtudiant = function(req, res, next) {
+    if (!req.session) {
+        return res.status(401).send("Not authenticated");
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.ETUDIANT) {
         return res.status(403).send("Vous n'etes pas un etudiant");
     } 
     next();
@@ -23,9 +36,15 @@ exports.isEtudiant = function(req, res, next) {
 
 
 exports.isCoordonateur = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.COORDONATEUR) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.COORDONATEUR) {
         return res.status(403).send("Vous n'etes pas un coordonateur");
     } 
     next();
@@ -33,9 +52,15 @@ exports.isCoordonateur = function(req, res, next) {
 
 
 exports.isConseil = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.CONSEIL) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.CONSEIL) {
         return res.status(403).send("Vous n'etes pas un conseil");
     } 
     next();
@@ -43,9 +68,15 @@ exports.isConseil = function(req, res, next) {
 
 
 exports.isDepartement = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.DEPARTEMENT) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.DEPARTEMENT) {
         return res.status(403).send("Vous n'etes pas un departement");
     } 
     next();
@@ -53,9 +84,15 @@ exports.isDepartement = function(req, res, next) {
 
 
 exports.isExpert = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.EXPERT) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.EXPERT) {
         return res.status(403).send("Vous n'etes pas un expert");
     } 
     next();
@@ -65,9 +102,15 @@ exports.isExpert = function(req, res, next) {
 exports.isJury = function(req, res, next) {
     console.log(req.session);
     console.log(req.headers);
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.JURY) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.JURY) {
         return res.status(403).send("Vous n'etes pas un membre du jury");
     } 
     next();
@@ -75,9 +118,15 @@ exports.isJury = function(req, res, next) {
 
 
 exports.isRectorat = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.RECTORAT) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.RECTORAT) {
         return res.status(403).send("Vous n'etes pas le rectorat");
     } 
     next();
@@ -85,9 +134,15 @@ exports.isRectorat = function(req, res, next) {
 
 
 exports.isAdmin = function(req, res, next) {
-    if (!req.session || !req.session.user) {
+    if (!req.session) {
         return res.status(401).send("Not authenticated");
-    } else if (req.session.user.model !== Types.ACTEURS.ADMIN) {
+    }
+    
+    const user = req.session.user;
+    if (!user) {
+        return res.status(401).send("Not authenticated");
+    }
+    if (user.model !== Types.ACTEURS.ADMIN) {
         return res.status(403).send("Vous n'etes pas l'administrateur");
     } 
     next();
