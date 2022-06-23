@@ -1,8 +1,7 @@
 const { Schema, model } = require('mongoose')
 const { 
     CategorieFichierMaster, CategorieFichierThese, 
-    GerantEtapeDossier, ModelNotif, Niveau,
-    CategorieNote, ActeurDossier, 
+    ModelNotif, Niveau, CategorieNote, ActeurDossier, 
     EtapeDossier: EtapeDossierEnum,
 } = require('./types');
 const Avis = require('./Avis');
@@ -102,7 +101,7 @@ DossierSchema.methods.incrementerEtape = async function(numEtapeSuivante) {
             etapeActu.acheveeLe = new Date();
             await etapeActu.save();
         }
-        
+
         try {
             await EtapeDossier.create({
                 dossier: this._id,

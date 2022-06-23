@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controller = require('../controllers/etudiant');
-const { isEtudiant, getEtudiant, getEtudiantFromParam } = require('../middlewares')
+const { isAdmin, isEtudiant, getEtudiant, getEtudiantFromParam } = require('../middlewares')
 
 
 router.route('').get(controller.getAll);
@@ -33,7 +33,8 @@ router.route('/reinitialiser').put(isEtudiant, getEtudiant, controller.reinitial
 
 router.route('/:id/set-juges').put(getEtudiantFromParam, controller.setJuges);
 
-router.route('/:id').get(getEtudiantFromParam, controller.getOne).delete(controller.delete);
+router.route('/:id').get(getEtudiantFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 module.exports = router;

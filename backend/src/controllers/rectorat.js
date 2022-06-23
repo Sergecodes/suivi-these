@@ -36,25 +36,27 @@ exports.register_rectorat = function (req, res) {
    rectorat.motDePasse = req.body.motDePasse;
    rectorat.email = req.body.email;
 
-   console.log(req.body);
+   if (passwordComplexity().validate(rectorat.motDePasse).error) {
+      return res.status(400).json({
+          success: false,
+          message:
+            "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,",
+        });
+    } else {
+      console.log("mot de passe valide");
+    }
 
    rectorat.save(function (err, nouveau_rectorat) {
       if (err) {
-         console.log("erreur lors de l'enregistrement dun rectorat: ", err);
-         return res.json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique", error: err }).status(500)
+         console.error("erreur lors de l'enregistrement dun rectorat: ", err);
+         return res.status(500).json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique", error: err })
       }
 
-      // Create user session
-      req.session.user = {
-         _id: nouveau_rectorat._id,
-         model: Types.ACTEURS.RECTORAT
-      };
-
-      res.json({
+      res.status(201).json({
          success: true,
          message: "Enregistre avec succes",
          data: removePassword(nouveau_rectorat.toJSON())
-      }).status(201);
+      });
    })
 }
 
@@ -93,7 +95,7 @@ exports.login_rectorat = async function (req, res) {
          }
       })
    } catch (error) {
-      console.log(error)
+      console.error(error)
       res.status(500).send("Something went wrong");
    }
 
@@ -113,8 +115,8 @@ exports.changePassword = function (req, res) {
             rectorat.motDePasse = newPass;
             rectorat.save(function (err, newRectorat) {
                if (err) {
-                  console.log(err);
-                  res.json({ success: false, erreur: err }).status(500);
+                  console.error(err);
+                  res.status(500).json({ success: false, erreur: err });
                }
 
                if (req.session)
@@ -123,7 +125,7 @@ exports.changePassword = function (req, res) {
                res.json({ success: true, message: "Vous avez ete deconnecte" });
             })
          } else {
-            res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
+            res.status(401).json({ message: "les mots de passe ne correspondent pas" })
          }
       })
 
@@ -151,7 +153,7 @@ exports.changeEmail = function (req, res) {
    rectorat.email = newEmail;
    rectorat.save(function (err, newRectorat) {
       if (err) {
-         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err })
       }
 
       if (req.session)

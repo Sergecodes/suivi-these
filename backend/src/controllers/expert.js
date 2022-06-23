@@ -1,5 +1,6 @@
 const Expert = require('../models/Expert');
 const bcrypt = require('bcrypt');
+const passwordComplexity = require("joi-password-complexity");
 const { Types } = require('../constants')
 const { removePassword } = require('../utils')
 const EnvoiDossier = require('../models/EnvoiDossier')
@@ -39,23 +40,27 @@ exports.register_expert = function (req, res) {
 	expert.grade = req.body.grade;
 	expert.type = req.body.type;
 
+	if (passwordComplexity().validate(expert.motDePasse).error) {
+      return res.status(400).json({
+          success: false,
+          message:
+            "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,",
+        });
+    } else {
+      console.log("mot de passe valide");
+    }
+
 	expert.save(function (err, nouveau_expert) {
 		if (err) {
 			console.log("erreur lors de l'enregistrement dun expert: ", err);
-			res.json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau expert", error: err }).status(500)
+			res.status(500).json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau expert", error: err });
 		}
 
-		// Create user session
-		req.session.user = {
-			_id: nouveau_expert._id,
-			model: Types.ACTEURS.EXPERT
-		};
-
-		res.json({
+		res.status(201).json({
 			success: true,
 			message: "Enregistre avec succes",
 			data: removePassword(nouveau_expert.toJSON())
-		}).status(201);
+		});
 
 	})
 }
@@ -65,6 +70,7 @@ exports.login_expert = async function (req, res) {
 		const { email, motDePasse } = req.body;
 		let expert = await Expert.findOne({ email });
 		if (!expert) { return res.status(404).send("Expert Not found") };
+
 		bcrypt.compare(motDePasse, expert.motDePasse, function (err, result) {
 			if (err) {
 				console.log("une erreur interne est suvenue: ", err);
@@ -94,7 +100,7 @@ exports.login_expert = async function (req, res) {
 			}
 		})
 	} catch (error) {
-		console.log(error)
+		console.error(error)
 		res.status(500).send("Something went wrong");
 	}
 }
@@ -106,15 +112,15 @@ exports.change_expert_pass = function (req, res) {
 
 		bcrypt.compare(actualPass, expert.motDePasse, function (err, result) {
 			if (err) {
-				console.log("une erreur est survenue: ", err);
-				return res.json({ success: false, message: "Une erreur est survenue", error: err }).status(400);
+				console.error("une erreur est survenue: ", err);
+				return res.status(500).json({ success: false, message: "Une erreur est survenue", error: err })
 			}
 			if (result == true) {
 				if (newPass == '') {
-					return res.json({ success: false, message: "veuillez svp entrer un mot de passe" })
+					return res.status(400).json({ success: false, message: "veuillez svp entrer un mot de passe" });
 				} else {
 					if (passwordComplexity().validate(newPass).error) {
-						return res.json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," }).status(500)
+						return res.status(400).json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," });
 					} else {
 						console.log("mot de passe valide");
 
@@ -123,7 +129,7 @@ exports.change_expert_pass = function (req, res) {
 				expert.motDePasse = newPass;
 				expert.save(function (err, new_expert) {
 					if (err) {
-						res.json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err }).status(400)
+						res.status(500).json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err })
 					} else {
 						if (req.session)
 							req.session.destroy();
@@ -132,7 +138,7 @@ exports.change_expert_pass = function (req, res) {
 					}
 				})
 			} else {
-				res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
+				res.status(401).json({ message: "les mots de passe ne correspondent pas" });
 			}
 		});
 
@@ -148,7 +154,7 @@ exports.change_email = function (req, res) {
 	const { newEmail } = req.body;
 
 	if (!newEmail)
-		return res.send("newEmail n'est pas dans la requete").status(400);
+		return res.status(400).end("newEmail n'est pas dans la requete");
 		
 	if (expert.email === newEmail) {
 		if (req.session)
@@ -160,9 +166,8 @@ exports.change_email = function (req, res) {
 	expert.email = newEmail;
 	expert.save(function (err, new_expert) {
 		if (err) {
-			console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-			res.json({ success: false, message: "Internal server error", error: err }).status(500);
-
+			console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+			res.status(400).json({ success: false, message: "Internal server error", error: err });
 		}
 		if (req.session)
 			req.session.destroy();

@@ -11,7 +11,8 @@ router.route('/login').post(controller.login);
 
 router.route('/register').post(controller.register);
 
-router.route('/:id').get(getAdminFromParam, controller.getOne).delete(controller.delete);
+router.route('/:id').get(getAdminFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 // router.route('/add_coordonator').post(isAdmin,controller.register_coordonateur);

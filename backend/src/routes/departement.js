@@ -65,7 +65,8 @@ router.route('/donner-avis-admin').post(
 
 router.route('/:id/juries').get(controller.getJuries);
 
-router.route('/:id').get(getDepartementFromParam, controller.getOne).delete(controller.delete);
+router.route('/:id').get(getDepartementFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 

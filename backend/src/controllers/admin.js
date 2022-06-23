@@ -48,24 +48,18 @@ exports.register = function (req, res) {
     admin.save(function (err, nouveau_admin) {
         if (err) {
             console.log("erreur lors de l'enregistrement dun admin: ", err);
-            return res.json({ 
+            return res.status(500).json({ 
                 success: false, 
                 message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique", 
                 error: err 
-            }).status(500);
+            });
         }
 
-        // Create user session
-        req.session.user = {
-            _id: nouveau_admin._id,
-            model: Types.ACTEURS.ADMIN
-        };
-
-        res.json({
+        res.status(201).json({
             success: true,
             message: "Enregistre avec succes",
             data: removePassword(nouveau_admin.toJSON())
-        }).status(201);
+        });
     })
 }
 
@@ -77,7 +71,7 @@ exports.login = async function (req, res) {
 
         bcrypt.compare(motDePasse, admin.motDePasse, function (err, result) {
             if (err) {
-                console.log("une erreur interne est suvenue: ", err);
+                console.error("une erreur interne est suvenue: ", err);
                 return res.status(500).json({
                     success: false, message: "une erreur interne est survenue",
                     error: err
@@ -104,7 +98,7 @@ exports.login = async function (req, res) {
             }
         })
     } catch (error) {
-        console.log(error)
+        console.error(error)
         res.status(500).send("Something went wrong");
     }
 
@@ -117,15 +111,15 @@ exports.changePassword = function(req,res) {
 
 		bcrypt.compare(actualPass, admin.motDePasse,function(err,result){
 			if(err){
-				console.log("une erreur est survenue: " , err);
-				return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
+				console.error("une erreur est survenue: " , err);
+				return res.status(400).json({success:false,message:"Une erreur est survenue",error:err})
 			}
 			if(result == true){
 				if(newPass == ''){
-					return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
+					return res.status(400).json({success:false,message: "veuillez svp entrer un mot de passe"})
 				}else{
 					if(passwordComplexity().validate(newPass).error){
-						return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+						return res.status(400).json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"});
 					}else{
 						console.log("mot de passe valide");
 
@@ -134,7 +128,7 @@ exports.changePassword = function(req,res) {
 				admin.motDePasse = newPass;
 				admin.save(function(err, newAdmin){
 					if(err){
-						res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(400)
+						res.status(500).json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err})
 					}else{
 						if (req.session)
 							req.session.destroy();
@@ -143,12 +137,12 @@ exports.changePassword = function(req,res) {
 					}
 				})
 			}else{
-				res.json({message:"les mots de passe ne correspondent pas"}).status(401);
+				res.status(401).json({message:"les mots de passe ne correspondent pas"});
 			}
 		});
 
 	} catch(error){
-		console.log(error);
+		console.error(error);
 		res.status(500).send("Internal Server Error");
 	}
 }
@@ -170,8 +164,8 @@ exports.changeEmail = function(req,res){
 	admin.email = newEmail;
 	admin.save(function(err, newAdmin){
 		if(err){
-			console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau email: ", err);
-			res.json({success:false, message:"Internal server error", error:err}).status(500);
+			console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau email: ", err);
+			res.status(500).json({success:false, message:"Internal server error", error:err});
 		}
 
 		if (req.session)

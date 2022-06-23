@@ -142,7 +142,7 @@ exports.login_student = async function (req, res) {
 
       bcrypt.compare(motDePasse, etudiant.motDePasse, async function (err, result) {
          if (err) {
-            console.log("une erreur interne est suvenue: ", err);
+            console.error("une erreur interne est suvenue: ", err);
             return res.status(500).json({
                success: false, message: "une erreur interne est survenue",
                error: err
@@ -197,7 +197,7 @@ exports.change_student_password = async function (req, res) {
             etudiant.save(function (err, nouveau_Etudiant) {
                console.log('ici ici');
                if (err) {
-                  console.log(err);
+                  console.error(err);
                   res.json({ success: false, message: "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", erreur: err }).status(500);
                }
 
@@ -207,12 +207,12 @@ exports.change_student_password = async function (req, res) {
                res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
             })
          } else {
-            res.json({ message: "les mots de passe ne correspondent pas" }).status(401);
+            res.status(401).json({ message: "les mots de passe ne correspondent pas" });
          }
       });
 
    } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).send("Something went wrong")
    }
 }
@@ -234,7 +234,7 @@ exports.changeEmail = function (req, res) {
    etudiant.email = newEmail;
    etudiant.save(function (err, newEtudiant) {
       if (err) {
-         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err }).status(500);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement", error: err })
       }
 
       if (req.session)
@@ -249,7 +249,7 @@ exports.changePhoneNumber = function (req, res) {
    const { newPhoneNumber } = req.body;
 
    if (!newPhoneNumber)
-		return res.send("newPhoneNumber n'est pas dans la requete").status(400);
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
 
    if (etudiant.numTelephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
@@ -258,8 +258,8 @@ exports.changePhoneNumber = function (req, res) {
    etudiant.numTelephone = newPhoneNumber;
    etudiant.save(function (err, newStudent) {
       if (err) {
-         console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err }).status(500);
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
       }
       res.json({ success: true, message: "le nouveau numero de telephone a ete enregistrer avec success", data: newStudent.numTelephone });
    });
@@ -317,9 +317,7 @@ exports.updatePhoto = async function (req, res) {
 
                etudiant.urlPhotoProfil = url;
                await etudiant.save();
-               return res
-                  .json({ success: true, message: "Profile picture updated" })
-                  .status(200);
+               return res.json({ success: true, message: "Profile picture updated" })
             });
          })
          .catch((error) => {
@@ -352,9 +350,7 @@ exports.updatePhoto = async function (req, res) {
 
          etudiant.urlPhotoProfil = uploadPath;
          await etudiant.save();
-         return res
-            .json({ success: true, message: "Profile picture updated" })
-            .status(200);
+         return res.json({ success: true, message: "Profile picture updated" })
       });
    }
 };
@@ -435,13 +431,11 @@ exports.uploadFiles = function (req, res) {
       { sujet, etudiant: etudiant._id },
       async function (err, dossier) {
          if (err) {
-            return res
-               .json({
+            return res.status(500).json({
                   success: false,
                   message: "erreur lors de la creation du dossier",
                   error: err,
-               })
-               .status(500);
+               });
          }
 
          etudiant.dossier = dossier._id;
@@ -496,8 +490,7 @@ exports.uploadFiles = function (req, res) {
                   });
             }
          } else {
-            let i = 0,
-               n = fileEntries.length;
+            let i = 0, n = fileEntries.length;
             const basedir = process.env.basedir;
 
             if (!basedir) {
@@ -533,9 +526,8 @@ exports.uploadFiles = function (req, res) {
 
                   // Return response if for loop is over
                   if (i == n - 1)
-                     return res
-                        .json({ success: true, message: "Files uploaded!" })
-                        .status(201);
+                     return res.status(201)
+                        .json({ success: true, message: "Files uploaded!" });
                });
             }
          }
