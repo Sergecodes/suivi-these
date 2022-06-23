@@ -186,7 +186,7 @@ hr{
   color:white;
   display:flex;
   align-items:center;
-  padding:7px 7px;
+  padding:10px 7px;
 }
 
 .sidenavItem a:hover{
@@ -217,3 +217,8 @@ hr{
   width:35px;
   border-radius: 50px;
 }
+
+.adminNavbar{
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; ;
+}
+
