@@ -33,7 +33,7 @@ function AdminConnexionScreen() {
       alert("connexion Reussie",{hideProgressBar: true
       });
 
-      navigate("/acteur/admin");
+      navigate("/acteur/admin/dashboard");
     }
     if (isLoading) {
       return <LoadingScreen />;
@@ -99,7 +99,7 @@ function AdminConnexionScreen() {
                           id="codeSecret1"
                           autoComplete="false"
                           onChange={(e) =>
-                            setUser({ ...user, motDepasse: e.target.value })
+                            setUser({ ...user, motDePasse: e.target.value })
                           }
                         />
                       </div>

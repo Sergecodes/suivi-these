@@ -28,7 +28,7 @@ function DepartementConnexionScreen() {
       });
       alert("connexion Reussie");
 
-      navigate("/acteur/departement");
+      navigate("/acteur/departement/dashboard");
     }
     if (isLoading) {
       return <LoadingScreen />;

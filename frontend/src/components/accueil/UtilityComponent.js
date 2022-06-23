@@ -20,7 +20,7 @@ const UtilityComponent = () => {
                     <p>
                         Cette plateforme est un miroir refletant l'ecole doctorale. Elle vous aidera à ...
                     </p>
-                    <Link to="/*" ><button className="rounded-pill "> En savoir plus ! </button></Link>
+                    <Link to="/presentation" ><button className="rounded-pill "> En savoir plus ! </button></Link>
                </div>
             </div>
             <div className="my-3 col-12 col-md-6 col-lg " style={{backgroundColor:"transparent"}}>
@@ -38,7 +38,7 @@ const UtilityComponent = () => {
                <div className="px-4 py-5 second d-flex flex-column align-items-center  px-4 py-4" >
                 <BiCubeAlt style={{color:"var(--primaryColor)", height:"35px",width:"35px"}}/>
                     <h4 className="pt-4 pb-3">
-                        Titre 1
+                        Titre 2
                     </h4>
                     <p style={{textAlign:"center"}}>
                         Petite description du titre resume en question pour attirer l'attention du visiteur
@@ -49,7 +49,7 @@ const UtilityComponent = () => {
                <div className="px-4 py-5 second d-flex flex-column align-items-center  px-4 py-4" >
                 <BsImages style={{color:"var(--primaryColor)", height:"35px",width:"35px"}}/>
                     <h4 className="pt-4 pb-3">
-                        Titre 1
+                        Titre 3
                     </h4>
                     <p style={{textAlign:"center"}}>
                         Petite description du titre resume en question pour attirer l'attention du visiteur

@@ -31,7 +31,7 @@ function EtudiantConnexionScreen() {
       toast.success("Connexion Reussie");
       alert("connexion Reussie");
 
-      navigate("/account");
+      navigate("/account/evolution");
     }
     if (isLoading) {
       return <LoadingScreen />;
@@ -128,7 +128,7 @@ function EtudiantConnexionScreen() {
                     </div>
                     <div
                       style={{
-                        marginBottom: "25px",
+                        // marginBottom: "25px",
                         color: "#029ff0",
                         fontSize: "1rem",
                         cursor: "pointer",

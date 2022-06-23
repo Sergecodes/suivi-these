@@ -75,7 +75,7 @@ const EvolutionDossier = () => {
                   <p>{item.acheveeLe}</p>
                 </div>
                 <p>
-                  <span classname="fw-bold">Geree par: <span/> 
+                  <span classname="fw-bold">Geree par: </span> 
                   {item.gereePar}
                 </p>
               </div>

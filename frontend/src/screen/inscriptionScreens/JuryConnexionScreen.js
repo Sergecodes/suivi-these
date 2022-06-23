@@ -30,7 +30,7 @@ function JuryConnexionScreen() {
       toast.success("Connexion Reussie");
       alert("connexion Reussie");
 
-      navigate("/acteur/jury");
+      navigate("/acteur/jury/dashboard");
       //navigate("/account")
       
     }
