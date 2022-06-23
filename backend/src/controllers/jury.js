@@ -68,6 +68,8 @@ exports.register_jury = function (req, res) {
 
 
 exports.login_jury = async function (req, res) {
+   console.log(req.session);
+   console.log(req.headers);
    try {
       const { email, motDePasse } = req.body;
       let jury = await Jury.findOne({ email });
@@ -188,11 +190,11 @@ exports.changePhoneNumber = function (req, res) {
    if (!newPhoneNumber)
 		return res.status(400).send("newPhoneNumber n'est pas dans la requete")
 
-   if (jury.telephone === newPhoneNumber) {
+   if (jury.numTelephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
 	}
 
-   jury.telephone = newPhoneNumber; 
+   jury.numTelephone = newPhoneNumber; 
    jury.save(function (err, newJury) {
       if (err) {
          console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);

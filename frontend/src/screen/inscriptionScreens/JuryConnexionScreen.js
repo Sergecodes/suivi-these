@@ -12,18 +12,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function JuryConnexionScreen() {
-  const jutyInfos = localStorage.getItem("jutyInfos");
-
   const [user, setUser] = useState({
     email: "",
     motDePasse: "",
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { message, jury, isError, isLoading, isSuccess, isRejected } =
+  const {jury, isError, isLoading, isSuccess,message } =
     useSelector((state) => state.authJury);
   useEffect(() => {
-    if (isError || isRejected) {
+    if (isError) {
       toast.error(message);
     }
     if (isSuccess || jury) {
@@ -46,8 +44,7 @@ function JuryConnexionScreen() {
     message,
     navigate,
     dispatch,
-    isRejected,
-  ]);
+    ]);
 
   const SubmitHandle = (e) => {
     if (user.motDePasse === "" || user.email === "") {

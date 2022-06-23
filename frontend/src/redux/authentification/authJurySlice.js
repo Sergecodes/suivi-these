@@ -4,7 +4,7 @@ import axios from "axios";
 const jury = JSON.parse(localStorage.getItem("juryInfos"));
 
 const initialState = {
-  jury: jury ? jury : null,
+  jury: jury || null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -22,14 +22,11 @@ export const loginJury = createAsyncThunk(
         {
           email: data.email,
           motDePasse: data.motDePasse,
-        },
-        {
-          withCredentials:true
         }
       );
-      // localStorage.setItem("juryInfos", JSON.stringify(value.data));
+      
       // console.log(data);
-      // console.log(JSON.stringify(value.data));
+      console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);
@@ -50,7 +47,8 @@ export const authJurySlice = createSlice({
       state.isRejected = false;
     },
     logoutJury: (state) => {
-      localStorage.removeItem("juryInfos");
+      localStorage.removeItem("jury");
+      localStorage.removeItem("actor");
       state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
