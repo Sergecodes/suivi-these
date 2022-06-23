@@ -35,7 +35,7 @@ import Soutenance from "./screen/Soutenance";
 // import ExpertInscriptionScreen from "./screen/inscriptionScreens/ExpertConnexionScreen.js";
  import JuryInscriptionScreen from "./screen/inscriptionScreens/JuryConnexionScreen.js";
 // import RectoratInscriptionScreen from "./screen/inscriptionScreens/RectoratConnexionScreen.js";
-//import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
+import EtudiantConnexionScreen from "./screen/inscriptionScreens/EtudiantConnexionScreen.js";
 // import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementConnexionScreen";
     /**************************************************************************************************/
 
@@ -237,11 +237,11 @@ const App = () => {
           <Route
             path="/inscription/etudiant"
             element={<EtudiantInscriptionScreen />}
-          ></Route>
+          ></Route>*/}
           <Route
             path="/connexion/etudiant"
             element={<EtudiantConnexionScreen />}
-          ></Route>*/}
+          ></Route>
            <Route
             path="/connexion/jury"
             element={<JuryInscriptionScreen />}
