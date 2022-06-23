@@ -1,14 +1,30 @@
 import React from "react";
 import { FaTimes, FaUserCheck } from "react-icons/fa";
+import { BsFillDoorOpenFill } from 'react-icons/bs'
 import { Link } from "react-router-dom";
 import "../../Styles/coordonateurPage/index.css";
-
+import axios from 'axios'
 import "../../Styles/coordonateurPage/sidebar.css";
 import { SidebarData } from "./SidebarDatas";
-const logo = require("../../assets/images/téléchargement.jpg");
+import { useNavigate } from "react-router-dom";
 
 function SidebarCoordonateur({ sidebarOpen, closeSidebar }) {
-  //   console.log(window.location.pathname);
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    console.log("in logout")
+    axios.post('/logout')
+      .then(res => {
+        console.log(res);
+        localStorage.removeItem('user');
+        localStorage.removeItem('actor');
+        navigate("/");
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   return (
     <div id="sidebar" className={sidebarOpen ? "sidebar-responsive" : ""}>
       <div className="sidebar_title">
@@ -25,9 +41,9 @@ function SidebarCoordonateur({ sidebarOpen, closeSidebar }) {
         </i>
       </div>
       <div className="sidebar_menu">
-        {SidebarData.map((val, kez) => {
+        {SidebarData.map((val, key) => {
           return (
-            <Link to={val.link} style={{ textDecoration: "none" }}>
+            <Link to={val.link} key={key} style={{ textDecoration: "none" }}>
               <div
                 className="sidebar_link"
                 id={
@@ -41,6 +57,14 @@ function SidebarCoordonateur({ sidebarOpen, closeSidebar }) {
             </Link>
           );
         })}
+        <div
+          className="sidebar_link"
+          onClick={handleLogout}
+          style={{cursor: 'pointer'}}
+        >
+          <i className="sidebarItem"><BsFillDoorOpenFill /></i>
+          Deconnexion
+        </div>
       </div>
     </div>
   );

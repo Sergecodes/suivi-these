@@ -19,7 +19,7 @@ function CoordonateurInscriptionScreen() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const coordonateurInfos = localStorage.getItem("coordonateurtInfo");
+  // const coordonateur = localStorage.getItem("actor");
 
   const {
     message,

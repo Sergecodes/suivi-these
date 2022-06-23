@@ -20,7 +20,7 @@ export const loginDepartement = createAsyncThunk(
       const value = await axios.post(
         "/departements/login",
         {
-          matricule: data.email,
+          email: data.email,
           motDePasse: data.motDePasse,
         }
       );

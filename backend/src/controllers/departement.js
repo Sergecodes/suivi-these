@@ -74,6 +74,7 @@ exports.login_departement = async function(req,res){
         const {email,motDePasse} = req.body;
         let departement = await Departement.findOne({email});
         if(!departement){return res.status(404).send("Departement Not found")};
+		
         bcrypt.compare(motDePasse, departement.motDePasse, function(err,result) {
 			if(err){
 				console.error("une erreur interne est suvenue: ",err);
@@ -98,7 +99,7 @@ exports.login_departement = async function(req,res){
 				res.json({
 					success: true,
 					message: "Connexion reussie",
-					data: nouveauPassword(departement.toJSON())
+					data: removePassword(departement.toJSON())
 				});
 			}
 		})

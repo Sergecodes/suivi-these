@@ -36,9 +36,9 @@ export const SidebarData = [
     icon: <IoNotifications />,
     link: "/acteur/coordonateur/notification",
   },
-  {
-    title: "Deconnexion",
-    icon: <BsFillDoorOpenFill />,
-    link: "/",
-  },
+  // {
+  //   title: "Deconnexion",
+  //   icon: <BsFillDoorOpenFill />,
+  //   link: "/",
+  // },
 ];
