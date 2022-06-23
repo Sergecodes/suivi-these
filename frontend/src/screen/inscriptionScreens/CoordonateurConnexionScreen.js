@@ -33,7 +33,8 @@ function CoordonateurInscriptionScreen() {
   useEffect(() => {
     console.log(`le isError est a ${isError} et le isRejected ${isRejected}`);
     if (isError || isRejected) {
-      toast.error(message, { position: toast.POSITION.TOP_CENTER });
+      toast.error(message, { position: toast.POSITION.TOP_CENTER },{hideProgressBar: true
+      });
     }
 
     if (isSuccess || coordonateur) {
@@ -57,7 +58,8 @@ function CoordonateurInscriptionScreen() {
 
   const SubmitHandle = (e) => {
     if (user.motDePasse === "" || user.email === "") {
-      toast.warning("renseignez toutes vos informations");
+      toast.warning("renseignez toutes vos informations",{hideProgressBar: true
+      });
       e.preventDefault();
     } else {
       console.log(user);

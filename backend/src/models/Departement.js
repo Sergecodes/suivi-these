@@ -20,7 +20,7 @@ const DepartementSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
+    // uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
 });
 
 

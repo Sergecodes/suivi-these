@@ -18,7 +18,7 @@ export const loginDepartement = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "/departement/login-departement",
+        "/departements/login",
         {
           matricule: data.email,
           motDePasse: data.motDePasse,

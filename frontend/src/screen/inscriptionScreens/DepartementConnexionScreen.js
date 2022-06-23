@@ -24,10 +24,11 @@ function DepartementConnexionScreen() {
       alert(message);
     }
     if (isSuccess) {
-      toast.success("Connexion Reussie");
+      toast.success("Connexion Reussie",{hideProgressBar: true
+      });
       alert("connexion Reussie");
 
-      navigate("/account");
+      navigate("/acteur/departement");
     }
     if (isLoading) {
       return <LoadingScreen />;

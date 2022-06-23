@@ -18,16 +18,16 @@ export const loginAdmin = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "/admin/login-admin",
+        "/admin/login",
         {
           email: data.email,
-          code: data.code,
+          motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("adminInfos", JSON.stringify(value.data));
+      // localStorage.setItem("adminInfos", JSON.stringify(value.data));
       // console.log(data);
-      alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
+      // alert(JSON.stringify(value.data));
+      // console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);
@@ -65,6 +65,8 @@ export const authAdminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
+        console.log(`le action payload est ${action.payload}`);
+
         if (action.payload && JSON.parse(action.payload)._id) {
           console.log("je suis dana le success");
           state.isLoading = false;
@@ -73,10 +75,11 @@ export const authAdminSlice = createSlice({
           state.admin = action.payload;
 
           localStorage.setItem(
-            "coordonateurtInfo",
+            "adminInfo",
             JSON.stringify(JSON.parse(action.payload))
           );
         } else {
+          console.log(action.payload);
           console.log("je suis danss le rejected");
           state.isSuccess = false;
           state.isLoading = false;
