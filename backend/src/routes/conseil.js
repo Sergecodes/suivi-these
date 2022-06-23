@@ -10,8 +10,6 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getConseil, controller.getOne);
 
-router.route('/:id').get(getConseilFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/register').post(isAdmin, controller.new_conseil);
 
 router.route('/login').post(controller.conseil_login);
@@ -41,6 +39,9 @@ router.route('/donner-avis-admin').post(
    getConseil,
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getConseilFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 module.exports = router;

@@ -75,9 +75,10 @@ export const authJurySlice = createSlice({
           state.jury = action.payload;
 
           localStorage.setItem(
-            "juryInfos",
+            "user",
             JSON.stringify(JSON.parse(action.payload))
           );
+          localStorage.setItem('actor', 'jury');
         } else {
           state.isSuccess = false;
           state.isLoading = false;

@@ -24,7 +24,8 @@ export const loginConseiller = createAsyncThunk(
           motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("conseillerInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'conseil');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));

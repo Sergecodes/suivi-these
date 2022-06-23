@@ -11,8 +11,6 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getCoordonateur, controller.getOne);
 
-router.route('/:id').get(getCoordonateurFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/register').post(isAdmin, controller.register_coordonateur);
 
 router.route('/login').post(controller.login_coordonateur);
@@ -61,6 +59,9 @@ router.route('/donner-avis-admin').post(
    getCoordonateur,
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getCoordonateurFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 module.exports = router;

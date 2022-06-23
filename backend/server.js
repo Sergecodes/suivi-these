@@ -62,15 +62,15 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'session-secret',
     saveUninitialized: false,  // don't create session until something stored
     resave: false,   // don't save session if unmodified,
-    cookie: {
-        sameSite: 'none',
-        maxAge: 2 * 24 * 60 * 60 * 1000,  // = 2days
-        httpOnly: true,
-        secure: process.env.PRODUCTION === "true" || false
-    },
+    // cookie: {
+    //     sameSite: 'none',
+    //     maxAge: 7 * 24 * 60 * 60 * 1000,  // = 7days
+    //     httpOnly: true,
+    //     secure: process.env.PRODUCTION === "true" || false
+    // },
     store: MongoStore.create({
         mongoUrl: urlBd,
-        ttl: 2 * 24 * 60 * 60   // = 2 days. Default is 14 days
+        ttl: 7 * 24 * 60 * 60   // = 7 days. Default is 14 days
     })
 }));
 // app.use(cookieParser());

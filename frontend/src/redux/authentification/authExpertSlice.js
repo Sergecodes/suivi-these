@@ -24,7 +24,8 @@ export const loginExpert = createAsyncThunk(
           code: data.MotDePasse,
         }
       );
-      localStorage.setItem("expertInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'expert');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));

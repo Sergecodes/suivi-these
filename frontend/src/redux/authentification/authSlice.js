@@ -26,13 +26,12 @@ export const login = createAsyncThunk(
           email: data.email
         }
       );
-      localStorage.setItem("etudiantInfos", JSON.stringify(value.data));
+
       // console.log(data);
-      alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      return value.data.data;
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err.response);
       return rejectWithValue(err.response.data);
     }
   }
@@ -50,8 +49,9 @@ export const authSlice = createSlice({
       state.isRejected = false;
     },
     logout: (state) => {
-      localStorage.removeItem("etudiantInfos");
-      state.etudiant = null;
+      localStorage.removeItem("user");
+      localStorage.removeItem('actor');
+      // state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
@@ -68,8 +68,13 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         // console.log("login fulfilled");
+        const payload = action.payload;
+        console.log(payload);
+
+        localStorage.setItem("user", JSON.stringify(payload));
+        localStorage.setItem('actor', 'etudiant');
         state.isSuccess = true;
-        state.etudiant = action.payload;
+        // state.etudiant = action.payload;
         state.isLoading = false;
 
         console.log("je suis dans le isloading");
@@ -81,7 +86,7 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         // console.log("login rejected");
         state.isLoading = false;
-        state.etudiant = null;
+        // state.etudiant = null;
         state.isRejected = true;
 
         state.isError = true;

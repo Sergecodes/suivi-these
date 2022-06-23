@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const controller = require('../controllers/rectorat');
 const { 
-   isRectorat, getRectorat, getEtudiantFromReq, 
+   isAdmin, isRectorat, getRectorat, getEtudiantFromReq, 
    getDossierFromReq, getRectoratFromParam
 } = require('../middlewares');
 
@@ -9,8 +9,6 @@ const {
 router.route('').get(controller.getAll);
 
 router.route('/moi').get(getRectorat, controller.getOne);
-
-router.route('/:id').get(getRectoratFromParam, controller.getOne).delete(controller.delete);
 
 router.route('/login').post(controller.login_rectorat);
 
@@ -28,7 +26,6 @@ router.route('/programmer-date-soutenance-these').post(
    getRectorat,
    controller.programmerDateSoutenanceThese
 );
-
 
 router.route('/dossiers-etudiants-these').get(
    isRectorat, 
@@ -49,6 +46,9 @@ router.route('/donner-avis-admin').post(
    getRectorat,
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getRectoratFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 module.exports = router;

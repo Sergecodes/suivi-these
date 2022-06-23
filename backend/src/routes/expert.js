@@ -10,8 +10,6 @@ router.route('').get(controller.getAll);
 
 router.route('/moi').get(getExpert, controller.getOne);
 
-router.route('/:id').get(getExpertFromParam, controller.getOne).delete(controller.delete);
-
 router.route('/register').post(isAdmin, controller.register_expert);
 
 router.route('/login').post(controller.login_expert);
@@ -20,7 +18,7 @@ router.route('/change-password').put(isExpert, getExpert, controller.change_expe
 
 router.route('/change-email').put(isExpert, getExpert, controller.change_email);
 
-router.route('/dossiers-etudiants-these').get(isExpert, controller.dossiersEtudsThese);
+router.route('/dossiers-etudiants-these').get(isExpert, getExpert, controller.dossiersEtudsThese);
 
 router.route('/notifications').get(isExpert, getExpert, controller.notifications);
 
@@ -37,6 +35,9 @@ router.route('/donner-avis-admin').post(
    getExpert, 
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getExpertFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 module.exports = router;

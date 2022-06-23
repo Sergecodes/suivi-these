@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import JuryHeader from "../components/pageJury/JuryHeader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import "../Styles/AdministratorsHeader.css";
+import "../Styles/AdminCommon.css";
 import "../Styles/Jury.css";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const Jury = () => {
     }
   };
   useEffect(() => {
-    accesRequired();
+    // accesRequired();
   }, [navigate, juryInfos]);
   return (
     <div
