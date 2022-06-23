@@ -71,7 +71,7 @@ const ListeCoordo = () => {
       name: "Nom 2",
       surname: "Prenom 2",
       email: "coordo1@gmail.com",
-      motDePasse:"coordo"
+      motDePasse:"Password1!"
     },
   ]);
 

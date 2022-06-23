@@ -68,7 +68,7 @@ const ListeDepartement = () => {
       key: "2",
       name: "Nom 2",
       email: "departement1@gmail.com",
-      motDePasse: "departement2",
+      motDePasse: "Password1",
       uniteDeRecherche: "CA",
     },
   ]);

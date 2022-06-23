@@ -88,7 +88,7 @@ const ListeJury = () => {
       name: "Nom 1",
       surname: "Prenom 1",
       email: "jury@gmail.com",
-      motDePasse: "jury1",
+      motDePasse: "Password1!",
       numTelephone: "655 55 55 55",
       grade: "grade 1",
       departement: "departement 1",

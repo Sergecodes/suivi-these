@@ -5,10 +5,10 @@ import {FaGraduationCap} from "react-icons/fa"
 
 const DashboardAdmin = () => {
   const infos = [
-    { slug: "master", nom: "Etudiants en master", nombre: "10",color:"orange",icon:<BsPersonFill style={{color:"white"}}/> },
-    { slug: "doctorat", nom: "Etudiants en doctorat", nombre: "5" ,color:"green",icon:<FaGraduationCap style={{color:"white"}}/> },
-    { slug: "total", nom: "Total des étudiant", nombre: "15",color:"rgb(44, 177, 230)" ,icon:<BsPersonPlusFill style={{color:"white"}}/> },
-    { slug: "dossiers", nom: "Dossiers déposé", nombre: "12" ,color:"rgb(233, 73, 73)",icon:<BsFillFolderFill style={{color:"white"}}/> },
+    { slug: "master", nom: "Etudiants en master", nombre: "3",color:"orange",icon:<BsPersonFill style={{color:"white"}}/> },
+    { slug: "doctorat", nom: "Etudiants en doctorat", nombre: "3" ,color:"green",icon:<FaGraduationCap style={{color:"white"}}/> },
+    { slug: "total", nom: "Total des étudiant", nombre: "6",color:"rgb(44, 177, 230)" ,icon:<BsPersonPlusFill style={{color:"white"}}/> },
+    { slug: "dossiers", nom: "Dossiers déposé", nombre: "0" ,color:"rgb(233, 73, 73)",icon:<BsFillFolderFill style={{color:"white"}}/> },
   ];
   return (
     <section className="container dashboardAdmin my-4">

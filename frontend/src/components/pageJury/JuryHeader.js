@@ -5,7 +5,7 @@ const JuryHeader = () => {
   return (
     <>
       <AdministratorsHeader
-        nom={"NCHOUWET MFOUAPON"}
+        nom={"Jury 1"}
         dashboardLink={"/acteur/jury/dashboard"}
         acteur={"JURY"}
         notification={"/acteur/jury/notifications"}

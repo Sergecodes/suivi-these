@@ -5,7 +5,7 @@ const DepartementHeader = () => {
   return (
     <>
         <AdministratorsHeader
-             nom={"NCHOUWET MFOUAPON"}
+             nom={"Departement 1"}
              dashboardLink={"/acteur/departement/dashboard"}
              acteur={"Departement"}
              notification={"/acteur/departement/notifications"}
