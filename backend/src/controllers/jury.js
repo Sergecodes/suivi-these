@@ -41,23 +41,27 @@ exports.register_jury = function (req, res) {
    jury.telephone = req.body.telephone;
    jury.grade = req.body.grade;
 
+   if (passwordComplexity().validate(jury.motDePasse).error) {
+      return res.status(400).json({
+          success: false,
+          message:
+            "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,",
+        });
+    } else {
+      console.log("mot de passe valide");
+    }
+
    jury.save(function (err, nouveau_jury) {
       if (err) {
-         console.log("erreur lors de l'enregistrement dun jurry: ", err);
-         return res.json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client", error: err }).status(500)
+         console.error("erreur lors de l'enregistrement dun jurry: ", err);
+         return res.status(500).json({ success: false, message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau client", error: err });
       }
 
-      // Create user session
-      req.session.user = {
-         _id: nouveau_jury._id,
-         model: Types.ACTEURS.JURY
-      };
-
-      res.json({
+      res.status(201).json({
          success: true,
          message: "Enregistre avec succes",
          data: removePassword(nouveau_jury.toJSON())
-      }).status(201);
+      });
 
    })
 }
@@ -70,6 +74,7 @@ exports.login_jury = async function (req, res) {
       const { email, motDePasse } = req.body;
       let jury = await Jury.findOne({ email });
       if (!jury) { return res.status(404).send("Jury Not found") };
+
       bcrypt.compare(motDePasse, jury.motDePasse, function (err, result) {
          if (err) {
             console.log("une erreur interne est suvenue: ", err);
@@ -80,7 +85,7 @@ exports.login_jury = async function (req, res) {
          }
 
          if (!result) {
-            res.json({
+            res.status(404).json({
                success: false,
                message: "Invalid credentials"
             })
@@ -99,7 +104,7 @@ exports.login_jury = async function (req, res) {
          }
       })
    } catch (error) {
-      console.log(error)
+      console.error(error)
       res.status(500).send("Something went wrong");
    }
 }
@@ -112,15 +117,15 @@ exports.change_jury_pass = function(req,res){
 
       bcrypt.compare(actualPass,jury.motDePasse,function(err,result){
          if(err){
-            console.log("une erreur est survenue: " , err);
-            return res.json({success:false,message:"Une erreur est survenue",error:err}).status(400);
+            console.error("une erreur est survenue: " , err);
+            return res.status(500).json({success:false,message:"Une erreur est survenue",error:err})
          }
          if(result == true){
             if(newPass == ''){
-               return res.json({success:false,message: "veuillez svp entrer un mot de passe"})
+               return res.status(400).json({success:false,message: "veuillez svp entrer un mot de passe"})
             }else{
                if(passwordComplexity().validate(newPass).error){
-                  return res.json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"}).status(500)
+                  return res.status(400).json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"})
                }else{
                   console.log("mot de passe valide");
 
@@ -129,7 +134,7 @@ exports.change_jury_pass = function(req,res){
             jury.motDePasse = newPass;
             jury.save(function(err,new_jury){
                if(err){
-                  res.json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err}).status(500)
+                  res.status(500).json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err})
                } else {
                   if (req.session)
                      req.session.destroy();
@@ -138,12 +143,12 @@ exports.change_jury_pass = function(req,res){
                }
             })
          }else{
-            res.json({ message:"les mots de passe ne correspondent pas" }).status(401);
+            res.status(401).json({ message:"les mots de passe ne correspondent pas" })
          }
       });
 
 	} catch(error){
-		console.log(error);
+		console.error(error);
 		res.status(500).send("Internal Server Error");
 	}
 }
@@ -166,8 +171,8 @@ exports.change_email = function(req,res){
    jury.email = newEmail;
    jury.save(function(err,new_jury){
       if(err){
-         console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.json({success:false,message:"Internal server error",error:err}).status(500);
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({success:false,message:"Internal server error",error:err});
 
       }
       if (req.session)
@@ -183,7 +188,7 @@ exports.changePhoneNumber = function (req, res) {
    const { newPhoneNumber } = req.body;
 
    if (!newPhoneNumber)
-		return res.send("newPhoneNumber n'est pas dans la requete").status(400);
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete")
 
    if (jury.numTelephone === newPhoneNumber) {
 		return res.json({ message: "Ce numero est votre numero actuel" });
@@ -193,7 +198,7 @@ exports.changePhoneNumber = function (req, res) {
    jury.save(function (err, newJury) {
       if (err) {
          console.log("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err }).status(500);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err });
       }
 
       res.json({ success: true, message: "le nouveau numero de telephone a ete enregistrer avec success", data: newJury.telephone });

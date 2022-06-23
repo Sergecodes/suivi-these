@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import "react-toastify/dist/ReactToastify.css";
 
     /*************************************page accueil************************************/
 import Accueil from "./screen/Accueil";
@@ -81,7 +84,16 @@ import DashboardJury from "./components/pageJury/DashboardJury";
     /**************************************************************************************************/
 
     /************************************************page admin************************************/
-    //import Admin from "./screen/Admin";
+    import Admin from "./screen/Admin";
+    import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
+    import ListeAttente from "./components/pageAdmin/ListeAttente";
+    import ListeEtudiants from "./components/pageAdmin/ListeEtudiants";
+    import NoteLecture from "./components/pageAdmin/NoteLecture";
+    import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
+    import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
+    import ListeJury from "./components/pageAdmin/Liste/ListeJury";
+    import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
+    import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo"
     /**************************************************************************************************/
 
 
@@ -179,11 +191,19 @@ const App = () => {
             />
           </Route>
           */}
-          {
-            /**
-             *  <Route path="/acteur/admin" element={<Admin/>} />
-             */
-          }
+  
+               <Route path="/acteur/admin" element={<Admin/>} >
+                <Route path="/acteur/admin/dashboard" element={<DashboardAdmin />} />
+                <Route path="/acteur/admin/liste-attente" element={<ListeAttente/>}/>
+                <Route path="/acteur/admin/liste-etudiants" element={<ListeEtudiants/>}/>
+                <Route path="/acteur/admin/notes-lecture" element={<NoteLecture/>}/>
+                <Route path="/acteur/admin/detail-notation" element={<DetailsNotation/>}/>
+                <Route path="/acteur/admin/rapport-soutenance" element={<RapportSoutenance/>}/>
+                <Route path="/acteur/admin/liste-jury" element={<ListeJury/>}/>
+                <Route path="/acteur/admin/liste-departement" element={<ListeDepartement/>}/>
+                <Route path="/acteur/admin/liste-coordo" element={<ListeCoordo/>}/>
+               </Route>
+             
           <Route
             path="/*"
             element={

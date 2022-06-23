@@ -1,7 +1,4 @@
-const { Types } = require('../constants');
-const bcrypt = require('bcrypt');
 const Unite = require('../models/UniteRecherche');
-const { removePassword } = require('../utils');
 
 
 exports.getAll = async function (req, res) {
@@ -29,30 +26,22 @@ exports.delete = function (req, res) {
 }
 
 exports.register_unite = function(req,res){
-   let unite = new Unite();
-
+  let unite = new Unite();
   unite.intitule = req.body.intitule;
   unite.coordonateur = req.body.coordonateur;
   unite.code = req.body.code;
 
-
   unite.save(function(err,nouveau_unite){
      if(err){
-        console.log("erreur lors de l'enregistrement dun unite: ",err);
-        return res.json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err}).status(500)
+        console.error("erreur lors de l'enregistrement dun unite: ",err);
+        return res.status(500).json({success:false,message:"quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",error:err})
      }
-     
-     // Create user session
-       req.session.user = {
-           _id: nouveau_unite._id,
-           model: "UniteRecherche"
-       };
 
-       res.json({
-           success: true,
-           message: "Enregistre avec succes",
-           data: removePassword(nouveau_unite.toJSON())
-       }).status(201);
+      res.status(201).json({
+          success: true,
+          message: "Enregistre avec succes",
+          data: nouveau_unite.toJSON()
+      });
   })
 }
 
