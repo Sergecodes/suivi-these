@@ -175,6 +175,17 @@ exports.getEtudiant = async function (req, res, next) {
     next();
 }
 
+exports.getDossierFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let dossier = await Dossier.findById(id);
+
+    if (!dossier)
+        return res.status(404).send("Dossier non trouve");
+
+    res.locals.dossier = dossier;
+    next();
+}
+
 exports.getEtudiantFromParam = async function (req, res, next) {
     const { id } = req.params;
     let etudiant = await Etudiant.findById(id);

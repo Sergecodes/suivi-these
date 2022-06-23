@@ -360,9 +360,12 @@ exports.updatePhoto = async function (req, res) {
  * Recuperer les fichiers renvoyes par un etudiant et
  * creer son dossier a partir de ceux-ci.
  */
-exports.uploadFiles = function (req, res) {
+exports.uploadFiles = async function (req, res) {
    const { sujet, niveau } = req.body;
    const { etudiant } = res.locals;
+
+   if (!(await etudiant.peutUploader()))
+      return res.status(422).send("Cet etudiant n'a pas/plus le droit d'uploader un dossier")
 
    if (!sujet || !niveau) {
       return res.status(400).json({

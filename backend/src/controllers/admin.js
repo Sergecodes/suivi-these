@@ -47,7 +47,7 @@ exports.register = function (req, res) {
 
     admin.save(function (err, nouveau_admin) {
         if (err) {
-            console.log("erreur lors de l'enregistrement dun admin: ", err);
+            console.error("erreur lors de l'enregistrement dun admin: ", err);
             return res.status(500).json({ 
                 success: false, 
                 message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique", 
@@ -67,7 +67,7 @@ exports.login = async function (req, res) {
     try {
         const { email, motDePasse } = req.body;
         let admin = await Admin.findOne({ email });
-        if (!admin) { return res.status(400).send("Invalid credentials") };
+        if (!admin) { return res.status(404).send("Invalid credentials") };
 
         bcrypt.compare(motDePasse, admin.motDePasse, function (err, result) {
             if (err) {
@@ -79,7 +79,7 @@ exports.login = async function (req, res) {
             }
 
             if (!result) {
-                res.json({
+                res.status(404).json({
                     success: false,
                     message: "Invalid credentials"
                 })
@@ -187,12 +187,12 @@ exports.notifications = async function (req, res) {
 exports.demandesInscription = async function (req, res) {
    let etudiants = [];
    for (let etud of await Etudiant.find({})) {
-      if (await etud.etapeActuelle === Types.EtapeDossier.ZERO) {
+      if (await etud.getEtapeActuelle().numEtape === Types.EtapeDossier.ZERO) {
          etudiants.push(etud);
       }
    }
 
-   res.json({ demandes: etudiants });
+   res.json({ etudiants });
 }
 
 exports.accepterInscriptionEtudiant = async function (req, res) {
@@ -263,7 +263,7 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
    return res.json({ envoisDossiers });
 }
 
-exports.dossiersEtudiantsMaster = async function (req, res) {
+exports.dossiersEtudiantsThese = async function (req, res) {
    const { admin } = res.locals;
 
    let envoisDossiers = await EnvoiDossier.find({
@@ -283,27 +283,27 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
 }
 
 
-exports.envoyerRapportActeur = async function (req, res) {
-   const { admin, dossier } = res.locals;
-   const { rapport, type, destinataireId, destinataireModel } = req.body;
+// exports.envoyerRapportActeur = async function (req, res) {
+//    const { admin, dossier } = res.locals;
+//    const { rapport, type, destinataireId, destinataireModel } = req.body;
 
-   try {
-      await Avis.create({
-         type,
-         rapport,
-         commentaire: req.body.commentaire || '',
-         donnePar: admin._id,
-         donneParModel: Types.AvisEmetteur.ADMIN,
-         dossier,
-         destinataire: destinataireId,
-         destinataireModel: destinataireModel
-      });
-      res.send("Succes");
-   } catch (err) {
-      console.error(err);
-      res.status(500).send("Something went wrong");
-   }
-}
+//    try {
+//       await Avis.create({
+//          type,
+//          rapport,
+//          commentaire: req.body.commentaire || '',
+//          donnePar: admin._id,
+//          donneParModel: Types.AvisEmetteur.ADMIN,
+//          dossier,
+//          destinataire: destinataireId,
+//          destinataireModel: destinataireModel
+//       });
+//       res.send("Succes");
+//    } catch (err) {
+//       console.error(err);
+//       res.status(500).send("Something went wrong");
+//    }
+// }
 
 exports.getActeursAvis = async function (req, res) {
    const { admin } = res.locals;
