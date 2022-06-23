@@ -9,12 +9,20 @@ const ProfilJury = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  axios.get('http://localhost:8001/api/jury/moi')
+  .then(res=>{
+    console.log(res);
+  })
+  .catch(err=>{
+    console.error(err);
+  })
+
   const handleSubmit=(e)=>{
     e.preventDefault();
     console.log('entrer')
     var formData = new FormData();
     formData.append("newPhoneNumber",tel);
-    axios.put('/jury/change-number',formData,{widthCredentials:true})
+    axios.put('http://localhost:8001/api/jury/change-number',formData)
     .then(res=>{
       console.log(res);
     })
