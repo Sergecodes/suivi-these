@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
-
+import "react-toastify/dist/ReactToastify.css";
 
     /*************************************page accueil************************************/
 import Accueil from "./screen/Accueil";

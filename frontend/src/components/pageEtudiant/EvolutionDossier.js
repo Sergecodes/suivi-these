@@ -1,133 +1,85 @@
-import React from "react";
-
 import { Steps } from "antd";
+
 
 const { Step } = Steps;
 
-const EvolutionDossier=()=> {
-    const current=2;
-    const steps = [
-        {
-          title: <p className="evolutionStepTitle">Envoi du dossier de soutenance</p>,
-          description:<div className="evolutionStepInfo" style={current<=0?{display:"none"}:{}}>
-              <div className="d-flex align-items-center">
-                  <p>Mon, September 18 at 10:07 AM</p>
-                  <span className="mx-2">-</span>
-                  <p>Tues, September 19 at 10:07 PM</p>
-              </div>
-              <p>Coordonnateur</p>
-        </div>
-    },
-    {
-      title: (
-        <p className="evolutionStepTitle">
-          Vérification du dossier par le departement
-        </p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 1 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Departement</p>
-        </div>
-      ),
-    },
-    {
-      title: (
-        <p className="evolutionStepTitle">Notation par les membres du Jury</p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 2 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Jury</p>
-        </div>
-      ),
-    },
 
-    {
-      title: (
-        <p className="evolutionStepTitle">
-          Evaluation de la notation par admin
-        </p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 3 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Admin</p>
-        </div>
-      ),
+const EvolutionDossier = () => {
+  const current = 2;
+  const etapesDossier = {
+    1: {
+      titre: 'Envoi du dossier de soutenance',
+      debuteeLe: 'Mon, September 18 at 10:07 AM',
+      acheveeLe: 'Tues, September 19 at 10:07 PM',
+      gereePar: 'Coordonnateur',
     },
+    2: {
+      titre: 'Vérification du dossier',
+      debuteeLe: 'Mon, September 18 at 10:07 AM',
+      acheveeLe: 'Tues, September 19 at 10:07 PM',
+      gereePar: 'Departement'
+    },
+    3: {
+      titre: 'Notation du dossier',
+      debuteeLe: '',
+      acheveeLe: '',
+      gereePar: 'Jury'
+    },
+    4: {
+      titre: 'Evaluation de la notation',
+      debuteeLe: '',
+      acheveeLe: '',
+      gereePar: 'CRFD'
+    },
+    5: {
+      titre: 'Vérification du rapport du CRFD',
+      debuteeLe: '',
+      acheveeLe: '',
+      gereePar: 'Coordonnateur'
+    },
+    6: {
+      titre: 'Programmation de la date de soutenance',
+      debuteeLe: '',
+      acheveeLe: '',
+      gereePar: 'Coordonnateur'
+    },
+  };
 
-    {
-      title: (
-        <p className="evolutionStepTitle">
-          Vérification du memoire par le coordonnateur
-        </p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 4 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>coordonnateur</p>
-        </div>
-      ),
-    },
+  const steps = (function() {
+    let result = [];
 
-    {
-      title: (
-        <p className="evolutionStepTitle">Programmation date de soutenance</p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 5 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>coordonnateur</p>
-        </div>
-      ),
-    },
-  ];
+    for (let num in etapesDossier) {
+      const etape = etapesDossier[num];
+      result.push({ ...etape });
+    }
+
+    return result;
+  })();
 
   return (
     <section className="evolution mt-3 mx-5">
       <Steps className="" current={current} direction="vertical">
-        {steps.map((item) => (
+        {steps.map(item => (
           <Step
-            className="pb-2 fw-bold "
-            key={item.title}
-            title={item.title}
-            description={item.description}
+            className="pb-2 fw-bold"
+            key={item.titre}
+            title={<p className="evolutionStepTitle">{item.titre}</p>}
+            description={
+              <div
+                className="evolutionStepInfo"
+                style={item.debuteeLe ? {} : { display: 'none' }}
+              >
+                <div className="d-flex align-items-center">
+                  <p>{item.debuteeLe}</p>
+                  <span className="mx-2">-</span>
+                  <p>{item.acheveeLe}</p>
+                </div>
+                <p>
+                  <span classname="fw-bold">Geree par: <span/> 
+                  {item.gereePar}
+                </p>
+              </div>
+            }
           />
         ))}
       </Steps>
