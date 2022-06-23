@@ -78,7 +78,7 @@ DossierSchema.methods.getEtapeActuelle = async function() {
 };
 
 
-DossierSchema.methods.incrementerEtape = async function() {
+DossierSchema.methods.incrementerEtape = async function(numEtapeSuivante) {
    await this.populate({
       path: 'etudiant',
       select: 'niveau'
@@ -89,20 +89,29 @@ DossierSchema.methods.incrementerEtape = async function() {
             FINAL_NUM_ETAPE_THESE
     })();
 
-    let etapeActu = await this.etapeActuelle;
-    if (!etapeActu.acheveeLe) {
-        etapeActu.acheveeLe = new Date();
-        await etapeActu.save();
+    const etapeActu = await this.getEtapeActuelle();
+    if (numEtapeSuivante === undefined) {
+        numEtapeSuivante = etapeActu.numEtape + 1;
     }
 
     // L'utilisateur a deja termine
-    if (etapeActu === numDerniereEtape) {
+    if (numEtapeSuivante > numDerniereEtape) {
         console.log("Cet utilisateur a deja termine son processus.");
     } else {
-        await EtapeDossier.create({
-            dossier: this._id,
-            numEtape: etapeActu.numEtape + 1,
-        });
+        if (!etapeActu.acheveeLe) {
+            etapeActu.acheveeLe = new Date();
+            await etapeActu.save();
+        }
+        
+        try {
+            await EtapeDossier.create({
+                dossier: this._id,
+                numEtape: numEtapeSuivante,
+            });
+        } catch (err) {
+            console.error(err);
+            console.log("Cette etape a deja debute");
+        }
     }
 }
 

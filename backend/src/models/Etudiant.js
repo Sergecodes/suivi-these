@@ -166,9 +166,9 @@ EtudiantSchema.methods.reinitialiser = async function () {
       return await Dossier.findByIdAndDelete(this.dossier);
 }
 
-EtudiantSchema.methods.incrementerEtape = async function () {
+EtudiantSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
    if (this.dossier)
-      return await this.dossierObj.incrementerEtape();
+      return await this.getDossierObj().incrementerEtape(numEtapeSuivante);
 }
 
 EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {
