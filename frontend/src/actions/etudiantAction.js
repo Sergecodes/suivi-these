@@ -12,13 +12,14 @@ export const signin = (matricule, motDePasse, niveau) => async (dispatch) => {
     payload: { matricule, motDePasse, niveau },
   });
   try {
-    const data = await Axios.post("/api/etudiants/login-etudiant", {
+    const data = await Axios.post("/etudiants/login", {
       matricule,
       motDePasse,
       niveau,
     });
     dispatch({ type: ETUDIANT_SIGNIN_SUCCESS, payload: data });
-    localStorage.setItem("etudiantInfo", JSON.stringify(data));
+    localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("actor", 'etudiant');
   } catch (error) {
     dispatch({
       type: ETUDIANT_SIGNIN_FAIL,

@@ -3,7 +3,7 @@ const isEmail = require("validator/lib/isEmail");
 const isDate = require("validator/lib/isDate");
 const { 
    Niveau, Sexe, ActeurDossier, TypeNotification, 
-   ModelNotif, EtapeDossier 
+   ModelNotif, EtapeDossier
 } = require("./types");
 const EnvoiDossier = require("./EnvoiDossier");
 const { Dossier } = require("./Dossier");
@@ -16,7 +16,7 @@ const EtudiantSchema = new Schema({
    matricule: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       uppercase: true,
       validate: {
          validator: (mat) => validerMatricule(mat),
@@ -30,7 +30,7 @@ const EtudiantSchema = new Schema({
    email: {
       type: String,
       required: true,
-      index: true,
+      index: { unique: false },
       trim: true,
       validate: {
          validator: email => isEmail(email),
@@ -41,7 +41,7 @@ const EtudiantSchema = new Schema({
       type: String, 
       required: true,
       validate: {
-         validator: (date) => isDate(date, { strictMode: true }),
+         validator: (date) => isDate(date),
          message: (props) => `
             ${props.value} est une date invalide. 
             Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
@@ -67,6 +67,9 @@ const EtudiantSchema = new Schema({
    { timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' } }
 );
 
+// Unique together constraint
+EtudiantSchema.index( { matricule: 1, niveau: 1 }, { unique: true } );
+
 
 EtudiantSchema.pre("save", function (next) {
    const user = this;
@@ -81,7 +84,7 @@ EtudiantSchema.pre("save", function (next) {
                }
                user.motDePasse = hash;
                console.log(user.motDePasse);
-               next()
+               return next();
             })
          }
       })
@@ -97,31 +100,39 @@ EtudiantSchema.methods.verifyPassword = function (motDePasse, cb) {
    });
 };
 
-EtudiantSchema.virtual("dossierObj").get(async function () {
-   if (this.dossier)
-      return await Dossier.findById(this.dossier);
-});
+EtudiantSchema.methods.getDossierObj = async function () {
+   return await Dossier.findById(this.dossier);
+};
 
-EtudiantSchema.virtual("sujet").get(async function () {
-   return await this.dossierObj.sujet;
-});
+EtudiantSchema.methods.getSujet = async function () {
+   const dossierObj = await this.getDossierObj();
+   if (dossierObj)
+      return dossierObj.sujet;
+   
+   return '';
+};
 
-EtudiantSchema.virtual('etapeActuelle').get = async function () {
-   return await this.dossierObj.etapeActuelle;
-}
+EtudiantSchema.methods.getEtapeActuelle = async function () {
+   const dossierObj = await this.getDossierObj();
 
-EtudiantSchema.virtual('peutUploader').get = async function () {
-   // si l'utilisateur est a la premiere etape ou si il n'a pas de dossier
+   if (dossierObj)
+      return dossierObj.getEtapeActuelle();
+
+   return EtapeDossier.UNE;
+};
+
+EtudiantSchema.methods.peutUploader = async function () {
+   // Si l'utilisateur est a la premiere etape ou si il n'a pas de dossier
    // il peut uploader. 
    // sinon il ne peut pas
 
-   let dossier = await this.dossierObj;
+   const dossierObj = await this.getDossierObj();
 
-   if (!dossier || await dossier.etapeActuelle === EtapeDossier.UNE)
+   if (!dossierObj || await dossierObj.getEtapeActuelle() === EtapeDossier.UNE)
       return true;
 
    return false;
-}
+};
 
 
 EtudiantSchema.virtual("notifications", {
@@ -135,12 +146,13 @@ EtudiantSchema.virtual("notifications", {
  * Envoyer une notification a l'administrateur
  */
 EtudiantSchema.post('save', async function (etudiant) {
-   await Notification.create({
-      type: TypeNotification.NOUVEAU_ETUDIANT,
-      destinataireModel: ModelNotif.ADMIN,
-      objetConcerne: etudiant._id,
-      objetConcerneModel: ModelNotif.ETUDIANT
-   });
+   if (this.isNew)
+      await Notification.create({
+         type: TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: ModelNotif.ADMIN,
+         objetConcerne: etudiant._id,
+         objetConcerneModel: ModelNotif.ETUDIANT
+      });
 });
 
 
@@ -151,7 +163,7 @@ EtudiantSchema.methods.reinitialiser = async function () {
    // this may happen if user's file was previously rejected.
    // 
    if (this.dossier)
-      Dossier.findByIdAndDelete(this.dossier);
+      return await Dossier.findByIdAndDelete(this.dossier);
 }
 
 EtudiantSchema.methods.incrementerEtape = async function () {
@@ -185,6 +197,9 @@ EtudiantSchema.methods.envoyerDossier = async function (
    });
 };
 
+
+EtudiantSchema.set('toObject', { virtuals: true });
+EtudiantSchema.set('toJSON', { virtuals: true });
 
 
 module.exports = model("Etudiant", EtudiantSchema);

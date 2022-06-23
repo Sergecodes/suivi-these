@@ -19,7 +19,7 @@ export const loginCoordonateur = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/coordonateurs/login-coord",
+        "/coordonateurs/login-coord",
         {
           email: data.email,
           motDePasse: data.motDePasse,
@@ -78,9 +78,10 @@ export const authCoordonateurSlice = createSlice({
           state.coordonateur = action.payload;
 
           localStorage.setItem(
-            "coordonateurtInfo",
+            "user",
             JSON.stringify(JSON.parse(action.payload))
           );
+          localStorage.setItem('actor', 'coordonateur'); 
         } else {
           console.log("je suis danss le rejected");
           state.isSuccess = false;

@@ -75,6 +75,9 @@ ConseilSchema.methods.donnerAvisTheseAdmin = async function(
 }
 
 
+ConseilSchema.set('toObject', { virtuals: true });
+ConseilSchema.set('toJSON', { virtuals: true });
+
 
 module.exports = model('Conseil', ConseilSchema);
 

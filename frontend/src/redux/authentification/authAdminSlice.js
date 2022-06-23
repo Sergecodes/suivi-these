@@ -18,13 +18,14 @@ export const loginAdmin = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/admin/login-admin",
+        "/admin/login-admin",
         {
           email: data.email,
           code: data.code,
         }
       );
-      localStorage.setItem("adminInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem("actor", 'admin');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));

@@ -6,6 +6,29 @@ const { removePassword } = require("../utils");
 const Avis = require('../models/Avis');
 const EnvoiDossier = require('../models/EnvoiDossier');
 
+exports.getAll = async function (req, res) {
+	res.json( await Coordonateur.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { coordo } = res.locals;
+	res.json(coordo);
+}
+
+exports.delete = function (req, res) {
+	Coordonateur.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
+}
 
 exports.register_coordonateur = function (req, res) {
   let coordo = new Coordonateur();
@@ -205,7 +228,7 @@ exports.dossiersEtudsThese = async function (req, res) {
   const { coordo } = res.locals;
 
   let envoisDossiers = await EnvoiDossier.find({
-    destinataire: coordo.id,
+    destinataire: coordo._id,
     destinataireModel: Types.ActeurDossier.COORDONATEUR
   }).populate({
     path: 'dossier',

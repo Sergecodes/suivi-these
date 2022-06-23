@@ -1,0 +1,31 @@
+.file-card{
+   min-height: 13rem;
+    width: 17rem;
+    display: flex;
+    justify-content: center;
+    align-items: center
+    ;
+    flex-direction: column;
+    background-color: rebeccapurple;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px dashed rgba(0, 0, 0, 0.2) ;
+}
+.file-input  button{
+    position: relative;
+    border: none;
+    border-radius:3px;
+    background: #ff5821;
+    color: white;
+    padding: 5px 10px;
+}
+.file-input input{
+    /* opacity: 0; */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    opacity: 0;
+    left: 0;
+
+}

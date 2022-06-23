@@ -1,19 +1,26 @@
 const router = require('express').Router();
 const controller = require('../controllers/departement');
-const { isAdmin, isDepartement, getDepartement, getDossierFromReq } = require('../middlewares');
+const { 
+   isAdmin, isDepartement, getDepartement, 
+   getDossierFromReq, getDepartementFromParam 
+} = require('../middlewares');
 
 
-router.route('/register-departement').post(isAdmin, controller.register_departement)
+router.route('').get(controller.getAll);
 
-router.route('/login-department').post(controller.login_departement);
+router.route('/moi').get(getDepartement, controller.getOne);
 
-router.route('/change_password').put(
+router.route('/register').post(isAdmin, controller.register_departement)
+
+router.route('/login').post(controller.login_departement);
+
+router.route('/change-password').put(
    isDepartement, 
    getDepartement,
    controller.change_departement_pass
 );
 
-router.route('/change_email').put(
+router.route('/change-email').put(
    isDepartement,
    getDepartement,
    controller.change_email
@@ -21,11 +28,26 @@ router.route('/change_email').put(
 
 router.route('/notifications').get(isDepartement, getDepartement, controller.notifications);
 
-router.route('/dossiers-etudiants-master').get(isDepartement, controller.dossiersEtudsMaster);
+router.route('/dossiers-etudiants-master').get(
+   isDepartement,
+   getDossierFromReq, 
+   getDepartement, 
+   controller.dossiersEtudsMaster
+);
 
-router.route('/valider-dossier').get(isDepartement, controller.validerDossier);
+router.route('/valider-dossier').get(
+   isDepartement, 
+   getDossierFromReq,
+   getDepartement,
+   controller.validerDossier
+);
 
-router.route('/rejeter-dossier').get(isDepartement, controller.rejeterDossier);
+router.route('/rejeter-dossier').get(
+   isDepartement, 
+   getDossierFromReq,
+   getDepartement,
+   controller.rejeterDossier
+);
 
 router.route('/verifier-avis-donne').get(
    isDepartement, 
@@ -41,6 +63,9 @@ router.route('/donner-avis-admin').post(
    controller.donnerAvisAdmin
 );
 
+router.route('/:id/juries').get(controller.getJuries);
+
+router.route('/:id').get(getDepartementFromParam, controller.getOne).delete(controller.delete);
 
 
 

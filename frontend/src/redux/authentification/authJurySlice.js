@@ -18,7 +18,7 @@ export const loginJury = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/jury/login-jury",
+        "/jury/login-jury",
         {
           email: data.email,
           motDePasse: data.motDePasse,
@@ -75,9 +75,10 @@ export const authJurySlice = createSlice({
           state.jury = action.payload;
 
           localStorage.setItem(
-            "juryInfos",
+            "user",
             JSON.stringify(JSON.parse(action.payload))
           );
+          localStorage.setItem('actor', 'jury');
         } else {
           state.isSuccess = false;
           state.isLoading = false;

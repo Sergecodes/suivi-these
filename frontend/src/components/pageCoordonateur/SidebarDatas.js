@@ -10,11 +10,7 @@ export const SidebarData = [
     icon: <AiFillHome />,
     link: "/acteur/coordonateur",
   },
-  {
-    title: "rapport etudiants ",
-    icon: <FaUserCheck />,
-    link: "/acteur/coordonateur/etudiant",
-  },
+
   {
     title: "autorisation soutenance",
     icon: <ImUsers />,

@@ -18,13 +18,14 @@ export const loginRectorat = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/rectorat/login-rectorat",
+        "/rectorat/login-rectorat",
         {
           email: data.email,
           code: data.code,
         }
       );
-      localStorage.setItem("rectoratInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'rectorat');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));

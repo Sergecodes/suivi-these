@@ -2,16 +2,44 @@ const { Dossier, EtapeDossier, FichierDossier } = require("../models/Dossier");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 const path = require("path");
-// const fs = require('fs')
-const { storage } = require('../../firebase.config')
+// const fs = require('fs');
+const { storage } = require('../../firebase.config');
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
-const { removePassword } = require('../utils')
+const Notification = require('../models/Notification');
+const { removePassword } = require('../utils');
 
 
-exports.getInfo = async function (req, res) {
-   res.json(res.locals.etudiant);
+exports.getAll = async function (req, res) {
+	res.json( await Etudiant.find({}) );
+}
+
+exports.getOne = function (req, res) {
+	const { etudiant } = res.locals;
+	res.json(etudiant);
+}
+
+exports.notifications = async function (req, res) {
+   let { etudiant } = res.locals;
+   await etudiant.populate('notifications');
+   res.json({ notifs: etudiant.notifications });
+}
+
+
+exports.delete = function (req, res) {
+	Etudiant.findByIdAndRemove(req.params.id, (err, doc) => {
+		if (!doc) {
+			return res.status(404).send("Not found");
+		}
+
+		if (err) {
+			console.error(err);
+			return res.status(500).json(err);
+		}
+
+		return res.status(204).send("Succes");
+	});
 }
 
 exports.register = function (req, res) {
@@ -44,30 +72,38 @@ exports.register = function (req, res) {
    etud.lieuNaissance = req.body.lieuNaissance;
    etud.numTelephone = req.body.numTelephone;
    etud.sexe = req.body.sexe;
-   // etud.urlPhotoProfil = req.body.urlPhotoProfil;
    etud.departement = req.body.departement;
    etud.encadreur = req.body.encadreur;
 
    if (etud.motDePasse !== '') {
       if (passwordComplexity().validate(etud.motDePasse).error) {
-         return res.json({ 
+         return res.status(400).json({ 
             success: false, 
+            type: 'INVALID_PASSWORD',
             message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," 
-         }).status(400);
+         });
       } else {
          console.log("mot de passe valide");
       }
    } 
 
-   etud.save(function (err, nouveau_etudiant) {
+   etud.save(async function (err, nouveau_etudiant) {
       if (err) {
          console.error(err);
-         return res.json({ 
+         return res.status(500).json({ 
             success: false, 
             message: "Quelques chose s'est mal passer lors de l'enregistrement d'un nouvel etulisateur", 
             erreur: err 
-         }).status(500);
+         });
       }
+
+      // Send notification to admin
+      await Notification.create({
+         type: Types.TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: Types.ModelNotif.ADMIN,
+         objetConcerne: etud._id,
+         objetConcerneModel: Types.ModelNotif.ETUDIANT
+      });
 
       // Create user session
       req.session.user = {
@@ -75,24 +111,36 @@ exports.register = function (req, res) {
          model: Types.ACTEURS.ETUDIANT
       };
 
-      res.json({
+      res.status(201).json({
          success: true,
          message: "Enregistre avec succes",
          data: removePassword(nouveau_etudiant.toJSON())
-      }).status(201);
+      });
    })
 }
 
 exports.login_student = async function (req, res) {
    try {
-      const { matricule, motDePasse, niveau } = req.body;
+      const { matricule, motDePasse, niveau, email } = req.body;
       let etudiant = await Etudiant.findOne({ 
-         matricule: matricule.toUpperCase(), 
-         niveau: niveau.toUpperCase()
+         email,
+         niveau,
+         matricule: matricule.toUpperCase()
+      })
+      .populate('encadreur', '-motDePasse')
+      .populate({
+         path: 'departement',
+         select: '-motDePasse',
+         populate: {
+            path: 'uniteRecherche',
+            select: '-motDePasse'
+         }
       });
-      if (!etudiant) { return res.status(404).send("User Not found") };
 
-      bcrypt.compare(motDePasse, etudiant.motDePasse, function (err, result) {
+      if (!etudiant) { return res.status(404).send("User Not found") };
+      console.log("to validate password");
+
+      bcrypt.compare(motDePasse, etudiant.motDePasse, async function (err, result) {
          if (err) {
             console.log("une erreur interne est suvenue: ", err);
             return res.status(500).json({
@@ -121,6 +169,17 @@ exports.login_student = async function (req, res) {
    } catch (error) {
       res.status(500).send(error);
    }
+}
+
+exports.setJuges = async function (req, res) {
+   const { etudiant } = res.locals;
+   if (etudiant.niveau !== Types.Niveau.MASTER) {
+      return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
+   }
+
+   etudiant.juges = req.body.juges;
+   await etudiant.save();
+   res.send("Succes");
 }
 
 exports.change_student_password = async function (req, res) {
@@ -157,7 +216,6 @@ exports.change_student_password = async function (req, res) {
       res.status(500).send("Something went wrong")
    }
 }
-
 
 exports.changeEmail = function (req, res) {
    const { newEmail } = req.body;
@@ -527,7 +585,7 @@ exports.etapesDossier = async function (req, res) {
 
 exports.peutUploaderDossier = async function (req, res) {
    const { etudiant } = res.locals;
-   res.send({ peutUploade: await etudiant.peutUploader });
+   res.json({ peutUploader: await etudiant.peutUploader() });
 }
 
 

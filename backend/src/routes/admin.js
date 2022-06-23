@@ -1,10 +1,18 @@
 const router = require('express').Router();
 const controller = require('../controllers/admin');
-const {isAdmin} = require('../middlewares');
+const { isAdmin, getAdmin, getAdminFromParam } = require('../middlewares');
 
 
-router.route('/login-admin').post(controller.login);
-router.route('/register-admin').post(controller.register);
+router.route('').get(controller.getAll);
+
+router.route('/moi').get(getAdmin, controller.getOne);
+
+router.route('/login').post(controller.login);
+
+router.route('/register').post(controller.register);
+
+router.route('/:id').get(getAdminFromParam, controller.getOne).delete(controller.delete);
+
 
 // router.route('/add_coordonator').post(isAdmin,controller.register_coordonateur);
 // router.route('/delete_coordonator/:coord_id').delete(isAdmin,controller.deleteCoordonator);

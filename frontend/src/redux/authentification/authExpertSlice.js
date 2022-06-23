@@ -18,13 +18,14 @@ export const loginExpert = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/expert/login-expert",
+        "/expert/login-expert",
         {
           email: data.email,
           code: data.MotDePasse,
         }
       );
-      localStorage.setItem("expertInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'expert');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));

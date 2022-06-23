@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  connexion,
-  login,
-  reset,
-} from "../../redux/authentification/authSlice";
+import { login, reset } from "../../redux/authentification/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingScreen from "../LoadingScreen.js";
-function EtudiantConnexionScreen() {
-  // matricule, motDePasse, niveau
+import "../../Styles/AdminConnexionScreen.css"
+import "../../Styles/Connexion.css"
+import "react-toastify/dist/ReactToastify.css";
 
+
+function EtudiantConnexionScreen() {
   const [user, setUser] = useState({
     matricule: "",
-    niveau: "DOCTORAT",
+    niveau: "MASTER 2",
     motDePasse: "",
+    email: ""
   });
 
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ function EtudiantConnexionScreen() {
   const { etudiant, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.auth
   );
+
   useEffect(() => {
     if (isError) {
       alert(message);
@@ -37,11 +38,13 @@ function EtudiantConnexionScreen() {
     }
     dispatch(reset());
   }, [etudiant, isSuccess, isError, message, navigate, dispatch]);
+
   const submitHandler = (e) => {
     e.preventDefault();
-
+    console.log(user);
     dispatch(login(user));
   };
+  
   return (
     <div>
       <div style={{ padding: "4%" }} className="container-connexion">
@@ -74,11 +77,18 @@ function EtudiantConnexionScreen() {
                       <label htmlFor="email" className="form-label">
                         Email
                       </label>
-                      <input type="text" className="form-control" id="email" />
+                      <input 
+                        type="email" 
+                        className="form-control" 
+                        id="email" 
+                        onChange={(e) =>
+                          setUser({ ...user, email: e.target.value })
+                        }
+                      />
                     </div>
                     <div className="col-md-12">
                       <label htmlFor="inputState" className="form-label">
-                        State
+                        Niveau
                       </label>
                       <select
                         id="inputState"
@@ -161,7 +171,7 @@ export default EtudiantConnexionScreen;
 //     "numTelephone":"690456392",
 //     "sexe":"masculin",
 //     "urlPhotoProfil":"urlPhotoProfil",
-//     "uniteRecherche":"uniteRecherche",
+//     "departement":"departement",
 //     "encadreur":"encadreur"
 
 // "matricule":"19m2429",
@@ -175,5 +185,5 @@ export default EtudiantConnexionScreen;
 //     "numTelephone":"690456392",
 //     "sexe":"masculin",
 //     "urlPhotoProfil":"urlPhotoProfil",
-//     "uniteRecherche":"uniteRecherche",
+//     "departement":"departement",
 //     "encadreur":"encadreur"

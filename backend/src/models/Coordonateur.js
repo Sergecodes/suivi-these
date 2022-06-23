@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose')
 const isEmail = require( 'validator/lib/isEmail')
 const Avis = require('./Avis')
+const Notification = require('./Notification')
 const { AvisEmetteur } = require('./types')
 const bcrypt = require('bcrypt');
 
@@ -95,6 +96,10 @@ CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
         donneParModel: AvisEmetteur.COORDONATEUR
     });
 }
+
+
+CoordonateurSchema.set('toObject', { virtuals: true });
+CoordonateurSchema.set('toJSON', { virtuals: true });
 
 
 module.exports = model('Coordonateur', CoordonateurSchema);

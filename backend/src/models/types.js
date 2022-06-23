@@ -27,8 +27,11 @@ const Sexe = Object.freeze({
 
 const TypeNotification = Object.freeze({
     RAPPEL: "Rappel",
+    // Message d'un acteur a un autre (eg. admin a jury)
+    MESSAGE: "Message", 
     NOUVEAU_ETUDIANT: "Nouveau étudiant",
     NOUVEL_AVIS: 'Nouvel avis dossier',
+    DOSSIER_ENVOYE: "Dossier de l'étudiant envoyé",
     DOSSIER_VALIDE: "Dossier de l'étudiant validé",
     DOSSIER_REJETE: "Dossier de l'étudiant rejeté",
     COMPTE_REJETE: "Compte de l'étudiant rejeté",
@@ -45,7 +48,8 @@ const ModelNotif = Object.freeze({
     ...ACTEURS,
     AVIS: 'Avis',
     DOSSIER: 'Dossier',
-    NOTE_DOSSIER: 'NoteDossier'
+    NOTE_DOSSIER: 'NoteDossier',
+    ENVOI_DOSSIER: 'EnvoiDossier'
 });
 
 
@@ -66,7 +70,8 @@ const AvisEmetteur = Object.freeze({
     EXPERT: ACTEURS.EXPERT,
     JURY: ACTEURS.JURY,
     CONSEIL: ACTEURS.CONSEIL,
-    DEPARTEMENT: ACTEURS.DEPARTEMENT
+    DEPARTEMENT: ACTEURS.DEPARTEMENT,
+    ADMIN: ACTEURS.ADMIN
 });
 
 

@@ -1,15 +1,22 @@
 const router = require('express').Router();
 const controller = require('../controllers/conseil');
-const { isAdmin, isConseil, getConseil, getDossierFromReq } = require('../middlewares')
+const { 
+   isAdmin, isConseil, getConseil, 
+   getDossierFromReq, getConseilFromParam 
+} = require('../middlewares')
 
 
-router.route('/new-conseil').post(isAdmin, controller.new_conseil);
+router.route('').get(controller.getAll);
 
-router.route('/login-conseil').post(controller.conseil_login);
+router.route('/moi').get(getConseil, controller.getOne);
 
-router.route('/change_password').put(isConseil, getConseil, controller.change_conseil_pass);
+router.route('/register').post(isAdmin, controller.new_conseil);
 
-router.route('/change_email').put(isConseil, getConseil, controller.change_email);
+router.route('/login').post(controller.conseil_login);
+
+router.route('/change-password').put(isConseil, getConseil, controller.change_conseil_pass);
+
+router.route('/change-email').put(isConseil, getConseil, controller.change_email);
 
 router.route('/notifications').get(isConseil, getConseil, controller.notifications);
 
@@ -32,6 +39,8 @@ router.route('/donner-avis-admin').post(
    getConseil,
    controller.donnerAvisAdmin
 );
+
+router.route('/:id').get(getConseilFromParam, controller.getOne).delete(controller.delete);
 
 
 module.exports = router;

@@ -137,4 +137,8 @@ DepartementSchema.methods.donnerAvisAdmin = async function(
 }
 
 
+DepartementSchema.set('toObject', { virtuals: true });
+DepartementSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Departement', DepartementSchema);

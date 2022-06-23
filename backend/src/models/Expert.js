@@ -46,7 +46,7 @@ ExpertSchema.pre("save",function(next){
                     }
                     expert.motDePasse = hash;
                     console.log(expert.motDePasse);
-                    next()
+                    return next();
                 })
             }
         })
@@ -91,6 +91,8 @@ ExpertSchema.methods.donnerAvisAdmin = async function(
 }
 
 
+ExpertSchema.set('toObject', { virtuals: true });
+ExpertSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Expert', ExpertSchema);
-
-

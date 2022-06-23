@@ -22,3 +22,9 @@ LE DOCTORAT
 
 DIVERS
 - Documents importants
+
+
+## API INTEGRATION 
+# ETUDIANT:
+- page inscription: filter encadreur(jury) list on select of departement
+

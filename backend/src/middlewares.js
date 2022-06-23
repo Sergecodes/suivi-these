@@ -1,4 +1,5 @@
 const { Types } = require('./constants');
+const Admin = require('./models/Admin');
 const Jury = require('./models/Jury');
 const Expert = require('./models/Expert');
 const Dossier = require('./models/Dossier');
@@ -7,6 +8,7 @@ const Depart = require('./models/Departement')
 const Etudiant = require('./models/Etudiant');
 const Conseil = require('./models/Conseil');
 const Rectorat = require('./models/Rectorat');
+const Unite = require('./models/UniteRecherche');
 // const Notification = require('./models/Notification');
 
 
@@ -184,6 +186,94 @@ exports.getEtudiantFromParam = async function (req, res, next) {
     next();
 }
 
+exports.getDepartementFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let depart = await Depart.findById(id);
+
+    if (!depart)
+        return res.status(404).send("Departement non trouve");
+
+    res.locals.depart = depart;
+    next();
+}
+
+exports.getConseilFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let conseil = await Conseil.findById(id);
+
+    if (!conseil)
+        return res.status(404).send("Conseil non trouve");
+
+    res.locals.conseil = conseil;
+    next();
+}
+
+exports.getCoordonateurFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let coordo = await Coordonateur.findById(id);
+
+    if (!coordo)
+        return res.status(404).send("Coordonateur non trouve");
+
+    res.locals.coordo = coordo;
+    next();
+}
+
+exports.getExpertFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let expert = await Expert.findById(id);
+
+    if (!expert)
+        return res.status(404).send("Expert non trouve");
+
+    res.locals.expert = expert;
+    next();
+}
+
+exports.getJuryFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let jury = await Jury.findById(id);
+
+    if (!jury)
+        return res.status(404).send("Jury non trouve");
+
+    res.locals.jury = jury;
+    next();
+}
+
+exports.getUniteFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let unite = await Unite.findById(id);
+
+    if (!unite)
+        return res.status(404).send("Unite de recherche non trouve");
+
+    res.locals.unite = unite;
+    next();
+}
+
+exports.getAdminFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let admin = await Admin.findById(id);
+
+    if (!admin)
+        return res.status(404).send("Admin non trouve");
+
+    res.locals.admin = admin;
+    next();
+}
+
+exports.getRectoratFromParam = async function (req, res, next) {
+    const { id } = req.params;
+    let rectorat = await Rectorat.findById(id);
+
+    if (!rectorat)
+        return res.status(404).send("Rectorat non trouve");
+
+    res.locals.rectorat = rectorat;
+    next();
+}
+
 exports.getEtudiantFromReq = async function (req, res, next) {
     const { idEtudiant } = req.body;
     let etudiant = await Etudiant.findById(idEtudiant);
@@ -194,7 +284,6 @@ exports.getEtudiantFromReq = async function (req, res, next) {
     res.locals.etudiant = etudiant;
     next();
 }
-
 
 exports.getDossierFromReq = async function (req, res, next) {
     const { idDossier } = req.body;

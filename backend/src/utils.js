@@ -15,7 +15,7 @@ const removePassword = obj => {
     return obj;
 }
 
-const getActeur = (numDossier, niveau) => {
+const getActeur = (numEtape, niveau) => {
     const { EtapeDossier, ActeurDossier } = Types;
     const acteurMaster = {
         [EtapeDossier.DEUX_MASTER]: '',
@@ -30,16 +30,16 @@ const getActeur = (numDossier, niveau) => {
 
     };
 
-    if (numDossier === EtapeDossier.ZERO) {
+    if (numEtape === EtapeDossier.ZERO) {
         return ActeurDossier.ADMIN;
     } else if (niveau === Types.Niveau.THESE) {
-        return acteurThese[numDossier];
+        return acteurThese[numEtape];
     } else if (niveau === Types.Niveau.MASTER) {
-        return acteurMaster[numDossier];
+        return acteurMaster[numEtape];
     }
 }
 
-const getEtapeWording = (numDossier, niveau) => {
+const getEtapeWording = (numEtape, niveau) => {
     const EtapeDossier = Types.EtapeDossier;
     const wordingMaster = {
         [EtapeDossier.DEUX_MASTER]: '',
@@ -54,14 +54,14 @@ const getEtapeWording = (numDossier, niveau) => {
 
     };
 
-    if (numDossier === EtapeDossier.ZERO) {
+    if (numEtape === EtapeDossier.ZERO) {
         return "Attente de validation par l'admin";
-    } else if (numDossier === EtapeDossier.UNE) {
+    } else if (numEtape === EtapeDossier.UNE) {
         return "Attente de validation de dossier par l'admin";
     } else if (niveau === Types.Niveau.THESE) {
-        return wordingThese[numDossier];
+        return wordingThese[numEtape];
     } else if (niveau === Types.Niveau.MASTER) {
-        return wordingMaster[numDossier];
+        return wordingMaster[numEtape];
     }
 }
 

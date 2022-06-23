@@ -22,7 +22,7 @@ function AutorisationDeSoutenance() {
         closeSidebar={closeSidebar}
       />
       <div className="main">
-        <div className="container">                <h1 className="first-autorisation-title">Tous vos Rapport D'auditons</h1>
+        <div className="container">                <h1 className="first-autorisation-title">Toutes Vos Autorisations de Soutenance</h1>
 
           <div className="row">
             <div className="col-md-4">

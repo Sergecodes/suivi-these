@@ -18,13 +18,14 @@ export const loginDepartement = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "http://localhost:3001/api/departement/login-departement",
+        "/departement/login-departement",
         {
           matricule: data.email,
           motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("departementInfos", JSON.stringify(value.data));
+      localStorage.setItem("user", JSON.stringify(value.data));
+      localStorage.setItem('actor', 'departement');
       // console.log(data);
       alert(JSON.stringify(value.data));
       console.log(JSON.stringify(value.data));
