@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
     /*************************************page accueil************************************/
 import Accueil from "./screen/Accueil";
