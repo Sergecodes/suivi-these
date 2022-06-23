@@ -38,6 +38,7 @@ function CoordonateurInscriptionScreen() {
     }
 
     if (isSuccess || coordonateur) {
+      toast.success("Connexion Reussie");
       navigate("/acteur/coordonateur");
     }
     if (isLoading) {

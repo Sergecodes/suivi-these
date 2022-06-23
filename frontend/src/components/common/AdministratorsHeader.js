@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Input } from "antd";
 import {
   BsBellFill,
@@ -10,16 +10,32 @@ import {
 import {GiHamburgerMenu} from "react-icons/gi"
 import { FaGraduationCap, FaHome } from "react-icons/fa";
 import {useWindowSize} from "react-use";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 
 const AdministratorsHeader = (props) => {
   const { Search } = Input;
+  const navigate = useNavigate();
   const onSearch = (value) => console.log(value);
   const [clicked, setClicked] = useState(false);
   const [hamburgerClicked, setHamburgerClicked]=useState(false);
   const {width}=useWindowSize();
+
+  const handleLogout = () => {
+    setClicked(!clicked);
+    axios.post('/logout')
+      .then(res => {
+        console.log(res);
+        localStorage.removeItem("user");
+        localStorage.removeItem('actor');
+        navigate('/');
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
   
- 
 
   return (
     <section className="adminHeader py-2 d-flex  justify-content-around align-items-center row">
@@ -93,7 +109,7 @@ const AdministratorsHeader = (props) => {
           </Link>
         </p>
         <hr />
-        <p onClick={() => setClicked(!clicked)}>
+        <p onClick={handleLogout}>
           {" "}
           <Link to="/">
             <BsArrowRight /> <span>Se deconnecter</span>

@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // recuperer un etudiant dans le local storage
-const jury = JSON.parse(localStorage.getItem("juryInfos"));
+const acteur = localStorage.getItem("actor");
 
 const initialState = {
-  jury: jury || null,
+  jury: acteur === 'jury' ? JSON.parse(localStorage.getItem('user')) : null,
   isError: false,
   isSuccess: false,
   isLoading: false,

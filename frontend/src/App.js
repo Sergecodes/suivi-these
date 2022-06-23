@@ -15,7 +15,7 @@ import Soutenance from "./screen/Soutenance";
 
     
     /********************************************page info ecole doctorale*********************************/
-  /* import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
+  import CandidatureScreen from "./screen/InfotmationScreens/CandidatureScreen";
     import DocumentImportantScreen from "./screen/InfotmationScreens/DocumentImportantScreen";
     import EquipeScreen from "./screen/InfotmationScreens/EquipeScreen";
     import SuivieDeFormation from "./screen/InfotmationScreens/SuivieDeFormation";
@@ -26,7 +26,7 @@ import Soutenance from "./screen/Soutenance";
     import TheseEnCotutelleScreen from "./screen/InfotmationScreens/TheseEnCotutelleScreen";
     import TheseEnCoursScreen from "./screen/InfotmationScreens/TheseEnCoursScreen";
     import UnitesRechercheScreen from "./screen/InfotmationScreens/UnitesRechercheScreen";
-    import ConseilScientifiqueScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"*/
+    import ConseilScientifiqueScreen from "./screen/InfotmationScreens/ConseilScientifiqueScreen"
     
 /**************************************************************************************************/
 
@@ -117,7 +117,10 @@ axios.defaults.withCredentials = true;
 
 
 const App = () => {
-  const isLogin = true;
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isLogin = Boolean(user);
+  console.log(isLogin)
+  document.title = "Accueil - Ecole Doctorale STG";
 
   return (
     <BrowserRouter>
@@ -262,7 +265,7 @@ const App = () => {
             path="/connexion/jury"
             element={<JuryInscriptionScreen />}
           ></Route>
-          { /*
+          
           <Route
             path="/connexion/rectorat"
             element={<RectoratInscriptionScreen />}
@@ -284,7 +287,7 @@ const App = () => {
             element={<DepartementConnexionScreen />}
           ></Route> 
         
-           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres
+           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres*/} 
            <Route path="/candidature" element={<CandidatureScreen />}></Route>
             <Route path="/document" element={<DocumentImportantScreen />}></Route>
             <Route path="/equipe" element={<EquipeScreen />}></Route>
@@ -299,7 +302,7 @@ const App = () => {
             <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
             <Route path="/unites-recherche" element={<UnitesRechercheScreen />}></Route>
             <Route path="/conseil" element={<ConseilScientifiqueScreen />}></Route>
-            <Route path="/document" element={<DocumentImportantScreen />}></Route> */}
+            <Route path="/document" element={<DocumentImportantScreen />}></Route>
          
         </Routes>
       </div>

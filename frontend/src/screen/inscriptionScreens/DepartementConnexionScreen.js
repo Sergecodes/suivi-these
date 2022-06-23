@@ -24,10 +24,7 @@ function DepartementConnexionScreen() {
       alert(message);
     }
     if (isSuccess) {
-      toast.success("Connexion Reussie",{hideProgressBar: true
-      });
-      alert("connexion Reussie");
-
+      toast.success("Connexion Reussie");
       navigate("/acteur/departement/dashboard");
     }
     if (isLoading) {

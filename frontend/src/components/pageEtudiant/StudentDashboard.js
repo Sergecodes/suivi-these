@@ -24,8 +24,15 @@ const StudentDashboard = (props) => {
     toast.success("Deconnexion Reussie");
     alert("Deconnexion Reussie");
 
-    dispatch(logout());
-    navigate("/");
+    axios.post('/logout')
+      .then(res => {
+        console.log(res);
+        dispatch(logout());
+        navigate("/");
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
   
   return (

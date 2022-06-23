@@ -26,11 +26,7 @@ function JuryConnexionScreen() {
     }
     if (isSuccess || jury) {
       toast.success("Connexion Reussie");
-      alert("connexion Reussie");
-
       navigate("/acteur/jury/dashboard");
-      //navigate("/account")
-      
     }
     if (isLoading) {
       return <LoadingScreen />;

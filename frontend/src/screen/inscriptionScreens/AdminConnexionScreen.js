@@ -28,11 +28,7 @@ function AdminConnexionScreen() {
       toast.error(message);
     }
     if (isSuccess || admin) {
-      toast.success("Connexion Reussie",{hideProgressBar: true
-      });
-      alert("connexion Reussie",{hideProgressBar: true
-      });
-
+      toast.success("Connexion Reussie");
       navigate("/acteur/admin/dashboard");
     }
     if (isLoading) {

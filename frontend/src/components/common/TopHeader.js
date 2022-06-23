@@ -25,7 +25,7 @@ const TopHeader = (props) => {
         <Link to="/connexion/etudiant">
           <button
             className="my-1 me-1 headerIconEmpty rounded-pill"
-            style={props.isLogin === false ? { display: "none" } : {}}
+            style={props.isLogin === true ? { display: "none" } : {}}
           >
             {" "}
              Se connecter
@@ -34,7 +34,7 @@ const TopHeader = (props) => {
         <Link to="/inscription/etudiant">
           <button
             className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
-            style={props.isLogin === false ? { display: "none" } : {}}
+            style={props.isLogin === true ? { display: "none" } : {}}
           >
             {" "}
             S'inscrire
@@ -43,7 +43,7 @@ const TopHeader = (props) => {
         <Link to="/*">
           <button
             className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
-            style={props.isLogin === true ? { display: "none" } : {}}
+            style={props.isLogin === false ? { display: "none" } : {}}
           >
             Profil
           </button>
@@ -51,7 +51,7 @@ const TopHeader = (props) => {
         <Link to="/*">
           <button
             className=" my-1 px-3 ms-3 headerIconEmpty rounded-pill"
-            style={props.isLogin === true ? { display: "none" } : {}}
+            style={props.isLogin === false ? { display: "none" } : {}}
           >
             Deconnexion
           </button>

@@ -29,8 +29,6 @@ function EtudiantConnexionScreen() {
     }
     if (isSuccess) {
       toast.success("Connexion Reussie");
-      alert("connexion Reussie");
-
       navigate("/account/evolution");
     }
     if (isLoading) {
