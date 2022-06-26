@@ -6,7 +6,7 @@ import ThirdStep from "./EtapesMaster/ThirdStep";
 import { useSelector } from "react-redux";
 import axios from "axios"; 
 import { toast, ToastContainer } from "react-toastify";
-import { CategorieFichierMaster } from "../../constants/Constant";
+import { CategorieFichierMaster, ACTEURS } from "../../constants/Constant";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -55,13 +55,9 @@ const DepotDossierMaster = () => {
     }
   ];
 
-  const next = () => {
-    setCurrent(current + 1);
-  };
+  const next = () => setCurrent(current + 1);
 
-  const prev = () => {
-    setCurrent(current - 1);
-  };
+  const prev = () => setCurrent(current - 1);
 
   function verification() {
     let verify = true; 
@@ -99,21 +95,47 @@ const DepotDossierMaster = () => {
         formData.append(getName(prop), files[prop]);
       }
 
-      formData.append("sujet", "sujet 1");
+      // todo, insert sujet data in state too
+      const sujet = "sujet";
+      formData.append("sujet", sujet);
       formData.append("niveau", "MASTER 2");
 
       Promise.all([
         axios.put('/etudiants/uploader-fichiers', formData),
-        axios.put(`/etudiants/${user.id}/set-juges`, { juges: ["62a357a03e067975f0bb3daf"] })
+        axios.put(
+          `/etudiants/${user.id}/set-juges-et-sujet`, { 
+            // todo: update with real data from state
+            juges: [] 
+          })
       ]).then(results => {
         const [res1, res2] = results;
         console.log(res1);
         console.log(res2);
 
-        toast.success("Succes!", { hideProgressBar: true });
+        const dossier = res1.data.dossier;
+        // Update dossier in localStorage
+        dossier.sujet = sujet;
+        user.dossier = dossier;
+        localStorage.setItem('user', JSON.stringify(user));
 
+        axios.post('/envoyer-dossier', {
+          envoyePar: user.id,
+          envoyeParModel: ACTEURS.ETUDIANT,
+          destinataire: user.departement.id,
+          destinataireModel: ACTEURS.DEPARTEMENT,
+          dossier: dossier.id
+        })
+          .then(res => {
+            console.log(res);
+            toast.success("Succes!", { hideProgressBar: true });
+          })
+          .catch(err => {
+            console.error(err);
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          });
       }).catch(err => {
         console.error(err);
+        toast.error("Une erreur est survenue!", { hideProgressBar: true });
       });
     } else {
       toast.error("Un ou plusieurs fichiers manquants!", {

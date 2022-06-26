@@ -172,17 +172,6 @@ exports.login_student = async function (req, res) {
    }
 }
 
-exports.setJuges = async function (req, res) {
-   const { etudiant } = res.locals;
-   if (etudiant.niveau !== Types.Niveau.MASTER) {
-      return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
-   }
-
-   etudiant.juges = req.body.juges;
-   await etudiant.save();
-   res.send("Succes");
-}
-
 exports.change_student_password = async function (req, res) {
    try {
       const { etudiant } = res.locals;
@@ -351,7 +340,11 @@ exports.updatePhoto = async function (req, res) {
 
          etudiant.urlPhotoProfil = uploadPath;
          await etudiant.save();
-         return res.json({ success: true, message: "Profile picture updated" })
+         return res.json({ 
+            success: true, 
+            message: "Photo de profile mise a jour", 
+            urlPhotoProfil: uploadPath 
+         });
       });
    }
 };
@@ -485,6 +478,7 @@ exports.uploadFiles = async function (req, res) {
                            return res.status(201).json({
                               success: true,
                               message: "Files uploaded!",
+                              dossier
                            });
                      });
                   })
@@ -531,13 +525,33 @@ exports.uploadFiles = async function (req, res) {
                   // Return response if for loop is over
                   if (i == n - 1)
                      return res.status(201)
-                        .json({ success: true, message: "Files uploaded!" });
+                        .json({ success: true, message: "Files uploaded!", dossier });
                });
             }
          }
       }
    );
 };
+
+exports.setJugesAndSujetMaster = async function (req, res) {
+   const { etudiant } = res.locals;
+   const { juges, sujet } = req.body;
+
+   if (etudiant.niveau !== Types.Niveau.MASTER) {
+      return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
+   }
+
+   etudiant.juges = juges;
+
+   let res = etudiant.setSujet(sujet);
+   if (res) {
+      etudiant.juges = juges;
+      await etudiant.save();
+      return res.send("Succes");
+   } else {
+      return res.status(403).send("Vous n'avez pas de dossier");
+   }
+}
 
 exports.datesSoutenance = function (req, res) {
    Etudiant.find({ dateSoutenance: { $ne: "" } }, (err, etuds) => {

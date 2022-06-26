@@ -189,6 +189,22 @@ exports.notifications = async function (req, res) {
    res.json({ notifs: depart.notifications });
 }
 
+exports.setEtudiantJuges = async function (req, res) {
+   const { etudiant, departement } = res.locals;
+
+	if (etudiant.departement !== departement._id) {
+		return res.status(403).send("Cet etudiant n'est pas de ce departement");
+	}
+	
+   if (etudiant.niveau !== Types.Niveau.MASTER) {
+      return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
+   }
+
+   etudiant.juges = req.body.juges;
+   await etudiant.save();
+   res.send("Succes");
+}
+
 exports.dossiersEtudsMaster = async function (req, res) {
    const { depart } = res.locals;
 

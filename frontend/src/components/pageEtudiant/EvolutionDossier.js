@@ -11,7 +11,7 @@ const EvolutionDossier = () => {
       titre: 'Envoi du dossier de soutenance',
       debuteeLe: 'Mon, September 18 at 10:07 AM',
       acheveeLe: 'Tues, September 19 at 10:07 PM',
-      gereePar: 'Coordonnateur',
+      gereePar: 'Etudiant',
     },
     2: {
       titre: 'Vérification du dossier',
