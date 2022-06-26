@@ -2,6 +2,7 @@ import React from "react";
 import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
+
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -11,14 +12,13 @@ function getBase64(file) {
   });
 }
 
+
 class ImageUpload extends React.Component {
   state = {
     previewVisible: false,
     previewImage: '',
     previewTitle: '',
-    fileList: [
-     
-    ],
+    fileList: [],
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -35,7 +35,20 @@ class ImageUpload extends React.Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ file, fileList }) => {
+    console.log(file);
+    console.log(fileList);
+    this.setState({ fileList });
+
+    const res = JSON.parse(file.response);
+    console.log(res);
+    if (file.status === 'done') {
+      // Update local storage
+      let user = JSON.parse(localStorage.getItem('user'));
+      user.urlPhotoProfil = res.data.urlPhotoProfil;
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  }
 
   render() {
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
@@ -45,18 +58,30 @@ class ImageUpload extends React.Component {
         <div style={{ marginTop: 8 }}>Upload</div>
       </div>
     );
+
     return (
       <section >
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          action={`${process.env.API_BASE_URL}/etudiants/update-photo`}
+          name="photo"
+          method="put"
+          accept="image/png,image/jpeg"
           listType="picture-card"
           fileList={fileList}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
-          maxCount="1"
+          withCredentials={true}
+          maxCount={1}
+          progress={{
+            // strokeColor: { '0%': '#108ee9', '100%': '#87d068'},
+            strokeColor: { '0%': 'var(--primaryColor)', '100%': '#1890ff'},
+            strokeWidth: 3,
+            format: percent => `${percent}%`
+            // format: percent => `${parseFloat(percent.toFixed(1))}%`
+          }}
           
         >
-          {fileList.length >= 8 ? null : uploadButton}
+          {fileList.length >= 1 ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}
@@ -64,7 +89,7 @@ class ImageUpload extends React.Component {
           footer={null}
           onCancel={this.handleCancel}
         >
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          <img alt="modal" style={{ width: '100%' }} src={previewImage} />
         </Modal>
       </section>
     );

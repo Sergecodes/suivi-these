@@ -7,12 +7,12 @@ const { Option } = Select;
 
 const ThirdStep = (props) => {
    const [allJuries, setAllJuries] = useState([
-      { id: 'aaa', nom: 'atangana', prenom: 'atangano' }, 
-      { id: 'bbb', nom: 'mbarga', prenom: 'mbarga' }, 
-      { id: 'ccc', nom: 'loic', prenom: 'loic' },
-      // { id: 'ddd', nom: 'serge', prenom: 'serge'},
-      // { id: 'eee', nom: 'steph', prenom: 'steph' },
-      // { id: 'fff', nom: 'kamto', prenom: 'kamto'}
+      { id: 'aaa', nom: 'aaa', prenom: 'aaa' }, 
+      { id: 'bbb', nom: 'bbb', prenom: 'bbb' }, 
+      { id: 'ccc', nom: 'ccc', prenom: 'ccc' },
+      // { id: 'ddd', nom: 'ddd', prenom: 'ddd'},
+      // { id: 'eee', nom: 'eee', prenom: 'eee' },
+      // { id: 'fff', nom: 'fff', prenom: 'fff'}
    ]);
    const numListes = 3, numJuries = allJuries.length;
    const user = localStorage.getItem('user');
@@ -50,7 +50,7 @@ const ThirdStep = (props) => {
       // console.log(listIdx);  // index of modified liste
       
       // curJury is the newly selected jury in the list and 
-      // prevJury is the previous selected
+      // prevJury is the previously selected
       const curJury = option.jury, prevJury = selectedJuries[listIdx];
 
       // Set chosen option in selectedJuries
@@ -87,7 +87,7 @@ const ThirdStep = (props) => {
                    onChange={(value, option) => handleChange(value, option, listIdx)}
                    name={listIdx}
                  >
-                   {selectableJuries.map((elt, index) => 
+                   {selectableJuries.map(elt => 
                     (
                       <Option key={elt.id} value={elt.id} jury={elt}>
                         {elt.nom + ' ' + elt.prenom}

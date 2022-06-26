@@ -212,13 +212,13 @@ exports.changeEmail = function (req, res) {
    const { etudiant } = res.locals;
 
    if (!newEmail)
-		return res.send("newEmail n'est pas dans la requete").status(400);
+		return res.status(400).send("newEmail n'est pas dans la requete");
 
 	if (etudiant.email === newEmail) {
 		if (req.session)
 			req.session.destroy();
 
-		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+		return res.status(400).send("Cet email est votre email actuel, vous avez ete deconnecte");
 	}
 
    etudiant.email = newEmail;
@@ -230,7 +230,11 @@ exports.changeEmail = function (req, res) {
       if (req.session)
          req.session.destroy();
 
-      return res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte"});
+      return res.json({ 
+         success: true, 
+         message: "Email mis a jour, vous avez ete deconnecte", 
+         newEmail: newEtudiant.email
+      });
    });
 }
 
@@ -242,7 +246,7 @@ exports.changePhoneNumber = function (req, res) {
 		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
 
    if (etudiant.numTelephone === newPhoneNumber) {
-		return res.json({ message: "Ce numero est votre numero actuel" });
+		return res.status(400).send("Ce numero est votre numero actuel");
 	}
 
    etudiant.numTelephone = newPhoneNumber;
@@ -251,7 +255,11 @@ exports.changePhoneNumber = function (req, res) {
          console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
          res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
       }
-      res.json({ success: true, message: "le nouveau numero de telephone a ete enregistrer avec success", data: newStudent.numTelephone });
+      res.json({ 
+         success: true, 
+         message: "le nouveau numero de telephone a ete enregistrer avec success", 
+         numTelephone: newStudent.numTelephone 
+      });
    });
 }
 
@@ -259,7 +267,6 @@ exports.changePhoneNumber = function (req, res) {
 /**
  * Recuperer les fichiers renvoyes par un etudiant et
  * creer son dossier a partir de ceux-ci.
- *
  */
 exports.updatePhoto = async function (req, res) {
    const { etudiant } = res.locals;
@@ -271,6 +278,7 @@ exports.updatePhoto = async function (req, res) {
       });
    }
 
+   console.log(req.files);
    const file = req.files.photo;
    const extname = path.extname(file.name);
 
@@ -307,7 +315,11 @@ exports.updatePhoto = async function (req, res) {
 
                etudiant.urlPhotoProfil = url;
                await etudiant.save();
-               return res.json({ success: true, message: "Profile picture updated" })
+               return res.json({ 
+                  success: true, 
+                  urlPhotoProfil: url, 
+                  message: "Profile picture updated" 
+               });
             });
          })
          .catch((error) => {
