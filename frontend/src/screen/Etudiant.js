@@ -6,7 +6,6 @@ import { Outlet } from 'react-router-dom';
 import { setClicked } from "../redux/DashboardDisplaySlice";
 import {useSelector,useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EtudiantConnexionScreen from '../screen/inscriptionScreens/EtudiantConnexionScreen';
 
 
 const Etudiant = () => {
