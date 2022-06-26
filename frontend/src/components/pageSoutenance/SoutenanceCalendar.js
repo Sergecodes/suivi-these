@@ -1,23 +1,61 @@
 import moment from 'moment';
-import React, { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import {
-  Calendar,
-  Input,
-  Col,
-  Table,
-  Row,
-  Typography,
-  Modal,
-  Button,
-  Select,
+  Calendar, Input, Col, Table, Row,
+  Typography, Modal, Button, Select,
 } from 'antd';
+import { toast, ToastContainer } from 'react-toastify'
 import '../../Styles/Soutenance.css';
 import 'moment/locale/fr';
+
 moment.locale('fr');
 
 const { Option } = Select;
 const { Search } = Input;
 const { Title } = Typography;
+
+const frLocale = {
+  "lang": {
+    "locale": "fr_FR",
+    "placeholder": "Sélectionner une date",
+    "rangePlaceholder": ['Date de début', 'Date de fin'],
+    "today": "aujourd'hui",
+    "now": "maintenant",
+    "backToToday": "Retour à aujourd'hui",
+    "ok": "OK",
+    "clear": "Effacer",
+    "month": "Mois",
+    "year": "Année",
+    "timeSelect": "Selectionner l'heure",
+    "dateSelect": "Selectionner la date",
+    "monthSelect": "Sélectionner un mois",
+    "yearSelect": "Sélectionner une année",
+    "decadeSelect": "Choisissez une décennie",
+    "yearFormat": "YYYY",
+    "dateFormat": "M/D/YYYY",
+    "dayFormat": "D",
+    "dateTimeFormat": "M/D/YYYY HH:mm:ss",
+    "monthFormat": "MMMM",
+    "monthBeforeYear": true,
+    "previousMonth": "Mois précédent (PageUp)",
+    "nextMonth": "Moir prochain (PageDown)",
+    "previousYear": "Année dernière (Control + left)",
+    "nextYear": "Année prochaine (Control + right)",
+    "previousDecade": "Décennie passée",
+    "nextDecade": "Décennie prochaine",
+    "previousCentury": "Dernier siècle",
+    "nextCentury": "Siècle prochain"
+  },
+  "timePickerLocale": {
+    "placeholder": "Selectionner l'heure"
+  },
+  "dateFormat": "YYYY-MM-DD",
+  "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
+  "weekFormat": "YYYY-wo",
+  "monthFormat": "YYYY-MM"
+};
+
 
 export default function SoutenanceCalendar() {
   const initialDatesSoutenance = [
@@ -57,47 +95,6 @@ export default function SoutenanceCalendar() {
   const [etudSearch, setEtudSearch] = useState('');
   const [displayEtudSearchTable, setDisplayEtudSearchTable] = useState(false);
 
-  const frLocale = {
-    "lang": {
-      "locale": "fr_FR",
-      "placeholder": "Sélectionner une date",
-      "rangePlaceholder": ['Date de début', 'Date de fin'],
-      "today": "aujourd'hui",
-      "now": "maintenant",
-      "backToToday": "Retour à aujourd'hui",
-      "ok": "OK",
-      "clear": "Effacer",
-      "month": "Mois",
-      "year": "Année",
-      "timeSelect": "Selectionner l'heure",
-      "dateSelect": "Selectionner la date",
-      "monthSelect": "Sélectionner un mois",
-      "yearSelect": "Sélectionner une année",
-      "decadeSelect": "Choisissez une décennie",
-      "yearFormat": "YYYY",
-      "dateFormat": "M/D/YYYY",
-      "dayFormat": "D",
-      "dateTimeFormat": "M/D/YYYY HH:mm:ss",
-      "monthFormat": "MMMM",
-      "monthBeforeYear": true,
-      "previousMonth": "Mois précédent (PageUp)",
-      "nextMonth": "Moir prochain (PageDown)",
-      "previousYear": "Année dernière (Control + left)",
-      "nextYear": "Année prochaine (Control + right)",
-      "previousDecade": "Décennie passée",
-      "nextDecade": "Décennie prochaine",
-      "previousCentury": "Dernier siècle",
-      "nextCentury": "Siècle prochain"
-    },
-    "timePickerLocale": {
-      "placeholder": "Selectionner l'heure"
-    },
-    "dateFormat": "YYYY-MM-DD",
-    "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
-    "weekFormat": "YYYY-wo",
-    "monthFormat": "YYYY-MM"
-  };
-
   const tableColumns = [
     {
       title: 'Matricule',
@@ -125,6 +122,30 @@ export default function SoutenanceCalendar() {
       sorter: (a, b) => a.date.localeCompare(b.date),
     },
   ];
+
+  useEffect(() => {
+    // First check in localStorage if results are present. If not present,
+    // call endpoint and store result in localStorage for given period (say 1day)
+    let datesSoutenance = localStorage.getItem('datesSoutenance');
+
+    if (datesSoutenance === null) {
+      axios.get('/etudiants/dates-soutenance')
+        .then(res => {
+          console.log(res);
+          datesSoutenance = res.data.datesSoutenance;
+
+          setDatesSoutenance(datesSoutenance);
+          // todo also set validity period
+          localStorage.setItem('datesSoutenance', JSON.stringify(datesSoutenance));
+        })
+        .catch(err => {
+          console.error(err);
+          toast.error("Une erreur est survenue", { hideProgressBar: true });
+        });
+    } else {
+      setDatesSoutenance(datesSoutenance);
+    }
+  }, []);
 
   const handleNiveauChange = (value) => {
     setEtudSearch('');
@@ -331,6 +352,7 @@ export default function SoutenanceCalendar() {
 
   return (
     <>
+      <ToastContainer />
       <Calendar
         className="calendar"
         dateCellRender={dateCellRender}

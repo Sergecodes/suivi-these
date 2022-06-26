@@ -34,7 +34,7 @@ const EvolutionDossier = () => {
     let evolution = JSON.parse(localStorage.getItem('evolution'));
 
     if (numEtapeActuelle === null || evolution === null) {
-      axios.get('/evolution')
+      axios.get('/etudiants/evolution-dossier')
         .then(res => {
           console.log(res);
           evolution = res.data.evolution;
