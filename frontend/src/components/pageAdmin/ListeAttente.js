@@ -2,6 +2,8 @@ import { Table } from "antd";
 import React from "react";
 import moment from "moment";
 import { BsCheck, BsX } from "react-icons/bs";
+import axios from "axios";
+
 
 const columns = [
   {
@@ -67,25 +69,25 @@ const data = [
     matricule: "19M2216",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
-    email: "user1@gmail.com",
+    email: "admin@gmail.com",
     niveau: "master",
     dateCreation: today.toLocaleString("en-US"),
   },
   {
     key:"2",
     matricule: "19M2217",
-    name: "Nom 2 prenom 2",
+    name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
-    email: "user2@gmail.com",
+    email: "admin@gmail.com",
     niveau: "master",
     dateCreation: today.toLocaleString("en-US"),
   },
   {
     key:"3",
     matricule: "19M2218",
-    name: "Nom 3 prenom 3",
+    name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
-    email: "user3@gmail.com",
+    email: "admin@gmail.com",
     niveau: "master",
     dateCreation: today.toLocaleString("en-US"),
   },

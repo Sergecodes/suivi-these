@@ -4,6 +4,7 @@ import "antd/dist/antd.min.css";
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import "react-toastify/dist/ReactToastify.css";
+import {Result} from "antd"
 
     /*************************************page accueil************************************/
 import Accueil from "./screen/Accueil";
@@ -138,6 +139,8 @@ const App = () => {
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
+            <Route path="/account/changement-sujet" element={<Result title="En cours d'implémentation" />} />
+            <Route path="/account/changement-encadreur" element={<Result title="En cours d'implémentation" />} />
           </Route>
            
           
