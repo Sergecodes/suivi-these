@@ -1,16 +1,4 @@
-export  const JuryData=
-    {
-        id:21221155,
-        matricule:"17T2345",
-        nom:"NCHOUWET MFOUAPON",
-        prenom:"Kuntz Stephane",
-        email:"stephane@gmail.com",
-        numTelephone:"+237 655 55 55 55",
-        sexe:"M",
-        urlPhotoProfil:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
-    }
-export  const ExpertData=
-{
+export const JuryData = {
     id:21221155,
     matricule:"17T2345",
     nom:"NCHOUWET MFOUAPON",
@@ -21,8 +9,7 @@ export  const ExpertData=
     urlPhotoProfil:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
 }
 
-export  const DepartementData=
-{
+export const ExpertData = {
     id:21221155,
     matricule:"17T2345",
     nom:"NCHOUWET MFOUAPON",
@@ -33,8 +20,7 @@ export  const DepartementData=
     urlPhotoProfil:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
 }
 
-export  const RectoratData=
-{
+export const DepartementData = {
     id:21221155,
     matricule:"17T2345",
     nom:"NCHOUWET MFOUAPON",
@@ -45,8 +31,30 @@ export  const RectoratData=
     urlPhotoProfil:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
 }
 
+export const RectoratData = {
+    id:21221155,
+    matricule:"17T2345",
+    nom:"NCHOUWET MFOUAPON",
+    prenom:"Kuntz Stephane",
+    email:"stephane@gmail.com",
+    numTelephone:"+237 655 55 55 55",
+    sexe:"M",
+    urlPhotoProfil:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
+}
 
-export const critères=[
+export const ACTEURS = Object.freeze({
+    COORDONATEUR: 'Coordonateur',
+    EXPERT: 'Expert',
+    CONSEIL: 'Conseil',
+    ADMIN: 'Admin',
+    ETUDIANT: 'Etudiant',
+    JURY: 'Jury',
+    RECTORAT: 'Rectorat',
+    DEPARTEMENT: 'Departement'
+});
+
+
+export const critères = [
     {
         id:1,
         nom:"Respect des normes de presentation d'un memoire de master (4points)",
