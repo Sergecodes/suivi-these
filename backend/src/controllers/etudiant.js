@@ -604,8 +604,13 @@ exports.getEvolutionDossier = async function (req, res) {
    
    let etapes = await (async function () {
       let etapesDossier = await EtapeDossier.find({ dossier: etudiant.dossier });
+
+const numEtapes = etapesDossier.length;
+if (numEtapes === 0) {
+   numEtapeActu = Types.EtapeDossier.UNE;
+} else {
       numEtapeActu = etapesDossier.at(-1).numEtape;
-      console.log(etapesDossier);
+     }
 
       let defaultVal = { debuteeLe: '', acheveeLe: '', };
       let result = { 
