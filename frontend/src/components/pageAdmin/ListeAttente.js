@@ -5,10 +5,6 @@ import { BsCheck, BsX } from "react-icons/bs";
 import axios from "axios";
 
 
-axios.get(
-  'http://localhost:8001/api/admin/demandes-inscription'
-)
-
 const columns = [
   {
     title: <div className="text-center">Matricule</div>,
