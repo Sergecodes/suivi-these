@@ -26,7 +26,9 @@ router.route('/change-phone-number').put(isEtudiant, getEtudiant, controller.cha
 
 router.route('/uploader-fichiers').put(isEtudiant, getEtudiant, controller.uploadFiles);
 
-router.route('/update-photo').put(isEtudiant, getEtudiant, controller.updatePhoto)
+router.route('/update-photo').put(isEtudiant, getEtudiant, controller.updatePhoto);
+
+router.route('/evolution-dossier').get(isEtudiant, getEtudiant, controller.getEvolutionDossier);
 
 router.route('/etapes-dossier').get(isEtudiant, getEtudiant, controller.etapesDossier);
 

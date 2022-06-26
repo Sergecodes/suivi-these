@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowRepeat } from "react-icons/bs";
 import { GiCancel } from "react-icons/gi";
@@ -16,6 +16,13 @@ const StudentProfile = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [modification, setModification] = useState(false);
+
+  useEffect(() => {
+    toast.info(
+      "Vous devriez vous reconnecter si vous changez votre email ou mot de passe",
+      { hideProgressBar: true }
+    );
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

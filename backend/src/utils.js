@@ -2,32 +2,36 @@
 const { Types } = require('./constants');
 
 
-const isNumeric = val => !isNaN(val);
+exports.isNumeric = val => !isNaN(val);
 
 /**
  * Remove `motDePasse` key from object
  * @param {dict} obj 
  */
-const removePassword = obj => {
+exports.removePassword = obj => {
     if ('motDePasse' in obj) 
         delete obj.motDePasse;
 
     return obj;
 }
 
-const getActeur = (numEtape, niveau) => {
+exports.getActeur = (numEtape, niveau) => {
     const { EtapeDossier, ActeurDossier } = Types;
     const acteurMaster = {
-        [EtapeDossier.DEUX_MASTER]: '',
-        [EtapeDossier.TROIS_MASTER]: '',
-        [EtapeDossier.QUATRE_MASTER]: '',
-
+        [EtapeDossier.UNE]: ActeurDossier.ETUDIANT,
+        [EtapeDossier.DEUX_MASTER]: ActeurDossier.DEPARTEMENT,
+        [EtapeDossier.TROIS_MASTER]: ActeurDossier.JURY,
+        [EtapeDossier.QUATRE_MASTER]: 'CRFD-STG',
+        [EtapeDossier.CINQ_MASTER]: ActeurDossier.COORDONATEUR,
+        [EtapeDossier.SIX_MASTER] : ActeurDossier.COORDONATEUR
     };
     const acteurThese = {
+        [EtapeDossier.UNE]: '',
         [EtapeDossier.DEUX_THESE]: '',
         [EtapeDossier.TROIS_THESE]: '',
         [EtapeDossier.QUATRE_THESE]: '',
-
+        [EtapeDossier.CINQ_THESE]: '',
+        [EtapeDossier.SIX_THESE] : ''
     };
 
     if (numEtape === EtapeDossier.ZERO) {
@@ -39,25 +43,27 @@ const getActeur = (numEtape, niveau) => {
     }
 }
 
-const getEtapeWording = (numEtape, niveau) => {
+exports.getEtapeWording = (numEtape, niveau) => {
     const EtapeDossier = Types.EtapeDossier;
     const wordingMaster = {
-        [EtapeDossier.DEUX_MASTER]: '',
-        [EtapeDossier.TROIS_MASTER]: '',
-        [EtapeDossier.QUATRE_MASTER]: '',
-
+        [EtapeDossier.DEUX_MASTER]: 'Vérification du dossier',
+        [EtapeDossier.TROIS_MASTER]: 'Notation du dossier',
+        [EtapeDossier.QUATRE_MASTER]: 'Evaluation de la notation',
+        [EtapeDossier.CINQ_MASTER]: 'Vérification du rapport du CRFD',
+        [EtapeDossier.SIX_MASTER] : 'Programmation de la date de soutenance'
     };
     const wordingThese = {
         [EtapeDossier.DEUX_THESE]: '',
         [EtapeDossier.TROIS_THESE]: '',
         [EtapeDossier.QUATRE_THESE]: '',
-
+        [EtapeDossier.CINQ_THESE]: '',
+        [EtapeDossier.SIX_THESE] : ''
     };
 
     if (numEtape === EtapeDossier.ZERO) {
-        return "Attente de validation par l'admin";
+        return "Creation et validation de compte";
     } else if (numEtape === EtapeDossier.UNE) {
-        return "Attente de validation de dossier par l'admin";
+        return "Envoi du dossier de soutenance";
     } else if (niveau === Types.Niveau.THESE) {
         return wordingThese[numEtape];
     } else if (niveau === Types.Niveau.MASTER) {
@@ -65,6 +71,3 @@ const getEtapeWording = (numEtape, niveau) => {
     }
 }
 
-
-
-module.exports = { isNumeric, getActeur, getEtapeWording, removePassword };

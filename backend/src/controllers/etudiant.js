@@ -1,6 +1,8 @@
 const { Dossier, EtapeDossier, FichierDossier } = require("../models/Dossier");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
+const moment = require('moment');
+require('moment/locale/fr');
 const path = require("path");
 // const fs = require('fs');
 const { storage } = require('../../firebase.config');
@@ -8,7 +10,9 @@ const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage"
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
 const Notification = require('../models/Notification');
-const { removePassword } = require('../utils');
+const { removePassword, getEtapeWording, getActeur } = require('../utils');
+
+moment.locale('fr');
 
 
 exports.getAll = async function (req, res) {
@@ -555,8 +559,8 @@ exports.setJugesAndSujetMaster = async function (req, res) {
 
    etudiant.juges = juges;
 
-   let res = etudiant.setSujet(sujet);
-   if (res) {
+   let result = await etudiant.setSujet(sujet);
+   if (result) {
       etudiant.juges = juges;
       await etudiant.save();
       return res.send("Succes");
@@ -592,6 +596,75 @@ exports.datesSoutenance = function (req, res) {
       return res.json(result);
    });
 };
+
+exports.getEvolutionDossier = async function (req, res) {
+   const { etudiant } = res.locals;
+   const { MASTER, THESE } = Types.Niveau; 
+   let numEtapeActu;
+   
+   let etapes = await (async function () {
+      let etapesDossier = await EtapeDossier.find({ dossier: etudiant.dossier });
+      numEtapeActu = etapesDossier.at(-1).numEtape;
+      console.log(etapesDossier);
+
+      let defaultVal = { debuteeLe: '', acheveeLe: '', };
+      let result = { 
+         1: defaultVal, 2: defaultVal, 3: defaultVal, 
+         4: defaultVal, 5: defaultVal, 6: defaultVal 
+      };
+      for (let etape of etapesDossier) {
+         result[etape.numEtape] = etape;
+      }
+      return result;
+   })();
+   console.log(etapes);
+
+   let evolution = {};
+   if (etudiant.niveau === MASTER) {
+      evolution = {
+         1: {
+           titre: getEtapeWording(1, MASTER),
+           debuteeLe: etapes[1].debuteeLe && moment(etapes[1].debuteeLe).format('llll'),
+           acheveeLe: etapes[1].acheveeLe && moment(etapes[1].acheveeLe).format('llll'),
+           gereePar: getActeur(1, MASTER),
+         },
+         2: {
+           titre: getEtapeWording(2, MASTER),
+           debuteeLe: etapes[2].debuteeLe && moment(etapes[2].debuteeLe).format('llll'),
+           acheveeLe: etapes[2].acheveeLe && moment(etapes[2].acheveeLe).format('llll'),
+           gereePar: getActeur(2, MASTER)
+         },
+         3: {
+           titre: getEtapeWording(3, MASTER),
+           debuteeLe: etapes[3].debuteeLe && moment(etapes[3].debuteeLe).format('llll'),
+           acheveeLe: etapes[3].acheveeLe && moment(etapes[3].acheveeLe).format('llll'),
+           gereePar: getActeur(3, MASTER)
+         },
+         4: {
+           titre: getEtapeWording(4, MASTER),
+           debuteeLe: etapes[4].debuteeLe && moment(etapes[4].debuteeLe).format('llll'),
+           acheveeLe: etapes[4].acheveeLe && moment(etapes[4].acheveeLe).format('llll'),
+           gereePar: getActeur(4, MASTER)
+         },
+         5: {
+           titre: getEtapeWording(5, MASTER),
+           debuteeLe: etapes[5].debuteeLe && moment(etapes[5].debuteeLe).format('llll'),
+           acheveeLe: etapes[5].acheveeLe && moment(etapes[5].acheveeLe).format('llll'),
+           gereePar: getActeur(5, MASTER)
+         },
+         6: {
+           titre: getEtapeWording(6, MASTER),
+           debuteeLe: etapes[6].debuteeLe && moment(etapes[6].debuteeLe).format('llll'),
+           acheveeLe: etapes[6].acheveeLe && moment(etapes[6].acheveeLe).format('llll'),
+           gereePar: getActeur(6, MASTER)
+         },
+       };
+   } else {
+      evolution = { };
+   }
+   
+   res.json({ numEtapeActuelle: numEtapeActu, evolution});
+}
 
 exports.etapesDossier = async function (req, res) {
    const { etudiant } = res.locals;

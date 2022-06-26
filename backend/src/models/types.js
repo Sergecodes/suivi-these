@@ -152,8 +152,10 @@ const EtapeDossier = Object.freeze({
     TROIS_THESE: 3,
     QUATRE_MASTER: 4,
     QUATRE_THESE: 4,
-    CINQ: 5,
-    SIX: 6
+    CINQ_MASTER: 5,
+    CINQ_THESE: 5,
+    SIX_MASTER: 6,
+    SIX_THESE: 6,
 });
 
 
