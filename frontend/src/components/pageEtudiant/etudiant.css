@@ -170,11 +170,11 @@ font-size:18px;
 }
 
 
-.ant-btn-primary{
+.depotDossier .ant-btn-primary, .stepFile .ant-btn-primary{
     background-color: var(--primaryColor) !important;
     border:1px solid var(--primaryColor) !important;
 }
-.ant-btn-primary:hover{
+.depotDossier .ant-btn-primary:hover, .stepFile .ant-btn-primary:hover{
     background-color: #ee8d6d !important;
 }
 
