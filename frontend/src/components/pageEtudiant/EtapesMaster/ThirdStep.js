@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from "react";
 import {Select} from 'antd';
 import axios from 'axios';
+import {useDispatch, useSelector} from "react-redux";
+import {  addJury} from "../../../redux/MasterFilesUploadSlice";
 
 const { Option } = Select;
 
 
 const ThirdStep = (props) => {
    const [allJuries, setAllJuries] = useState([
-      { id: 'aaa', nom: 'aaa', prenom: 'aaa' }, 
-      { id: 'bbb', nom: 'bbb', prenom: 'bbb' }, 
-      { id: 'ccc', nom: 'ccc', prenom: 'ccc' },
-      // { id: 'ddd', nom: 'ddd', prenom: 'ddd'},
-      // { id: 'eee', nom: 'eee', prenom: 'eee' },
-      // { id: 'fff', nom: 'fff', prenom: 'fff'}
+      { id: 'aaa',email:'aaa@gmail.com', nom: 'aaa', prenom: 'aaa' }, 
+      { id: 'bbb',email:'bbb@gmail.com', nom: 'bbb', prenom: 'bbb' }, 
+      { id: 'ccc',email:'ccc@gmail.com', nom: 'ccc', prenom: 'ccc' },
+      { id: 'ddd',email:'ddd@gmail.com', nom: 'ddd', prenom: 'ddd'},
+      { id: 'eee',email:'eee@gmail.com', nom: 'eee', prenom: 'eee' },
+      { id: 'fff',email:'fff@gmail.com', nom: 'fff', prenom: 'fff'}
    ]);
    const numListes = 3, numJuries = allJuries.length;
-   const user = localStorage.getItem('user');
+   const files= useSelector(state=>state.masterFilesUpload);
+   const dispatch = useDispatch()
+   const user = JSON.parse(localStorage.getItem('user'));
    const [selectableJuries, setSelectableJuries] = useState(allJuries.slice(-(numJuries - numListes)));
    const [selectedJuries, setSelectedJuries] = useState((function () {
-      let output = [];
-      for (let i = 0; i < numListes; i++) {
-        output.push(allJuries[i]);
-      }
+    let output = [];
+    for (let i = 0; i < numListes; i++) {
+      output.push(allJuries[i]);
+    }
 
-      return output;
-    })());
+    return output;
+  })());
 
    // Number of juries should be >= number of listes.
    if (numListes > numJuries) {
@@ -32,16 +36,21 @@ const ThirdStep = (props) => {
    }
 
    // Obtenir la liste de juries du departement
-   useEffect(() => {
-    axios.get(`/departements/${user.departement.id}/juries`)
-      .then(res => {
-        console.log(res);
-        setAllJuries(res.data);
-      })
-      .catch(err => {
-        console.error(err);
-      })
-   }, []);
+  //  useEffect(() => {
+  //   axios.get(`/departements/${user.departement.id}/juries`)
+  //     .then(res => {
+  //       console.log(res);
+  //       setAllJuries(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //     })
+  //  }, []);
+
+  //getting the initial value of the select
+  useEffect(()=>{
+    dispatch(addJury({jury:selectedJuries}))
+  },[])
 
 
    const handleChange = (value, option, listIdx) => {
@@ -57,6 +66,7 @@ const ThirdStep = (props) => {
       let newSelectedJuries = selectedJuries.slice();
       newSelectedJuries[listIdx] = curJury;
       setSelectedJuries(newSelectedJuries);
+      dispatch(addJury({jury:newSelectedJuries}));
 
       // Replace curJury with prevJury in selectableJuries to mark that prevJury is now selectable
       let idxCurJury = selectableJuries.findIndex(jury => jury.id === curJury.id);
@@ -65,8 +75,8 @@ const ThirdStep = (props) => {
       let newSelectableJuries = selectableJuries.slice();
       newSelectableJuries[idxCurJury] = prevJury;
       setSelectableJuries(newSelectableJuries);
+   
    } 
-
 
   return (
     <section className="mx-3 mt-3 mb-5 step">
