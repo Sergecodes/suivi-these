@@ -6,6 +6,8 @@ const { Option } = Select;
 
 
 const ThirdStep = (props) => {
+   const user = JSON.parse(localStorage.getItem('user'));
+
    const [allJuries, setAllJuries] = useState([
       { id: 'aaa', nom: 'aaa', prenom: 'aaa' }, 
       { id: 'bbb', nom: 'bbb', prenom: 'bbb' }, 
@@ -15,8 +17,13 @@ const ThirdStep = (props) => {
       // { id: 'fff', nom: 'fff', prenom: 'fff'}
    ]);
    const numListes = 3, numJuries = allJuries.length;
-   const user = localStorage.getItem('user');
-   const [selectableJuries, setSelectableJuries] = useState(allJuries.slice(-(numJuries - numListes)));
+   let sliceCount = numJuries - numListes;
+
+   // If sliceCount is 0, that implies the number of juries is the same as the 
+   // number of listes, so use an empty array for list of selectableJuries
+   const [selectableJuries, setSelectableJuries] = useState(
+      sliceCount > 0 ? allJuries.slice(-sliceCount) : []
+   );
    const [selectedJuries, setSelectedJuries] = useState((function () {
       let output = [];
       for (let i = 0; i < numListes; i++) {
@@ -24,7 +31,7 @@ const ThirdStep = (props) => {
       }
 
       return output;
-    })());
+   })());
 
    // Number of juries should be >= number of listes.
    if (numListes > numJuries) {
