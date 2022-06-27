@@ -570,20 +570,25 @@ exports.setJugesAndSujetMaster = async function (req, res) {
 }
 
 exports.datesSoutenance = function (req, res) {
-   Etudiant.find({ dateSoutenance: { $ne: "" } }, (err, etuds) => {
+   // Etudiant.find({ dateSoutenance: { $ne: "" } }, (err, etuds) => {
+   Etudiant.where('dateSoutenance').nin([undefined, '']).exec((err, etuds) => {
       if (err) {
          return res.status(500).json({ success: false, error: err });
       }
+
+      console.log(etuds);
 
       let result = {};
 
       for (let etud of etuds) {
          const date = etud.dateSoutenance;
          const etudObj = {
+            id: etud._id,
             matricule: etud.matricule,
             nom: etud.nom,
             prenom: etud.prenom,
             niveau: etud.niveau,
+            sexe: etud.sexe
          };
 
          if (!(date in result)) {
@@ -604,13 +609,13 @@ exports.getEvolutionDossier = async function (req, res) {
    
    let etapes = await (async function () {
       let etapesDossier = await EtapeDossier.find({ dossier: etudiant.dossier });
+      console.log(etapesDossier);
 
-const numEtapes = etapesDossier.length;
-if (numEtapes === 0) {
-   numEtapeActu = Types.EtapeDossier.UNE;
-} else {
-      numEtapeActu = etapesDossier.at(-1).numEtape;
-     }
+      const numEtapes = etapesDossier.length;
+      if (numEtapes === 0) 
+         numEtapeActu = Types.EtapeDossier.UNE;
+      else
+         numEtapeActu = etapesDossier.at(-1).numEtape;
 
       let defaultVal = { debuteeLe: '', acheveeLe: '', };
       let result = { 
@@ -622,7 +627,6 @@ if (numEtapes === 0) {
       }
       return result;
    })();
-   console.log(etapes);
 
    let evolution = {};
    if (etudiant.niveau === MASTER) {

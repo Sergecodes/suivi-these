@@ -34,5 +34,9 @@ const NotificationSchema = new Schema({
 });
 
 
+NotificationSchema.set('toObject', { virtuals: true });
+NotificationSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Notification', NotificationSchema);
 
