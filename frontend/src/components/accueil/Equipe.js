@@ -22,13 +22,13 @@ const Equipe = () => {
                 className="fw-bold "
                 style={{ fontSize: "14px", margin: "3px 0px" }}
               >
-                Albert Einstein
+                Dr Bitombe Andre
               </p>
               <p
                 className="fw-light"
                 style={{ fontSize: "13px", margin: "2px 0px" }}
               >
-                Physicien{" "}
+                Representant{" "}
               </p>
             </div>
           </div>
@@ -41,13 +41,13 @@ const Equipe = () => {
                 className="fw-bold "
                 style={{ fontSize: "14px", margin: "3px 0px" }}
               >
-                Albert Einstein
+                Nom membre
               </p>
               <p
                 className="fw-light"
                 style={{ fontSize: "13px", margin: "2px 0px" }}
               >
-                Physicien{" "}
+                Proffession{" "}
               </p>
             </div>
           </div>
@@ -60,13 +60,13 @@ const Equipe = () => {
                 className="fw-bold "
                 style={{ fontSize: "14px", margin: "3px 0px" }}
               >
-                Albert Einstein
+               Nom membre
               </p>
               <p
                 className="fw-light"
                 style={{ fontSize: "13px", margin: "2px 0px" }}
               >
-                Physicien{" "}
+                Proffession{" "}
               </p>
             </div>
           </div>
@@ -79,13 +79,13 @@ const Equipe = () => {
                 className="fw-bold "
                 style={{ fontSize: "14px", margin: "3px 0px" }}
               >
-                Albert Einstein
+                Nom membre
               </p>
               <p
                 className="fw-light"
                 style={{ fontSize: "13px", margin: "2px 0px" }}
               >
-                Physicien{" "}
+                Proffession{" "}
               </p>
             </div>
           </div>

@@ -36,7 +36,8 @@ router.route('/donner-avis-admin').post(
    controller.donnerAvisAdmin
 );
 
-router.route('/:id').get(getExpertFromParam, controller.getOne).delete(controller.delete);
+router.route('/:id').get(getExpertFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 module.exports = router;

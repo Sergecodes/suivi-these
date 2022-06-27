@@ -6,7 +6,6 @@ import { Outlet } from 'react-router-dom';
 import { setClicked } from "../redux/DashboardDisplaySlice";
 import {useSelector,useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EtudiantConnexionScreen from '../screen/inscriptionScreens/EtudiantConnexionScreen';
 
 
 const Etudiant = () => {
@@ -33,12 +32,10 @@ const Etudiant = () => {
 
   useEffect(() => {
     console.log(localStorage);
-    const actor = localStorage.getItem("actor");
 
     if (actor !== 'etudiant') {
       console.log("Not authenticated");
       navigate("/connexion/etudiant");
-      // navigate("/connexion/etudiant", { replace: true });
     } else {
       setIsAuth(true);
     }

@@ -108,9 +108,22 @@ EtudiantSchema.methods.getSujet = async function () {
    const dossierObj = await this.getDossierObj();
    if (dossierObj)
       return dossierObj.sujet;
-   
-   return '';
+
+   console.log("Cet etudiant n'a pas de dossier");
+   return null;
 };
+
+EtudiantSchema.methods.setSujet = async function (sujet) {
+   const dossierObj = await this.getDossierObj();
+   if (dossierObj) {
+      dossierObj.sujet = sujet
+      await dossierObj.save();
+      return true;
+   }
+
+   console.log("Cet etudiant n'a pas de dossier");
+   return false;
+}
 
 EtudiantSchema.methods.getEtapeActuelle = async function () {
    const dossierObj = await this.getDossierObj();
@@ -166,9 +179,9 @@ EtudiantSchema.methods.reinitialiser = async function () {
       return await Dossier.findByIdAndDelete(this.dossier);
 }
 
-EtudiantSchema.methods.incrementerEtape = async function () {
+EtudiantSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
    if (this.dossier)
-      return await this.dossierObj.incrementerEtape();
+      return await this.getDossierObj().incrementerEtape(numEtapeSuivante);
 }
 
 EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {

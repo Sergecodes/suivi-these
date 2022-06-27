@@ -2,12 +2,14 @@ import React from "react";
 import AdminSidenav from "../components/pageAdmin/AdminSidenav";
 import NavbarAdmin from "../components/pageAdmin/NavbarAdmin";
 import "../Styles/AdminCommon.css";
+import "../Styles/Admin.css";
+import "../Styles/Jury.css";
 import { useWindowSize } from "react-use";
 import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setAdminClicked } from "../redux/DashboardDisplaySlice";
 
-const Jury = () => {
+const Admin = () => {
   const { width } = useWindowSize();
   const dispatch = useDispatch();
   const files = useSelector((state) => state.dashboardDisplay);
@@ -24,7 +26,7 @@ const Jury = () => {
         className="mx-2"
         style={
           files.adminClicked === true || width < 922
-            ? { width: "97%", minHeight: "100vh" }
+            ? { width: "100%", minHeight: "100vh" }
             : { width: "79%", minHeight: "100vh" }
         }
         onClick={handleClick}
@@ -36,4 +38,4 @@ const Jury = () => {
   );
 };
 
-export default Jury;
+export default Admin;

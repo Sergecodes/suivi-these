@@ -9,12 +9,11 @@ import { getNotifications } from "../../redux/CooordonateurManagmentSllice";
 
 
 function NotificationCoordonateur() {
-  const coodonateurInfos = JSON.parse(
-    localStorage.getItem("coordonateurtInfo")
-  );
+  const acteur = localStorage.getItem("actor");
+  const coordonateur = acteur === 'coordonateur' ? JSON.parse(localStorage.getItem('user')) : null;
 
   const dataRequired = () => {
-    if (coodonateurInfos == null) {
+    if (coordonateur == null) {
       alert("Vous devez etre connecte pour acceder cette page");
 
       navigate("/connexion/coordonateur");
@@ -32,7 +31,7 @@ function NotificationCoordonateur() {
   useEffect(() => {
     dataRequired();
     dispatch(getNotifications())
-  }, [navigate, coodonateurInfos]);
+  }, [navigate, coordonateur]);
   return (
     <div className="containere">
       <NavbarCoordonateur sidebarOpen={sidebarOpen} openSidebar={openSidebar} />

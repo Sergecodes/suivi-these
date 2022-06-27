@@ -47,20 +47,15 @@ const TopFooter = () => {
     >
       <div className="footer row">
         <div className="footerCol py-2 col-12 col-lg-6" style={{}}>
-          <p style={{ fontSize: "20px" }}>About Connexion Ndé</p>
+          <p style={{ fontSize: "20px" }}>About Ecole Doctorale STG</p>
           <div>
             <h6>
-              We are a group of Cameroonians from “Ndé” in the UK who seek to
-              promote the culture and tradition of our ethnic group and its
-              values such as communitarianism and solidarity.
-            </h6>
-            <h6>
-              We and our partners love to provide for those in need. Sharing is
-              caring! Join us to cater for the needy and spread positivity
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non justo porta, convallis dolor sed, varius leo.
+             Pellentesque sagittis tortor quis cursus imperdiet. Aenean faucibus lectus et congue pulvinar. Curabitur facilisis aliquet nibh ac eleifend. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse ac pulvinar lorem. Aliquam porttitor tortor purus, nec cursus nibh vulputate eu. Morbi accumsan vitae ligula sit amet egestas. 
             </h6>
             <div className="d-flex align-items-center">
               <input
-                type="text"
+                type="password"
                 value={adminCode}
                 className="border rounded-pill adminModal"
                 onChange={(e) => setAdminCode(e.target.value)}

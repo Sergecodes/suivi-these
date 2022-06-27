@@ -9,19 +9,19 @@ const WelcomeComponent = (props) => {
           <h1>Bienvenue à l'école doctorale STG</h1>
           <h4>Notre equipe est à votre dispostion pour vous aider</h4>
           <div className='d-flex' >
-              <Link to="/inscription/etudiant"> <button className=" rounded-pill welcomeButtonEmpty " style={props.isLogin===false?{display:"none"}:{}}>
+              <Link to="/inscription/etudiant"> <button className=" rounded-pill welcomeButtonEmpty " style={props.isLogin===true?{display:"none"}:{}}>
                <FaArrowRight className="me-2 mb-1"/>
                       S'inscrire
                    
                </button></Link>
-               <Link to="/connexion/etudiant"><button className=" rounded-pill welcomeButtonFill " style={props.isLogin===false?{display:"none"}:{}}>
+               <Link to="/connexion/etudiant"><button className=" rounded-pill welcomeButtonFill " style={props.isLogin===true?{display:"none"}:{}}>
                     <FaArrowRight className="me-2 mb-1"/>
                       Se connecter
                     
                </button></Link>
-               <Link to="/*"> <button className=" rounded-pill welcomeButtonFill" style={props.isLogin===true?{display:"none"}:{}}>
-                    <FaArrowRight className="me-2 mb-1"/>
-                     Informations
+               <Link to="/presentation"> <button className=" rounded-pill welcomeButtonFill" style={props.isLogin===false?{display:"none"}:{}}>
+                    {/* <FaArrowRight className="me-2 mb-1"/> */}
+                    Explorer
                     
                </button></Link>
           </div>

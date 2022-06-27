@@ -14,11 +14,11 @@ import {
 function AdminConnexionScreen() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [code2, setCode2] = useState();
+  // const [code2, setCode2] = useState();
 
   const [user, setUser] = useState({
     email: "",
-    code: "",
+    motDePasse: "",
   });
 
   const { message, admin, isError, isLoading, isSuccess, isRejected } =
@@ -29,9 +29,7 @@ function AdminConnexionScreen() {
     }
     if (isSuccess || admin) {
       toast.success("Connexion Reussie");
-      alert("connexion Reussie");
-
-      navigate("/connexion/admin");
+      navigate("/acteur/admin/dashboard");
     }
     if (isLoading) {
       return <LoadingScreen />;
@@ -40,20 +38,13 @@ function AdminConnexionScreen() {
   }, [admin, isSuccess, isError, message, navigate, dispatch]);
 
   const SubmitHandle = (e) => {
-    if (code2 === "" || user.code === "" || user.email === "") {
-      toast.warning("Remplissez tout vos champs");
+    if (  user.motDePasse === "" && user.email === "") {
+      toast.warning("Remplissez tout vos champs",{hideProgressBar: true
+      });
       e.preventDefault();
     } else {
-      if (user.code === code2) {
         dispatch(loginAdmin(user));
-      } else {
-        toast.warning("les codes ne correspondent pas");
-
-        console.log(
-          `les code 1 est ${user.code1} et le code 2 est ${user.code2} et l'email de cet utilisateur est ${user.email}`
-        );
-        e.preventDefault();
-      }
+     
     }
 
     e.preventDefault();
@@ -86,6 +77,8 @@ function AdminConnexionScreen() {
                         <input
                           type="email"
                           className="form-control"
+                          autoComplete="false"
+
                           id="email"
                           onChange={(e) =>
                             setUser({ ...user, email: e.target.value })
@@ -94,18 +87,19 @@ function AdminConnexionScreen() {
                       </div>
                       <div className="col-12">
                         <label htmlFor="codeSecret1" className="form-label">
-                          Code secret 1
+                          Mot De Passe
                         </label>
                         <input
                           type="password"
                           className="form-control"
                           id="codeSecret1"
+                          autoComplete="false"
                           onChange={(e) =>
-                            setUser({ ...user, code: e.target.value })
+                            setUser({ ...user, motDePasse: e.target.value })
                           }
                         />
                       </div>
-                      <div className="col-12">
+                      {/* <div className="col-12">
                         <label htmlFor="codeSecret2" className="form-label">
                           Code secret 2
                         </label>
@@ -115,7 +109,7 @@ function AdminConnexionScreen() {
                           id="codeSecret2"
                           onChange={(e) => setCode2(e.target.value)}
                         />
-                      </div>
+                      </div> */}
                       <br />
                       <div className="d-grid gap-2">
                         <button

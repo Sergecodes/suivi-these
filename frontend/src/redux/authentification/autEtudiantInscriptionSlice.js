@@ -35,12 +35,10 @@ export const registerEtudiant = createAsyncThunk(
         }
       );
 
-      localStorage.setItem("user", JSON.stringify(value.data));
-      localStorage.setItem("actor", 'etudiant');
       alert(JSON.stringify(value.data));
       return JSON.stringify(JSON.stringify(value.data));
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err);
       return rejectWithValue(err.response.data);
     }
   }

@@ -28,6 +28,7 @@
     "express-session": "^1.17.2",
     "firebase": "^9.6.11",
     "joi-password-complexity": "^5.1.0",
+    "moment": "^2.29.3",
     "mongoose": "^6.2.10",
     "mongoose-autopopulate": "^0.16.1",
     "validator": "^13.7.0"

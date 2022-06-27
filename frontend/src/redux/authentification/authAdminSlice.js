@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // recuperer un etudiant dans le local storage
-const admin = JSON.parse(localStorage.getItem("adminInfos"));
+const acteur = localStorage.getItem("actor");
 
 const initialState = {
-  admin: admin ? admin : null,
+  admin: acteur === 'admin' ? JSON.parse(localStorage.getItem('user')) : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -18,17 +18,17 @@ export const loginAdmin = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const value = await axios.post(
-        "/admin/login-admin",
+        "/admin/login",
         {
           email: data.email,
-          code: data.code,
+          motDePasse: data.motDePasse,
         }
       );
       localStorage.setItem("user", JSON.stringify(value.data));
       localStorage.setItem("actor", 'admin');
       // console.log(data);
-      alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
+      // alert(JSON.stringify(value.data));
+      // console.log(JSON.stringify(value.data));
       return JSON.stringify(value.data.data);
     } catch (err) {
       console.log(err.response.data);
@@ -66,6 +66,8 @@ export const authAdminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
+        console.log(`le action payload est ${action.payload}`);
+
         if (action.payload && JSON.parse(action.payload)._id) {
           console.log("je suis dana le success");
           state.isLoading = false;
@@ -74,10 +76,11 @@ export const authAdminSlice = createSlice({
           state.admin = action.payload;
 
           localStorage.setItem(
-            "coordonateurtInfo",
+            "adminInfo",
             JSON.stringify(JSON.parse(action.payload))
           );
         } else {
+          console.log(action.payload);
           console.log("je suis danss le rejected");
           state.isSuccess = false;
           state.isLoading = false;

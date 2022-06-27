@@ -2,7 +2,8 @@ const router = require('express').Router();
 const controller = require('../controllers/departement');
 const { 
    isAdmin, isDepartement, getDepartement, 
-   getDossierFromReq, getDepartementFromParam 
+   getDossierFromReq, getDepartementFromParam, 
+   getEtudiantFromParam 
 } = require('../middlewares');
 
 
@@ -62,9 +63,17 @@ router.route('/donner-avis-admin').post(
    controller.donnerAvisAdmin
 );
 
+router.route('/etudiants/:id/set-juges').put(
+   isDepartement, 
+   getEtudiantFromParam,
+   getDepartement, 
+   controller.setEtudiantJuges
+);
+
 router.route('/:id/juries').get(controller.getJuries);
 
-router.route('/:id').get(getDepartementFromParam, controller.getOne).delete(controller.delete);
+router.route('/:id').get(getDepartementFromParam, controller.getOne)
+.delete(isAdmin, controller.delete);
 
 
 

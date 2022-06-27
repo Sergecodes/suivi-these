@@ -25,8 +25,6 @@ function ExpertConnexionScreen() {
     }
     if (isSuccess) {
       toast.success("Connexion Reussie");
-      alert("connexion Reussie");
-
       navigate("/account");
     }
     if (isLoading) {

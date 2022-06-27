@@ -1,8 +1,7 @@
 const { Schema, model } = require('mongoose')
 const { 
     CategorieFichierMaster, CategorieFichierThese, 
-    GerantEtapeDossier, ModelNotif, Niveau,
-    CategorieNote, ActeurDossier, 
+    ModelNotif, Niveau, CategorieNote, ActeurDossier, 
     EtapeDossier: EtapeDossierEnum,
 } = require('./types');
 const Avis = require('./Avis');
@@ -78,7 +77,7 @@ DossierSchema.methods.getEtapeActuelle = async function() {
 };
 
 
-DossierSchema.methods.incrementerEtape = async function() {
+DossierSchema.methods.incrementerEtape = async function(numEtapeSuivante) {
    await this.populate({
       path: 'etudiant',
       select: 'niveau'
@@ -89,26 +88,35 @@ DossierSchema.methods.incrementerEtape = async function() {
             FINAL_NUM_ETAPE_THESE
     })();
 
-    let etapeActu = await this.etapeActuelle;
-    if (!etapeActu.acheveeLe) {
-        etapeActu.acheveeLe = new Date();
-        await etapeActu.save();
+    const etapeActu = await this.getEtapeActuelle();
+    if (numEtapeSuivante === undefined) {
+        numEtapeSuivante = etapeActu.numEtape + 1;
     }
 
     // L'utilisateur a deja termine
-    if (etapeActu === numDerniereEtape) {
+    if (numEtapeSuivante > numDerniereEtape) {
         console.log("Cet utilisateur a deja termine son processus.");
     } else {
-        await EtapeDossier.create({
-            dossier: this._id,
-            numEtape: etapeActu.numEtape + 1,
-        });
+        if (!etapeActu.acheveeLe) {
+            etapeActu.acheveeLe = new Date();
+            await etapeActu.save();
+        }
+
+        try {
+            await EtapeDossier.create({
+                dossier: this._id,
+                numEtape: numEtapeSuivante,
+            });
+        } catch (err) {
+            console.error(err);
+            console.log("Cette etape a deja debute");
+        }
     }
 }
 
 
 DossierSchema.methods.changerSujet = async function(nouveauSujet) {
-    if (this.sujet !== nouveauSujet) {
+    if (nouveauSujet && this.sujet !== nouveauSujet) {
         this.sujet = nouveauSujet;
         await this.save();
         // this.save().then(dossier => {
@@ -150,29 +158,31 @@ const EtapeDossierSchema = new Schema({
     },
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
     debuteeLe: { type: Date, default: Date.now, required: true },
-    acheveeLe: { 
-        type: String, 
-        required: true,
-        validate: {
-           validator: (date) => isDate(date),
-           message: (props) => `
-              ${props.value} est une date invalide. 
-              Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
-           `,
-        },
-     },
-    delai: { 
-        type: String, 
-        required: true,
-        validate: {
-           validator: (date) => isDate(date),
-           message: (props) => `
-              ${props.value} est une date invalide. 
-              Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
-           `,
-        },
-     },
-    extra: String,
+    acheveeLe: Date,
+    delai: Date,
+    extra: String
+    // acheveeLe: { 
+    //     type: String, 
+    //     required: true,
+    //     validate: {
+    //        validator: (date) => isDate(date),
+    //        message: (props) => `
+    //           ${props.value} est une date invalide. 
+    //           Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
+    //        `,
+    //     },
+    //  },
+    // delai: { 
+    //     type: String, 
+    //     validate: {
+    //        validator: (date) => isDate(date),
+    //        message: (props) => `
+    //           ${props.value} est une date invalide. 
+    //           Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
+    //        `,
+    //     },
+    //  },
+    // extra: String,
 });
 
 // Set description to Etape Dossier

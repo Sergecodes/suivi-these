@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 // recuperer un etudiant dans le local storage
-const etudiant = JSON.parse(localStorage.getItem("etudiantInfo"));
+const acteur = localStorage.getItem("actor");
 
 const initialState = {
-  etudiant: null,
+  etudiant: acteur === 'etudiant' ? JSON.parse(localStorage.getItem('user')) : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -26,13 +26,13 @@ export const login = createAsyncThunk(
           email: data.email
         }
       );
-      localStorage.setItem("user", JSON.stringify(value.data));
-      localStorage.setItem('actor', 'etudiant');
+      console.log(value)
+
       // console.log(data);
       console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data);
+      return value.data.data;
     } catch (err) {
-      console.error(err.response);
+      console.error(err);
       return rejectWithValue(err.response.data);
     }
   }
@@ -52,7 +52,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem("user");
       localStorage.removeItem('actor');
-      state.etudiant = null;
+      // state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
@@ -69,8 +69,13 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         // console.log("login fulfilled");
+        const payload = action.payload;
+        console.log(payload);
+
+        localStorage.setItem("user", JSON.stringify(payload));
+        localStorage.setItem('actor', 'etudiant');
         state.isSuccess = true;
-        state.etudiant = action.payload;
+        // state.etudiant = action.payload;
         state.isLoading = false;
 
         console.log("je suis dans le isloading");
@@ -82,7 +87,7 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         // console.log("login rejected");
         state.isLoading = false;
-        state.etudiant = null;
+        // state.etudiant = null;
         state.isRejected = true;
 
         state.isError = true;

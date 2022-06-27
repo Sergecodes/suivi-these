@@ -1,62 +1,101 @@
-import React, { useState } from "react";
-import {Select} from 'antd'
-/*import {
-  addFirstEnseignant,
-  addSecondEnseignant,
-  addThirdEnseignant,
-} from "../../../redux/MasterFilesUploadSlice";
-import { useSelector, useDispatch } from "react-redux";*/
+import React, { useState, useEffect } from "react";
+import {Select} from 'antd';
+import axios from 'axios';
+
+const { Option } = Select;
+
 
 const ThirdStep = (props) => {
-  //const dispatch = useDispatch();
+   const [allJuries, setAllJuries] = useState([
+      { id: 'aaa', nom: 'aaa', prenom: 'aaa' }, 
+      { id: 'bbb', nom: 'bbb', prenom: 'bbb' }, 
+      { id: 'ccc', nom: 'ccc', prenom: 'ccc' },
+      // { id: 'ddd', nom: 'ddd', prenom: 'ddd'},
+      // { id: 'eee', nom: 'eee', prenom: 'eee' },
+      // { id: 'fff', nom: 'fff', prenom: 'fff'}
+   ]);
+   const numListes = 3, numJuries = allJuries.length;
+   const user = localStorage.getItem('user');
+   const [selectableJuries, setSelectableJuries] = useState(allJuries.slice(-(numJuries - numListes)));
+   const [selectedJuries, setSelectedJuries] = useState((function () {
+      let output = [];
+      for (let i = 0; i < numListes; i++) {
+        output.push(allJuries[i]);
+      }
 
- // const files = useSelector((state) => state.masterFilesUpload);
- const {Option}=Select;
- const [liste,setListe]=useState(['atangana',"mbarga","serge","loic"])
- const [choixJury, setChoixJury]= useState([{jury:liste[0]}, {jury:liste[1]!==undefined?liste[1]:liste[0]},{jury:liste[2]!==undefined?liste[2]:liste[0]}]);
+      return output;
+    })());
 
- const handleChange=(value, index)=>{
+   // Number of juries should be >= number of listes.
+   if (numListes > numJuries) {
+      throw Error("Le nombre de juries doit etre superieure ou egal au nombre de listes");
+   }
 
-  const newChoix= [...choixJury];
-  newChoix[index].jury=value;
-  setChoixJury(newChoix);
-  let newListe=[...liste];
-  newListe=newListe.filter(elt=>elt!==value);
-  setListe(newListe)
+   // Obtenir la liste de juries du departement
+   useEffect(() => {
+    axios.get(`/departements/${user.departement.id}/juries`)
+      .then(res => {
+        console.log(res);
+        setAllJuries(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+   }, []);
 
- }
+
+   const handleChange = (value, option, listIdx) => {
+      // console.log(value);  // value of selected option
+      // console.log(option); // option element of modified list
+      // console.log(listIdx);  // index of modified liste
+      
+      // curJury is the newly selected jury in the list and 
+      // prevJury is the previously selected
+      const curJury = option.jury, prevJury = selectedJuries[listIdx];
+
+      // Set chosen option in selectedJuries
+      let newSelectedJuries = selectedJuries.slice();
+      newSelectedJuries[listIdx] = curJury;
+      setSelectedJuries(newSelectedJuries);
+
+      // Replace curJury with prevJury in selectableJuries to mark that prevJury is now selectable
+      let idxCurJury = selectableJuries.findIndex(jury => jury.id === curJury.id);
+      console.assert(idxCurJury !== -1, "idxCurJury is -1 (curJury is not in selectableJuries)");
+
+      let newSelectableJuries = selectableJuries.slice();
+      newSelectableJuries[idxCurJury] = prevJury;
+      setSelectableJuries(newSelectableJuries);
+   } 
 
 
- 
   return (
     <section className="mx-3 mt-3 mb-5 step">
       <h2>
         Cette partie consiste à renseigner les informations sur les enseignants
-        qui vont faire partie des membres du jury
+        que vous voulez qu'ils fassent partie des membres du jury
       </h2>
       <div className="my-4 d-flex justify-content-around">
-        {
-          choixJury.map((elt,index)=>{
-           return(
-            <div key={index}>
-              <label htmlFor={index} className="me-2 " style={{fontSize:"16px",fontWeight:"500"}}>Informations jury {index +1}: </label>
-              <Select
-                value={elt.jury}
-                style={{
-                  width: 120,
-                }}
-                onChange={(e)=>handleChange(e,index)}
-                name={index}
-              >
-                {
-                  liste.map((elt,index)=>{
-                    return(
-                      <Option key={index} value={elt}>{elt}</Option>
+        {selectedJuries.map((jury, listIdx) => {
+            return (
+               <div key={listIdx}>
+                 <label htmlFor={listIdx} className="me-2" style={{ fontSize:"16px", fontWeight:"500" }}>
+                   Informations jury {listIdx + 1}: 
+                 </label>
+                 <Select
+                   style={{ width: 120, }}
+                   defaultValue={jury.nom + ' ' + jury.prenom}
+                   onChange={(value, option) => handleChange(value, option, listIdx)}
+                   name={listIdx}
+                 >
+                   {selectableJuries.map(elt => 
+                    (
+                      <Option key={elt.id} value={elt.id} jury={elt}>
+                        {elt.nom + ' ' + elt.prenom}
+                     </Option>
                     )
-                  })
-                }
-              </Select>
-            </div>
+                  )}
+                 </Select>
+               </div>
            )
           })
         }

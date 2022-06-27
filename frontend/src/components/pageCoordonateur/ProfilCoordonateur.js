@@ -10,9 +10,8 @@ import { useDispatch} from 'react-redux'
 import { changeEmailCoordonateur } from "../../redux/coordonateur/ChangePasswordCoordoSlice";
 
 function ProfilCoordonateur() {
-  const coodonateurInfos = JSON.parse(
-    localStorage.getItem("coordonateurtInfo")
-  );
+  const acteur = localStorage.getItem("actor");
+  const coordonateur = acteur === 'coordonateur' ? JSON.parse(localStorage.getItem('user')) : null;
    const [isDisable,setIsDisable] =useState(false)
   const [email,setEmail] =useState(false)
 
@@ -24,7 +23,7 @@ function ProfilCoordonateur() {
   })
   const navigate = useNavigate();
   const dataRequired = () => {
-    if (coodonateurInfos == null) {
+    if (coordonateur == null) {
       alert("Vous devez etre connecte pour acceder cette page");
 
       navigate("/connexion/coordonateur");
@@ -41,7 +40,7 @@ function ProfilCoordonateur() {
   useEffect(() => {
     dataRequired();
     console.log(`la valeur de user est ${user}`);
-  }, [navigate, coodonateurInfos]);
+  }, [navigate, coordonateur]);
   const handleSetPassword =()=>{
     alert(`la valeur de user est ${user.actualPass} et ${user.newPass}`)
     dispatch(changeEmailCoordonateur(user))

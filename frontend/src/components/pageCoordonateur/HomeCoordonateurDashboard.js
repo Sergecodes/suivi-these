@@ -5,13 +5,13 @@ import SidebarCoordonateur from "./SidebarCoordonateur";
 import { useNavigate } from "react-router-dom";
 
 function HomeCoordonateurDashboard(props) {
-  const coodonateurInfos = JSON.parse(
-    localStorage.getItem("coordonateurtInfo")
-  );
+  console.log(localStorage)
+  const acteur = localStorage.getItem("actor");
+  const coordonateur = acteur === 'coordonateur' ? JSON.parse(localStorage.getItem('user')) : null;
   const navigate = useNavigate();
 
   const dataRequired = () => {
-    if (coodonateurInfos == null) {
+    if (!coordonateur) {
       alert("Vous devez etre connecte pour acceder cette page");
 
       // alert("Vous devez etre connecte pour acceder cette page")
@@ -29,7 +29,7 @@ function HomeCoordonateurDashboard(props) {
   };
   useEffect(() => {
     dataRequired();
-  }, [navigate, coodonateurInfos]);
+  }, [navigate, coordonateur]);
   return (
     <div className="containere">
       <NavbarCoordonateur sidebarOpen={sidebarOpen} openSidebar={openSidebar} />

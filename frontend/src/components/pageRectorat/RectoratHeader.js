@@ -7,7 +7,7 @@ const RectoratHeader= () => {
   return (
     <>
         <AdministratorsHeader
-             nom={"NCHOUWET MFOUAPON"}
+             nom={"Rectorat 1"}
              dashboardLink={"/acteur/rectorat/dashboard"}
              acteur={"Rectorat"}
              notification={"/acteur/rectorat/notifications"}

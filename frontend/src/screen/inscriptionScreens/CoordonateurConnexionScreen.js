@@ -19,7 +19,7 @@ function CoordonateurInscriptionScreen() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const coordonateurInfos = localStorage.getItem("coordonateurtInfo");
+  // const coordonateur = localStorage.getItem("actor");
 
   const {
     message,
@@ -33,10 +33,12 @@ function CoordonateurInscriptionScreen() {
   useEffect(() => {
     console.log(`le isError est a ${isError} et le isRejected ${isRejected}`);
     if (isError || isRejected) {
-      toast.error(message, { position: toast.POSITION.TOP_CENTER });
+      toast.error(message, { position: toast.POSITION.TOP_CENTER },{hideProgressBar: true
+      });
     }
 
     if (isSuccess || coordonateur) {
+      toast.success("Connexion Reussie");
       navigate("/acteur/coordonateur");
     }
     if (isLoading) {
@@ -57,7 +59,8 @@ function CoordonateurInscriptionScreen() {
 
   const SubmitHandle = (e) => {
     if (user.motDePasse === "" || user.email === "") {
-      toast.warning("renseignez toutes vos informations");
+      toast.warning("renseignez toutes vos informations",{hideProgressBar: true
+      });
       e.preventDefault();
     } else {
       console.log(user);

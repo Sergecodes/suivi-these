@@ -19,7 +19,7 @@ const Jury = () => {
     }
   };
   useEffect(() => {
-    accesRequired();
+    // accesRequired();
   }, [navigate, juryInfos]);
   return (
     <div

@@ -38,40 +38,21 @@ const EnvoiDossierSchema = new Schema({
  */
 EnvoiDossierSchema.post('save', async function(envDossier) {
     if (this.isNew) {
-        let notifs = [
-            new Notification({
-                type: TypeNotification.DOSSIER_ENVOYE,
-                destinataire: envDossier.envoyePar,
-                destinataireModel: envDossier.envoyeParModel,
-                objetConcerne: envDossier._id,
-                objetConcerneModel: ModelNotif.ENVOI_DOSSIER
-            }),
-            new Notification({
-                type: TypeNotification.NOUVEL_AVIS,
-                destinataire: envDossier.destinataire,
-                destinataireModel: envDossier.destinataireModel,
-                objetConcerne: envDossier._id,
-                objetConcerneModel: ModelNotif.ENVOI_DOSSIER
-            })
-        ];
+        let notifs = [{
+            type: TypeNotification.DOSSIER_ENVOYE,
+            destinataire: envDossier.envoyePar,
+            destinataireModel: envDossier.envoyeParModel,
+            objetConcerne: envDossier._id,
+            objetConcerneModel: ModelNotif.ENVOI_DOSSIER
+        }, {
+            type: TypeNotification.NOUVEL_AVIS,
+            destinataire: envDossier.destinataire,
+            destinataireModel: envDossier.destinataireModel,
+            objetConcerne: envDossier._id,
+            objetConcerneModel: ModelNotif.ENVOI_DOSSIER
+        }];
     
-        await Notification.bulkSave(notifs);
-
-        // await Notification.create({
-        //     type: TypeNotification.DOSSIER_ENVOYE,
-        //     destinataire: envDossier.envoyePar,
-        //     destinataireModel: envDossier.envoyeParModel,
-        //     objetConcerne: envDossier._id,
-        //     objetConcerneModel: ModelNotif.ENVOI_DOSSIER
-        // });
-    
-        // await Notification.create({
-        //     type: TypeNotification.NOUVEL_AVIS,
-        //     destinataire: envDossier.destinataire,
-        //     destinataireModel: envDossier.destinataireModel,
-        //     objetConcerne: envDossier._id,
-        //     objetConcerneModel: ModelNotif.ENVOI_DOSSIER
-        // });
+        await Notification.create(notifs);
     }
 });
 

@@ -1,137 +1,92 @@
-import React from "react";
-
+import { useEffect, useState } from 'react';
 import { Steps } from "antd";
+import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
+
 
 const { Step } = Steps;
 
-const EvolutionDossier=()=> {
-    const current=2;
-    const steps = [
-        {
-          title: <p className="evolutionStepTitle">Envoi du dossier de soutenance</p>,
-          description:<div className="evolutionStepInfo" style={current<=0?{display:"none"}:{}}>
-              <div className="d-flex align-items-center">
-                  <p>Mon, September 18 at 10:07 AM</p>
-                  <span className="mx-2">-</span>
-                  <p>Tues, September 19 at 10:07 PM</p>
-              </div>
-              <p>Coordonnateur</p>
-        </div>
+const EvolutionDossier = () => {
+  const [currentEtape, setCurrentEtape] = useState(1);
+  const [evolution, setEvolution] = useState({
+    1: {
+      titre: 'Envoi du dossier de soutenance',
+      debuteeLe: 'Mon, September 18 at 10:07 AM',
+      acheveeLe: 'Tues, September 19 at 10:07 PM',
+      gereePar: 'Etudiant',
     },
-    {
-      title: (
-        <p className="evolutionStepTitle">
-          Vérification du dossier par le departement
-        </p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 1 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Departement</p>
-        </div>
-      ),
-    },
-    {
-      title: (
-        <p className="evolutionStepTitle">Notation par les membres du Jury</p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 2 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Jury</p>
-        </div>
-      ),
-    },
+  });
 
-    {
-      title: (
-        <p className="evolutionStepTitle">
-          Evaluation de la notation par admin
-        </p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 3 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>Admin</p>
-        </div>
-      ),
-    },
+  const steps = (function() {
+    let result = [];
+    for (let num in evolution) {
+      const etape = evolution[num];
+      result.push({ ...etape });
+    }
 
-    {
-      title: (
-        <p className="evolutionStepTitle">
-          Vérification du memoire par le coordonnateur
-        </p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 4 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>coordonnateur</p>
-        </div>
-      ),
-    },
+    return result;
+  })();
 
-    {
-      title: (
-        <p className="evolutionStepTitle">Programmation date de soutenance</p>
-      ),
-      description: (
-        <div
-          className="evolutionStepInfo"
-          style={current <= 5 ? { display: "none" } : {}}
-        >
-          <div className="d-flex align-items-center">
-            <p>Mon, September 18 at 10:07 AM</p>
-            <span className="mx-2">-</span>
-            <p>Tues, September 19 at 10:07 PM</p>
-          </div>
-          <p>coordonnateur</p>
-        </div>
-      ),
-    },
-  ];
+  useEffect(() => {
+    // First check in localStorage if results are present. If not present,
+    // call endpoint and store result in localStorage for given period (say 1day)
+    let numEtapeActuelle = localStorage.getItem('numEtapeActuelle');
+    let evolution = JSON.parse(localStorage.getItem('evolution'));
+
+    if (numEtapeActuelle === null || evolution === null) {
+      axios.get('/etudiants/evolution-dossier')
+        .then(res => {
+          console.log(res);
+          evolution = res.data.evolution;
+          numEtapeActuelle = res.data.numEtapeActuelle;
+
+          setEvolution(evolution);
+          setCurrentEtape(numEtapeActuelle);
+          // todo also set validity period
+          localStorage.setItem('evolution', JSON.stringify(evolution));
+          localStorage.setItem('numEtapeActuelle', numEtapeActuelle);
+        })
+        .catch(err => {
+          console.error(err);
+          toast.error("Une erreur est survenue", { hideProgressBar: true });
+        });
+    } else {
+      setEvolution(evolution);
+      setCurrentEtape(numEtapeActuelle);
+    }
+  }, []);
 
   return (
-    <section className="evolution mt-3 mx-5">
-      <Steps className="" current={current} direction="vertical">
-        {steps.map((item) => (
-          <Step
-            className="pb-2 fw-bold "
-            key={item.title}
-            title={item.title}
-            description={item.description}
-          />
-        ))}
-      </Steps>
-    </section>
+    <>
+      <ToastContainer />
+      <section className="evolution mt-3 mx-5">
+        <Steps className="" current={currentEtape} direction="vertical">
+          {steps.map(item => (
+            <Step
+              className="pb-2 fw-bold"
+              key={item.titre}
+              title={<p className="evolutionStepTitle">{item.titre}</p>}
+              description={
+                <div
+                  className="evolutionStepInfo"
+                  style={item.debuteeLe ? {} : { display: 'none' }}
+                >
+                  <div className="d-flex align-items-center">
+                    <p>{item.debuteeLe}</p>
+                    <span className="mx-2">-</span>
+                    <p>{item.acheveeLe}</p>
+                  </div>
+                  <p>
+                    <span classname="fw-bold">Geree par: </span> 
+                    {item.gereePar}
+                  </p>
+                </div>
+              }
+            />
+          ))}
+        </Steps>
+      </section>
+    </>
   );
 };
 

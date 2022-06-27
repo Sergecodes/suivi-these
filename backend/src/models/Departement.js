@@ -2,7 +2,10 @@ const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
-const { StatutDossier, ModelNotif, TypeNotification, AvisEmetteur  } = require('./types')
+const { 
+    StatutDossier, ModelNotif, TypeNotification, 
+    AvisEmetteur, EtapeDossier  
+} = require('./types')
 const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
 
@@ -75,7 +78,7 @@ DepartementSchema.virtual('notifications', {
  */
  DepartementSchema.methods.validerDossier = async function (dossier) {
     dossier.statut = StatutDossier.VALIDE_DEPARTEMENT;
-    await dossier.incrementerEtape();
+    await dossier.incrementerEtape(EtapeDossier.DEUX_MASTER);
     // No need to call save() since the method above saves the dossier object
     // await dossier.save();
 
