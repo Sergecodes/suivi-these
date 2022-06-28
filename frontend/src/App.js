@@ -97,13 +97,18 @@ import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo";
 
 /************************************************page coordonateur************************************/
 import Coordonateur from "./screen/Coordonateur";
-import HomeCoordonateurDashboard from "./components/pageCoordonateur/HomeCoordonateurDashboard";
-//import ProfilCoordonateur from "./components/pageCoordonateur/ProfilCoordonateur";
-import RapportAudition from "./components/pageCoordonateur/RapportAudition";
-import AutorisationDeSoutenance from "./components/pageCoordonateur/AutorisationDeSoutenance";
-//import RapportEtudiant from "./components/pageCoordonateur/RapportEtudiant";
-import DateDeSoutenance from "./components/pageCoordonateur/DateDeSoutenance";
-///import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
+import DashboardCoordo from "./components/pageCoordonateur/DashboardCoordo";
+import ProfilCoordonateur from "./components/pageCoordonateur/ProfilCoordonateur";
+import RapportAudition from "./components/pageCoordonateur/These/RapportAudition";
+import RedactionRapport from "./components/pageCoordonateur/These/RedactionRapport";
+import DossierThese from "./components/pageCoordonateur/These/DossierThese";
+import AutorisationDeSoutenance from "./components/pageCoordonateur/Master/AutorisationDeSoutenance";
+import DatesProgrammees from "./components/pageCoordonateur/Master/DatesProgrammees";
+import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
+import RapportAdminMaster from "./components/pageCoordonateur/Master/RapportAdminMaster";
+import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutenance";
+
+
 /**************************************************************************************************/
 
 // Configurer les options par defaut d'axios
@@ -261,11 +266,23 @@ const App = () => {
           <Route path="/acteur/coordonateur" element={<Coordonateur />}>
             <Route
               path="/acteur/coordonateur/dashboard"
-              element={<HomeCoordonateurDashboard />}
+              element={<DashboardCoordo />}
             />
             <Route
               path="/acteur/coordonateur/audition"
               element={<RapportAudition />}
+            />
+             <Route
+              path="/acteur/coordonateur/redaction-rapport"
+              element={<RedactionRapport />}
+            />
+            <Route
+              path="/acteur/coordonateur/dossier-these"
+              element={<DossierThese />}
+            />
+            <Route
+              path="/acteur/coordonateur/profil"
+              element={<ProfilCoordonateur />}
             />
             <Route
               path="/acteur/coordonateur/autorisation"
@@ -275,7 +292,22 @@ const App = () => {
               path="/acteur/coordonateur/date"
               element={<DateDeSoutenance />}
             />
+            <Route
+              path="/acteur/coordonateur/date-programmees"
+              element={<DatesProgrammees />}
+            />
+            <Route
+              path="/acteur/coordonateur/notifications"
+              element={<NotificationCoordonateur />}
+            />
+            <Route
+              path="/acteur/coordonateur/rapport-master"
+              element={<RapportAdminMaster />}
+            />
           </Route>
+          
+            {/*-------------*/}
+
           <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
