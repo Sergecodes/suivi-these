@@ -145,7 +145,7 @@
 /*sidenav admin*/
 .sidenav{
   height:100vh;
-  width:235px;
+  width:260px;
   background-image:linear-gradient(#2a1c5a, #4b3a6e);
 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   color:white;
@@ -153,6 +153,7 @@ box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   top:0;
   left:0;
   z-index:999;
+  overflow-y:scroll;
 }
 hr{
   margin-bottom:10px;
@@ -187,13 +188,13 @@ hr{
   display:flex;
   align-items:center;
   padding:10px 7px;
+  margin:0px 3px;
 }
 
 .sidenavItem a:hover{
   background-color: white;
   color:#2a1c5a;
   border-radius: 5px;
-  margin:0px 3px;
 }
 
 @media (width<922px){
@@ -212,13 +213,13 @@ hr{
 }
 
 /* navar admin*/
-.adminNavbar img{
+.adminNavbar img, .coordoNavbar img{
   height:35px;
   width:35px;
   border-radius: 50px;
 }
 
-.adminNavbar{
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; ;
+.adminNavbar, .coordoNavbar{
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
+  position:relative;
 }
-

@@ -12,6 +12,7 @@ const ListeDepartement = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Email</div>,
@@ -19,10 +20,12 @@ const ListeDepartement = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Mot de passe</div>,
       dataIndex: "motDePasse",
+      align:"center"
     },
     {
       title: <div className="text-center">Unite de recherche</div>,
@@ -30,6 +33,7 @@ const ListeDepartement = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: "Actions",
@@ -46,6 +50,7 @@ const ListeDepartement = () => {
           </div>
         );
       },
+      align:"center"
     },
   ];
   const [isModalVisible, setIsModalVisible] = useState(false);

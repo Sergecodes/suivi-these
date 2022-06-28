@@ -10,10 +10,12 @@ const ListeConseil = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Mot de passe</div>,
       dataIndex: "motDePasse",
+      align:"center"
     },
     {
       title: "Actions",
@@ -30,6 +32,7 @@ const ListeConseil = () => {
           </div>
         );
       },
+      align:"center"
     },
   ];
   const [isModalVisible, setIsModalVisible] = useState(false);

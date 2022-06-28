@@ -14,6 +14,7 @@ const ListeExpert = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Prenom </div>,
@@ -21,6 +22,7 @@ const ListeExpert = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Email</div>,
@@ -28,10 +30,12 @@ const ListeExpert = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Mot de passe</div>,
       dataIndex: "motDePasse",
+      align:"center"
     },
     {
       title: <div className="text-center">Ville</div>,
@@ -39,6 +43,7 @@ const ListeExpert = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Grade</div>,
@@ -46,6 +51,7 @@ const ListeExpert = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: <div className="text-center">Type</div>,
@@ -53,6 +59,7 @@ const ListeExpert = () => {
       sorter: {
         compare: (a, b) => a.name.localeCompare(b.name),
       },
+      align:"center"
     },
     {
       title: "Actions",
@@ -69,6 +76,7 @@ const ListeExpert = () => {
           </div>
         );
       },
+      align:"center"
     },
   ];
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -218,7 +226,7 @@ const ListeExpert = () => {
           </div>
           <div className="my-2">
             <label htmlFor="ville" className="me-2 fs-6 fw-light">
-              Numero de telephone:{" "}
+              Ville:{" "}
             </label>
             <input
               type="text"

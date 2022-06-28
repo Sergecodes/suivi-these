@@ -1,14 +1,14 @@
-import React from 'react';
-import ListeEtudiantsMaster from './Liste/ListeEtudiantsMaster';
-import ListeEtudiantsThese from './Liste/ListeEtudiantsThese';
+import React from "react";
+import ListeEtudiantsMaster from "./Liste/ListeEtudiantsMaster";
+import ListeEtudiantsThese from "./Liste/ListeEtudiantsThese";
 
 const ListeEtudiants = () => {
   return (
     <section>
-      <ListeEtudiantsMaster/>
-      <ListeEtudiantsThese/>
+      <ListeEtudiantsMaster />
+      <ListeEtudiantsThese />
     </section>
-  )
-}
+  );
+};
 
-export default ListeEtudiants
+export default ListeEtudiants;
