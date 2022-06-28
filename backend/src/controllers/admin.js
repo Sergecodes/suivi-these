@@ -260,7 +260,7 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
       }
    });
  
-   return res.json({ envoisDossiers });
+   return res.json(envoisDossiers);
 }
 
 exports.dossiersEtudiantsThese = async function (req, res) {
@@ -279,7 +279,7 @@ exports.dossiersEtudiantsThese = async function (req, res) {
       }
    });
 
-   return res.json({ envoisDossiers });
+   return res.json(envoisDossiers);
 }
 
 

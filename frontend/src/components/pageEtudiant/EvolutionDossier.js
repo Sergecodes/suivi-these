@@ -7,7 +7,7 @@ import axios from 'axios';
 const { Step } = Steps;
 
 const EvolutionDossier = () => {
-  const [currentEtape, setCurrentEtape] = useState(1);
+  const [currentEtape, setCurrentEtape] = useState(0);
   const [evolution, setEvolution] = useState({
     1: {
       titre: 'Envoi du dossier de soutenance',
@@ -30,10 +30,10 @@ const EvolutionDossier = () => {
   useEffect(() => {
     // First check in localStorage if results are present. If not present,
     // call endpoint and store result in localStorage for given period (say 1day)
-    let numEtapeActuelle = localStorage.getItem('numEtapeActuelle');
+    let numEtapeActuelle = parseInt(localStorage.getItem('numEtapeActuelle'), 10);
     let evolution = JSON.parse(localStorage.getItem('evolution'));
 
-    if (numEtapeActuelle === null || evolution === null) {
+    if (isNaN(numEtapeActuelle) || evolution === null) {
       axios.get('/etudiants/evolution-dossier')
         .then(res => {
           console.log(res);
@@ -52,7 +52,7 @@ const EvolutionDossier = () => {
         });
     } else {
       setEvolution(evolution);
-      setCurrentEtape(numEtapeActuelle);
+      setCurrentEtape(numEtapeActuelle - 1);
     }
   }, []);
 
@@ -77,7 +77,7 @@ const EvolutionDossier = () => {
                     <p>{item.acheveeLe}</p>
                   </div>
                   <p>
-                    <span classname="fw-bold">Geree par: </span> 
+                    <span className="fw-bold">Geree par: </span> 
                     {item.gereePar}
                   </p>
                 </div>

@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import moment from 'moment';
 import { critères } from "../../constants/Constant";
 import { useLocation } from "react-router-dom";
 import PdfViewer from "../common/PdfViewer";
+
+moment.locale('fr');
 
 const NotationMaster = () => {
   const location = useLocation();
   const { etudiantInfo } = location.state;
   const [notation, setNotation] = useState(critères);
   const [somme, setSomme] = useState(0);
+
   const handleChange = (e, index) => {
     const newNotation = notation;
     newNotation[index].note = e.target.value;
     setNotation(newNotation);
     setSomme(calculSomme(notation));
   };
+  
   function calculSomme(notes) {
     let temp = 0;
     for (let i in notes) {
-      temp = temp + parseInt(notes[i].note);
+      temp = temp + parseInt(notes[i].note, 10);
     }
     return temp;
   }
+
   return (
     <section className="notation">
       <p>Vous ètes sur le point de noter l'étudiant {etudiantInfo.nom} </p>
@@ -29,13 +35,13 @@ const NotationMaster = () => {
         <div className=" notationHeader">
           <p>MATRICULE: {etudiantInfo.matricule}</p>
           <p>NOTE DE LECTURE/60</p>
-          <p>DATE:{new Date().toLocaleDateString("en-US")}</p>
+          <p>DATE:{moment().format('dddd, D MMMM YYYY')}</p>
         </div>
         <hr />
         <div className="notationHeader">
           <p>
-            Quelle mention accorderez vous par rapport à <br /> Score the viva
-            voce on the following basis
+            Quelle mention accorderez vous par rapport à <br /> 
+            Score the viva voce on the following basis
           </p>
           <p>Note/mark</p>
         </div>
@@ -50,7 +56,7 @@ const NotationMaster = () => {
                   max={critère.max}
                   defaultValue={critère.note}
                   onChange={(e) => handleChange(e, index)}
-                ></input>
+                />
               </div>
             );
           })}

@@ -1,30 +1,37 @@
-import React, { useState, useEffect } from "react";
-import {Select} from 'antd';
+import { useState, useEffect } from "react";
+import { Select } from 'antd';
 import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { addJury } from "../../../redux/MasterFilesUploadSlice";
 
 const { Option } = Select;
 
 
-const ThirdStep = (props) => {
+const ThirdStep = () => {
+   const user = JSON.parse(localStorage.getItem('user'));
+   const dispatch = useDispatch();
+
    const [allJuries, setAllJuries] = useState([
-      { id: 'aaa', nom: 'aaa', prenom: 'aaa' }, 
-      { id: 'bbb', nom: 'bbb', prenom: 'bbb' }, 
-      { id: 'ccc', nom: 'ccc', prenom: 'ccc' },
-      // { id: 'ddd', nom: 'ddd', prenom: 'ddd'},
-      // { id: 'eee', nom: 'eee', prenom: 'eee' },
-      // { id: 'fff', nom: 'fff', prenom: 'fff'}
+      { id: 'aaa', email: 'aaa@gmail.com', nom: 'aaa', prenom: 'aaa' }, 
+      { id: 'bbb', email: 'bbb@gmail.com', nom: 'bbb', prenom: 'bbb' }, 
+      { id: 'ccc', email: 'ccc@gmail.com', nom: 'ccc', prenom: 'ccc' },
    ]);
    const numListes = 3, numJuries = allJuries.length;
-   const user = localStorage.getItem('user');
-   const [selectableJuries, setSelectableJuries] = useState(allJuries.slice(-(numJuries - numListes)));
-   const [selectedJuries, setSelectedJuries] = useState((function () {
-      let output = [];
-      for (let i = 0; i < numListes; i++) {
-        output.push(allJuries[i]);
-      }
+   let sliceCount = numJuries - numListes;
 
-      return output;
-    })());
+   // If sliceCount is 0, that implies the number of juries is the same as the 
+   // number of listes, so use an empty array for selectableJuries
+   const [selectableJuries, setSelectableJuries] = useState(
+      sliceCount > 0 ? allJuries.slice(-sliceCount) : []
+   );
+   const [selectedJuries, setSelectedJuries] = useState((function () {
+    let output = [];
+    for (let i = 0; i < numListes; i++) {
+      output.push(allJuries[i]);
+    }
+
+    return output;
+   })());
 
    // Number of juries should be >= number of listes.
    if (numListes > numJuries) {
@@ -42,6 +49,11 @@ const ThirdStep = (props) => {
         console.error(err);
       })
    }, []);
+
+  // getting the initial value of the select
+  useEffect(() => {
+    dispatch(addJury({ jury: selectedJuries }));
+  }, [dispatch, selectedJuries]);
 
 
    const handleChange = (value, option, listIdx) => {
@@ -66,7 +78,6 @@ const ThirdStep = (props) => {
       newSelectableJuries[idxCurJury] = prevJury;
       setSelectableJuries(newSelectableJuries);
    } 
-
 
   return (
     <section className="mx-3 mt-3 mb-5 step">

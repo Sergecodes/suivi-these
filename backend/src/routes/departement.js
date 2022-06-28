@@ -31,7 +31,6 @@ router.route('/notifications').get(isDepartement, getDepartement, controller.not
 
 router.route('/dossiers-etudiants-master').get(
    isDepartement,
-   getDossierFromReq, 
    getDepartement, 
    controller.dossiersEtudsMaster
 );

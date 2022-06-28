@@ -44,4 +44,8 @@ const AvisSchema = new Schema({
 });
 
 
+AvisSchema.set('toObject', { virtuals: true });
+AvisSchema.set('toJSON', { virtuals: true });
+
+
 module.exports = model('Avis', AvisSchema);
