@@ -52,7 +52,7 @@ const columns = [
       return (
         <div>
           <div style={record.dateNotation !== "---" ? { display: "none" } : {}}>
-            <Link to="/acteur/jury/notation">
+            <Link to="/acteur/jury/notation" state={{etudiantInfo:{matricule:record.matricule, nom:record.name}}}>
               <button
                 type="button"
                 className="btn py-1"
@@ -100,8 +100,8 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
+    matricule: "19M2213",
+    name: "Nom 1 Prenom 1",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
   },
@@ -115,8 +115,8 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
+    matricule: "19M2221",
+    name: "Nom 2 Prenom 2",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
   },
@@ -130,8 +130,8 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
+    matricule: "19M2222",
+    name: "Nom 3 Prenom 3",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
   },
@@ -145,8 +145,8 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
+    matricule: "19M2223",
+    name: "Nom 4 Prenom 4",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: "---",
   },
@@ -160,71 +160,11 @@ const data = [
         style={{ width: "50px", height: "50px" }}
       />
     ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
+    matricule: "19M2224",
+    name: "Nom 5 Prenom 5",
     dateEnvoi: today.toLocaleString("en-US"),
     dateNotation: today.toLocaleString("en-US"),
-  },
-  {
-    key: "5",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: today.toLocaleString("en-US"),
-  },
-  {
-    key: "6",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: "---",
-  },
-  {
-    key: "7",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: today.toLocaleString("en-US"),
-  },
-  {
-    key: "8",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2214",
-    name: "Nchouwet Mfouapon Kuntz Stephane",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: today.toLocaleString("en-US"),
-  },
+  }
 ];
 
 /*function onChange(pagination, filters, sorter, extra) {

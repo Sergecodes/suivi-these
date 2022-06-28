@@ -50,12 +50,12 @@ const FileUpload = (props) => {
 
   return (
     <Upload
-    className="fileUpload"
+      className="fileUpload"
       accept=".pdf"
       showUploadList={false}
       beforeUpload={handleupload}
-      maxCount="1"
-      name="hello"
+      maxCount={1}
+      name="file"
     >
       <Button>
         {<UploadOutlined />} {props.name}

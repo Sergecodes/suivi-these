@@ -4,7 +4,8 @@ import "antd/dist/antd.min.css";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import "react-toastify/dist/ReactToastify.css";
-import { Result } from "antd";
+import 'moment/locale/fr';
+import { Result } from "antd"
 
 /*************************************page accueil************************************/
 import Accueil from "./screen/Accueil";
@@ -124,7 +125,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Accueil isLogin={isLogin} />} />
           <Route
-            path="/soutenance"
+            path="/soutenances"
             element={<Soutenance isLogin={isLogin} />}
           />
 

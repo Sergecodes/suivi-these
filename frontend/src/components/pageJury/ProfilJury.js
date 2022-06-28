@@ -1,34 +1,32 @@
-import React,{useState} from 'react';
+import { useState } from 'react';
 import { JuryData } from '../../constants/Constant';
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 import axios from 'axios';
 
 
 const ProfilJury = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const [tel, setTel] = useState(JuryData.numTelephone);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  axios.get('http://localhost:8001/api/jury/moi')
-  .then(res=>{
-    console.log(res);
-  })
-  .catch(err=>{
-    console.error(err);
-  })
-
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    console.log('entrer')
-    var formData = new FormData();
-    formData.append("newPhoneNumber",tel);
-    axios.put('http://localhost:8001/api/jury/change-number',formData)
-    .then(res=>{
+  axios.get('/jury/moi')
+    .then(res => {
       console.log(res);
     })
-    .catch(err=>{
+    .catch(err => {
       console.error(err);
     })
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.put('/jury/change-number', { newPhoneNumber: tel })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
   return (
     <section className="my-5">
@@ -50,7 +48,7 @@ const ProfilJury = () => {
                 style={{ height: "90px", width: "90px", color: "darkgray" }}
               />
               <p className="my-2">
-                <BsPencilFill className="me-1"/>
+                <BsPencilFill className="me-1" />
                 Modifier votre photo
               </p>
             </div>
@@ -71,7 +69,7 @@ const ProfilJury = () => {
                   type="text"
                   disabled={true}
                   defaultValue={JuryData.email}
-                 
+
                 ></input>
               </div>
               <div className="acteurInputDisabled">

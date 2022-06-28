@@ -15,35 +15,7 @@ export const MasterFilesUploadSlice=createSlice({
         ficheInscription:{name:"aucun fichier selectionnés"},
         acteDeNaissance:{name:"aucun fichier selectionnés"},
         cv:{name:"aucun fichier selectionnés"},
-       /* enseignant1:
-            {
-                nom:"aucun nom selectionné",
-                prenom:"aucun prenom selectionné",
-                email:"aucun email selectionné",
-                telephone:"aucun telephone selectionné",
-                grade:"aucun grade selectionné",
-            }
-        ,
-        enseignant2:
-            {
-                nom:"aucun nom selectionné",
-                prenom:"aucun prenom selectionné",
-                email:"aucun email selectionné",
-                telephone:"aucun telephone selectionné",
-                grade:"aucun grade selectionné",
-            }
-        ,
-        enseignant3:
-            {
-                nom:"aucun nom selectionné",
-                prenom:"aucun prenom selectionné",
-                email:"aucun email selectionné",
-                telephone:"aucun telephone selectionné",
-                grade:"aucun grade selectionné",
-            }* */
-        
-
-    
+        jury:[]
     },
     reducers:{
         addMemoire:(state,action)=>{
@@ -78,16 +50,10 @@ export const MasterFilesUploadSlice=createSlice({
         },
         addCv:(state,action)=>{
             state.cv=action.payload.cv;
-        }/*,
-        addFirstEnseignant:(state,action)=>{
-            state.enseignant1=action.payload.enseignant1;
         },
-        addSecondEnseignant:(state,action)=>{
-            state.enseignant2=action.payload.enseignant2;
-        },
-        addThirdEnseignant:(state,action)=>{
-            state.enseignant3=action.payload.enseignant3;
-        }*/
+        addJury:(state,action)=>{
+            state.jury=action.payload.jury
+        }
     }
 })
 
@@ -102,10 +68,7 @@ export const {addListeSelection}=MasterFilesUploadSlice.actions;
 export const {addFicheInscription}=MasterFilesUploadSlice.actions;
 export const {addActeDeNaissance}=MasterFilesUploadSlice.actions;
 export const {addCv}=MasterFilesUploadSlice.actions;
-/*export const {addFirstEnseignant}=MasterFilesUploadSlice.actions;
-export const {addSecondEnseignant}=MasterFilesUploadSlice.actions;
-export const {addThirdEnseignant}=MasterFilesUploadSlice.actions;*/
-
+export const {addJury} = MasterFilesUploadSlice.actions;
 
 
 
