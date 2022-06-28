@@ -7,7 +7,6 @@ import {
 } from 'antd';
 import { toast, ToastContainer } from 'react-toastify'
 import '../../Styles/Soutenance.css';
-import 'moment/locale/fr';
 
 moment.locale('fr');
 

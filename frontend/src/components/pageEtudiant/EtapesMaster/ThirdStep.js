@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
 import { Select } from 'antd';
 import axios from 'axios';
-import { useDispatch, useSelector } from "react-redux";
-import {  addJury } from "../../../redux/MasterFilesUploadSlice";
+import { useDispatch } from "react-redux";
+import { addJury } from "../../../redux/MasterFilesUploadSlice";
 
 const { Option } = Select;
 
 
-const ThirdStep = (props) => {
+const ThirdStep = () => {
    const user = JSON.parse(localStorage.getItem('user'));
+   const dispatch = useDispatch();
 
    const [allJuries, setAllJuries] = useState([
-      { id: 'aaa', email:'aaa@gmail.com', nom: 'aaa', prenom: 'aaa' }, 
-      { id: 'bbb', email:'bbb@gmail.com', nom: 'bbb', prenom: 'bbb' }, 
-      { id: 'ccc', email:'ccc@gmail.com', nom: 'ccc', prenom: 'ccc' },
+      { id: 'aaa', email: 'aaa@gmail.com', nom: 'aaa', prenom: 'aaa' }, 
+      { id: 'bbb', email: 'bbb@gmail.com', nom: 'bbb', prenom: 'bbb' }, 
+      { id: 'ccc', email: 'ccc@gmail.com', nom: 'ccc', prenom: 'ccc' },
    ]);
    const numListes = 3, numJuries = allJuries.length;
    let sliceCount = numJuries - numListes;
@@ -23,8 +24,6 @@ const ThirdStep = (props) => {
    const [selectableJuries, setSelectableJuries] = useState(
       sliceCount > 0 ? allJuries.slice(-sliceCount) : []
    );
-   const files = useSelector(state => state.masterFilesUpload);
-   const dispatch = useDispatch();
    const [selectedJuries, setSelectedJuries] = useState((function () {
     let output = [];
     for (let i = 0; i < numListes; i++) {
@@ -53,8 +52,8 @@ const ThirdStep = (props) => {
 
   // getting the initial value of the select
   useEffect(() => {
-    dispatch(addJury({jury:selectedJuries}))
-  }, [])
+    dispatch(addJury({ jury: selectedJuries }));
+  }, [dispatch, selectedJuries]);
 
 
    const handleChange = (value, option, listIdx) => {
@@ -70,7 +69,6 @@ const ThirdStep = (props) => {
       let newSelectedJuries = selectedJuries.slice();
       newSelectedJuries[listIdx] = curJury;
       setSelectedJuries(newSelectedJuries);
-      dispatch(addJury({ jury: newSelectedJuries }));
 
       // Replace curJury with prevJury in selectableJuries to mark that prevJury is now selectable
       let idxCurJury = selectableJuries.findIndex(jury => jury.id === curJury.id);
@@ -79,7 +77,6 @@ const ThirdStep = (props) => {
       let newSelectableJuries = selectableJuries.slice();
       newSelectableJuries[idxCurJury] = prevJury;
       setSelectableJuries(newSelectableJuries);
-   
    } 
 
   return (
