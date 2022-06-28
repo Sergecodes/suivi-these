@@ -223,7 +223,7 @@ exports.dossiersEtudsMaster= async function (req, res) {
     }
   });
  
-   return res.json({ envoisDossiers });
+   return res.json(envoisDossiers);
  }
 
  
