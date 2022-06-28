@@ -1,9 +1,14 @@
 import { Table } from "antd";
-import React from "react";
+import axios from 'axios';
+import { useState, useEffect } from "react";
 import moment from "moment";
 import { MdSend } from "react-icons/md";
 import { BsArrowRight } from "react-icons/bs";
+import { toast, ToastContainer } from 'react-toastify';
 import { Link } from "react-router-dom";
+
+moment.locale('fr');
+
 
 const columns = [
   {
@@ -87,100 +92,81 @@ const columns = [
     align: "center",
   },
 ];
-var today = new Date();
-
-const data = [
-  {
-    key: "1",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2213",
-    name: "Nom 1 Prenom 1",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: "---",
-  },
-  {
-    key: "78",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2221",
-    name: "Nom 2 Prenom 2",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: today.toLocaleString("en-US"),
-  },
-  {
-    key: "2",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2222",
-    name: "Nom 3 Prenom 3",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: "---",
-  },
-  {
-    key: "3",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2223",
-    name: "Nom 4 Prenom 4",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: "---",
-  },
-  {
-    key: "4",
-    photo: (
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
-        alt="cc"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "19M2224",
-    name: "Nom 5 Prenom 5",
-    dateEnvoi: today.toLocaleString("en-US"),
-    dateNotation: today.toLocaleString("en-US"),
-  }
-];
-
-/*function onChange(pagination, filters, sorter, extra) {
-  console.log('params', pagination, filters, sorter, extra);
-}*/
 
 const TableList = () => {
+  const [data, setData] = useState([
+    {
+      key: "1",
+      photo: (
+        <img
+          src=""
+          alt="cc"
+          className="rounded-circle"
+          style={{ width: "50px", height: "50px" }}
+        />
+      ),
+      matricule: "",
+      name: "",
+      dateEnvoi: '',
+      dateNotation: "---",
+    },
+  ]);
+
+  useEffect(() => {
+    Promise.all([
+      axios.get(`/jury/dossiers-etudiants-master`),
+      axios.get('/jury/notes-dossiers')
+    ])
+      .then(results => {
+        const [res1, res2] = results;
+        console.log(res1);
+        console.log(res2);
+        setData(parseResult(res1.data, res2.data));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue!", { hideProgressBar: true });
+      })
+  }, []);
+
+  const parseResult = (envoisData, notesData) => {
+    let result = [];
+    for (let envoiObj of envoisData) {
+      let etud = envoiObj.dossier.etudiant;
+      let noteObj = notesData.find(note => note.dossier.id === envoiObj.dossier.id);
+
+      result.push({
+        key: envoiObj.id,
+        photo: (
+          <img
+            src={etud.urlPhotoProfil}
+            alt="profil"
+            className="rounded-circle"
+            style={{ width: "50px", height: "50px" }}
+          />
+        ),
+        matricule: etud.matricule,
+        name: etud.nom + ' '  + etud.prenom,
+        dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---'
+      });
+    }
+
+    return result;
+  }
+
   return (
-    <div className=" mx-3 my-3" style={{ overflow: "scroll" }}>
-      <div style={{backgroundColor: "#2a1c5a",borderRadius:"10px" }}>
-        <h5  className="text-center py-3" style={{color:"white"}}>
-          LISTE DES DOSSIERS ETUDIANTS
-        </h5>
+    <>
+      <ToastContainer />
+      <div className=" mx-3 my-3" style={{ overflow: "scroll" }}>
+        <div style={{backgroundColor: "#2a1c5a",borderRadius:"10px" }}>
+          <h5  className="text-center py-3" style={{color:"white"}}>
+            LISTE DES DOSSIERS ETUDIANTS
+          </h5>
+        </div>
+        <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
       </div>
-      <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
-    </div>
+    </>
   );
 };
 

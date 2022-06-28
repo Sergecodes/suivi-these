@@ -32,10 +32,10 @@ const NotationMaster = () => {
       <p>Vous ètes sur le point de noter l'étudiant {etudiantInfo.nom} </p>
       <PdfViewer />
       <div className="my-5" style={{ width: "75%" }}>
-        <div className=" notationHeader">
+        <div className="notationHeader">
           <p>MATRICULE: {etudiantInfo.matricule}</p>
-          <p>NOTE DE LECTURE/60</p>
-          <p>DATE:{moment().format('dddd, D MMMM YYYY')}</p>
+          <p>NOTE DE LECTURE /60</p>
+          <p>DATE: {moment().format('dddd, D MMMM YYYY')}</p>
         </div>
         <hr />
         <div className="notationHeader">

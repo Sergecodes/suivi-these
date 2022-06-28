@@ -18,6 +18,8 @@ router.route('/change-email').put(isJury, getJury, controller.change_email);
 
 router.route('/dossiers-etudiants-master').get(isJury, getJury, controller.dossiersEtudsMaster);
 
+router.route('/notes-dossiers').get(isJury, getJury, controller.notesDossier);
+
 router.route('/noter-dossier').post(isJury, getDossierFromReq, getJury, controller.noterDossier);
 
 router.route('/verifier-dossier-note').get(

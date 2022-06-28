@@ -8,7 +8,6 @@ import {
 import { toast, ToastContainer } from 'react-toastify'
 import '../../Styles/Soutenance.css';
 
-moment.locale('fr');
 
 const { Option } = Select;
 const { Search } = Input;
@@ -100,7 +99,7 @@ export default function SoutenanceCalendar() {
       dataIndex: 'sexe',
       sortDirections: ['ascend', 'descend', 'ascend'],
       sorter: (a, b) => a.sexe.localeCompare(b.sexe),
-      render: text => text === 'Mâle' ? 'M' : 'F'
+      render: record => record.sexe === 'Mâle' ? 'M' : 'F'
     },
     {
       title: 'Date de soutenance',

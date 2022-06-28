@@ -316,7 +316,7 @@ exports.getActeursAvis = async function (req, res) {
       destinataireModel: Types.AvisDestinataire.ADMIN
    });
 
-   res.json({ avis });
+   res.json(avis);
 }
 
 
