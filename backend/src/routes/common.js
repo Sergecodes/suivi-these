@@ -9,6 +9,8 @@ router.route('/logout').post(controller.logout);
 
 router.route('/envoyer-dossier').post(isLoggedIn, controller.envoyerDossier);
 
+router.route('/dossiers-envoyes').get(isLoggedIn, controller.dossiersEnvoyes);
+
 
 module.exports = router;
 

@@ -57,7 +57,16 @@ const columns = [
       return (
         <div>
           <div style={record.dateNotation !== "---" ? { display: "none" } : {}}>
-            <Link to="/acteur/jury/notation" state={{etudiantInfo:{matricule:record.matricule, nom:record.name}}}>
+            <Link 
+              to="/acteur/jury/notation" 
+              state={{
+                etudiantInfo: { 
+                  matricule: record.matricule, 
+                  noms: record.name,
+                  idDossier: record.idDossier
+                }
+              }}
+            >
               <button
                 type="button"
                 className="btn py-1"
@@ -72,7 +81,16 @@ const columns = [
             </Link>
           </div>
           <div style={record.dateNotation === "---" ? { display: "none" } : {}}>
-            <Link to="/acteur/jury/notation">
+            <Link 
+              to="/acteur/jury/notation" 
+              state={{
+                etudiantInfo: { 
+                  matricule: record.matricule, 
+                  noms: record.name,
+                  idDossier: record.idDossier
+                }
+              }}
+            >
               <button
                 type="button"
                 className="btn py-1"
@@ -109,6 +127,7 @@ const TableList = () => {
       name: "",
       dateEnvoi: '',
       dateNotation: "---",
+      idDossier: '1'
     },
   ]);
 
@@ -148,7 +167,8 @@ const TableList = () => {
         matricule: etud.matricule,
         name: etud.nom + ' '  + etud.prenom,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
-        dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---'
+        dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---',
+        idDossier: envoiObj.dossier.id
       });
     }
 

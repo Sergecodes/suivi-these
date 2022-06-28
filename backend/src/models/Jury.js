@@ -81,28 +81,26 @@ JurySchema.methods.verifierDejaNoter = async function(idDossier) {
 }   
 
 
-JurySchema.methods.attribuerNote = async function(idDossier, categorie, valeur, commentaire) {
+JurySchema.methods.attribuerNote = async function(idDossier, notes, commentaire) {
     let dejaNote = await this.verifierDejaNoter(idDossier);
     if (dejaNote)
         throw "Dossier deja note par ce membre du jury";
 
-    let avis = await Avis.create({
-        type: valeur >= 30 ? TypeAvis.POSITIF : TypeAvis.NEGATIF ,
-        commentaire,
-        dossier: idDossier,
-        donnePar: this._id,
-        donneParModel: AvisEmetteur.JURY
-    });
+    // let avis = await Avis.create({
+    //     type: valeur >= 30 ? TypeAvis.POSITIF : TypeAvis.NEGATIF ,
+    //     commentaire,
+    //     dossier: idDossier,
+    //     donnePar: this._id,
+    //     donneParModel: AvisEmetteur.JURY
+    // });
 
     await NoteDossier.create({
-        avis: avis._id,
         dossier: idDossier,
-        categorie,
-        valeur,
+        notes,
         notePar: this._id,
-        noteParModel: ActeurDossier.JURY
+        noteParModel: ActeurDossier.JURY,
+        commentaire
     });
-
 }   
 
 

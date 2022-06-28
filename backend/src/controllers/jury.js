@@ -247,13 +247,13 @@ exports.notesDossier = async function (req, res) {
 
  
 exports.noterDossier = async function (req, res) {
-   const { valeur } = req.body;
+   const { notes } = req.body;
    const { jury, dossier } = res.locals;
 
    try {
-      await jury.attribuerNote(dossier._id, Types.CategorieFichierMaster.MEMOIRE, valeur);
+      await jury.attribuerNote(dossier._id, notes, req.body.commentaire || '');
    } catch (err) {
-      res.status(400).json(err);
+      return res.status(400).json(err);
    }
 
    res.send("Succes!");
