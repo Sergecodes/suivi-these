@@ -212,13 +212,13 @@ hr{
 }
 
 /* navar admin*/
-.adminNavbar img{
+.adminNavbar img, .coordoNavbar img{
   height:35px;
   width:35px;
   border-radius: 50px;
 }
 
-.adminNavbar{
+.adminNavbar, .coordoNavbar{
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; ;
 }
 
