@@ -1,110 +1,133 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import NavbarCoordonateur from "./NavbarCoordonateur";
-import SidebarCoordonateur from "./SidebarCoordonateur";
-import "../../Styles/coordonateurPage/ProfilCoordonateur.css"
-import { AiFillEdit } from "react-icons/ai";
-import { ImCancelCircle } from "react-icons/im";
-import { IoSend } from "react-icons/io5";
-import { useDispatch} from 'react-redux'
-import { changeEmailCoordonateur } from "../../redux/coordonateur/ChangePasswordCoordoSlice";
+import { useState } from 'react';
+import { JuryData } from '../../constants/Constant';
+import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 
-function ProfilCoordonateur() {
-  const acteur = localStorage.getItem("actor");
-  const coordonateur = acteur === 'coordonateur' ? JSON.parse(localStorage.getItem('user')) : null;
-   const [isDisable,setIsDisable] =useState(false)
-  const [email,setEmail] =useState(false)
 
-  const dispatch =useDispatch
-  // const [motDePasse,setMotDePasse] =useState(false)
-  const [user,setUser]=useState({
-    actualPass:"",
-    newPass:""
-  })
-  const navigate = useNavigate();
-  const dataRequired = () => {
-    if (coordonateur == null) {
-      alert("Vous devez etre connecte pour acceder cette page");
+const ProfilCoordonateur = () => {
+  const [tel, setTel] = useState(JuryData.numTelephone);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-      navigate("/connexion/coordonateur");
-    }
-  };
- 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const openSidebar = () => {
-    setSidebarOpen(true);
-  };
-  const closeSidebar = () => {
-    setSidebarOpen(false);
-  };
-  useEffect(() => {
-    dataRequired();
-    console.log(`la valeur de user est ${user}`);
-  }, [navigate, coordonateur]);
-  const handleSetPassword =()=>{
-    alert(`la valeur de user est ${user.actualPass} et ${user.newPass}`)
-    dispatch(changeEmailCoordonateur(user))
+
+  const handleSubmit = (e) => {
+    alert(tel)
   }
-  const [isAnnule,setIsAnnule]=useState(false)
   return (
-    <div className="containere">
-      <NavbarCoordonateur sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
-      <SidebarCoordonateur
-        sidebarOpen={sidebarOpen}
-        closeSidebar={closeSidebar}
-      />
-      <div className="main">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-3 "></div>
-            <div className="col-md-6 ">
-            <div className="input-box">
-              <label htmlFor="email">Modifier l'email</label>   
-                       <input className="" type="email" disabled={isDisable}  onChange={(e)=>setEmail(e.target.value)}></input>
-
+    <section className="my-5">
+      <div
+        className="row d-flex justify-content-center"
+        style={{ width: "100%" }}
+      >
+        <div className="col-12 col-sm-8  modifInfo pt-3 pb-5">
+          <p
+            className="text-center fs-5 fw-light "
+            style={{ color: "rgb(87, 84, 84)" }}
+          >
+            Modifier les informations
+          </p>
+          <div className="row" style={{ width: "100%", margin: "0" }}>
+            <div className="col-12 col-md-6 py-2 d-flex flex-column align-items-center justify-content-center modifPhotoActeur">
+              <BsPersonCircle
+                className="border rounded-circle"
+                style={{ height: "90px", width: "90px", color: "darkgray" }}
+              />
+              <p className="my-2">
+                <BsPencilFill className="me-1" />
+                Modifier votre photo
+              </p>
             </div>
-            <div className="input-box">
-              <label htmlFor="password">Mot de pass actuel</label>   
-                       <input className="" id="password" type="password" disabled={isDisable} onChange={(e)=>setUser({...user,actualPass:e.target.value})}></input>
-
-            </div>
-            <div className="input-box">
-              <label htmlFor="newPassword"> Nouveau Mot de Passe</label>   
-                       <input className=""  id="newPassword" type="Password" disabled={isDisable} onChange={(e)=>setUser({...user ,newPass:e.target.value})}></input>
-
-            </div>
-            {
-              isDisable? ( <div className="btn-box input-box">
-              
-              <button className="btn btn-success" onClick={()=>setIsDisable(!isDisable) }>
-                <AiFillEdit className="iconn"/>
-                Editer Profil</button>
-            </div>):""
-            }
-           
-            {!isDisable? (
-                <div className="btn-box input-box">
-                <div className="container">
-                  <div className="row container-btn-edit-or-annul">
-                    <button className="col-md-5 btn btn-success" onClick={handleSetPassword}><IoSend className="iconn"/> Modifier</button>
-                    <div  className="col-md-1"></div>
-                    <button className="col-md-5 btn btn-danger" onClick={()=>setIsDisable(!isDisable)}> <ImCancelCircle className="iconn"/> annuler</button>
-                  </div>
-                </div>
-                
+            <div className="col-12 col-md-6  ">
+              <div className="acteurInputDisabled">
+                <p> matricule</p>
+                <input
+                  className="form-control "
+                  type="text"
+                  disabled={true}
+                  defaultValue={JuryData.matricule}
+                ></input>
               </div>
-            ):""
-              
-            }
-          
+              <div className="acteurInputDisabled"  >
+                <p> Email</p>
+                <input
+                  className="form-control "
+                  type="text"
+                  disabled={true}
+                  defaultValue={JuryData.email}
+
+                ></input>
+              </div>
+              <div className="acteurInputDisabled">
+                <p> Nom</p>
+                <input
+                  className="form-control "
+                  type="text"
+                  disabled={true}
+                  defaultValue={JuryData.nom}
+                ></input>
+              </div>
+              <div className="acteurInputDisabled">
+                <p> Prenom</p>
+                <input
+                  className="form-control "
+                  type="text"
+                  disabled={true}
+                  defaultValue={JuryData.prenom}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Modifier le numéro{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  value={tel}
+                  onChange={(e) => setTel(e.target.value)}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Modifier le mot de passe
+                </p>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill
+                    className="me-1"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  Confirmer le mot de passe
+                </p>
+                <input className="form-control " type="password"></input>
+              </div>
             </div>
-            <div className="col-md-3 "></div>
-           
+          </div>
+          <div className="d-flex justify-content-between mx-4">
+            <button type="button" className="btn acteurInfoBtnBack">
+              Retour
+            </button>
+            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+              Confirmer
+            </button>
           </div>
         </div>
-        </div>
-    </div>
+      </div>
+    </section>
   );
 }
 
-export default ProfilCoordonateur;
+export default ProfilCoordonateur

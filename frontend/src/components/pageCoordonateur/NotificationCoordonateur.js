@@ -1,128 +1,55 @@
-import React, { useState, useEffect } from "react";
-import NavbarCoordonateur from "./NavbarCoordonateur";
-import SidebarCoordonateur from "./SidebarCoordonateur";
-import { useNavigate } from "react-router-dom";
-import '../../Styles/coordonateurPage/notifications.css'
-import { AiTwotoneDelete } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
-import { getNotifications } from "../../redux/CooordonateurManagmentSllice";
+import React from "react";
+import { Link } from "react-router-dom";
+import NotificationsActeurs from "../common/NotificationsActeurs";
 
+const notificationsCoordonateur = [
+  {
+    id: "1",
+    title: "Nouveau dossier envoyé",
+    description: (
+      <div>
+        <p>
+          Vous avez reçu une nouvelle demande de programmation de date de soutenance venant de l'étudiant{" "}
+          <Link to="/acteur/coordonateur/notation">ATANGANA JEAN MBARGA HELENE</Link>{" "}
+        </p>
+      </div>
+    ),
+  },
+  {
+    id: "2",
+    title: "Rappel delai d'envoi ",
+    description: (
+      <div>
+        <p>
+          Le dossier de l'etudiant{" "}
+          <Link to="/acteur/coordonateur/notation">ATANGANA JEAN MBARGA HELENE</Link>,
+          est toujours en attente d'un avis, veuillez soummettre votre decision le plus tot possible
+        </p>
+      </div>
+    ),
+  },
+  ,
+  {
+    id: "3",
+    title: "Dossier etudiant thèse",
+    description: (
+      <div>
+        <p>
+          L'etudiant{" "}
+          <Link to="/acteur/coordonateur/notation">ATANGANA JEAN MBARGA HELENE</Link> viens de soumettre son 
+          dossier de thèse est en attente de notation
+        </p>
+      </div>
+    ),
+  },
+];
 
-function NotificationCoordonateur() {
-  const acteur = localStorage.getItem("actor");
-  const coordonateur = acteur === 'coordonateur' ? JSON.parse(localStorage.getItem('user')) : null;
-
-  const dataRequired = () => {
-    if (coordonateur == null) {
-      alert("Vous devez etre connecte pour acceder cette page");
-
-      navigate("/connexion/coordonateur");
-    }
-  };
-  const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const openSidebar = () => {
-    setSidebarOpen(true);
-  };
-  const closeSidebar = () => {
-    setSidebarOpen(false);
-  };
-  useEffect(() => {
-    dataRequired();
-    dispatch(getNotifications())
-  }, [navigate, coordonateur]);
+const NotificationCoordonateur = () => {
   return (
-    <div className="containere">
-      <NavbarCoordonateur sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
-      <SidebarCoordonateur
-        sidebarOpen={sidebarOpen}
-        closeSidebar={closeSidebar}
-      />
-      <div className="main">
-        <div className="container">
-          <div className="row">
-            <div className="btn-container">
-              <button className="btn-success">message lus</button>
-              <button className="btn-warning">message non lus</button>
-            </div>
-            <hr className="ligne"></hr>
-          </div>
-
-          </div>
-          <div className="lu-notifications container-fluid">
-            {/* <div className=""></div> */}
-            
-                <div className="notification-item ">
-                  <p>Mr Essowa presente Jeudi le 15 mai </p>
-                  <div>
-                  <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
-                  <button className="btn-lu">Marquer comme lu</button>
-
-                  </div>
-                </div>
-              {/* new item */}
-                <div className="notification-item ">
-                  <p>Mr Essowa presente Jeudi le 15 mai </p>
-                  <div>
-                  <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
-                  <button className="btn-lu">Marquer comme lu</button>
-
-                  </div>
-                </div>
-              {/* new item */}
-                <div className="notification-item ">
-                  <p>Mr Essowa presente Jeudi le 15 mai </p>
-                  <div>
-                  <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
-                  <button className="btn-lu">Marquer comme lu</button>
-
-                  </div>
-                </div>
-              {/* new item */}
-                <div className="notification-item ">
-                  <p>Mr Essowa presente Jeudi le 15 mai </p>
-                  <div>
-                  <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
-                  <button className="btn-lu">Marquer comme lu</button>
-
-                  </div>
-                </div>
-              {/* new item */}
-                <div className="notification-item ">
-                  <p>Mr Essowa presente Jeudi le 15 mai </p>
-                  <div>
-                  <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
-                  <button className="btn-lu">Marquer comme lu</button>
-
-
-                  </div>
-                </div>
-              {/* new item */}
-                <div className="notification-item ">
-                  <p>Mr Essowa presente Jeudi le 15 mai </p>
-                  <div>
-                    <button className="btn btn-danger delete-notification-btn" ><AiTwotoneDelete  className="delete-icon"/></button>
-                    
-                                      <button className="btn-lu ">Marquer comme lu</button>
-
-                  </div>
-                </div>
-              {/* new item */}
-             
-
-
-
-
-
-              </div>
-
-        
-        
-        
-        </div>
-    </div>
-  );
-}
+    <>
+      <NotificationsActeurs notifications={notificationsCoordonateur}/>
+    </>
+  )
+};
 
 export default NotificationCoordonateur;
