@@ -4,7 +4,6 @@ import moment from "moment";
 import { BsCheck, BsX } from "react-icons/bs";
 import axios from "axios";
 
-
 const columns = [
   {
     title: <div className="text-center">Matricule</div>,
@@ -50,12 +49,24 @@ const columns = [
     },
   },
   {
-    title:"Actions",
-    render:(record) => {
+    title: "Actions",
+    render: (record) => {
       return (
         <div className="d-flex fs-3 justify-content-center ">
-          <BsCheck className="mx-1 correct" onClick={()=>{alert('vous voulez confirmer la demande de '+record.matricule)}} style={{ color: "green" }} />
-          <BsX className="mx-1 wrong" onClick={()=>{alert('vous voulez annuler la demande de '+record.matricule)}} style={{ color: "red" }} />
+          <BsCheck
+            className="mx-1 correct"
+            onClick={() => {
+              alert("vous voulez confirmer la demande de " + record.matricule);
+            }}
+            style={{ color: "green" }}
+          />
+          <BsX
+            className="mx-1 wrong"
+            onClick={() => {
+              alert("vous voulez annuler la demande de " + record.matricule);
+            }}
+            style={{ color: "red" }}
+          />
         </div>
       );
     },
@@ -65,7 +76,7 @@ var today = new Date();
 
 const data = [
   {
-    key:"1",
+    key: "1",
     matricule: "19M2216",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
@@ -74,7 +85,7 @@ const data = [
     dateCreation: today.toLocaleString("en-US"),
   },
   {
-    key:"2",
+    key: "2",
     matricule: "19M2217",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
@@ -83,7 +94,7 @@ const data = [
     dateCreation: today.toLocaleString("en-US"),
   },
   {
-    key:"3",
+    key: "3",
     matricule: "19M2218",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",

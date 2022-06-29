@@ -95,7 +95,13 @@ import DashboardJury from "./components/pageJury/DashboardJury";
     import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
     import ListeJury from "./components/pageAdmin/Liste/ListeJury";
     import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
-    import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo"
+    import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo";
+    import ListeConseil from "./components/pageAdmin/Liste/ListeConseil"; 
+    import ListeExpert from "./components/pageAdmin/Liste/ListeExpert";
+    import ListeRectorat from "./components/pageAdmin/Liste/ListeRectorat";
+    import NotificationsAdmin from "./components/pageAdmin/NotificationsAdmin";
+    import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
+    import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise"
     /**************************************************************************************************/
 
 
@@ -205,8 +211,13 @@ const App = () => {
                 <Route path="/acteur/admin/liste-jury" element={<ListeJury/>}/>
                 <Route path="/acteur/admin/liste-departement" element={<ListeDepartement/>}/>
                 <Route path="/acteur/admin/liste-coordo" element={<ListeCoordo/>}/>
+                <Route path="/acteur/admin/liste-conseil" element={<ListeConseil/>}/>
+                <Route path="/acteur/admin/liste-rectorat" element={<ListeRectorat/>}/>
+                <Route path="/acteur/admin/liste-expert" element={<ListeExpert/>}/>
+                <Route path="/acteur/admin/profil" element={<ProfilAdmin/>}/>
+                <Route path="/acteur/admin/notifications" element={<NotificationsAdmin/>}/>
+                <Route path="/acteur/admin/rapport-expertise" element={<RapportExpertise/>}/>
                </Route>
-             
           <Route
             path="/*"
             element={
