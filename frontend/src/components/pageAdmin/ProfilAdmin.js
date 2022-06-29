@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { JuryData } from '../../constants/Constant';
+import { useState } from "react";
+import { JuryData } from "../../constants/Constant";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 
-
-const ProfilCoordonateur = () => {
+const ProfilAdmin = () => {
   const [tel, setTel] = useState(JuryData.numTelephone);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-
   const handleSubmit = (e) => {
-    alert(tel)
-  }
+    alert(tel);
+  };
   return (
     <section className="my-5">
       <div
@@ -46,14 +44,13 @@ const ProfilCoordonateur = () => {
                   defaultValue={JuryData.matricule}
                 ></input>
               </div>
-              <div className="acteurInputDisabled"  >
+              <div className="acteurInputDisabled">
                 <p> Email</p>
                 <input
                   className="form-control "
                   type="text"
                   disabled={true}
                   defaultValue={JuryData.email}
-
                 ></input>
               </div>
               <div className="acteurInputDisabled">
@@ -120,7 +117,11 @@ const ProfilCoordonateur = () => {
             <button type="button" className="btn acteurInfoBtnBack">
               Retour
             </button>
-            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn acteurInfoBtnSubmit"
+            >
               Confirmer
             </button>
           </div>
@@ -128,6 +129,6 @@ const ProfilCoordonateur = () => {
       </div>
     </section>
   );
-}
+};
 
-export default ProfilCoordonateur
+export default ProfilAdmin;
