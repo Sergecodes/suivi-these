@@ -1,6 +1,7 @@
 const Departement = require('../models/Departement');
 const Jury = require('../models/Jury');
 const Avis = require('../models/Avis');
+const { EtapeDossier } = require('../models/Dossier');
 const EnvoiDossier = require('../models/EnvoiDossier');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
@@ -221,7 +222,7 @@ exports.dossiersEtudsMaster = async function (req, res) {
 		}
 	});
 
-   return res.json(envoisDossiers);
+   return res.json({ envoisDossiers });
 }
 
 
@@ -229,6 +230,12 @@ exports.validerDossier = async function (req, res) {
 	const { depart, dossier } = res.locals;
 	await depart.validerDossier(dossier);
 	res.send("Succes!");
+}
+
+// todo: also change message tocommentaire in models
+// todo
+exports.dossiersValides = async function (req, res) {
+
 }
 
 

@@ -24,194 +24,86 @@ DIVERS
 - Documents importants
 
 
-// SERGE
-import React, { useState } from "react";
-import {Select} from 'antd'
-
-const { Option } = Select;
-
-const ThirdStep = (props) => {
-   const getNextListe = (curListe) => {
-      return curListe.slice(1);
-   }
-
-   const allJuries = [
-      { idx: 0, id: 'adf', nom: 'atangana', prenom: 'atangano' }, 
-      { idx: 1, id: 'aadfv', nom: 'mbarga', prenom: 'mbarga' }, 
-      { idx: 2, id: 'tdg', nom: 'loic', prenom: 'loic' },
-      { idx: 3, id: 'ave', nom: 'serge', prenom: 'serge'}
-   ];
-   const [listeJuries1, setListeJuries1] = useState(allJuries.slice());
-   const [listeJuries2, setListeJuries2] = useState(allJuries.slice(1));
-   const [listeJuries3, setListeJuries3] = useState(allJuries.slice(2));
-   // const [listeJuries2, setListeJuries2] = useState(getNextListe(listeJuries1));
-   // const [listeJuries3, setListeJuries3] = useState(getNextListe(listeJuries2));
-   console.log(listeJuries1);
-   console.log(listeJuries2);
-   console.log(listeJuries3);
-
-   /**
-    * Swap the first element of `list` with `index`
-    */
-   const swapFirstElement = (list, index) => {
-      const item = list[index];
-      list[index] = list[0];
-      list[0] = item;
-      return list;
-   }
-
-   const handleChange = (value, option, index) => {
-      console.log(value);
-      console.log(option);
-      console.log(index);
-
-      const curJury = option.jury;
-      const idxJury = curJury.idx;
-
-      // Si la premiere liste a ete modifie
-      if (index === 0) {
-         setListeJuries1(swapFirstElement(listeJuries1, idxJury));
-         setListeJuries2(listeJuries2.filter(jury => jury.id !== curJury.id));
-         setListeJuries3(listeJuries3.filter(jury => jury.id !== curJury.id));
-      } else if (index === 1) {
-         setListeJuries2(swapFirstElement(listeJuries1.slice(1), idxJury));
-         setListeJuries1(listeJuries1.filter(jury => jury.id !== curJury.id));
-         setListeJuries3(listeJuries3.filter(jury => jury.id !== curJury.id));
-      } else if (index === 2) {
-         setListeJuries3(swapFirstElement(listeJuries2.slice(1), idxJury));
-         setListeJuries1(listeJuries1.filter(jury => jury.id !== curJury.id));
-         setListeJuries2(listeJuries2.filter(jury => jury.id !== curJury.id));
-      }
-
-   }
-
-  return (
-    <section className="mx-3 mt-3 mb-5 step">
-      <h2>
-        Cette partie consiste à renseigner les informations sur les enseignants
-        qui vont faire partie des membres du jury
-      </h2>
-      <div className="my-4 d-flex justify-content-around">
-        {
-          [listeJuries1, listeJuries2, listeJuries3].map((liste, index) => {
-           return (
-            <div key={index}>
-              <label htmlFor={index} className="me-2" style={{ fontSize:"16px", fontWeight:"500" }}>
-                Informations jury {index + 1}: 
-              </label>
-              <Select
-                style={{ width: 120, }}
-                defaultValue={liste[0].nom + ' ' + liste[0].prenom}
-                onChange={(value, option) => handleChange(value, option, index)}
-                name={index}
-              >
-                {liste.map((elt, index) => 
-                 (
-                   <Option key={elt.id} value={elt.id} jury={elt}>
-                     {elt.nom + ' ' + elt.prenom}
-                  </Option>
-                 )
-               )}
-              </Select>
-            </div>
-           )
-          })
-        }
-      </div>
-    </section>
-  );
-};
-
-export default ThirdStep;
+---------
+jury/TableList
 
 
-
-// STEPH
-----------------------------------------------------
-import { useState, useEffect } from "react";
-import { Select } from 'antd';
-import axios from 'axios';
-
-
-const { Option } = Select;
-
-
-const ThirdStep = (props) => {
-  console.log("component reloaded");
- // const [liste, setListe] = useState([
- //    { id: 'adf', nom: 'atangana', prenom: 'atangano' }, 
- //    { id: 'aadfv', nom: 'mbarga', prenom: 'mbarga' }, 
- //    { id: 'tdg', nom: 'loic', prenom: 'loic' },
- //    { id: 'ave', nom: 'serge', prenom: 'serge'}
- //  ]);
- const [liste, setListe] = useState([
-  { id: '', nom: '', prenom: '', email: '', numTelephone: '', grade: '' },
-  // { id: '', nom: '', prenom: '', email: '', numTelephone: '', grade: '' },
-  // { id: '', nom: '', prenom: '', email: '', numTelephone: '', grade: '' }
- ]);
- const [choixJury, setChoixJury] = useState([
-    { jury: liste[0] }, 
-    { jury: liste[1] !== undefined ? liste[1] : liste[0] },
-    { jury: liste[2] !== undefined ? liste[2] : liste[0] }
-  ]);
- const user = JSON.parse(localStorage.getItem('user'));
-
- // Obtenir la liste de juries du departement
- useEffect(() => {
-  axios.get(`/departements/${user.departement.id}/juries`)
-    .then(res => {
-      console.log(res);
-      setListe(res.data);
-    })
-    .catch(err => {
-      console.error(err);
-    })
- }, []);
-
- const handleChange = (value, option, index) => {
-  const newChoix = [...choixJury];
-  newChoix[index].jury = option.jury;
-  setChoixJury(newChoix);
-
-  let newListe = [...liste];
-  newListe = newListe.filter(elt => elt.id !== value);
-  setListe(newListe);
- }
-
-  return (
-    <section className="mx-3 mt-3 mb-5 step">
-      <h2>
-        Cette partie consiste à renseigner les informations sur les enseignants
-        qui vont faire partie des membres du jury
-      </h2>
-      <div className="my-4 d-flex justify-content-around">
-        {choixJury.map((elt, index) => (
-          <div key={index}>
-            <label htmlFor={index} className="me-2" style={{fontSize:"16px",fontWeight:"500"}}>
-              Informations jury {index + 1}: 
-            </label>
-            <Select
-              value={elt.jury.nom + ' ' + elt.jury.prenom}
-              style={{ width: 120, }}
-              onChange={(value, option) => handleChange(value, option, index)}
-              name={index}
-            >
-              {liste.map((elt, index) =>
-                (
-                  <Option key={elt.id} value={elt.id} jury={elt}>
-                    {elt.nom + ' ' + elt.prenom}
-                  </Option>
-                )
-              )}
-            </Select>
-          </div>
-         )
-        )}
-      </div>
-    </section>
-  );
-};
-
-export default ThirdStep;
-
+let data = [
+  {
+    key: "1",
+    photo: (
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
+        alt="cc"
+        className="rounded-circle"
+        style={{ width: "50px", height: "50px" }}
+      />
+    ),
+    matricule: "19M2213",
+    // todo: add dossier info 
+    name: "Nom 1 Prenom 1",
+    dateEnvoi: today.format('dddd, D MMMM YYYY'),
+    dateNotation: "---",
+  },
+  {
+    key: "78",
+    photo: (
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
+        alt="cc"
+        className="rounded-circle"
+        style={{ width: "50px", height: "50px" }}
+      />
+    ),
+    matricule: "19M2221",
+    name: "Nom 2 Prenom 2",
+    dateEnvoi: today.format('dddd, D MMMM YYYY'),
+    dateNotation: today.format('dddd, D MMMM YYYY'),
+  },
+  {
+    key: "2",
+    photo: (
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
+        alt="cc"
+        className="rounded-circle"
+        style={{ width: "50px", height: "50px" }}
+      />
+    ),
+    matricule: "19M2222",
+    name: "Nom 3 Prenom 3",
+    dateEnvoi: today.format('dddd, D MMMM YYYY'),
+    dateNotation: "---",
+  },
+  {
+    key: "3",
+    photo: (
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
+        alt="cc"
+        className="rounded-circle"
+        style={{ width: "50px", height: "50px" }}
+      />
+    ),
+    matricule: "19M2223",
+    name: "Nom 4 Prenom 4",
+    dateEnvoi: today.format('dddd, D MMMM YYYY'),
+    dateNotation: "---",
+  },
+  {
+    key: "4",
+    photo: (
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1nf1W7VULCSp751rP0AxpCPvOzoN9XKDO0Q&usqp=CAU"
+        alt="cc"
+        className="rounded-circle"
+        style={{ width: "50px", height: "50px" }}
+      />
+    ),
+    matricule: "19M2224",
+    name: "Nom 5 Prenom 5",
+    dateEnvoi: today.format('dddd, D MMMM YYYY'),
+    dateNotation: today.format('dddd, D MMMM YYYY'),
+  }
+];
 

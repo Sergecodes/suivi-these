@@ -201,9 +201,11 @@ EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true } );
 // NoteDossier
 const NoteDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
-    avis: { type: Schema.Types.ObjectId, ref: 'Avis' },
-    categorie: { type: String, required: true, enum: Object.values(CategorieNote) },
-    valeur: { type: Number, required: true },
+    // avis: { type: Schema.Types.ObjectId, ref: 'Avis' },
+    // categorie: { type: String, required: true, enum: Object.values(CategorieNote) },
+    // Object with category as key and value as mark
+    notes: { type: Object, required: true },
+    total: { type: Number, required: true },
     notePar: { 
         type: Schema.Types.ObjectId,
         required: true,
@@ -216,8 +218,22 @@ const NoteDossierSchema = new Schema({
         enum: Object.values(ActeurDossier)
     },
     noteLe: { type: Date, default: Date.now, required: true },
+    commentaire: String,  
 });
 
+
+NoteDossierSchema.pre("save", function (next) {
+    if (this.isModified("notes") || this.isNew) {
+        let total = 0, notes = this.notes;
+        for (let key in notes)
+            total += parseInt(notes[key], 10);
+
+        this.total = total;
+    } 
+    
+    return next();
+ });
+ 
 
 NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
 

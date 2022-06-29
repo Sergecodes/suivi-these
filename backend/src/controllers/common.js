@@ -28,3 +28,24 @@ exports.envoyerDossier = async function (req, res) {
     }
 }
 
+exports.dossiersEnvoyes = async function (req, res) {
+    const { 
+        destinataire, destinataireModel,  
+        envoyePar, envoyeParModel
+    } = req.body;
+  
+    let envoisDossiers = await EnvoiDossier.find({
+        destinataire, destinataireModel,
+        envoyePar, envoyeParModel
+    }).populate({
+        path: 'dossier',
+        populate: {
+        path: 'etudiant',
+        select: '-motDePasse -niveau -dossier -misAJourLe',
+        // match: { niveau: Types.Niveau.MASTER },
+        // populate: 'juges'
+        }
+    });
+  
+    return res.json(envoisDossiers);
+ }

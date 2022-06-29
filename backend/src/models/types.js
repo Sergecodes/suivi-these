@@ -182,8 +182,13 @@ const ActeurDossier = Object.freeze({
 });
 
 const CategorieNote = Object.freeze({
-    LECTURE: 'Note de lecture',
-
+    PRESENTATION: 'Normes de presentation',
+    BIBLIO_REFERENCES: 'Richesse de la bibliographie ',
+    STRUCTURATION: 'Structuration du memoire',
+    DOC_FINAL: 'Qualité du document final',
+    PERTINENCE: 'Pertinence de la problématique',
+    REDACTION: 'Clarté dans la redaction',
+    VALIDITE: 'Validité des résultats présentés',
 });
 
 

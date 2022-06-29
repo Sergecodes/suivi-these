@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const passwordComplexity = require("joi-password-complexity");
 const { Types } = require('../constants');
+const { NoteDossier } = require('../models/Dossier');
 const EnvoiDossier = require('../models/EnvoiDossier');
-const Jury = require('../models/Jury');
 const Avis = require('../models/Avis');
 const { removePassword } = require('../utils')
 
@@ -207,7 +207,7 @@ exports.changePhoneNumber = function (req, res) {
 
 
 // ------------
-exports.dossiersEtudsMaster= async function (req, res) {
+exports.dossiersEtudsMaster = async function (req, res) {
    const { jury } = res.locals;
  
   let envoisDossiers = await EnvoiDossier.find({
@@ -218,23 +218,42 @@ exports.dossiersEtudsMaster= async function (req, res) {
     populate: {
       path: 'etudiant',
       select: '-motDePasse -niveau -dossier -misAJourLe',
-      match: { niveau: Types.Niveau.MASTER },
-      populate: 'juges'
+      // match: { niveau: Types.Niveau.MASTER },
+      // populate: 'juges'
     }
   });
  
    return res.json(envoisDossiers);
- }
+}
+
+exports.notesDossier = async function (req, res) {
+   const { jury } = res.locals;
+
+   let notesDossier = await NoteDossier.find({
+      notePar: jury._id,
+      noteParModel: Types.ActeurDossier.JURY
+   }).populate({
+      path: 'dossier',
+      // populate: {
+      //   path: 'etudiant',
+      //   select: '-motDePasse -niveau -dossier -misAJourLe',
+      //   // match: { niveau: Types.Niveau.MASTER },
+      //   // populate: 'juges'
+      // }
+    });
+
+   return res.json(notesDossier);
+}
 
  
 exports.noterDossier = async function (req, res) {
-   const { valeur } = req.body;
+   const { notes } = req.body;
    const { jury, dossier } = res.locals;
 
    try {
-      await jury.attribuerNote(dossier._id, Types.CategorieFichierMaster.MEMOIRE, valeur);
+      await jury.attribuerNote(dossier._id, notes, req.body.commentaire || '');
    } catch (err) {
-      res.status(400).json(err);
+      return res.status(400).json(err);
    }
 
    res.send("Succes!");
