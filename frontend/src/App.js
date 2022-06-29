@@ -107,6 +107,38 @@ import DatesProgrammees from "./components/pageCoordonateur/Master/DatesProgramm
 import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
 import RapportAdminMaster from "./components/pageCoordonateur/Master/RapportAdminMaster";
 import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutenance";
+=======
+    /**************************************************************************************************/
+
+    /************************************************page admin************************************/
+    import Admin from "./screen/Admin";
+    import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
+    import ListeAttente from "./components/pageAdmin/ListeAttente";
+    import ListeEtudiants from "./components/pageAdmin/ListeEtudiants";
+    import NoteLecture from "./components/pageAdmin/NoteLecture";
+    import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
+    import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
+    import ListeJury from "./components/pageAdmin/Liste/ListeJury";
+    import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
+    import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo";
+    import ListeConseil from "./components/pageAdmin/Liste/ListeConseil"; 
+    import ListeExpert from "./components/pageAdmin/Liste/ListeExpert";
+    import ListeRectorat from "./components/pageAdmin/Liste/ListeRectorat";
+    import NotificationsAdmin from "./components/pageAdmin/NotificationsAdmin";
+    import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
+    import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise"
+    /**************************************************************************************************/
+
+
+  /************************************************page coordonateur************************************/
+  import HomeCoordonateurDashboard from "./components/pageCoordonateur/HomeCoordonateurDashboard";
+  import ProfilCoordonateur from "./components/pageCoordonateur/ProfilCoordonateur";
+  import RapportAudition from "./components/pageCoordonateur/RapportAudition";
+  import AutorisationDeSoutenance from "./components/pageCoordonateur/AutorisationDeSoutenance";
+  import RapportEtudiant from "./components/pageCoordonateur/RapportEtudiant";
+  import DateDeSoutenance from "./components/pageCoordonateur/DateDeSoutenance";
+  import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
+    /**************************************************************************************************/
 
 
 /**************************************************************************************************/
@@ -213,42 +245,24 @@ const App = () => {
               element={<Programmation />}
             />
           </Route>
-
-          <Route path="/acteur/admin" element={<Admin />}>
-            <Route
-              path="/acteur/admin/dashboard"
-              element={<DashboardAdmin />}
-            />
-            <Route
-              path="/acteur/admin/liste-attente"
-              element={<ListeAttente />}
-            />
-            <Route
-              path="/acteur/admin/liste-etudiants"
-              element={<ListeEtudiants />}
-            />
-            <Route
-              path="/acteur/admin/notes-lecture"
-              element={<NoteLecture />}
-            />
-            <Route
-              path="/acteur/admin/detail-notation"
-              element={<DetailsNotation />}
-            />
-            <Route
-              path="/acteur/admin/rapport-soutenance"
-              element={<RapportSoutenance />}
-            />
-            <Route path="/acteur/admin/liste-jury" element={<ListeJury />} />
-            <Route
-              path="/acteur/admin/liste-departement"
-              element={<ListeDepartement />}
-            />
-            <Route
-              path="/acteur/admin/liste-coordo"
-              element={<ListeCoordo />}
-            />
-          </Route>
+  
+          <Route path="/acteur/admin" element={<Admin/>} >
+                <Route path="/acteur/admin/dashboard" element={<DashboardAdmin />} />
+                <Route path="/acteur/admin/liste-attente" element={<ListeAttente/>}/>
+                <Route path="/acteur/admin/liste-etudiants" element={<ListeEtudiants/>}/>
+                <Route path="/acteur/admin/notes-lecture" element={<NoteLecture/>}/>
+                <Route path="/acteur/admin/detail-notation" element={<DetailsNotation/>}/>
+                <Route path="/acteur/admin/rapport-soutenance" element={<RapportSoutenance/>}/>
+                <Route path="/acteur/admin/liste-jury" element={<ListeJury/>}/>
+                <Route path="/acteur/admin/liste-departement" element={<ListeDepartement/>}/>
+                <Route path="/acteur/admin/liste-coordo" element={<ListeCoordo/>}/>
+                <Route path="/acteur/admin/liste-conseil" element={<ListeConseil/>}/>
+                <Route path="/acteur/admin/liste-rectorat" element={<ListeRectorat/>}/>
+                <Route path="/acteur/admin/liste-expert" element={<ListeExpert/>}/>
+                <Route path="/acteur/admin/profil" element={<ProfilAdmin/>}/>
+                <Route path="/acteur/admin/notifications" element={<NotificationsAdmin/>}/>
+                <Route path="/acteur/admin/rapport-expertise" element={<RapportExpertise/>}/>
+           </Route>
 
           <Route
             path="/*"

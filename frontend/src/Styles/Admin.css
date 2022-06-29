@@ -32,17 +32,33 @@
 }
 .autorisationButton{
     padding:4px 6px;
-    color:#513e8f;
-    border:1px solid #513e8f;
+    color:green;
+    border:1px solid green;
     background-color: transparent;
    
 }
 
 .autorisationButton:hover{
-    background-color:#513e8f;
+    background-color:green;
     color:white;
     border:1px solid transparent;
 }
+
+.rejectButton{
+    padding:4px 6px;
+    color:red;
+    border:1px solid red;
+    background-color: transparent;
+   
+}
+
+.rejectButton:hover{
+    background-color:red;
+    color:white;
+    border:1px solid transparent;
+}
+
+
 
 /*Rapport soutenance*/
 .btnFull{
