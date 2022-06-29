@@ -1,5 +1,6 @@
 import React from "react";
 import { Upload, Modal } from 'antd';
+import { toast, ToastContainer } from 'react-toastify'
 import { PlusOutlined } from '@ant-design/icons';
 
 
@@ -37,18 +38,19 @@ class ImageUpload extends React.Component {
 
   handleChange = ({ file, fileList }) => {
     console.log(file);
-    console.log(fileList);
     this.setState({ fileList });
 
-    const res = JSON.parse(file.response);
+    const res = file.response;
     console.log(res);
     if (file.status === 'done') {
       // Update local storage
       let user = JSON.parse(localStorage.getItem('user'));
       user.urlPhotoProfil = res.data.urlPhotoProfil;
       localStorage.setItem('user', JSON.stringify(user));
+    } else if (file.status === 'error') {
+      toast.error("Une erreur est survenue", { hideProgressBar: true });
     }
-  }
+  } 
 
   render() {
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
@@ -57,12 +59,13 @@ class ImageUpload extends React.Component {
         <PlusOutlined />
         <div style={{ marginTop: 8 }}>Upload</div>
       </div>
-    );
+    ); 
 
     return (
-      <section >
+      <section>
+        <ToastContainer />
         <Upload
-          action={`${process.env.API_BASE_URL}/etudiants/update-photo`}
+          action={`${process.env.API_BASE_URL || 'http://localhost:8001/api'}/etudiants/update-photo`}
           name="photo"
           method="put"
           accept="image/png,image/jpeg"
