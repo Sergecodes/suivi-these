@@ -32,65 +32,130 @@ TODO:
 
 ------------------------------------------------------------------------------------
 
-$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche
-coordo id: 62b0505bd82053a907904e22
-unite id: 62b054d3d82053a907904e25
-depart 1 id: 62b055d6d82053a907904e35
-depart 2 id: 62b0563dd82053a907904e36
-/** 
-* Paste one or more documents here
-*/
 [
-  {
-  "_id": {
-    "$oid": "62b05939d82053a907904e40"
-  },
-"nom": "jury1_nom",
-"prenom": "jury1_prenom",
-"departement": "62b055d6d82053a907904e35",
-"email": "jury1@gmail.com",
-"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
-"numTelephone": "671111111",
-"grade": 1
-},
+    {
+        "juges": [],
+        "_id": "626d0858b0a4e96f73dbc2d9",
+        "matricule": "19M2505",
+        "nom": "ejowah",
+        "prenom": "akama serge",
+        "niveau": "MASTER 2",
+        "email": "test@gmail.com",
+        "motDePasse": "$2b$10$E4ZvDFzDQHevC3Z5FXw/ceJbTTjZnVu.CL/wF2LqKhjPsHKaTEBja",
+        "sexe": "Mâle",
+        "dateNaissance": "2000/01/01",
+        "lieuNaissance": "Tiko",
+        "dateSoutenance": "2022/09/22",
+        "compteValideLe": "",
+        "urlPhotoProfil": "...",
+        "dossier": "6274daab6f2e22e42d5a4587",
+        "numTelephone": "67575558",
+        "misAJourLe": "2022-05-06T08:22:03.096Z",
+        "id": "626d0858b0a4e96f73dbc2d9"
+    },
+    {
+        "_id": "62a359ac05ca2966ea2f8b0f",
+        "juges": [],
+        "matricule": "11M1111",
+        "nom": "akams",
+        "prenom": "akams",
+        "motDePasse": "$2b$10$E4ZvDFzDQHevC3Z5FXw/ceJbTTjZnVu.CL/wF2LqKhjPsHKaTEBja",
+        "niveau": "MASTER 2",
+        "email": "polosergeo31@gmail.com",
+        "dateNaissance": "2000/02/02",
+        "lieuNaissance": "yde",
+        "numTelephone": "677777",
+        "sexe": "Mâle",
+        "departement": "62a355963e067975f0bb3d9d",
+        "encadreur": "62a357a03e067975f0bb3daf",
+        "creeLe": "2022-06-10T14:48:12.395Z",
+        "misAJourLe": "2022-06-10T14:48:12.395Z",
+        "__v": 0,
+        "id": "62a359ac05ca2966ea2f8b0f"
+    },
+    {
+        "_id": "62aabe847344ba576269bd10",
+        "juges": [],
+        "matricule": "19M2506",
+        "nom": "Vernon",
+        "prenom": "Elizabeth",
+        "motDePasse": "$2b$10$AxlAzNbGMYz9JAvj5Xe0aOHGxCuT1QT86hnr5Uqn2iaHIbtJSzTAC",
+        "niveau": "MASTER 2",
+        "email": "dfa@gmail.com",
+        "dateNaissance": "2022/06/08",
+        "lieuNaissance": "kodo",
+        "numTelephone": "fff",
+        "sexe": "Mâle",
+        "departement": "62a355963e067975f0bb3d9d",
+        "encadreur": "62a357a03e067975f0bb3daf",
+        "creeLe": "2022-06-16T05:24:20.285Z",
+        "misAJourLe": "2022-06-16T05:24:20.285Z",
+        "__v": 0,
+        "id": "62aabe847344ba576269bd10"
+    },
+    {
+        "_id": "62af9d14cd655fb80bb9afb5",
+        "juges": [],
+        "matricule": "19M2506",
+        "nom": "Vernon",
+        "prenom": "Elizabeth",
+        "motDePasse": "$2b$10$2LjjvnMjLtnvOK1E2I3WKetmcF/chAUlZzhy/HympkMcwLRtgI/3G",
+        "niveau": "DOCTORAT",
+        "email": "dfa@gmail.com",
+        "dateNaissance": "2022-07-05",
+        "lieuNaissance": "kodo",
+        "numTelephone": "fff",
+        "sexe": "Mâle",
+        "departement": "62a355963e067975f0bb3d9d",
+        "encadreur": "62a357a03e067975f0bb3daf",
+        "creeLe": "2022-06-19T22:03:00.959Z",
+        "misAJourLe": "2022-06-19T22:03:00.959Z",
+        "__v": 0,
+        "id": "62af9d14cd655fb80bb9afb5"
+    },
+    {
+        "_id": "62b96d4e1827373aa94c5652",
+        "juges": [],
+        "matricule": "19M2111",
+        "nom": "nom",
+        "prenom": "prenom",
+        "motDePasse": "$2b$10$GmSJqlB5cZitq5BRpaJWtedoG//iUv0P79WYE4NjJfCP86wkVa.6e",
+        "niveau": "MASTER 2",
+        "email": "email@gmail.com",
+        "dateNaissance": "2022-06-15",
+        "lieuNaissance": "kodo",
+        "numTelephone": "1111111",
+        "sexe": "Mâle",
+        "departement": "62a355963e067975f0bb3d9d",
+        "encadreur": "62a357a03e067975f0bb3daf",
+        "creeLe": "2022-06-27T08:41:50.889Z",
+        "misAJourLe": "2022-06-27T08:41:50.889Z",
+        "__v": 0,
+        "id": "62b96d4e1827373aa94c5652"
+    }
+]
 
-{
-  "_id": {
-    "$oid": "62b0569ed82053a907904e3f"
-  },
-"nom": "jury2_nom",
-"prenom": "jury2_prenom",
-"departement": "62b055d6d82053a907904e35",
-"email": "jury2@gmail.com",
-"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
-"numTelephone": "67222222",
-"grade": 1
-},
 
- {
-  "_id": {
-    "$oid": "62b058d5d82053a907904e3e"
-  },
-"nom": "jury3_nom",
-"prenom": "jury3_prenom",
-"departement": "62b0563dd82053a907904e36",
-"email": "jury3@gmail.com",
-"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
-"numTelephone": "6733333333",
-"grade": 1
-},
-
-{
-  "_id": {
-    "$oid": "62b0590dd82053a907904e3f"
-  },
-"nom": "jury4_nom",
-"prenom": "jury4_prenom",
-"departement": "62b0563dd82053a907904e36",
-"email": "jury4@gmail.com",
-"motDePasse": "$2b$10$Ia.MUZg745z9r8lcCnXQUeUoKBLeXsNNmOwG5eCb4SmAe8hYLEche",
-"numTelephone": "6744444444",
-"grade": 2
-}
-
+[
+    {
+        "_id": "62a355963e067975f0bb3d9d",
+        "uniteRecherche": "62a3554e3e067975f0bb3d9a",
+        "nom": "departement 1",
+        "email": "depart1@gmail.com",
+        "motDePasse": "$2b$10$E4ZvDFzDQHevC3Z5FXw/ceJbTTjZnVu.CL/wF2LqKhjPsHKaTEBja",
+        "juries": [
+            {
+                "_id": "62a357a03e067975f0bb3daf",
+                "departement": "62a355963e067975f0bb3d9d",
+                "nom": "jury 1",
+                "prenom": "prenom jury 1",
+                "motDePasse": "$2b$10$E4ZvDFzDQHevC3Z5FXw/ceJbTTjZnVu.CL/wF2LqKhjPsHKaTEBja",
+                "email": "jury1@gmail.com",
+                "numTelephone": "677777777",
+                "grade": 1,
+                "id": "62a357a03e067975f0bb3daf"
+            }
+        ],
+        "id": "62a355963e067975f0bb3d9d"
+    }
 ]
