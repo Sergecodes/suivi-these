@@ -245,10 +245,7 @@ exports.rejeterDossierEtudiant = async function (req, res) {
 }
 
 exports.dossiersEtudiantsMaster = async function (req, res) {
-   const { admin } = res.locals;
- 
    let envoisDossiers = await EnvoiDossier.find({
-      destinataire: admin._id,
       destinataireModel: Types.ActeurDossier.ADMIN
       }).populate({
       path: 'dossier',
@@ -264,10 +261,7 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
 }
 
 exports.dossiersEtudiantsThese = async function (req, res) {
-   const { admin } = res.locals;
-
    let envoisDossiers = await EnvoiDossier.find({
-      destinataire: admin._id,
       destinataireModel: Types.ActeurDossier.ADMIN
       }).populate({
       path: 'dossier',

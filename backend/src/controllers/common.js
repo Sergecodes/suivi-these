@@ -12,14 +12,14 @@ exports.logout = function (req, res) {
 
 exports.envoyerDossier = async function (req, res) {
     const { 
-        envoyePar, envoyeParModel, destinataire, 
+        envoyePar, envoyeParModel, 
         destinataireModel, dossier
     } = req.body;
 
     try {
         await EnvoiDossier.create({
-            envoyePar, envoyeParModel, destinataire, 
-            destinataireModel, dossier, 
+            envoyePar, envoyeParModel, destinataireModel, dossier, 
+            destinataire: req.body.destinataire || '', 
             fichiersConcernes: req.body.fichiersConcernes || [],
             message: req.body.message || ''
         });
