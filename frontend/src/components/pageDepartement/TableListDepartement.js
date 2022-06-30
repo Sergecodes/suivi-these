@@ -124,7 +124,7 @@ const TableListDepartement = () => {
       axios.get('/dossiers-envoyes', {
         envoyePar: user.id,
         envoyeParModel: 'Departement',
-        destinataireModel: 'Jury'
+        destinataireModel: 'Admin'
       })
     ])
       .then(results => {
@@ -166,6 +166,13 @@ const TableListDepartement = () => {
     }
 
     return result;
+  }
+
+  const handleSubmit = () => {
+    setListeJury(tempJury);
+    setModified(false);
+
+    // todo Save liste of new juries to backend
   }
   
   const showModal = () => setIsModalVisible(true);
@@ -245,9 +252,7 @@ const TableListDepartement = () => {
                       {
                         <Select
                           defaultValue={selectedJury[0].email}
-                          onChange={(value, option) =>
-                            handleChange(value, option)
-                          }
+                          onChange={(value, option) => handleChange(value, option)}
                         >
                           {selectedJury.map((elt) => {
                             return (
@@ -266,10 +271,7 @@ const TableListDepartement = () => {
                         <BsCheck
                           className="ms-2"
                           style={{ color: "green", cursor: "pointer" }}
-                          onClick={() => {
-                            setListeJury(tempJury);
-                            setModified(false);
-                          }}
+                          onClick={handleSubmit}
                         />
                       </div>
                     </div>

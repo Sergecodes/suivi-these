@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { setRejectModal } from "../../redux/DashboardDisplaySlice";
 
 
-const average = (arr) => Math.floor(arr.reduce((a, b) => a + b) / arr.length);
+const average = (arr) => arr.reduce((a, b) => a + b) / arr.length;
 
 const Notation = () => {
   const dispatch = useDispatch();
@@ -78,7 +78,11 @@ const Notation = () => {
             <Link
               to="/acteur/admin/rapport-soutenance"
               state={{
-                etudiantInfo: { matricule: record.matricule, nom: record.name },
+                etudiantInfo: { 
+                  matricule: record.matricule, 
+                  nom: record.name, 
+                  idDossier: record.idDossier 
+                },
               }}
             >
               {" "}
@@ -102,12 +106,14 @@ const Notation = () => {
   const [data, setData] = useState([
     {
       key: "1",
+      idDossier: '',
       matricule: "",
       name: "Nom 1 prenom 1",
       firstJuryTotal: 0,
       secondJuryTotal: 0,
       thirdJuryTotal: 0,
       score: 0,
+      marks: [{}, {}, {}]
     },
   ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -140,12 +146,13 @@ const Notation = () => {
 
       result.push({
         key: idDossier,
+        idDossier,
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
         firstJuryTotal: sommes[0] || '',
         secondJuryTotal: sommes[1] || '',
         thirdJuryTotal: sommes[2] || '',
-        score: average(sommes),
+        score: average(sommes).toFixed(2),
         marks: valObj.notes
       });
     }

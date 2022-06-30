@@ -55,8 +55,8 @@ exports.dossiersEnvoyes = async function (req, res) {
 
 exports.donnerAvis = async function (req, res) {
    const { 
-       rapport, type, dossier, donnePar, donneParModel,
-       destinataire, destinataireModel 
+       rapport, type, dossier, donnePar, 
+       donneParModel, destinataireModel 
     } = req.body;
 
    try {
@@ -67,7 +67,7 @@ exports.donnerAvis = async function (req, res) {
          donnePar,
          donneParModel,
          dossier,
-         destinataire,
+         destinataire: req.body.destinataire || '',
          destinataireModel
       });
       res.send("Succes");
