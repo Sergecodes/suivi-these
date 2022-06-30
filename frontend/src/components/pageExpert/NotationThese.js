@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
-import { critères } from '../../constants/Constant';
+import { criteres } from '../../constants/Constant';
 import PdfViewer from '../common/PdfViewer';
 import {EtudiantData} from "../../constants/EtudiantData";
 
 const NotationThese = () => {
-  const [notation,setNotation]=useState(critères);
+  const [notation,setNotation]=useState(criteres);
   const [somme,setSomme] =useState(0);
   const handleChange=(e,index)=>{
         const newNotation=notation;
