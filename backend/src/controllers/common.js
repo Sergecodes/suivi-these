@@ -32,13 +32,14 @@ exports.envoyerDossier = async function (req, res) {
 
 exports.dossiersEnvoyes = async function (req, res) {
     const { 
-        destinataire, destinataireModel,  
-        envoyePar, envoyeParModel
+        destinataireModel, envoyePar, envoyeParModel
     } = req.body;
   
     let envoisDossiers = await EnvoiDossier.find({
-        destinataire, destinataireModel,
-        envoyePar, envoyeParModel
+        destinataire: req.body.destinataire || '', 
+        destinataireModel,
+        envoyePar, 
+        envoyeParModel
     }).populate({
         path: 'dossier',
         populate: {

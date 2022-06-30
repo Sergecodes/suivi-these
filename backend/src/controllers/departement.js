@@ -76,7 +76,7 @@ exports.login_departement = async function(req,res){
         let departement = await Departement.findOne({email});
         if(!departement){return res.status(404).send("Departement Not found")};
 		
-        bcrypt.compare(motDePasse, departement.motDePasse, function(err,result) {
+        bcrypt.compare(motDePasse, departement.motDePasse, async function(err,result) {
 			if(err){
 				console.error("une erreur interne est suvenue: ",err);
 				return res.status(500).json({
@@ -96,6 +96,8 @@ exports.login_departement = async function(req,res){
 					_id: departement._id,
 					model: Types.ACTEURS.DEPARTEMENT
 				};
+
+				await departement.populate('juries');
 
 				res.json({
 					success: true,
@@ -232,7 +234,7 @@ exports.validerDossier = async function (req, res) {
 	res.send("Succes!");
 }
 
-// todo: also change message tocommentaire in models
+// also change message tocommentaire in models
 // todo
 exports.dossiersValides = async function (req, res) {
 
