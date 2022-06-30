@@ -1,15 +1,7 @@
-const Coordonateur = require('../models/Coordonateur');
-const Jury = require('../models/Jury');
-const Conseil = require('../models/Conseil');
-const Expert = require('../models/Expert');
 const Etudiant = require('../models/Etudiant');
-const Notification = require('../models/Notification');
-const { Dossier } = require('../models/Dossier');
-const Avis = require('../models/Avis');
+const { NoteDossier } = require('../models/Dossier');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
-// const saltRounds = 10;
-// const CONSTANTES = require('../constants')
 const { Types } = require('../constants');
 const EnvoiDossier = require('../models/EnvoiDossier');
 const Admin = require('../models/Admin');
@@ -247,15 +239,22 @@ exports.rejeterDossierEtudiant = async function (req, res) {
 exports.dossiersEtudiantsMaster = async function (req, res) {
    let envoisDossiers = await EnvoiDossier.find({
       destinataireModel: Types.ActeurDossier.ADMIN
-      }).populate({
-      path: 'dossier',
-      populate: {
-         path: 'etudiant',
-         select: '-motDePasse -niveau -dossier -misAJourLe',
-         match: { niveau: Types.Niveau.MASTER },
-         populate: 'juges departement'
-      }
-   });
+   })
+      .populate({
+         path: 'dossier',
+         populate: {
+            path: 'etudiant',
+            select: '-motDePasse -niveau -dossier -misAJourLe',
+            match: { niveau: Types.Niveau.MASTER },
+            populate: {
+               path: 'juges',
+               populate: {
+                  path: 'departement',
+                  select: '-motDePasse'
+               }
+            }
+         }
+      });
  
    return res.json(envoisDossiers);
 }
@@ -263,17 +262,61 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
 exports.dossiersEtudiantsThese = async function (req, res) {
    let envoisDossiers = await EnvoiDossier.find({
       destinataireModel: Types.ActeurDossier.ADMIN
-      }).populate({
-      path: 'dossier',
-      populate: {
-         path: 'etudiant',
-         select: '-motDePasse -niveau -dossier -misAJourLe',
-         match: { niveau: Types.Niveau.THESE },
-         populate: 'juges departement'
-      }
-   });
+   }).populate({
+         path: 'dossier',
+         populate: {
+            path: 'etudiant',
+            select: '-motDePasse -niveau -dossier -misAJourLe',
+            match: { niveau: Types.Niveau.THESE },
+         }
+      });
 
    return res.json(envoisDossiers);
 }
 
+exports.notesDossiers = async function (req, res) {
+   // If a dossier has been marked by 3 judges then we'll get 3 
+   // instances of notesDossier.
+   // Thus for each dossier, we'll get 3 instances of notesDossiers.
+   let notesDossiers = await NoteDossier.find({})
+      .populate('notePar', '-motDePasse')
+      .populate({
+         path: 'dossier',
+         populate: {
+            path: 'etudiant',
+            select: '-motDePasse -niveau -dossier -misAJourLe',
+            // match: { niveau: Types.Niveau.MASTER },
+         }
+      });
+
+   // result = {
+   //    <idDossier>: {
+   //       notes: [{}, {}, {}],
+   //       juges: [{}, {}, {}],
+   //       dossierInfo: {}
+   //       sommes: [60, 60, 60]
+   //    }, ...
+   // }
+   let result = {};
+   for (let noteObj of notesDossiers) {
+      let dossier = noteObj.dossier;
+
+      if (dossier._id in result) {
+         // copy by reference
+         let newVal = result[dossier._id];
+         newVal.juges.push(noteObj.notePar);
+         newVal.notes.push(noteObj.notes);
+         newVal.sommes.push(noteObj.total);
+      } else {
+         result[dossier._id] = {
+            dossierInfo: noteObj.dossier,
+            juges: [noteObj.notePar],
+            notes: [noteObj.notes],
+            sommes: [noteObj.total]
+         };
+      }
+   }
+
+   return res.json(result);
+}
 

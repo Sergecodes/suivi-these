@@ -27,7 +27,7 @@ router.route('/dossiers-master').get(isAdmin, controller.dossiersEtudiantsMaster
 
 router.route('/dossiers-these').get(isAdmin, controller.dossiersEtudiantsThese);
 
-router.route('/acteurs-avis').get(isAdmin, getAdmin, controller.getActeursAvis);
+router.route('/notes-dossiers').get(isAdmin, controller.notesDossiers);
 
 router.route('/etudiants/:id/accepter-inscription').put(
    isAdmin, 

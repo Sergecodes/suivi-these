@@ -17,15 +17,15 @@
 * matricule and etudiant should not be unique, this will permit a student to register
 maybe eventually i.e to have a master2 and doctorat account in the system
 
-TODO FOR INTEGRATION (ASAP):
+TODO FOR INTEGRATION:
     - 
+    - store `notes` in NoteDossier as json string ??? then when getting configure mongoose to 
+    automatically reconvert to object ... 
+    (are we guaranteed of the order in which object properties are stored?)
 
 TODO: 
     * Document controllers au fur et a mesure (eg. specify required and optional values)
     - continue admin api
-    - transfer EnvoiDossier to models/Dossier
-
-    - add required for refPath attributes ?
     - prevent server from crashing when error
     - use callbacks ... where necessary, also improve queries
 

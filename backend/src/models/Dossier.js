@@ -209,14 +209,14 @@ const NoteDossierSchema = new Schema({
     notePar: { 
         type: Schema.Types.ObjectId,
         required: true,
-        refPath: 'noteParModel'
+        // refPath: 'noteParModel'
     },
-    noteParModel: {
-        type: String,
-        required: true,
-        default: ActeurDossier.JURY,
-        enum: Object.values(ActeurDossier)
-    },
+    // noteParModel: {
+    //     type: String,
+    //     required: true,
+    //     default: ActeurDossier.JURY,
+    //     enum: Object.values(ActeurDossier)
+    // },
     noteLe: { type: Date, default: Date.now, required: true },
     commentaire: String,  
 });
