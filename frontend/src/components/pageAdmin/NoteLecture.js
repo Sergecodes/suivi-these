@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 import RejetEtudiant from "./RejetEtudiant";
 import { useDispatch } from "react-redux";
 import { setRejectModal } from "../../redux/DashboardDisplaySlice";
+import { average } from '../../utils';
 
-
-const average = (arr) => arr.reduce((a, b) => a + b) / arr.length;
 
 const Notation = () => {
   const dispatch = useDispatch();

@@ -78,13 +78,11 @@ exports.donnerAvis = async function (req, res) {
 }
 
 exports.avisDonnes = async function (req, res) {
-    const { 
-        destinataire, destinataireModel, donnePar, donneParModel
-    } = req.body;
+    const { destinataireModel, donnePar, donneParModel } = req.body;
   
     let avis = await Avis.find({
-        destinataire, destinataireModel,
-        donnePar, donneParModel
+        destinataire: req.body.destinataire || '', 
+        destinataireModel, donnePar, donneParModel
     }).populate({
         path: 'dossier',
         populate: {
