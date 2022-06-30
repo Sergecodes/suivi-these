@@ -17,7 +17,7 @@ let fichiersEnum = [
 const EnvoiDossierSchema = new Schema({
     envoyeLe: { type: Date, default: Date.now, required: true },
     vueLe: Date,
-    message: String,
+    commentaire: String,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
     envoyePar: { type: Schema.Types.ObjectId, refPath: 'envoyeParModel' },
     envoyeParModel: { type: String, required: true, enum: acteursDossiers },

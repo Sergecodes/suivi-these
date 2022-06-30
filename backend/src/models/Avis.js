@@ -10,7 +10,7 @@ const AvisSchema = new Schema({
     type: { type: String, required: true, enum: Object.values(Avis) },
     rapport: String, 
     commentaire: String,  
-    envoyeLe: { type: Date, default: Date.now, required: true },
+    donneLe: { type: Date, default: Date.now, required: true },
     donnePar: { type: Schema.Types.ObjectId, refPath: 'donneParModel' },
     donneParModel: { type: String, required: true, enum: Object.values(AvisEmetteur) },
     destinataire: { type: Schema.Types.ObjectId, refPath: 'destinataireModel' },
