@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { critères } from "../../../constants/Constant";
+import { criteres } from "../../../constants/Constant";
 
 const DetailsNotation = () => {
   const location = useLocation();
@@ -19,7 +19,7 @@ const DetailsNotation = () => {
         </p>
       </div>
 
-      {critères.map((elt, index) => {
+      {criteres.map((elt, index) => {
         return (
           <div key={elt.id} >
             <div className="d-flex justify-content-around align-items-center row " style={{fontSize:"17px"}}>

@@ -82,19 +82,6 @@ import NotificationJury from "./components/pageJury/NotificationJury";
 import DashboardJury from "./components/pageJury/DashboardJury";
 /**************************************************************************************************/
 
-/************************************************page admin************************************/
-import Admin from "./screen/Admin";
-import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
-import ListeAttente from "./components/pageAdmin/ListeAttente";
-import ListeEtudiants from "./components/pageAdmin/ListeEtudiants";
-import NoteLecture from "./components/pageAdmin/NoteLecture";
-import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
-import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
-import ListeJury from "./components/pageAdmin/Liste/ListeJury";
-import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
-import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo";
-/**************************************************************************************************/
-
 /************************************************page coordonateur************************************/
 import Coordonateur from "./screen/Coordonateur";
 import DashboardCoordo from "./components/pageCoordonateur/DashboardCoordo";
@@ -107,8 +94,7 @@ import DatesProgrammees from "./components/pageCoordonateur/Master/DatesProgramm
 import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
 import RapportAdminMaster from "./components/pageCoordonateur/Master/RapportAdminMaster";
 import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutenance";
-=======
-    /**************************************************************************************************/
+    /***************************************************************************************************/
 
     /************************************************page admin************************************/
     import Admin from "./screen/Admin";
@@ -128,18 +114,6 @@ import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutena
     import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
     import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise"
     /**************************************************************************************************/
-
-
-  /************************************************page coordonateur************************************/
-  import HomeCoordonateurDashboard from "./components/pageCoordonateur/HomeCoordonateurDashboard";
-  import ProfilCoordonateur from "./components/pageCoordonateur/ProfilCoordonateur";
-  import RapportAudition from "./components/pageCoordonateur/RapportAudition";
-  import AutorisationDeSoutenance from "./components/pageCoordonateur/AutorisationDeSoutenance";
-  import RapportEtudiant from "./components/pageCoordonateur/RapportEtudiant";
-  import DateDeSoutenance from "./components/pageCoordonateur/DateDeSoutenance";
-  import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
-    /**************************************************************************************************/
-
 
 /**************************************************************************************************/
 

@@ -52,9 +52,10 @@ const StudentProfile = () => {
     let numReqs = Object.keys(requests).length;
 
     if (numReqs === 0) {
-      Promise.all(Object.values)
+      Promise.all(Object.values(requests))
         .then(results => {
           const [res1, res2, res3] = results;
+          console.log(results)
           console.log(res1);
           console.log(res2);
           console.log(res3);
