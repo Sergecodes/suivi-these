@@ -45,7 +45,7 @@ class ImageUpload extends React.Component {
     if (file.status === 'done') {
       // Update local storage
       let user = JSON.parse(localStorage.getItem('user'));
-      user.urlPhotoProfil = res.data.urlPhotoProfil;
+      user.urlPhotoProfil = res.urlPhotoProfil;
       localStorage.setItem('user', JSON.stringify(user));
     } else if (file.status === 'error') {
       toast.error("Une erreur est survenue", { hideProgressBar: true });

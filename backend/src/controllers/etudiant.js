@@ -351,7 +351,7 @@ exports.updatePhoto = async function (req, res) {
       );
 
       // Use the mv() method to place the file somewhere on your server
-      fileObj.mv(uploadPath, async function (err) {
+      file.mv(uploadPath, async function (err) {
          if (err) return res.status(500).send(err);
 
          etudiant.urlPhotoProfil = uploadPath;
