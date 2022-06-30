@@ -23,11 +23,11 @@ router.route('/demandes-inscription').get(isAdmin, controller.demandesInscriptio
 
 router.route('/notifications').get(isAdmin, getAdmin, controller.notifications);
 
-router.route('/dossiers-master').get(isAdmin, getAdmin, controller.dossiersEtudiantsMaster);
+router.route('/dossiers-master').get(isAdmin, controller.dossiersEtudiantsMaster);
 
-router.route('/dossiers-these').get(isAdmin, getAdmin, controller.dossiersEtudiantsThese);
+router.route('/dossiers-these').get(isAdmin, controller.dossiersEtudiantsThese);
 
-router.route('/acteurs-avis').get(isAdmin, getAdmin, controller.getActeursAvis);
+router.route('/notes-dossiers').get(isAdmin, controller.notesDossiers);
 
 router.route('/etudiants/:id/accepter-inscription').put(
    isAdmin, 

@@ -27,11 +27,7 @@ router.route('/programmer-date-soutenance-these').post(
    controller.programmerDateSoutenanceThese
 );
 
-router.route('/dossiers-etudiants-these').get(
-   isRectorat, 
-   getRectorat, 
-   controller.dossiersEtudsThese
-);
+router.route('/dossiers-etudiants-these').get(isRectorat, controller.dossiersEtudsThese);
 
 router.route('/verifier-avis-donne').get(
    isRectorat, 

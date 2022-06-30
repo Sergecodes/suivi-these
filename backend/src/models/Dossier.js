@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose')
-const { 
-    CategorieFichierMaster, CategorieFichierThese, 
-    ModelNotif, Niveau, CategorieNote, ActeurDossier, 
+const {
+    CategorieFichierMaster, CategorieFichierThese,
+    ModelNotif, Niveau, CategorieNote, ActeurDossier,
     EtapeDossier: EtapeDossierEnum,
 } = require('./types');
 const Avis = require('./Avis');
-const { getEtapeWording } = require('../utils');
-const isDate = require("validator/lib/isDate");
+const { sum, getEtapeWording } = require('../utils');
+// const isDate = require("validator/lib/isDate");
 const EnvoiDossier = require('./EnvoiDossier');
 const Notification = require('./Notification');
 
@@ -56,35 +56,46 @@ DossierSchema.virtual('avis', {
 
 // pre- remove middleware
 // Delete etapes, notes and fichiers when dossier is deleted
-DossierSchema.pre('remove', function(next) {
+DossierSchema.pre('remove', function (next) {
     EtapeDossier.remove({ dossier: this._id }).exec();
     NoteDossier.remove({ dossier: this._id }).exec();
     FichierDossier.remove({ dossier: this._id }).exec();
     Avis.remove({ dossier: this._id }).exec();
     EnvoiDossier.remove({ dossier: this._id }).exec();
-    Notification.remove({ 
-        objetConcerne: this._id, 
-        objetConcerneModel: ModelNotif.DOSSIER 
+    Notification.remove({
+        objetConcerne: this._id,
+        objetConcerneModel: ModelNotif.DOSSIER
     }).exec();
 
     next();
 });
 
 
-DossierSchema.methods.getEtapeActuelle = async function() {
+DossierSchema.methods.getNotesTotales = async function () {
+    await this.populate('notes');
+
+    let result = [];
+    for (let noteDossier of this.notes) {
+        result.push(noteDossier.total);
+    }
+
+    return result;
+}
+
+DossierSchema.methods.getEtapeActuelle = async function () {
     await this.populate('etapes');
     return this.etapes.at(-1);
 };
 
 
-DossierSchema.methods.incrementerEtape = async function(numEtapeSuivante) {
-   await this.populate({
-      path: 'etudiant',
-      select: 'niveau'
-   });
+DossierSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
+    await this.populate({
+        path: 'etudiant',
+        select: 'niveau'
+    });
     const numDerniereEtape = (function () {
-        return this.etudiant.niveau === Niveau.MASTER ? 
-            FINAL_NUM_ETAPE_MASTER : 
+        return this.etudiant.niveau === Niveau.MASTER ?
+            FINAL_NUM_ETAPE_MASTER :
             FINAL_NUM_ETAPE_THESE
     })();
 
@@ -115,7 +126,7 @@ DossierSchema.methods.incrementerEtape = async function(numEtapeSuivante) {
 }
 
 
-DossierSchema.methods.changerSujet = async function(nouveauSujet) {
+DossierSchema.methods.changerSujet = async function (nouveauSujet) {
     if (nouveauSujet && this.sujet !== nouveauSujet) {
         this.sujet = nouveauSujet;
         await this.save();
@@ -145,14 +156,14 @@ const FichierDossierSchema = new Schema({
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
 });
 
-FichierDossierSchema.index( { dossier: 1, categorie: 1 }, { unique: true } );
+FichierDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true });
 
 
 // EtapeDossier
 const EtapeDossierSchema = new Schema({
-    numEtape: { 
-        type: Number, 
-        required: true, 
+    numEtape: {
+        type: Number,
+        required: true,
         default: EtapeDossierEnum.UNE,
         enum: Object.values(EtapeDossierEnum)
     },
@@ -186,16 +197,16 @@ const EtapeDossierSchema = new Schema({
 });
 
 // Set description to Etape Dossier
-EtapeDossierSchema.pre("save", async function(next) {
-   if(this.isNew) {
-      this.description = getEtapeWording(this.numEtape, );
-      await this.save();
-   }
-   return next();
+EtapeDossierSchema.pre("save", async function (next) {
+    if (this.isNew) {
+        this.description = getEtapeWording(this.numEtape,);
+        await this.save();
+    }
+    return next();
 });
 
 
-EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true } );
+EtapeDossierSchema.index({ dossier: 1, numEtape: 1 }, { unique: true });
 
 
 // NoteDossier
@@ -205,20 +216,21 @@ const NoteDossierSchema = new Schema({
     // categorie: { type: String, required: true, enum: Object.values(CategorieNote) },
     // Object with category as key and value as mark
     notes: { type: Object, required: true },
+    // Note totale 
     total: { type: Number, required: true },
-    notePar: { 
+    notePar: {
         type: Schema.Types.ObjectId,
         required: true,
-        refPath: 'noteParModel'
+        // refPath: 'noteParModel'
     },
-    noteParModel: {
-        type: String,
-        required: true,
-        default: ActeurDossier.JURY,
-        enum: Object.values(ActeurDossier)
-    },
+    // noteParModel: {
+    //     type: String,
+    //     required: true,
+    //     default: ActeurDossier.JURY,
+    //     enum: Object.values(ActeurDossier)
+    // },
     noteLe: { type: Date, default: Date.now, required: true },
-    commentaire: String,  
+    commentaire: String,
 });
 
 
@@ -229,19 +241,23 @@ NoteDossierSchema.pre("save", function (next) {
             total += parseInt(notes[key], 10);
 
         this.total = total;
-    } 
-    
-    return next();
- });
- 
+    }
 
-NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true } );
+    return next();
+});
+
+NoteDossierSchema.virtual('total').get(function () {
+    return sum(Object.values(this.notes));
+});
+
+
+NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true });
 
 /*
  * Envoyer une notification a l'administrateur
  */
 // NoteDossierSchema.post('save', async function(doc) {
-      // if(this.isNew)
+// if(this.isNew)
 //     await Notification.create({
 //         type: TypeNotification.NOTE_JURY,
 //         destinataireModel: ModelNotif.ADMIN,

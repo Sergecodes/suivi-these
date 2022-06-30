@@ -11,6 +11,10 @@ router.route('/envoyer-dossier').post(isLoggedIn, controller.envoyerDossier);
 
 router.route('/dossiers-envoyes').get(isLoggedIn, controller.dossiersEnvoyes);
 
+router.route('/donner-avis').post(isLoggedIn, controller.donnerAvis);
+
+router.route('/avis-donnes').get(isLoggedin, controller.avisDonnes);
+
 
 module.exports = router;
 

@@ -10,15 +10,12 @@ const { Option } = Select;
 
 
 const TableListDepartement = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const juryData = user.juries;
   const navigate = useNavigate();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [listeJury, setListeJury] = useState([]);
-  const [current, setCurrent] = useState(1);
-  const [index, setIndex] = useState(1);
-  const [modified, setModified] = useState(false);
-  const [juryData, setJuryData] = useState((function () {
+  let defaultJuries = (function () {
     let output = [];
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i <= 3; i++) {
       output.push({
         id: i,
         nom: "nom" + i,
@@ -27,15 +24,21 @@ const TableListDepartement = () => {
       });
     }
     return output;
-  })());
+  })();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [listeJury, setListeJury] = useState([]);
+  const [current, setCurrent] = useState(1);
+  const [index, setIndex] = useState(1);
+  const [modified, setModified] = useState(false);
   const [selectedJury, setSelectedJury] = useState(juryData);
+  // tempJury to backup choices after user closes page
   const [tempJury, setTempJury] = useState([]);
   const [data, setData] = useState([{
     key: "1",
     photo: (
       <img
         src=""
-        alt="cc"
+        alt="profil"
         className="rounded-circle"
         style={{ width: "50px", height: "50px" }}
       />
@@ -44,18 +47,7 @@ const TableListDepartement = () => {
     name: "",
     dateEnvoi: '',
     dateVerification: "---",
-    jury: (function () {
-      let output = [];
-      for (let i = 1; i <= 3; i++) {
-        output.push({
-          id: i,
-          nom: "nom" + i,
-          prenom: "prenom" + i,
-          email: "jury" + i + "@gmail.com",
-        });
-      }
-      return output;
-    })(),
+    jury: defaultJuries,
   }]);
 
   const columns = [
@@ -124,48 +116,64 @@ const TableListDepartement = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   Promise.all([
-  //     axios.get(`/departements/dossiers-etudiants-master`),
-  //     axios.get('/departements/notes-dossiers')
-  //   ])
-  //     .then(results => {
-  //       const [res1, res2] = results;
-  //       console.log(res1);
-  //       console.log(res2);
-  //       setData(parseResult(res1.data, res2.data));
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //       toast.error("Une erreur est survenue!", { hideProgressBar: true });
-  //     })
-  // }, []);
+  useEffect(() => {
+    Promise.all([
+      axios.get(`/departements/dossiers-etudiants-master`),
+      // To get the dateVerification, we need to get the dossiers sent to the coordonateur
+      // from the departement and retrieve the envoyeLe attribute.
+      axios.get('/dossiers-envoyes', {
+        envoyePar: user.id,
+        envoyeParModel: 'Departement',
+        destinataireModel: 'Admin'
+      })
+    ])
+      .then(results => {
+        const [res1, res2] = results;
+        console.log(res1);
+        console.log(res2);
+        setData(parseResult(res1.data, res2.data));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue!", { hideProgressBar: true });
+      })
+  }, []);
 
-  // const parseResult = (envoisData, notesData) => {
-  //   let result = [];
-  //   for (let envoiObj of envoisData) {
-  //     let etud = envoiObj.dossier.etudiant;
-  //     let noteObj = notesData.find(note => note.dossier.id === envoiObj.dossier.id);
+  const parseResult = (envois1Data, envois2Data) => {
+    let result = [];
+    for (let envoiObj of envois1Data) {
+      let etud = envoiObj.dossier.etudiant;
+      let envoi2Obj = envois2Data.find(obj => obj.dossier.id === envoiObj.dossier.id);
 
-  //     result.push({
-  //       key: envoiObj.id,
-  //       photo: (
-  //         <img
-  //           src={etud.urlPhotoProfil}
-  //           alt="profil"
-  //           className="rounded-circle"
-  //           style={{ width: "50px", height: "50px" }}
-  //         />
-  //       ),
-  //       matricule: etud.matricule,
-  //       name: etud.nom + ' '  + etud.prenom,
-  //       dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
-  //       dateVerification: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---'
-  //     });
-  //   }
+      result.push({
+        key: envoiObj.id,
+        photo: (
+          <img
+            src={etud.urlPhotoProfil}
+            alt="profil"
+            className="rounded-circle"
+            style={{ width: "50px", height: "50px" }}
+          />
+        ),
+        matricule: etud.matricule,
+        name: etud.nom + ' '  + etud.prenom,
+        dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
+        jury: etud.juges.map(jury => {
+          return { id: jury.id, nom: jury.nom, prenom: jury.prenom, email: jury.email }
+        })
+      });
+    }
 
-  //   return result;
-  // }
+    return result;
+  }
+
+  const handleSubmit = () => {
+    setListeJury(tempJury);
+    setModified(false);
+
+    // todo Save liste of new juries to backend
+  }
   
   const showModal = () => setIsModalVisible(true);
 
@@ -212,10 +220,8 @@ const TableListDepartement = () => {
                           setModified(!modified);
                           setIndex(index);
                           setCurrent(jury.id);
-                          setSelectedJury(function () {
-                            let output = [],
-                              first = 1,
-                              second = 2;
+                          setSelectedJury((function () {
+                            let output = [], first = 1, second = 2;
                             if (index === 1) {
                               first = 0;
                               second = 2;
@@ -235,7 +241,7 @@ const TableListDepartement = () => {
                             }
 
                             return output;
-                          });
+                          })());
                         }}
                       >
                         Modifier
@@ -246,9 +252,7 @@ const TableListDepartement = () => {
                       {
                         <Select
                           defaultValue={selectedJury[0].email}
-                          onChange={(value, option) =>
-                            handleChange(value, option)
-                          }
+                          onChange={(value, option) => handleChange(value, option)}
                         >
                           {selectedJury.map((elt) => {
                             return (
@@ -267,10 +271,7 @@ const TableListDepartement = () => {
                         <BsCheck
                           className="ms-2"
                           style={{ color: "green", cursor: "pointer" }}
-                          onClick={() => {
-                            setListeJury(tempJury);
-                            setModified(false);
-                          }}
+                          onClick={handleSubmit}
                         />
                       </div>
                     </div>

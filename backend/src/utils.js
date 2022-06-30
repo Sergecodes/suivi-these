@@ -2,6 +2,8 @@
 const { Types } = require('./constants');
 
 
+exports.sum = (arr) => arr.reduce((partialSum, a) => partialSum + a, 0);
+
 exports.isNumeric = val => !isNaN(val);
 
 /**

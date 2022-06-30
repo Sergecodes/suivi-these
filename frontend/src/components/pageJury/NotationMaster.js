@@ -10,6 +10,7 @@ moment.locale('fr');
 
 
 const NotationMaster = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const location = useLocation();
   const navigate = useNavigate();
   const { etudiantInfo } = location.state;
@@ -41,12 +42,22 @@ const NotationMaster = () => {
       return result;
     })();
 
-    axios.post('/jury/noter-dossier', {
-      notes,
-      dossier: etudiantInfo.idDossier,
-    })
-      .then(res => {
-        console.log(res);
+    Promise.all([
+      axios.post('/jury/noter-dossier', {
+        notes,
+        dossier: etudiantInfo.idDossier,
+      }),
+      // Send dossier to admin
+      axios.post('/envoyer-dossier', {
+        dossier: etudiantInfo.idDossier,
+        envoyePar: user.id,
+        envoyeParModel: 'Jury',
+        destinataireModel: 'Admin'
+      })
+    ])
+      .then(results => {
+        console.log(results);
+
         // Default autoclose delay is 5000ms (5s)
         toast.success("Succes!", { hideProgressBar: true });
 

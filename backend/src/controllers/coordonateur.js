@@ -226,24 +226,29 @@ exports.dossiersEtudsThese = async function (req, res) {
 
 
 exports.autorisationsSoutenanceMaster = async function (req, res) {
-  const { coordo } = res.locals;
   let avis = await Avis.find({
     type: Types.Avis.AUTORISATION_SOUTENANCE,
     // donnePar: admin._id, 
     donneParModel: Types.AvisEmetteur.ADMIN,
-    destinataire: coordo._id,
     destinataireModel: Types.AvisDestinataire.COORDONATEUR
   }).populate({
     path: 'dossier',
-    populate: {
-      path: 'etudiant',
-      select: '-juges -motDePasse -niveau -dateNaissance -urlPhotoProfil -dossier -creeLe -misAJourLe',
-      // Pas besoin de selectionner le niveau, car on doit avoir juste les etudiants du MASTER 
-      // match: { niveau: Types.Niveau.MASTER }
-    }
+    populate: [
+      {
+        path: 'etudiant',
+        select: 'nom prenom matricule',
+        // Pas besoin de selectionner le niveau, car 
+        // on doit normalement avoir juste les etudiants du MASTER ??
+        match: { niveau: Types.Niveau.MASTER }
+      },
+      {
+        path: 'notes',
+        select: 'total'
+      }
+    ]
   });
 
-  res.json({ avis });
+  res.json(avis);
 }
 
 

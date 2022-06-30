@@ -32,7 +32,6 @@ router.route('/programmer-date-soutenance-master').post(
 
 router.route('/autorisations-soutenances-master').get(
    isCoordonateur, 
-   getCoordonateur, 
    controller.autorisationsSoutenanceMaster
 );
 
