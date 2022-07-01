@@ -65,7 +65,7 @@ class ImageUpload extends React.Component {
       <section>
         <ToastContainer />
         <Upload
-          action={`${process.env.API_BASE_URL || 'http://localhost:8001/api'}/etudiants/update-photo`}
+          action={`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001/api'}/etudiants/update-photo`}
           name="photo"
           method="put"
           accept="image/png,image/jpeg"
