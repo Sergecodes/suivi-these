@@ -490,12 +490,14 @@ exports.uploadFiles = async function (req, res) {
                         i++;
 
                         // Return response if for loop is over
-                        if (i == n - 1)
+                        if (i == n - 1) {
+                           await dossier.populate('fichiers');
                            return res.status(201).json({
                               success: true,
                               message: "Files uploaded!",
                               dossier
                            });
+                        }
                      });
                   })
                   .catch((error) => {

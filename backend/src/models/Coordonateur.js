@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose')
 const isEmail = require( 'validator/lib/isEmail')
 const Avis = require('./Avis')
 const Notification = require('./Notification')
-const { AvisEmetteur } = require('./types')
+const { AvisEmetteur, EtapeDossier } = require('./types')
 const bcrypt = require('bcrypt');
 
 
@@ -62,7 +62,7 @@ CoordonateurSchema.virtual('notifications', {
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-    await etudiant.incrementerEtape();
+    await etudiant.incrementerEtape(EtapeDossier.SIX_MASTER);
     
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
