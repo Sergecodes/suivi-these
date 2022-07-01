@@ -121,10 +121,11 @@ import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutena
 import axios from "axios";
 
 axios.defaults.baseURL =
-  process.env.API_BASE_URL || "http://localhost:8001/api";
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:8001/api";
 axios.defaults.withCredentials = true;
 
 const App = () => {
+  console.log(process.env);
   const user = JSON.parse(localStorage.getItem("user"));
   const isLogin = Boolean(user);
   console.log(isLogin);
