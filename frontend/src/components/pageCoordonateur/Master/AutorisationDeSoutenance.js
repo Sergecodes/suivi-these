@@ -39,7 +39,7 @@ const columns = [
           </Link>
           <Link 
             to="/acteur/coordonateur/date" 
-            state={{ etudiantInfo: { matricule: record.matricule, nom: record.name } }}
+            state={{ etudiantInfo: { id: record.id, matricule: record.matricule, nom: record.name } }}
           > 
             <button className="btn autorisationButton">Autoriser</button>
           </Link>
@@ -77,6 +77,7 @@ const AutorisationDeSoutenance = () => {
 
       result.push({
         key: avis.id,
+        id: etud.id,
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
         score: (function () {

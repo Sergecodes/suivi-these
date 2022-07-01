@@ -216,8 +216,6 @@ const NoteDossierSchema = new Schema({
     // categorie: { type: String, required: true, enum: Object.values(CategorieNote) },
     // Object with category as key and value as mark
     notes: { type: Object, required: true },
-    // Note totale 
-    total: { type: Number, required: true },
     notePar: {
         type: Schema.Types.ObjectId,
         required: true,

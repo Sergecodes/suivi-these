@@ -13,7 +13,7 @@ router.route('/dossiers-envoyes').get(isLoggedIn, controller.dossiersEnvoyes);
 
 router.route('/donner-avis').post(isLoggedIn, controller.donnerAvis);
 
-router.route('/avis-donnes').get(isLoggedin, controller.avisDonnes);
+router.route('/avis-donnes').get(isLoggedIn, controller.avisDonnes);
 
 
 module.exports = router;

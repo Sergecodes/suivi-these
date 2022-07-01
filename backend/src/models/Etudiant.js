@@ -48,8 +48,18 @@ const EtudiantSchema = new Schema({
          `,
       },
    },
-   dateSoutenance: String,
+   dateSoutenance: { 
+      type: String,
+      validate: {
+         validator: (date) => isDate(date),
+         message: (props) => `
+            ${props.value} est une date invalide. 
+            Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
+         `,
+      },
+   },
    lieuNaissance: { type: String, required: true },
+   // todo validate numTelephone
    numTelephone: { type: String, required: true },
    sexe: { type: String, required: true, enum: Object.values(Sexe) },
    compteValideLe: String,

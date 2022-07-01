@@ -1,8 +1,9 @@
-const Coordonateur = require("../models/Coordonateur");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 const { Types } = require("../constants");
 const { removePassword } = require("../utils");
+const Coordonateur = require("../models/Coordonateur");
+const Etudiant = require('../models/Etudiant');
 const Avis = require('../models/Avis');
 const EnvoiDossier = require('../models/EnvoiDossier');
 
@@ -270,6 +271,13 @@ exports.programmerDateSoutenanceMaster = async function (req, res) {
   }
 
   res.send("Date de soutenance programmee avec succes!");
+}
+
+exports.etudiantsMasterProgrammes = async function (req, res) {
+  let etudiants = await Etudiant.find({ niveau: Types.Niveau.MASTER })
+    .where('dateSoutenance').nin([undefined, '']);
+
+  res.json(etudiants);
 }
 
 
