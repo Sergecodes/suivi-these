@@ -26,6 +26,11 @@ const StudentProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("tel", tel)
+    console.log('email', email);
+    console.log('old password', oldPassword);
+    console.log('new password', newPassword);
+
     let requests = {};
 
     if (user.email !== email) {
@@ -47,11 +52,13 @@ const StudentProfile = () => {
       }
     }
 
+    console.log(requests);
+
     // we can start sending requests, so stop modification
     setModification(false);
     let numReqs = Object.keys(requests).length;
 
-    if (numReqs === 0) {
+    if (numReqs > 0) {
       Promise.all(Object.values(requests))
         .then(results => {
           const [res1, res2, res3] = results;
@@ -59,9 +66,11 @@ const StudentProfile = () => {
           console.log(res1);
           console.log(res2);
           console.log(res3);
-          const data1 = res1.data, data2 = res2.data, data3 = res3.data;
+          const data1 = res1.data, data2 = res2 && res2.data, data3 = res3 && res3.data;
           
           if (requests.telRequest) {
+            // No need to test for undefined, the first of these data to have numTelephone
+            // will prevent the next from executing
             user.numTelephone = data1.numTelephone || data2.numTelephone || data3.numTelephone;
           } 
 
@@ -76,16 +85,40 @@ const StudentProfile = () => {
           if (requests.passwordRequest || requests.emailRequest) {
             localStorage.removeItem('user');
             localStorage.removeItem('actor');
-            navigate('/connexion');
+
+            toast.success(
+              "Mise a jour effectuee avec succes! Vous serez renvoyez a la page de connexion...",
+              { hideProgressBar: true }
+            );
+
+            setTimeout(() => {
+              toast.dismiss();
+              navigate('/connexion');
+            }, 3000);
+
+          } else {
+            toast.success("Mise a jour effectuee avec succes!", { hideProgressBar: true });
           }
         })
         .catch(err => {
           console.error(err);
-          toast.error("Une erreur est survenue", { hideProgressBar: true });
+
+          if ('passwordRequest' in requests && err.response.status === 401) {
+            toast.error("Votre ancien mot de passe est incorrect", { hideProgressBar: true });
+          } else {
+            toast.error("Une erreur est survenue", { hideProgressBar: true });
+          }
         });
     } else {
       toast.info("Aucune modification faite", { hideProgressBar: true });
     }
+
+    // For some reason, toasts are displayed after clicking the modification button
+    // for a second time. Do this to force-remove all toasts
+    setTimeout(() => {
+      console.log("in set time out....");
+      toast.dismiss();
+    }, 4000);
   }
 
   return (

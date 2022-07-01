@@ -298,6 +298,10 @@ const App = () => {
             {/*-------------*/}
 
           <Route
+            path="/connexion"
+            element={<EtudiantConnexionScreen />}
+          ></Route>
+          <Route
             path="/connexion/admin"
             element={<AdminInscriptionScreen />}
           ></Route>
