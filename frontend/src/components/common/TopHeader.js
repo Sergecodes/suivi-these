@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect,useState} from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { BsClock, BsTelephoneFill } from "react-icons/bs";
 import { GoLocation } from "react-icons/go";
@@ -10,7 +10,14 @@ const TopHeader = (props) => {
   const navigate = useNavigate();
   console.log(localStorage.actor);
 
-//  useEffect(()=>{},[props.isLogin])
+  const handleProfileRedirect = () => {
+    if(localStorage.actor === "etudiant"){
+      navigate('/account/evolution');
+    }
+    else (
+      navigate(`/acteur/${localStorage.actor}/dashboard`)
+    )
+  }
 
   const handleLogout = () => {
     axios
@@ -19,7 +26,6 @@ const TopHeader = (props) => {
         console.log(res);
         localStorage.removeItem("user");
         localStorage.removeItem("actor");
-        navigate("/")
       })
       .catch((err) => {
         console.error(err);
@@ -61,22 +67,22 @@ const TopHeader = (props) => {
             S'inscrire
           </button>
         </Link>
-        <Link to="/*">
+        <button
+          className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
+          style={props.isLogin === false ? { display: "none" } : {}}
+          onClick={handleProfileRedirect}
+        >
+          Profil
+        </button>
+        <Link to="/">
           <button
-            className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
-            style={props.isLogin === false ? { display: "none" } : {}}
-
-          >
-            Profil
-          </button>
+              className=" my-1 px-3 ms-3 headerIconEmpty rounded-pill"
+              style={props.isLogin === false ? { display: "none" } : {}}
+              onClick={handleLogout}
+            >
+              Deconnexion
+            </button>
         </Link>
-          <button
-            className=" my-1 px-3 ms-3 headerIconEmpty rounded-pill"
-            style={props.isLogin === false ? { display: "none" } : {}}
-            onClick={handleLogout}
-          >
-            Deconnexion
-          </button>
       </div>
     </section>
   );

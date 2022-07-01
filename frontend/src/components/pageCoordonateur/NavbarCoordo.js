@@ -55,11 +55,9 @@ const NavbarAdmin = () => {
                 </Link>
               </p>
               <hr />
-              <p onClick={handleLogout}>
+              <p onClick={handleLogout}  className="profileOptionsLogout" style={{cursor:"pointer"}}>
                 {" "}
-                <Link to="/">
                   <BsArrowRight /> <span>Se deconnecter</span>
-                </Link>
               </p>
             </div>
         </div>
