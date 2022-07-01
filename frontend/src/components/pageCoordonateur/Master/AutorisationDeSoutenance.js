@@ -59,7 +59,7 @@ const AutorisationDeSoutenance = () => {
   }]);
 
   useEffect(() => {
-    axios.get()
+    axios.get('/coordonateurs/autorisations-soutenances-master')
       .then(res => {
         console.log(res);
         setData(parseResult(res.data));
