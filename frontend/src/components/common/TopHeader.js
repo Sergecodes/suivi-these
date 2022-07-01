@@ -1,10 +1,31 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { FaEnvelope } from "react-icons/fa";
 import { BsClock, BsTelephoneFill } from "react-icons/bs";
 import { GoLocation } from "react-icons/go";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const TopHeader = (props) => {
+  const navigate = useNavigate();
+  console.log(localStorage.actor);
+
+//  useEffect(()=>{},[props.isLogin])
+
+  const handleLogout = () => {
+    axios
+      .post("/logout")
+      .then((res) => {
+        console.log(res);
+        localStorage.removeItem("user");
+        localStorage.removeItem("actor");
+        navigate("/")
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <section className="container-fluid topHeader px-5 ">
       <div className="d-flex justify-content-around topHeaderInfo fs-6">
@@ -44,18 +65,18 @@ const TopHeader = (props) => {
           <button
             className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
             style={props.isLogin === false ? { display: "none" } : {}}
+
           >
             Profil
           </button>
         </Link>
-        <Link to="/*">
           <button
             className=" my-1 px-3 ms-3 headerIconEmpty rounded-pill"
             style={props.isLogin === false ? { display: "none" } : {}}
+            onClick={handleLogout}
           >
             Deconnexion
           </button>
-        </Link>
       </div>
     </section>
   );
