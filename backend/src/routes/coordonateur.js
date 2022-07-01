@@ -35,7 +35,10 @@ router.route('/autorisations-soutenances-master').get(
    controller.autorisationsSoutenanceMaster
 );
 
-// router.route('/rapports-etudiants-these').get(isCoordonateur, controller.rapportsEtudsThese);
+router.route('/etudiants-masters-programmmes').get(
+   isCoordonateur, 
+   controller.etudiantsMasterProgrammes
+);
 
 router.route('/dossiers-etudiants-these').get(
    isCoordonateur, 
