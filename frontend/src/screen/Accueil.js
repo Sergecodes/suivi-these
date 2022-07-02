@@ -10,11 +10,13 @@ import "../index.css";
 
 
 
-const Accueil = (props) => {
+const Accueil = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLogin = Boolean(user);
   return (
     <>
-        <Header isLogin={props.isLogin}/>
-        <WelcomeComponent isLogin={props.isLogin}/>
+        <Header isLogin={isLogin}/>
+        <WelcomeComponent isLogin={isLogin}/>
         <UtilityComponent/>
         <UnitéComponent/>
         <Equipe/>

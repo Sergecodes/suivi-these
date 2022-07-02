@@ -45,11 +45,11 @@
   font-size: 16px;
 }
 
-.profileOptions a {
+.profileOptions a ,.profileOptionsLogout{
   color: rgb(129, 128, 128);
 }
 
-.profileOptions a:hover {
+.profileOptions a:hover ,.profileOptionsLogout:hover{
   color: var(--secondaryColor);
 }
 

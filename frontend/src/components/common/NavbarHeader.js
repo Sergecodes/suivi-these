@@ -84,9 +84,9 @@ const NavbarHeader = (props) => {
                 <Menu onClick={onClick} mode="vertical" items={items} /> 
               </div>
               <Link
-                to="/soutenance"
+                to="/soutenances"
                 style={
-                  location.pathname === "/soutenance"
+                  location.pathname === "/soutenances"
                     ? { color: "var(--primaryColor)" }
                     : {}
                 }
