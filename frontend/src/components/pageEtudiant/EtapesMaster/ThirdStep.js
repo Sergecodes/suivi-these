@@ -65,6 +65,7 @@ const ThirdStep = () => {
 
   // getting the initial value of the select
   useEffect(() => {
+    console.log("in second dispatch");
     dispatch(addJury({ jury: selectedJuries }));
   }, [dispatch, selectedJuries]);
 
