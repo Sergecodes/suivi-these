@@ -24,7 +24,7 @@ function ConseilScientifiqueConnexionScreen() {
     }
     if (isSuccess) {
       toast.success("Connexion Reussie");
-      navigate("/account");
+      navigate("/acteur/conseil/dashboard");
     }
     if (isLoading) {
       return <LoadingScreen />;

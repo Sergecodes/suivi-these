@@ -82,6 +82,18 @@ import NotificationJury from "./components/pageJury/NotificationJury";
 import DashboardJury from "./components/pageJury/DashboardJury";
 /**************************************************************************************************/
 
+
+/************************************************page jury************************************/
+import Conseil from "./screen/Conseil";
+import NotationConseil from "./components/pageConseil/NotationConseil";
+import ProfilConseil from "./components/pageConseil/ProfilConseil";
+import NotificationConseil from "./components/pageConseil/NotificationConseil";
+import DashboardConseil from "./components/pageConseil/DashboardConseil";
+import ViewTheseEtudiant from "./components/pageConseil/ViewTheseEtudiant";
+
+/**************************************************************************************************/
+
+
 /************************************************page coordonateur************************************/
 import Coordonateur from "./screen/Coordonateur";
 import DashboardCoordo from "./components/pageCoordonateur/DashboardCoordo";
@@ -161,6 +173,18 @@ const App = () => {
             <Route
               path="/acteur/jury/notifications"
               element={<NotificationJury />}
+            />
+          </Route>
+
+          {/**/}
+          <Route path="/acteur/conseil" element={<Conseil />}>
+            <Route path="/acteur/conseil/dashboard" element={<DashboardConseil />} />
+            <Route path="/acteur/conseil/notation" element={<NotationConseil />} />
+            <Route path="/acteur/conseil/profil" element={<ProfilConseil />} />
+            <Route path="/acteur/conseil/visualiser" element={<ViewTheseEtudiant />} />
+            <Route
+              path="/acteur/conseil/notifications"
+              element={<NotificationConseil />}
             />
           </Route>
 

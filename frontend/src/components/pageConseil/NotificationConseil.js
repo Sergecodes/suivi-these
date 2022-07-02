@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import NotificationsActeurs from "../common/NotificationsActeurs";
 
-const notificationsJury = [
+const notificationsConseil = [
   {
     id: "1",
     title: "Nouvelle demande de Notation",
@@ -10,7 +10,7 @@ const notificationsJury = [
       <div>
         <p>
           L'étudiant{" "}
-          <Link to="/acteur/jury/profil">ATANGANA JEAN MBARGA HELENE</Link>{" "}
+          <Link to="/acteur/conseil/profil">ATANGANA JEAN MBARGA HELENE</Link>{" "}
           viens de soumettre sa thèse et est en attente d'une notation
         </p>
       </div>
@@ -24,7 +24,7 @@ const notificationsJury = [
         <p>
           il vous reste 4 jours pour soummettre une note concernant le dossier
           de l'etudiant{" "}
-          <Link to="/acteur/jury/profil">ATANGANA JEAN MBARGA HELENE</Link>,
+          <Link to="/acteur/conseil/profil">ATANGANA JEAN MBARGA HELENE</Link>,
           veuillez le soummettre avant le 12/05/2022
         </p>
       </div>
@@ -32,13 +32,13 @@ const notificationsJury = [
   },
 ];
 
-const NotificationJury = () => {
+const Notificationconseil = () => {
 
   return (
     <>
-      <NotificationsActeurs notifications={notificationsJury}/>
+      <NotificationsActeurs notifications={notificationsConseil}/>
     </>
   )
 };
 
-export default NotificationJury;
+export default Notificationconseil;

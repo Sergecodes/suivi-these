@@ -14,8 +14,7 @@ export const MasterFilesUploadSlice=createSlice({
         listeSelection:{name:"aucun fichier selectionnés"},
         ficheInscription:{name:"aucun fichier selectionnés"},
         acteDeNaissance:{name:"aucun fichier selectionnés"},
-        cv:{name:"aucun fichier selectionnés"},
-        jury:[]
+        cv:{name:"aucun fichier selectionnés"}
     },
     reducers:{
         addMemoire:(state,action)=>{
@@ -50,9 +49,6 @@ export const MasterFilesUploadSlice=createSlice({
         },
         addCv:(state,action)=>{
             state.cv=action.payload.cv;
-        },
-        addJury:(state,action)=>{
-            state.jury=action.payload.jury
         }
     }
 })
@@ -68,7 +64,6 @@ export const {addListeSelection}=MasterFilesUploadSlice.actions;
 export const {addFicheInscription}=MasterFilesUploadSlice.actions;
 export const {addActeDeNaissance}=MasterFilesUploadSlice.actions;
 export const {addCv}=MasterFilesUploadSlice.actions;
-export const {addJury} = MasterFilesUploadSlice.actions;
 
 
 

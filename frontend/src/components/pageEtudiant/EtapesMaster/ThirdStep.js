@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useDispatch } from "react-redux";
-import { addJury } from "../../../redux/MasterFilesUploadSlice";
+import { addJury } from "../../../redux/DataStorageSlice";
 
 const { Option } = Select;
 
