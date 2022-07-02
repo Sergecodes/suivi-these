@@ -1,17 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-export const DataStorageSlice=createSlice({
-    name:"dataStorage",
-    initialState:{
-        jury:[]
+export const DataStorageSlice = createSlice({
+  name: "dataStorage",
+  initialState: {
+    juries: [],
+    unselectedJuries: []
+  },
+  reducers: {
+    addJury: (state, action) => {
+      state.juries = action.payload.juries;
+      state.unselectedJuries = action.payload.unselectedJuries;
     },
-    reducers:{
-        addJury:(state,action)=>{
-            state.jury=action.payload.jury
-        }
-    }
-})
-export const {addJury} = DataStorageSlice.actions;
+  },
+});
+export const { addJury } = DataStorageSlice.actions;
 
 export default DataStorageSlice.reducer;

@@ -36,10 +36,10 @@ router.route('/peut-uploader').get(isEtudiant, getEtudiant, controller.peutUploa
 
 router.route('/reinitialiser').put(isEtudiant, getEtudiant, controller.reinitialiser);
 
-router.route('/:id/set-sujet-et-juges').put(
+router.route('/:id/set-juges').put(
    isEtudiant, 
    getEtudiantFromParam, 
-   controller.setJugesAndSujetMaster
+   controller.setJugesMaster
 );
 
 router.route('/:id').get(getEtudiantFromParam, controller.getOne)

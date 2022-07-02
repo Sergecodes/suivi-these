@@ -4,6 +4,8 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useDispatch } from "react-redux";
 import { addJury } from "../../../redux/DataStorageSlice";
+import { useSelector } from "react-redux";
+
 
 const { Option } = Select;
 
@@ -11,6 +13,7 @@ const { Option } = Select;
 const ThirdStep = () => {
    const user = JSON.parse(localStorage.getItem('user'));
    const dispatch = useDispatch();
+   const dataInfo = useSelector((state) => state.dataStorage);
    const numListes = 3;
 
    const [selectableJuries, setSelectableJuries] = useState([]);
@@ -36,38 +39,45 @@ const ThirdStep = () => {
 
    // Obtenir la liste de juries du departement
    useEffect(() => {
-    let allJuries = JSON.parse(localStorage.getItem('juries'));
+    // If no juries is in store (if no juries were previously selected)
+    if (dataInfo.juries.length === 0) {
+      let allJuries = JSON.parse(localStorage.getItem('juries'));
 
-    if (allJuries === null) {
-      axios.get(`/departements/${user.departement.id}/juries`)
-        .then(res => {
-          console.log(res);
-          allJuries = parseResult(res.data);
-
-          // Number of juries should be >= number of listes.
-           if (numListes > allJuries) {
-              throw Error("Le nombre de juries doit etre superieure ou egal au nombre de listes");
-           } else {
-            localStorage.setItem('juries', JSON.stringify(allJuries));
-            setSelectedJuries(getSelectedJuries(allJuries));
-            setSelectableJuries(getSelectableJuries(allJuries)); 
-           }
-        })
-        .catch(err => {
-          toast.error("Une erreur est survenue!", { hideProgressBar: true });
-          console.error(err);
-        });
+      if (allJuries === null) {
+        axios.get(`/departements/${user.departement.id}/juries`)
+          .then(res => {
+            console.log(res);
+            allJuries = parseResult(res.data);
+  
+            // Number of juries should be >= number of listes.
+             if (numListes > allJuries) {
+                throw Error("Le nombre de juries doit etre superieure ou egal au nombre de listes");
+             } else {
+              localStorage.setItem('juries', JSON.stringify(allJuries));
+              setSelectedJuries(getSelectedJuries(allJuries));
+              setSelectableJuries(getSelectableJuries(allJuries)); 
+             }
+          })
+          .catch(err => {
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+            console.error(err);
+          });
+      } else {
+        setSelectedJuries(getSelectedJuries(allJuries));
+        setSelectableJuries(getSelectableJuries(allJuries)); 
+      } 
     } else {
-      setSelectedJuries(getSelectedJuries(allJuries));
-      setSelectableJuries(getSelectableJuries(allJuries)); 
-    } 
+      setSelectedJuries(dataInfo.juries);
+      setSelectableJuries(dataInfo.unselectedJuries);
+    }
+    
    }, []);
 
   // getting the initial value of the select
   useEffect(() => {
     console.log("in second dispatch");
-    dispatch(addJury({ jury: selectedJuries }));
-  }, [dispatch, selectedJuries]);
+    dispatch(addJury({ juries: selectedJuries, unselectedJuries: selectableJuries }));
+  }, [dispatch, selectedJuries, selectableJuries]);
 
 
   const parseResult = (resData) => {

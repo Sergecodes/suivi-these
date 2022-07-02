@@ -377,7 +377,7 @@ exports.uploadFiles = async function (req, res) {
    const { etudiant } = res.locals;
 
    if (!(await etudiant.peutUploader()))
-      return res.status(422).send("Cet etudiant n'a pas/plus le droit d'uploader un dossier")
+      return res.status(409).send("Cet etudiant n'a pas/plus le droit d'uploader un dossier")
 
    if (!sujet || !niveau) {
       return res.status(400).json({
@@ -453,8 +453,15 @@ exports.uploadFiles = async function (req, res) {
                });
          }
 
+         // Set etudiant dossier
          etudiant.dossier = dossier._id;
          await etudiant.save();
+
+         // Create first etape dossier (default numEtape is 1)
+         await EtapeDossier.create({
+            dossier: dossier._id,
+            acheveeLe: new Date()
+         });
 
          // Upload files
          const etudDir = `${etudiant.matricule} - ${new Date().getFullYear()}/`;
@@ -541,11 +548,13 @@ exports.uploadFiles = async function (req, res) {
                   });
 
                   i++;
-
+                  
                   // Return response if for loop is over
-                  if (i == n - 1)
+                  if (i == n - 1) {
+                     await dossier.populate('fichiers');
                      return res.status(201)
-                        .json({ success: true, message: "Files uploaded!", dossier });
+                     .json({ success: true, message: "Files uploaded!", dossier });
+                  }
                });
             }
          }
@@ -553,24 +562,17 @@ exports.uploadFiles = async function (req, res) {
    );
 };
 
-exports.setJugesAndSujetMaster = async function (req, res) {
+exports.setJugesMaster = async function (req, res) {
    const { etudiant } = res.locals;
-   const { juges, sujet } = req.body;
+   const { juges } = req.body;
 
    if (etudiant.niveau !== Types.Niveau.MASTER) {
       return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
    }
 
    etudiant.juges = juges;
-
-   let result = await etudiant.setSujet(sujet);
-   if (result) {
-      etudiant.juges = juges;
-      await etudiant.save();
-      return res.send("Succes");
-   } else {
-      return res.status(403).send("Vous n'avez pas de dossier");
-   }
+   await etudiant.save();
+   return res.send("Succes");
 }
 
 exports.datesSoutenance = function (req, res) {

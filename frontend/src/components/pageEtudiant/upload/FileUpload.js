@@ -1,7 +1,7 @@
-import React from "react";
 import { Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import { CategorieFichierMaster } from "../../../constants/Constant";
 import {
   addMemoire,
   addAttestationLicense,
@@ -13,19 +13,25 @@ import {
   addReleveM1,
   addReleveM2,
   addActeDeNaissance,
-  addCv
+  addCv,
 } from "../../../redux/MasterFilesUploadSlice";
-import { CategorieFichierMaster } from "../../../constants/Constant";
+
 
 const FileUpload = (props) => {
   const dispatch = useDispatch();
+
   function handleupload(file) {
     if (props.niveau === "master") {
       addFileMaster(file);
     }
+
+    // Prevent submitting file
+    return false;
   }
+
   function addFileMaster(file) {
-    if (props.name ===CategorieFichierMaster.MEMOIRE) dispatch(addMemoire({ memoire: file }));
+    if (props.name === CategorieFichierMaster.MEMOIRE)
+      dispatch(addMemoire({ memoire: file }));
     else if (props.name === CategorieFichierMaster.ATTEST_LIC)
       dispatch(addAttestationLicense({ attestationLicense: file }));
     else if (props.name === CategorieFichierMaster.DROITS_UNIV)
@@ -40,7 +46,7 @@ const FileUpload = (props) => {
       dispatch(addReleveM2({ releveM2: file }));
     else if (props.name === CategorieFichierMaster.LISTE_SELECT)
       dispatch(addListeSelection({ listeSelection: file }));
-    else if (props.name ===CategorieFichierMaster.FICHE_INSCRIP)
+    else if (props.name === CategorieFichierMaster.FICHE_INSCRIP)
       dispatch(addFicheInscription({ ficheInscription: file }));
     else if (props.name === CategorieFichierMaster.CV)
       dispatch(addCv({ cv: file }));
