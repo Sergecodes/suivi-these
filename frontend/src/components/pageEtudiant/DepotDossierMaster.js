@@ -212,8 +212,8 @@ const DepotDossierMaster = () => {
       return (
         <Result 
           status="success" 
-          title="Dossier envoye avec succes!" 
-          subTitle="Vous recevrez un email dès que votre dossier sera valide. "
+          title="Dossier envoyé avec succes!" 
+          subTitle="Vous recevrez un email dès que votre dossier sera validé. "
           extra={
             <Button type="primary" key="ok" onClick={handleResultClick}>OK</Button>
           }

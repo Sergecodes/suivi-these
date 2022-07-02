@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Select } from 'antd';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 import { useDispatch } from "react-redux";
 import { addJury } from "../../../redux/MasterFilesUploadSlice";
 
@@ -10,50 +11,78 @@ const { Option } = Select;
 const ThirdStep = () => {
    const user = JSON.parse(localStorage.getItem('user'));
    const dispatch = useDispatch();
+   const numListes = 3;
 
-   const [allJuries, setAllJuries] = useState([
-      { id: 'aaa', email: 'aaa@gmail.com', nom: 'aaa', prenom: 'aaa' }, 
-      { id: 'bbb', email: 'bbb@gmail.com', nom: 'bbb', prenom: 'bbb' }, 
-      { id: 'ccc', email: 'ccc@gmail.com', nom: 'ccc', prenom: 'ccc' },
-   ]);
-   const numListes = 3, numJuries = allJuries.length;
-   let sliceCount = numJuries - numListes;
+   const [selectableJuries, setSelectableJuries] = useState([]);
+   const [selectedJuries, setSelectedJuries] = useState([]);
 
-   // If sliceCount is 0, that implies the number of juries is the same as the 
-   // number of listes, so use an empty array for selectableJuries
-   const [selectableJuries, setSelectableJuries] = useState(
-      sliceCount > 0 ? allJuries.slice(-sliceCount) : []
-   );
-   const [selectedJuries, setSelectedJuries] = useState((function () {
+   const getSelectedJuries = (listeJuries) => {
     let output = [];
     for (let i = 0; i < numListes; i++) {
-      output.push(allJuries[i]);
+      output.push(listeJuries[i]);
     }
 
     return output;
-   })());
+   }
 
-   // Number of juries should be >= number of listes.
-   if (numListes > numJuries) {
-      throw Error("Le nombre de juries doit etre superieure ou egal au nombre de listes");
+   const getSelectableJuries = (listeJuries) => {
+      let numJuries = listeJuries.length;
+      let sliceCount = numJuries - numListes;
+
+       // If sliceCount is 0, that implies the number of juries is the same as the 
+       // number of listes, so use an empty array for selectableJuries
+       return sliceCount > 0 ? listeJuries.slice(-sliceCount) : []
    }
 
    // Obtenir la liste de juries du departement
    useEffect(() => {
-    axios.get(`/departements/${user.departement.id}/juries`)
-      .then(res => {
-        console.log(res);
-        setAllJuries(res.data);
-      })
-      .catch(err => {
-        console.error(err);
-      })
+    let allJuries = JSON.parse(localStorage.getItem('juries'));
+
+    if (allJuries === null) {
+      axios.get(`/departements/${user.departement.id}/juries`)
+        .then(res => {
+          console.log(res);
+          allJuries = parseResult(res.data);
+
+          // Number of juries should be >= number of listes.
+           if (numListes > allJuries) {
+              throw Error("Le nombre de juries doit etre superieure ou egal au nombre de listes");
+           } else {
+            localStorage.setItem('juries', JSON.stringify(allJuries));
+            setSelectedJuries(getSelectedJuries(allJuries));
+            setSelectableJuries(getSelectableJuries(allJuries)); 
+           }
+        })
+        .catch(err => {
+          toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          console.error(err);
+        });
+    } else {
+      setSelectedJuries(getSelectedJuries(allJuries));
+      setSelectableJuries(getSelectableJuries(allJuries)); 
+    } 
    }, []);
 
   // getting the initial value of the select
   useEffect(() => {
+    console.log("in second dispatch");
     dispatch(addJury({ jury: selectedJuries }));
   }, [dispatch, selectedJuries]);
+
+
+  const parseResult = (resData) => {
+    let result = [];
+    for (let jury of resData) {
+      result.push({
+        id: jury.id,
+        email: jury.email,
+        nom: jury.nom,
+        prenom: jury.prenom
+      });
+    }
+
+    return result;
+  }
 
 
    const handleChange = (value, option, listIdx) => {
@@ -81,6 +110,7 @@ const ThirdStep = () => {
 
   return (
     <section className="mx-3 mt-3 mb-5 step">
+      <ToastContainer />
       <h2>
         Cette partie consiste à renseigner les informations sur les enseignants
         que vous voulez qu'ils fassent partie des membres du jury
