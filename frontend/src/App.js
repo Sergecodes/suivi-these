@@ -125,20 +125,16 @@ axios.defaults.baseURL =
 axios.defaults.withCredentials = true;
 
 const App = () => {
-  console.log(process.env);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const isLogin = Boolean(user);
-  console.log(isLogin);
   document.title = "Ecole Doctorale STG";
 
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil isLogin={isLogin} />} />
+          <Route path="/" element={<Accueil  />} />
           <Route
             path="/soutenances"
-            element={<Soutenance isLogin={isLogin} />}
+            element={<Soutenance />}
           />
 
           {/**
