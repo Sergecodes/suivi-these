@@ -36,13 +36,13 @@ export const TheseFilesUploadSlice=createSlice({
         addAttestationM2:(state,action)=>{
             state.attestationM2=action.payload.attestationM2;
         },
-        addListeSelection:(state,action)=>{
+        addListeSelectionThese:(state,action)=>{
             state.listeSelection=action.payload.listeSelection;
         },
         addPreuveValidation:(state,action)=>{
             state.preuveValidation=action.payload.preuveValidation;
         },
-        addFicheInscription:(state,action)=>{
+        addFicheInscriptionThese:(state,action)=>{
             state.ficheInscription=action.payload.ficheInscription;
         },
         addRapportEncadreur:(state,action)=>{
@@ -66,16 +66,16 @@ export const TheseFilesUploadSlice=createSlice({
         addAbstract:(state,action)=>{
             state.abstract=action.payload.abstract;
         },
-        addActeDeNaissance:(state,action)=>{
+        addActeDeNaissanceThese:(state,action)=>{
             state.acteDeNaissance=action.payload.acteDeNaissance;
         },
-        addCv:(state,action)=>{
+        addCvThese:(state,action)=>{
             state.cv=action.payload.cv;
         },
         addDerogation:(state,action)=>{
             state.derogation=action.payload.derogation;
         },
-        addAttestationInscription:(state,action)=>{
+        addAttestationInscriptionThese:(state,action)=>{
             state.attestationInscription=action.payload.attestationInscription;
         },
       
@@ -83,13 +83,13 @@ export const TheseFilesUploadSlice=createSlice({
     }
 })
 
-export const {addDeclarationHonneur}=TheseFilesUploadSlice.actions;//
-export const {addDiplomeLicense}=TheseFilesUploadSlice.actions;//
-export const {addDiplomeBaccalaureat}=TheseFilesUploadSlice.actions;//
+export const {addDeclarationHonneur}=TheseFilesUploadSlice.actions;
+export const {addDiplomeLicense}=TheseFilesUploadSlice.actions;
+export const {addDiplomeBaccalaureat}=TheseFilesUploadSlice.actions;
 export const {addAttestationM2}=TheseFilesUploadSlice.actions;
-export const {addListeSelection}=TheseFilesUploadSlice.actions;
+export const {addListeSelectionThese}=TheseFilesUploadSlice.actions;
 export const {addPreuveValidation}=TheseFilesUploadSlice.actions;
-export const {addFicheInscription}=TheseFilesUploadSlice.actions;
+export const {addFicheInscriptionThese}=TheseFilesUploadSlice.actions;
 export const {addRapportEncadreur}=TheseFilesUploadSlice.actions;
 export const {addLettreEncadreur}=TheseFilesUploadSlice.actions;
 export const {addLettreChefDepartement}=TheseFilesUploadSlice.actions;
@@ -97,11 +97,11 @@ export const {addLettreChefDepartement}=TheseFilesUploadSlice.actions;
 export const {addThese}=TheseFilesUploadSlice.actions;
 export const {addCouverture}=TheseFilesUploadSlice.actions;
 export const {addResume}=TheseFilesUploadSlice.actions;
-export const {addAbstract}=TheseFilesUploadSlice.actions;//
-export const {addActeDeNaissance}=TheseFilesUploadSlice.actions;
-export const {addCv}=TheseFilesUploadSlice.actions;
+export const {addAbstract}=TheseFilesUploadSlice.actions;
+export const {addActeDeNaissanceThese}=TheseFilesUploadSlice.actions;
+export const {addCvThese}=TheseFilesUploadSlice.actions;
 export const {addDerogation}=TheseFilesUploadSlice.actions;
-export const {addAttestationInscription}=TheseFilesUploadSlice.actions;//
+export const {addAttestationInscriptionThese}=TheseFilesUploadSlice.actions;
 
 
 

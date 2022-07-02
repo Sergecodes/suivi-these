@@ -1,3 +1,4 @@
+import {useState} from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 
@@ -6,13 +7,13 @@ const NotationConseil = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { etudiantInfo } = location.state;
+  const [value, setValue] = useState("");
 
   const handleConfirm = () => {
-    
+    console.log(value)
   }
 
   return (
-    <>
       <section className="my-5">
         <div className="row d-flex justify-content-center">
           <div
@@ -24,7 +25,7 @@ const NotationConseil = () => {
               Veuillez rediger votre avis au sujet de la thèse de l'étudiant{" "}
               <strong>{etudiantInfo.noms}</strong>
             </p>
-            <ReactQuill theme="snow" />
+            <ReactQuill theme="snow" value={value} onChange={e => setValue(e.target.value) } />
             <div className="d-flex justify-content-between mx-2 my-3">
               <button
                 type="button"
@@ -40,8 +41,7 @@ const NotationConseil = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    );
 };
 
 export default NotationConseil;

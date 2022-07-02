@@ -50,6 +50,7 @@ export const ACTEURS = Object.freeze({
     ETUDIANT: 'Etudiant',
     JURY: 'Jury',
     RECTORAT: 'Rectorat',
+    DECANAT: 'Decanat',
     DEPARTEMENT: 'Departement'
 });
 
@@ -114,10 +115,9 @@ export const CategorieFichierMaster = Object.freeze({
 });
 
 export const CategorieFichierThese = Object.freeze({
-    CV: 'CV',
     THESE: 'Thèse',
+    CV: 'CV',
     RESUME_THESE: 'Resumé du thèse',
-    MEMOIRE: 'Mémoire',
     ACTE_NAISSANCE: 'Acte de naissance',
     ATTEST_INSCRIP: "Attestation d'inscription",
     DECLAR_HONNEUR: "Déclaration d'honneur",

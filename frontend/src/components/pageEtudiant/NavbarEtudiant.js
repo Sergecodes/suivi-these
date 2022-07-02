@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation ,useNavigate} from "react-router-dom";
+import { useLocation ,useNavigate} from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { setClicked } from "../../redux/DashboardDisplaySlice";
 import { useDispatch, useSelector } from "react-redux";
