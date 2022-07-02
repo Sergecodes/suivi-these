@@ -178,6 +178,7 @@ exports.login_student = async function (req, res) {
 
 exports.change_student_password = async function (req, res) {
    try {
+      console.log("in change password");
       const { etudiant } = res.locals;
       const { pass, newPass } = req.body;
 
@@ -243,6 +244,7 @@ exports.changeEmail = function (req, res) {
 }
 
 exports.changePhoneNumber = function (req, res) {
+   console.log("in change phone number");
    const { etudiant } = res.locals;
    const { newPhoneNumber } = req.body;
 

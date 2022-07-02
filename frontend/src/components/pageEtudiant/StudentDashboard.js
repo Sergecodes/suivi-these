@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { BsFolderFill, BsPersonFill,BsDoorOpenFill ,BsArrowRepeat } from "react-icons/bs";
 import { IoRocketSharp } from "react-icons/io5";
@@ -20,7 +19,6 @@ const StudentDashboard = (props) => {
   const etudiant = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
-    console.log("in logout")
     axios.post('/logout')
       .then(res => {
         console.log(res);
