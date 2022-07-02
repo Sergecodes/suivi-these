@@ -13,12 +13,14 @@ import authCoordonateurSlice from "./authentification/authCoordonateurSlice";
 import autEtudiantInscriptionSlice from "./authentification/autEtudiantInscriptionSlice";
 import getNotificationSlice from "./CooordonateurManagmentSllice";
 import changeEmailCoordonateur  from "./coordonateur/ChangePasswordCoordoSlice";
+import DataStorageSlice from "./DataStorageSlice"
 
 export default configureStore({
   reducer: {
     masterFilesUpload: MasterFilesUploadSlice,
     theseFilesUpload: TheseFilesUploadSlice,
     dashboardDisplay: DashboardDisplaySlice,
+    dataStorage: DataStorageSlice,
     auth: authReducer,
     authJury: authJurySlice,
     authAdmin: authAdminSlice,

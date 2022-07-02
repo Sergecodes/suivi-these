@@ -4,11 +4,10 @@ import FirstStep from "./EtapesMaster/FirstStep";
 import SecondStep from "./EtapesMaster/SecondStep";
 import ThirdStep from "./EtapesMaster/ThirdStep";
 import { useSelector } from "react-redux";
-import axios from "axios"; 
+import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { CategorieFichierMaster, ACTEURS } from "../../constants/Constant";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const { Step } = Steps;
 
@@ -17,19 +16,21 @@ const DepotDossierMaster = () => {
   const [canUpload, setCanUpload] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const navigate = useNavigate();
-  const files = useSelector(state => state.masterFilesUpload);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const files = useSelector((state) => state.masterFilesUpload);
+  const dataInfo = useSelector((state) => state.dataStorage);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // Verifier si l'etudiant peut uploader
   useEffect(() => {
-    axios.get('/etudiants/peut-uploader')
-      .then(res => {
+    axios
+      .get("/etudiants/peut-uploader")
+      .then((res) => {
         console.log(res);
         setCanUpload(res.data.peutUploader);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
-      })
+      });
   }, []);
 
   const steps = [
@@ -37,7 +38,11 @@ const DepotDossierMaster = () => {
       title: (
         <p
           style={
-            current === 0 ? (current === 0 ? { color: "var(--primaryColor)" } : {}) : {}
+            current === 0
+              ? current === 0
+                ? { color: "var(--primaryColor)" }
+                : {}
+              : {}
           }
         >
           Etape 1
@@ -46,13 +51,21 @@ const DepotDossierMaster = () => {
       content: <FirstStep />,
     },
     {
-      title: <p style={current === 1 ? { color: "var(--primaryColor)" } : {}}>Etape 2</p>,
+      title: (
+        <p style={current === 1 ? { color: "var(--primaryColor)" } : {}}>
+          Etape 2
+        </p>
+      ),
       content: <SecondStep />,
     },
     {
-      title: <p style={current === 2 ? { color: "var(--primaryColor)" } : {}}>Etape 3</p>,
+      title: (
+        <p style={current === 2 ? { color: "var(--primaryColor)" } : {}}>
+          Etape 3
+        </p>
+      ),
       content: <ThirdStep numero={1} />,
-    }
+    },
   ];
 
   const next = () => setCurrent(current + 1);
@@ -60,8 +73,7 @@ const DepotDossierMaster = () => {
   const prev = () => setCurrent(current - 1);
 
   function verification() {
-    let verify = true; 
-
+    let verify = true;
     for (let obj in files) {
       if (files[obj].type === undefined) {
         verify = false;
@@ -71,27 +83,37 @@ const DepotDossierMaster = () => {
     return verify;
   }
 
-  function getName(prop){
+  function getName(prop) {
     if (prop === "memoire") return CategorieFichierMaster.MEMOIRE;
-    else if (prop === "attestationInscription") return CategorieFichierMaster.ATTEST_INSCRIP
-    else if (prop === "rapportPresoutenance") return CategorieFichierMaster.RAPPORT_PRESOUTIENT
-    else if (prop === "droitsUniversitaires") return CategorieFichierMaster.DROITS_UNIV
-    else if (prop === "attestationLicense") return CategorieFichierMaster.ATTEST_LIC
-    else if (prop === "releveM1") return CategorieFichierMaster.REL_NOTES_M1
-    else if (prop === "releveM2") return CategorieFichierMaster.REL_NOTES_M2
-    else if (prop === "listeSelection") return CategorieFichierMaster.LISTE_SELECT
-    else if (prop === "ficheInscription") return CategorieFichierMaster.FICHE_INSCRIP
-    else if (prop === "acteDeNaissance") return CategorieFichierMaster.ACTE_NAISSANCE
-    else if (prop === "cv") return CategorieFichierMaster.CV
+    else if (prop === "attestationInscription")
+      return CategorieFichierMaster.ATTEST_INSCRIP;
+    else if (prop === "rapportPresoutenance")
+      return CategorieFichierMaster.RAPPORT_PRESOUTIENT;
+    else if (prop === "droitsUniversitaires")
+      return CategorieFichierMaster.DROITS_UNIV;
+    else if (prop === "attestationLicense")
+      return CategorieFichierMaster.ATTEST_LIC;
+    else if (prop === "releveM1") return CategorieFichierMaster.REL_NOTES_M1;
+    else if (prop === "releveM2") return CategorieFichierMaster.REL_NOTES_M2;
+    else if (prop === "listeSelection")
+      return CategorieFichierMaster.LISTE_SELECT;
+    else if (prop === "ficheInscription")
+      return CategorieFichierMaster.FICHE_INSCRIP;
+    else if (prop === "acteDeNaissance")
+      return CategorieFichierMaster.ACTE_NAISSANCE;
+    else if (prop === "cv") return CategorieFichierMaster.CV;
   }
 
   const handleSubmit = () => {
     console.log(files);
 
+    //jury data stored in redux
+    console.log(dataInfo.jury);
+
     if (verification()) {
       let formData = new FormData();
-      
-      for(let prop in files) {
+
+      for (let prop in files) {
         formData.append(getName(prop), files[prop]);
       }
 
@@ -101,59 +123,62 @@ const DepotDossierMaster = () => {
       formData.append("niveau", "MASTER 2");
 
       Promise.all([
-        axios.put('/etudiants/uploader-fichiers', formData),
-        axios.put(
-          `/etudiants/${user.id}/set-juges-et-sujet`, { 
-            // todo: update with real data from state
-            juges: [] 
-          })
-      ]).then(results => {
-        const [res1, res2] = results;
-        console.log(res1);
-        console.log(res2);
+        axios.put("/etudiants/uploader-fichiers", formData),
+        axios.put(`/etudiants/${user.id}/set-juges-et-sujet`, {
+          // todo: update with real data from state
+          juges: [],
+        }),
+      ])
+        .then((results) => {
+          const [res1, res2] = results;
+          console.log(res1);
+          console.log(res2);
 
-        const dossier = res1.data.dossier;
-        // Update dossier in localStorage
-        dossier.sujet = sujet;
-        user.dossier = dossier;
-        localStorage.setItem('user', JSON.stringify(user));
+          const dossier = res1.data.dossier;
+          // Update dossier in localStorage
+          dossier.sujet = sujet;
+          user.dossier = dossier;
+          localStorage.setItem("user", JSON.stringify(user));
 
-        axios.post('/envoyer-dossier', {
-          envoyePar: user.id,
-          envoyeParModel: ACTEURS.ETUDIANT,
-          destinataire: user.departement.id,
-          destinataireModel: ACTEURS.DEPARTEMENT,
-          dossier: dossier.id
+          axios
+            .post("/envoyer-dossier", {
+              envoyePar: user.id,
+              envoyeParModel: ACTEURS.ETUDIANT,
+              destinataire: user.departement.id,
+              destinataireModel: ACTEURS.DEPARTEMENT,
+              dossier: dossier.id,
+            })
+            .then((res) => {
+              console.log(res);
+              toast.success("Succes!", { hideProgressBar: true });
+            })
+            .catch((err) => {
+              console.error(err);
+              toast.error("Une erreur est survenue!", {
+                hideProgressBar: true,
+              });
+            });
         })
-          .then(res => {
-            console.log(res);
-            toast.success("Succes!", { hideProgressBar: true });
-          })
-          .catch(err => {
-            console.error(err);
-            toast.error("Une erreur est survenue!", { hideProgressBar: true });
-          });
-      }).catch(err => {
-        console.error(err);
-        toast.error("Une erreur est survenue!", { hideProgressBar: true });
-      });
+        .catch((err) => {
+          console.error(err);
+          toast.error("Une erreur est survenue!", { hideProgressBar: true });
+        });
     } else {
       toast.error("Un ou plusieurs fichiers manquants!", {
-        hideProgressBar: true
+        hideProgressBar: true,
       });
     }
-  }
+  };
 
   const handleResultClick = () => {
     setShowResult(false);
-    navigate('/account');
-  }
+    navigate("/account");
+  };
 
   const getReturnOutput = () => {
     if (!canUpload) {
       return <Result title="Vous avez deja uploadé votre dossier!" />;
-    }
-    else if (!showResult) {
+    } else if (!showResult) {
       return (
         <>
           <ToastContainer />
@@ -210,20 +235,21 @@ const DepotDossierMaster = () => {
       );
     } else if (showResult) {
       return (
-        <Result 
-          status="success" 
-          title="Dossier envoye avec succes!" 
+        <Result
+          status="success"
+          title="Dossier envoye avec succes!"
           subTitle="Vous recevrez un email dès que votre dossier sera valide. "
           extra={
-            <Button type="primary" key="ok" onClick={handleResultClick}>OK</Button>
+            <Button type="primary" key="ok" onClick={handleResultClick}>
+              OK
+            </Button>
           }
         />
       );
     }
-  }
+  };
 
   return getReturnOutput();
 };
-
 
 export default DepotDossierMaster;
