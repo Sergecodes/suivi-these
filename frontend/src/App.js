@@ -106,6 +106,7 @@ import DatesProgrammees from "./components/pageCoordonateur/Master/DatesProgramm
 import NotificationCoordonateur from "./components/pageCoordonateur/NotificationCoordonateur";
 import RapportAdminMaster from "./components/pageCoordonateur/Master/RapportAdminMaster";
 import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutenance";
+
     /***************************************************************************************************/
 
     /************************************************page admin************************************/
@@ -130,12 +131,20 @@ import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutena
 
 /**************************************************************************************************/
 
+/********************************************autres******************************************************/
+import PdfViewer from './components/common/PdfViewer';
+
 // Configurer les options par defaut d'axios
 import axios from "axios";
 
-axios.defaults.baseURL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8001/api";
+
+if (process.env.REACT_APP_API_BASE_URL === undefined) {
+  throw Error("Set REACT_APP_API_BASE_URL in .env");
+}
+
+axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 axios.defaults.withCredentials = true;
+
 
 const App = () => {
   document.title = "Ecole Doctorale STG";
@@ -148,6 +157,23 @@ const App = () => {
           <Route
             path="/soutenances"
             element={<Soutenance />}
+          />
+          <Route path="/pdf-viewer" element={<PdfViewer />} />
+          <Route
+            path="/pdf"
+            element={
+              <object 
+                data="https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CDroits%20universitaires.pdf?alt=media&token=bf60d851-aa48-47ad-b226-f342d32f0e64"
+                type="application/pdf"
+                width="100%"
+                height="450px"
+              >
+                <p>
+					        Votre navigateur n'a pas de plugin pour la lecture des fichiers PDF. <br />
+                  Vous pouvez néanmoins <a href="file_url" download>telecharger</a> le fichier.
+				        </p>
+              </object>
+              }
           />
 
           {/**

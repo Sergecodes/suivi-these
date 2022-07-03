@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 // Import Worker
@@ -17,7 +18,7 @@ const PdfViewer = (props) => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   // pdf file onChange state
-  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfFile, setPdfFile]=useState("https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CDroits%20universitaires.pdf?alt=media&token=bf60d851-aa48-47ad-b226-f342d32f0e64");
 
   // pdf file error state
   const [pdfError, setPdfError] = useState("");

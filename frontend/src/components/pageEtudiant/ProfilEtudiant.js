@@ -26,16 +26,11 @@ const StudentProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("tel", tel)
-    console.log('email', email);
-    console.log('old password', oldPassword);
-    console.log('new password', newPassword);
-
     let requests = {};
 
     if (user.email !== email) {
       requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: email });
-    } 
+    }
 
     if (user.numTelephone !== tel) {
       requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: tel });
@@ -46,8 +41,8 @@ const StudentProfile = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', { 
-          pass: oldPassword, newPass: newPassword 
+        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
+          pass: oldPassword, newPass: newPassword
         });
       }
     }
@@ -67,12 +62,12 @@ const StudentProfile = () => {
           console.log(res2);
           console.log(res3);
           const data1 = res1.data, data2 = res2 && res2.data, data3 = res3 && res3.data;
-          
+
           if (requests.telRequest) {
             // No need to test for undefined, the first of these data to have numTelephone
             // will prevent the next from executing
             user.numTelephone = data1.numTelephone || data2.numTelephone || data3.numTelephone;
-          } 
+          }
 
           // No need to set email in localStorage since user will be redirected
           // to logout page and after relogging in, his email will be set
@@ -143,7 +138,7 @@ const StudentProfile = () => {
               <div className="col-12 col-sm-6">
                 <div className=" ">
                   <p> Matricule</p>
-                  <input className="form-control" type="text" disabled={true} defaultValue={user.matricule}  />
+                  <input className="form-control" type="text" disabled={true} defaultValue={user.matricule} />
                 </div>
               </div>
               <div className="col-12 col-sm-6 ">
@@ -158,13 +153,13 @@ const StudentProfile = () => {
               <div className="col-12 col-sm-6">
                 <div>
                   <p>Nom</p>
-                  <input className="form-control" type="text" disabled={true} defaultValue={user.nom}  />
+                  <input className="form-control" type="text" disabled={true} defaultValue={user.nom} />
                 </div>
               </div>
               <div className='col-12 col-sm-6'>
                 <div>
                   <p>Prenom</p>
-                  <input className="form-control" type="text" disabled={true} defaultValue={user.prenom}  />
+                  <input className="form-control" type="text" disabled={true} defaultValue={user.prenom} />
                 </div>
               </div>
             </div>
@@ -178,7 +173,7 @@ const StudentProfile = () => {
               <div className="col-12 col-sm-6">
                 <div>
                   <p> Lieu de naissance</p>
-                  <input className="form-control" type="text" defaultValue={user.lieuNaissance} disabled={true}  />
+                  <input className="form-control" type="text" defaultValue={user.lieuNaissance} disabled={true} />
                 </div>
               </div>
             </div>
