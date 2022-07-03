@@ -4,7 +4,7 @@ import axios from 'axios';
 import moment from "moment";
 import { toast, ToastContainer } from 'react-toastify'
 import { BsPerson, BsPenFill, BsX, BsCheck } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -103,18 +103,28 @@ const TableListDepartement = () => {
                 setListeJury(record.jury);
               }}
             />
-            <BsPenFill
-              style={{ color: "#513e8f" }}
-              onClick={() => {
-                navigate("/acteur/departement/verification");
-              }}
-            />
+            <Link to="/acteur/departement/verification" 
+                state={{
+                  etudiantInfo: { 
+                    matricule: record.matricule, 
+                    name: record.name,
+                    jury:record.jury,
+                    dossier: record.dossier
+                  }
+                }}
+            >
+              <BsPenFill
+                style={{ color: "#513e8f" }}
+              />
+            </Link>
           </div>
         );
       },
       align: "center",
     },
   ];
+
+  console.log('data', data);
 
   useEffect(() => {
     Promise.all([
@@ -142,11 +152,13 @@ const TableListDepartement = () => {
   const parseResult = (envois1Data, envois2Data) => {
     let result = [];
     for (let envoiObj of envois1Data) {
-      let etud = envoiObj.dossier.etudiant;
-      let envoi2Obj = envois2Data.find(obj => obj.dossier.id === envoiObj.dossier.id);
+      let dossier = envoiObj.dossier;
+      let etud = dossier.etudiant;
+      let envoi2Obj = envois2Data.find(obj => obj.dossier.id === dossier.id);
 
       result.push({
         key: envoiObj.id,
+        dossier,
         photo: (
           <img
             src={etud.urlPhotoProfil}

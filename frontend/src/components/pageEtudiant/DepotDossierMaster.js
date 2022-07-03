@@ -64,8 +64,17 @@ const DepotDossierMaster = () => {
           Etape 3
         </p>
       ),
-      content: <ThirdStep numero={1} />,
+      content: <ThirdStep />,
     },
+    ,
+    {
+      title: (
+        <p style={current === 2 ? { color: "var(--primaryColor)" } : {}}>
+          Etape 4
+        </p>
+      ),
+      content: <ThirdStep />,
+    }
   ];
 
   const next = () => setCurrent(current + 1);
@@ -107,6 +116,8 @@ const DepotDossierMaster = () => {
   const handleSubmit = () => {
     console.log(files);
     console.log(dataInfo.juries);
+    // master subject
+    console.log(dataInfo.masterSubject)
 
     if (verification()) {
       let formData = new FormData();
