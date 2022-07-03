@@ -99,7 +99,6 @@ const CategorieFichierThese = Object.freeze({
     CV: 'CV',
     THESE: 'Thèse',
     RESUME_THESE: 'Resumé du thèse',
-    MEMOIRE: 'Mémoire',
     ACTE_NAISSANCE: 'Acte de naissance',
     ATTEST_INSCRIP: "Attestation d'inscription",
     DECLAR_HONNEUR: "Déclaration d'honneur",

@@ -13,9 +13,30 @@ import {
   addReleveM1,
   addReleveM2,
   addActeDeNaissance,
-  addCv,
-} from "../../../redux/MasterFilesUploadSlice";
+  addCv
+} from "../../../redux/MasterFilesUploadSlice"
+import {
+  addDeclarationHonneur,
+  addDiplomeLicense,
+  addDiplomeBaccalaureat,
+  addAttestationM2,
+  addListeSelectionThese,
+  addPreuveValidation,
+  addFicheInscriptionThese,
+  addRapportEncadreur,
+  addLettreEncadreur,
+  addLettreChefDepartement,
+  addThese,
+  addCouverture,
+  addResume,
+  addAbstract,
+  addActeDeNaissanceThese,
+  addCvThese,
+  addDerogation,
+  addAttestationInscriptionThese
+} from "../../../redux/TheseFilesUploadSlice";
 
+import { CategorieFichierMaster, CategorieFichierThese } from "../../../constants/Constant";
 
 const FileUpload = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +45,9 @@ const FileUpload = (props) => {
     if (props.niveau === "master") {
       addFileMaster(file);
     }
-
+    else if (props.niveau === "these") {
+      addFileThese(file)
+    }
     // Prevent submitting file
     return false;
   }
@@ -53,6 +76,46 @@ const FileUpload = (props) => {
     else if (props.name === CategorieFichierMaster.ACTE_NAISSANCE)
       dispatch(addActeDeNaissance({ acteDeNaissance: file }));
   }
+
+  function addFileThese(file) {
+    if (props.name === CategorieFichierThese.THESE) dispatch(addThese({ these: file }));
+    else if (props.name === CategorieFichierThese.CV)
+      dispatch(addCvThese({ cv: file }));
+    else if (props.name === CategorieFichierThese.RESUME_THESE)
+      dispatch(addResume({ resume: file }));
+    else if (props.name === CategorieFichierThese.ACTE_NAISSANCE)
+      dispatch(addActeDeNaissanceThese({ acteDeNaissance: file }));
+    else if (props.name === CategorieFichierThese.ATTEST_INSCRIP)
+      dispatch(addAttestationInscriptionThese({ attestationInscription: file }));
+    else if (props.name === CategorieFichierThese.DECLAR_HONNEUR)
+      dispatch(addDeclarationHonneur({ declarationHonneur: file }));
+    else if (props.name === CategorieFichierThese.DIPLOME_LIC)
+      dispatch(addDiplomeLicense({ diplomeLicense: file }));
+    else if (props.name === CategorieFichierThese.DIPLOME_BAC)
+      dispatch(addDiplomeBaccalaureat({ diplomeBaccalaureat: file }));
+    else if (props.name === CategorieFichierThese.ATTEST_M2)
+      dispatch(addAttestationM2({ attestationM2: file }));
+    else if (props.name === CategorieFichierThese.PREUVE_VALID)
+      dispatch(addPreuveValidation({ preuveValidation: file }));
+    else if (props.name === CategorieFichierThese.COUVERTURE)
+      dispatch(addCouverture({ couverture: file }));
+    else if (props.name === CategorieFichierThese.ABSTRACT)
+      dispatch(addAbstract({ abstract: file }));
+    else if (props.name === CategorieFichierThese.DEROGATION)
+      dispatch(addDerogation({ derogation: file }));
+    else if (props.name === CategorieFichierThese.RAPPORT_ENC)
+      dispatch(addRapportEncadreur({ rapportEncadreur: file }));
+    else if (props.name === CategorieFichierThese.LETTRE_ENC)
+      dispatch(addLettreEncadreur({ lettreEncadreur: file }));
+    else if (props.name === CategorieFichierThese.LETTRE_CHEF)
+      dispatch(addLettreChefDepartement({ lettreChefDepartement: file }));
+    else if (props.name === CategorieFichierThese.LISTE_SELECT)
+      dispatch(addListeSelectionThese({ listeSelection: file }));
+      else if (props.name === CategorieFichierThese.FICHE_INSCRIP)
+      dispatch(addFicheInscriptionThese({ ficheInscription: file }));
+
+  }
+
 
   return (
     <Upload
