@@ -211,6 +211,24 @@ exports.rejeterInscriptionEtudiant = async function (req, res) {
    }
 }
 
+exports.setEtudiantJuges = async function (req, res) {
+   const { idDepartement } = req.body;
+   const { etudiant } = res.locals;
+
+	if (etudiant.departement !== idDepartement) {
+		return res.status(403).send("Cet etudiant n'est pas de ce departement");
+	}
+	
+   if (etudiant.niveau !== Types.Niveau.MASTER) {
+      return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
+   }
+
+   etudiant.juges = req.body.juges;
+   await etudiant.save();
+   res.send("Succes");
+}
+
+
 exports.accepterDossierEtudiant = async function (req, res) {
    const { admin, dossier } = res.locals;
    try {
