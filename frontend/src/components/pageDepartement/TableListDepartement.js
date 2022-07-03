@@ -1,11 +1,11 @@
-import { Table, Modal, Select, Button } from "antd";
+import { Table } from "antd";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import moment from "moment";
 import { toast, ToastContainer } from 'react-toastify'
 import { BsPenFill} from "react-icons/bs";
 import { Link } from "react-router-dom";
-
+import { ACTEURS } from '../../constants/Constant';
 
 
 const TableListDepartement = () => {
@@ -82,9 +82,7 @@ const TableListDepartement = () => {
                   }
                 }}
             >
-              <BsPenFill
-                style={{ color: "#513e8f" }}
-              />
+              <BsPenFill style={{ color: "#513e8f" }} />
             </Link>
           </div>
         );
@@ -101,8 +99,8 @@ const TableListDepartement = () => {
       // from the departement and retrieve the envoyeLe attribute.
       axios.get('/dossiers-envoyes', {
         envoyePar: user.id,
-        envoyeParModel: 'Departement',
-        destinataireModel: 'Admin'
+        envoyeParModel: ACTEURS.DEPARTEMENT,
+        destinataireModel: ACTEURS.ADMIN
       })
     ])
       .then(results => {
@@ -147,9 +145,6 @@ const TableListDepartement = () => {
 
     return result;
   }
-
-  
-  
 
   return (
     <>
