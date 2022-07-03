@@ -77,7 +77,6 @@ const TableListDepartement = () => {
                   etudiantInfo: { 
                     matricule: record.matricule, 
                     name: record.name,
-                    jury:record.jury,
                     dossier: record.dossier
                   }
                 }}
@@ -95,7 +94,7 @@ const TableListDepartement = () => {
   useEffect(() => {
     Promise.all([
       axios.get(`/departements/dossiers-etudiants-master`),
-      // To get the dateVerification, we need to get the dossiers sent to the coordonateur
+      // To get the dateVerification, we need to get the dossiers sent to the admin
       // from the departement and retrieve the envoyeLe attribute.
       axios.get('/dossiers-envoyes', {
         envoyePar: user.id,
@@ -137,9 +136,6 @@ const TableListDepartement = () => {
         name: etud.nom + ' '  + etud.prenom,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
         dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
-        jury: etud.juges.map(jury => {
-          return { id: jury.id, nom: jury.nom, prenom: jury.prenom, email: jury.email }
-        })
       });
     }
 

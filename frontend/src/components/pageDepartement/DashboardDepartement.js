@@ -1,4 +1,3 @@
-import React from 'react';
 import TableListDepartement from './TableListDepartement';
 
 const DashboardDepartement = () => {
