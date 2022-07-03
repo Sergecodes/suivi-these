@@ -3,6 +3,7 @@ import { Steps, Button, Result } from "antd";
 import FirstStep from "./EtapesThese/FirstStep";
 import SecondStep from "./EtapesThese/SecondStep";
 import ThirdStep from "./EtapesThese/ThirdStep";
+import FourthStep from "./EtapesMaster/FourthStep";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -17,6 +18,7 @@ const DepotDossierMaster = () => {
   const [showResult, setShowResult] = useState(false);
   const navigate = useNavigate();
   const files = useSelector((state) => state.theseFilesUpload);
+  const dataInfo = useSelector((state) => state.dataStorage);
   const user = JSON.parse(localStorage.getItem("user"));
 
   // Verifier si l'etudiant peut uploader
@@ -35,15 +37,7 @@ const DepotDossierMaster = () => {
   const steps = [
     {
       title: (
-        <p
-          style={
-            current === 0
-              ? current === 0
-                ? { color: "var(--primaryColor)" }
-                : {}
-              : {}
-          }
-        >
+        <p style={current === 0 ? { color: "var(--primaryColor)" } : {}}>
           Etape 1
         </p>
       ),
@@ -63,7 +57,15 @@ const DepotDossierMaster = () => {
           Etape 3
         </p>
       ),
-      content: <ThirdStep numero={1} />,
+      content: <ThirdStep />,
+    },
+    {
+      title: (
+        <p style={current === 3 ? { color: "var(--primaryColor)" } : {}}>
+          Etape 4
+        </p>
+      ),
+      content: <FourthStep />,
     },
   ];
 
@@ -83,40 +85,41 @@ const DepotDossierMaster = () => {
   }
 
   function getName(prop) {
-    if (prop === "declarationHonneur") return CategorieFichierThese.DECLAR_HONNEUR;
+    if (prop === "declarationHonneur")
+      return CategorieFichierThese.DECLAR_HONNEUR;
     else if (prop === "diplomeLicense")
       return CategorieFichierThese.DIPLOME_LIC;
     else if (prop === "diplomeBaccalaureat")
       return CategorieFichierThese.DIPLOME_BAC;
-    else if (prop === "attestationM2")
-      return CategorieFichierThese.ATTEST_M2;
+    else if (prop === "attestationM2") return CategorieFichierThese.ATTEST_M2;
     else if (prop === "listeSelection")
       return CategorieFichierThese.LISTE_SELECT;
-    else if (prop === "preuveValidation") return CategorieFichierThese.PREUVE_VALID;
-    else if (prop === "ficheInscription") return CategorieFichierThese.FICHE_INSCRIP;
+    else if (prop === "preuveValidation")
+      return CategorieFichierThese.PREUVE_VALID;
+    else if (prop === "ficheInscription")
+      return CategorieFichierThese.FICHE_INSCRIP;
     else if (prop === "rapportEncadreur")
       return CategorieFichierThese.RAPPORT_ENC;
     else if (prop === "lettreEncadreur")
       return CategorieFichierThese.LETTRE_ENC;
     else if (prop === "lettreChefDepartement")
       return CategorieFichierThese.LETTRE_CHEF;
-    else if (prop === "these")
-      return CategorieFichierThese.THESE;
-    else if (prop === "couverture")
-      return CategorieFichierThese.COUVERTURE;
-    else if (prop === "resume")
-      return CategorieFichierThese.RESUME_THESE;
-    else if (prop === "abstract")
-      return CategorieFichierThese.ABSTRACT;
+    else if (prop === "these") return CategorieFichierThese.THESE;
+    else if (prop === "couverture") return CategorieFichierThese.COUVERTURE;
+    else if (prop === "resume") return CategorieFichierThese.RESUME_THESE;
+    else if (prop === "abstract") return CategorieFichierThese.ABSTRACT;
     else if (prop === "acteDeNaissance")
       return CategorieFichierThese.ACTE_NAISSANCE;
     else if (prop === "cv") return CategorieFichierThese.CV;
     else if (prop === "derogation") return CategorieFichierThese.DEROGATION;
-    else if (prop === "attestationInscription") return CategorieFichierThese.ATTEST_INSCRIP;
+    else if (prop === "attestationInscription")
+      return CategorieFichierThese.ATTEST_INSCRIP;
   }
 
   const handleSubmit = () => {
     console.log(files);
+    //get these subject 
+    console.log(dataInfo.theseSubject);
 
     if (verification()) {
       let formData = new FormData();
@@ -130,8 +133,9 @@ const DepotDossierMaster = () => {
       formData.append("sujet", sujet);
       formData.append("niveau", "DOCTORAT");
 
-      axios.put("/etudiants/uploader-fichiers", formData)
-        .then(res => {
+      axios
+        .put("/etudiants/uploader-fichiers", formData)
+        .then((res) => {
           console.log(res);
 
           const dossier = res.data.dossier;
@@ -150,7 +154,7 @@ const DepotDossierMaster = () => {
             .then((res) => {
               console.log(res);
               toast.success("Succes!", { hideProgressBar: true });
-            })
+            });
         })
         .catch((err) => {
           console.error(err);

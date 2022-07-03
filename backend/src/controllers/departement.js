@@ -216,12 +216,15 @@ exports.dossiersEtudsMaster = async function (req, res) {
 		destinataireModel: Types.ActeurDossier.DEPARTEMENT
 	}).populate({
 		path: 'dossier',
-		populate: {
-			path: 'etudiant',
-			select: '-motDePasse -niveau -dossier -departement -misAJourLe',
-			// match: { niveau: Types.Niveau.MASTER },
-			populate: 'juges'
-		}
+		populate: [
+			{
+				path: 'etudiant',
+				select: '-motDePasse -niveau -dossier -departement -misAJourLe',
+				// match: { niveau: Types.Niveau.MASTER },
+				populate: 'juges'
+			}, 
+			{ path: 'fichiers' }
+		]
 	});
 
    return res.json(envoisDossiers);

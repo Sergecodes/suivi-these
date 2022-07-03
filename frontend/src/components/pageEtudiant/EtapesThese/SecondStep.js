@@ -12,29 +12,29 @@ const SecondStep = () => {
       <h2 >Tous vos fichiers doivent ètre scannés et enregistrés au format pdf (PDF)</h2>
        <div className="row mt-4">
         <div className=" col-6 col-md-4   stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.DECLAR_HONNEUR} niveau="these" />
-             <p>{files.declarationHonneur.name}</p>
+             <FileUpload name={CategorieFichierThese.THESE} niveau="these" />
+             <p>{files.these.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.ABSTRACT} niveau="these" />
-             <p>{files.abstract.name}</p>
+             <FileUpload name={CategorieFichierThese.RESUME_THESE} niveau="these" />
+             <p>{files.resume.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.DEROGATION} niveau="these" />
-             <p>{files.derogation.name}</p>
+             <FileUpload name={CategorieFichierThese.COUVERTURE} niveau="these" />
+             <p>{files.couverture.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.PREUVE_VALID} niveau="these" />
-             <p>{files.preuveValidation.name}</p>
+             <FileUpload name={CategorieFichierThese.RAPPORT_ENC} niveau="these" />
+             <p>{files.rapportEncadreur.name}</p>
           </div>
          
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.CV} niveau="these" />
-             <p>{files.cv.name}</p>
+             <FileUpload name={CategorieFichierThese.LETTRE_ENC} niveau="these" />
+             <p>{files.lettreEncadreur.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.ATTEST_M2} niveau="these" />
-             <p>{files.attestationM2.name}</p>
+             <FileUpload name={CategorieFichierThese.LETTRE_CHEF} niveau="these" />
+             <p>{files.lettreChefDepartement.name}</p>
           </div>
           
          
