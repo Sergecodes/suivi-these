@@ -5,36 +5,35 @@ import FileUpload from "../upload/FileUpload";
 import { CategorieFichierThese } from '../../../constants/Constant';
 
 
-const ThirdStep = () => {
+const FourthStep = () => {
     const files= useSelector(state=>state.theseFilesUpload);
   return (
     <section className=" mt-3 step" >
       <h2 >Tous vos fichiers doivent ètre scannés et enregistrés au format pdf (PDF)</h2>
        <div className="row mt-4">
         <div className=" col-6 col-md-4   stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.DECLAR_HONNEUR} niveau="these" />
-             <p>{files.declarationHonneur.name}</p>
+             <FileUpload name={CategorieFichierThese.ATTEST_INSCRIP} niveau="these" />
+             <p>{files.attestationInscription.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.ABSTRACT} niveau="these" />
-             <p>{files.abstract.name}</p>
+             <FileUpload name={CategorieFichierThese.ACTE_NAISSANCE} niveau="these" />
+             <p>{files.acteDeNaissance.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.DEROGATION} niveau="these" />
-             <p>{files.derogation.name}</p>
+             <FileUpload name={CategorieFichierThese.DIPLOME_BAC} niveau="these" />
+             <p>{files.diplomeBaccalaureat.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.PREUVE_VALID} niveau="these" />
-             <p>{files.preuveValidation.name}</p>
-          </div>
-         
+             <FileUpload name={CategorieFichierThese.DIPLOME_LIC} niveau="these" />
+             <p>{files.diplomeLicense.name}</p>
+          </div>      
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.CV} niveau="these" />
-             <p>{files.cv.name}</p>
+             <FileUpload name={CategorieFichierThese.LISTE_SELECT} niveau="these" />
+             <p>{files.listeSelection.name}</p>
           </div>
           <div className=" col-6 col-md-4  stepFile mb-3">
-             <FileUpload name={CategorieFichierThese.ATTEST_M2} niveau="these" />
-             <p>{files.attestationM2.name}</p>
+             <FileUpload name={CategorieFichierThese.FICHE_INSCRIP} niveau="these" />
+             <p>{files.ficheInscription.name}</p>
           </div>
           
          
@@ -44,4 +43,4 @@ const ThirdStep = () => {
   )
 }
 
-export default ThirdStep
+export default FourthStep

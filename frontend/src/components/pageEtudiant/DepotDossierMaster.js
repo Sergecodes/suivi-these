@@ -3,6 +3,7 @@ import { Steps, Button, Result } from "antd";
 import FirstStep from "./EtapesMaster/FirstStep";
 import SecondStep from "./EtapesMaster/SecondStep";
 import ThirdStep from "./EtapesMaster/ThirdStep";
+import FourthStep from "./EtapesMaster/FourthStep";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -36,15 +37,7 @@ const DepotDossierMaster = () => {
   const steps = [
     {
       title: (
-        <p
-          style={
-            current === 0
-              ? current === 0
-                ? { color: "var(--primaryColor)" }
-                : {}
-              : {}
-          }
-        >
+        <p style={current === 0 ? { color: "var(--primaryColor)" } : {}}>
           Etape 1
         </p>
       ),
@@ -66,15 +59,14 @@ const DepotDossierMaster = () => {
       ),
       content: <ThirdStep />,
     },
-    ,
     {
       title: (
-        <p style={current === 2 ? { color: "var(--primaryColor)" } : {}}>
+        <p style={current === 3 ? { color: "var(--primaryColor)" } : {}}>
           Etape 4
         </p>
       ),
-      content: <ThirdStep />,
-    }
+      content: <FourthStep />,
+    },
   ];
 
   const next = () => setCurrent(current + 1);
@@ -117,7 +109,7 @@ const DepotDossierMaster = () => {
     console.log(files);
     console.log(dataInfo.juries);
     // master subject
-    console.log(dataInfo.masterSubject)
+    console.log(dataInfo.masterSubject);
 
     if (verification()) {
       let formData = new FormData();
@@ -166,22 +158,22 @@ const DepotDossierMaster = () => {
               dossier.sujet = sujet;
               user.dossier = dossier;
               localStorage.setItem("user", JSON.stringify(user));
-              localStorage.removeItem('evolution');
-              
+              localStorage.removeItem("evolution");
+
               toast.success("Succes!", { hideProgressBar: true });
 
               // Wait for some seconds then close all toasts and go to evolution page
               setTimeout(() => {
                 toast.dismiss();
-                navigate('/account/evolution');
-              }, 3000)
-            })
-            // .catch((err) => {
-            //   console.error(err);
-            //   toast.error("Une erreur est survenue!", {
-            //     hideProgressBar: true,
-            //   });
-            // });
+                navigate("/account/evolution");
+              }, 3000);
+            });
+          // .catch((err) => {
+          //   console.error(err);
+          //   toast.error("Une erreur est survenue!", {
+          //     hideProgressBar: true,
+          //   });
+          // });
         })
         .catch((err) => {
           console.error(err);

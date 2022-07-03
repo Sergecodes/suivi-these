@@ -1,14 +1,11 @@
 import { Input } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addMasterSubject } from "../../../redux/DataStorageSlice";
 import {AiOutlineWarning} from "react-icons/ai";
 const { TextArea } = Input;
 
 const FirtStep = () => {
   const dispatch = useDispatch();
-  const files = useSelector((state) => state.dataStorage);
- /* dispatch(addMasterSubject("steph"))
-  console.log(files.masterSubject)*/
   return (
     <section className="mt-5 step">
       <h2 >Veuillez entrer le sujet de votre memoire :</h2>

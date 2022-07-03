@@ -5,7 +5,8 @@ export const DataStorageSlice = createSlice({
   initialState: {
     juries: [],
     unselectedJuries: [],
-    masterSubject:""
+    masterSubject:"",
+    theseSubject:""
   },
   reducers: {
     addJury: (state, action) => {
@@ -14,10 +15,14 @@ export const DataStorageSlice = createSlice({
     },
     addMasterSubject: (state,action) => {
       state.masterSubject = action.payload.subject
+    },
+    addTheseSubject: (state,action) => {
+      state.theseSubject = action.payload.subject
     }
   },
 });
 export const { addJury } = DataStorageSlice.actions;
 export const { addMasterSubject } = DataStorageSlice.actions;
+export const { addTheseSubject } = DataStorageSlice.actions;
 
 export default DataStorageSlice.reducer;

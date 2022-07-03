@@ -1,7 +1,7 @@
 import { Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { CategorieFichierMaster } from "../../../constants/Constant";
+import { CategorieFichierMaster,CategorieFichierThese } from "../../../constants/Constant";
 import {
   addMemoire,
   addAttestationLicense,
@@ -35,8 +35,6 @@ import {
   addDerogation,
   addAttestationInscriptionThese
 } from "../../../redux/TheseFilesUploadSlice";
-
-import { CategorieFichierMaster, CategorieFichierThese } from "../../../constants/Constant";
 
 const FileUpload = (props) => {
   const dispatch = useDispatch();

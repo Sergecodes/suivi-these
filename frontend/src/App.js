@@ -125,6 +125,7 @@ import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutena
     import NotificationsAdmin from "./components/pageAdmin/NotificationsAdmin";
     import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
     import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise"
+    import DossierMaster from "./components/pageAdmin/dossierMaster/DossierMaster"
     /**************************************************************************************************/
 
 /**************************************************************************************************/
@@ -257,6 +258,7 @@ const App = () => {
                 <Route path="/acteur/admin/profil" element={<ProfilAdmin/>}/>
                 <Route path="/acteur/admin/notifications" element={<NotificationsAdmin/>}/>
                 <Route path="/acteur/admin/rapport-expertise" element={<RapportExpertise/>}/>
+                <Route path="/acteur/admin/dossier-master" element={<DossierMaster/>}/>
            </Route>
 
           <Route
