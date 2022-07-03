@@ -19,7 +19,7 @@ exports.envoyerDossier = async function (req, res) {
     try {
         await EnvoiDossier.create({
             envoyePar, envoyeParModel, destinataireModel, dossier, 
-            destinataire: req.body.destinataire || '', 
+            destinataire: req.body.destinataire || null, 
             fichiersConcernes: req.body.fichiersConcernes || [],
             message: req.body.message || ''
         });
@@ -36,7 +36,7 @@ exports.dossiersEnvoyes = async function (req, res) {
     } = req.body;
   
     let envoisDossiers = await EnvoiDossier.find({
-        destinataire: req.body.destinataire || '', 
+        destinataire: req.body.destinataire || null, 
         destinataireModel,
         envoyePar, 
         envoyeParModel
@@ -67,7 +67,7 @@ exports.donnerAvis = async function (req, res) {
          donnePar,
          donneParModel,
          dossier,
-         destinataire: req.body.destinataire || '',
+         destinataire: req.body.destinataire || null,
          destinataireModel
       });
       res.send("Succes");
@@ -81,7 +81,7 @@ exports.avisDonnes = async function (req, res) {
     const { destinataireModel, donnePar, donneParModel } = req.body;
   
     let avis = await Avis.find({
-        destinataire: req.body.destinataire || '', 
+        destinataire: req.body.destinataire || null, 
         destinataireModel, donnePar, donneParModel
     }).populate({
         path: 'dossier',

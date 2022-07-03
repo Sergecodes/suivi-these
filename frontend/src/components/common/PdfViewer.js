@@ -1,22 +1,19 @@
 
-
-import {useState} from 'react'
+import { useState } from "react";
 
 // Import Worker
-import { Worker } from '@react-pdf-viewer/core';
+import { Worker } from "@react-pdf-viewer/core";
 // Import the main Viewer component
-import { Viewer } from '@react-pdf-viewer/core';
+import { Viewer } from "@react-pdf-viewer/core";
 // Import the styles
-import '@react-pdf-viewer/core/lib/styles/index.css';
+import "@react-pdf-viewer/core/lib/styles/index.css";
 // default layout plugin
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 // Import styles of default layout plugin
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import '../../Styles/PdfViewer.css'
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import "../../Styles/PdfViewer.css";
 
- 
-const PdfViewer=()=> {
-
+const PdfViewer = (props) => {
   // creating new plugin instance
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -24,70 +21,86 @@ const PdfViewer=()=> {
   const [pdfFile, setPdfFile]=useState("https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CDroits%20universitaires.pdf?alt=media&token=bf60d851-aa48-47ad-b226-f342d32f0e64");
 
   // pdf file error state
-  const [pdfError, setPdfError]=useState('');
-
+  const [pdfError, setPdfError] = useState("");
 
   // handle file onChange event
-  const allowedFiles = ['application/pdf'];
-  const handleFile = (e) =>{
+  const allowedFiles = ["application/pdf"];
+  const handleFile = (e) => {
     let selectedFile = e.target.files[0];
     // console.log(selectedFile.type);
-    if(selectedFile){
-      if(selectedFile&&allowedFiles.includes(selectedFile.type)){
+    if (selectedFile) {
+      if (selectedFile && allowedFiles.includes(selectedFile.type)) {
         let reader = new FileReader();
         reader.readAsDataURL(selectedFile);
-        reader.onloadend=(e)=>{
-          setPdfError('');
+        reader.onloadend = (e) => {
+          setPdfError("");
           setPdfFile(e.target.result);
-        }
+        };
+      } else {
+        setPdfError("Not a valid pdf: Please select only PDF");
+        setPdfFile("");
       }
-      else{
-        setPdfError('Not a valid pdf: Please select only PDF');
-        setPdfFile('');
-      }
+    } else {
+      console.log("please select a PDF");
     }
-    else{
-      console.log('please select a PDF');
-    }
-  }
+  };
 
   return (
     <div className="container">
-
       {/* Upload PDF */}
       <form>
-
-        <label><h5>Upload PDF</h5></label>
+        <label>
+          <h5>Upload PDF</h5>
+        </label>
         <br></br>
 
-        <input type='file' className="form-control"
-        onChange={handleFile}></input>
+        <input
+          type="file"
+          className="form-control"
+          onChange={handleFile}
+        ></input>
 
         {/* we will display error message in case user select some file
         other than pdf */}
-        {pdfError&&<span className='text-danger' style={{marginTop:"3px"}}>{pdfError}</span>}
-
+        {pdfError && (
+          <span className="text-danger" style={{ marginTop: "3px" }}>
+            {pdfError}
+          </span>
+        )}
       </form>
 
       {/* View PDF */}
       <h5>View PDF</h5>
       <div className="viewer">
-
         {/* render this if we have a pdf file */}
-        {pdfFile&&(
+        {/* {pdfFile && (
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
-            <Viewer fileUrl={pdfFile}
-            plugins={[defaultLayoutPluginInstance]}></Viewer>
+            <Viewer
+              fileUrl="https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CDroits%20universitaires.pdf"
+              plugins={[defaultLayoutPluginInstance]}
+            ></Viewer>
           </Worker>
-        )}
+        )} */}
+
+        <iframe 
+          src="http://docs.google.com/gview?url=https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CDroits%20universitaires.pdf&embedded=true"
+          style={{ width: '600px', height: '500px' }}
+        >cant display?</iframe>
+
+        {/* <object 
+          data="https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CDroits%20universitaires.pdf"
+          type="application/pdf"
+          width="100%"
+          height="450px"
+        >
+          No pdf plugin
+        </object> */}
 
         {/* render this if we have pdfFile state null   */}
-        {!pdfFile&&<>No file is selected yet</>}
-
+        {!pdfFile && <>No file is selected yet</>}
       </div>
-
     </div>
   );
-}
+};
 
 export default PdfViewer;

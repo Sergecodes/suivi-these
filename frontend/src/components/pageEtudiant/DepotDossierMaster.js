@@ -3,6 +3,7 @@ import { Steps, Button, Result } from "antd";
 import FirstStep from "./EtapesMaster/FirstStep";
 import SecondStep from "./EtapesMaster/SecondStep";
 import ThirdStep from "./EtapesMaster/ThirdStep";
+import FourthStep from "./EtapesMaster/FourthStep";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -36,15 +37,7 @@ const DepotDossierMaster = () => {
   const steps = [
     {
       title: (
-        <p
-          style={
-            current === 0
-              ? current === 0
-                ? { color: "var(--primaryColor)" }
-                : {}
-              : {}
-          }
-        >
+        <p style={current === 0 ? { color: "var(--primaryColor)" } : {}}>
           Etape 1
         </p>
       ),
@@ -64,7 +57,15 @@ const DepotDossierMaster = () => {
           Etape 3
         </p>
       ),
-      content: <ThirdStep numero={1} />,
+      content: <ThirdStep />,
+    },
+    {
+      title: (
+        <p style={current === 3 ? { color: "var(--primaryColor)" } : {}}>
+          Etape 4
+        </p>
+      ),
+      content: <FourthStep />,
     },
   ];
 
@@ -106,9 +107,9 @@ const DepotDossierMaster = () => {
 
   const handleSubmit = () => {
     console.log(files);
-
-    //jury data stored in redux
-    console.log(dataInfo.jury);
+    console.log(dataInfo.juries);
+    // master subject
+    console.log(dataInfo.masterSubject);
 
     if (verification()) {
       let formData = new FormData();
@@ -124,21 +125,23 @@ const DepotDossierMaster = () => {
 
       Promise.all([
         axios.put("/etudiants/uploader-fichiers", formData),
-        axios.put(`/etudiants/${user.id}/set-juges-et-sujet`, {
-          // todo: update with real data from state
-          juges: [],
+        axios.put(`/etudiants/${user.id}/set-juges`, {
+          juges: (function () {
+            let idJuges = [];
+            for (let juge of dataInfo.juries) {
+              idJuges.push(juge.id);
+            }
+
+            return idJuges;
+          })(),
         }),
       ])
         .then((results) => {
           const [res1, res2] = results;
           console.log(res1);
           console.log(res2);
-
           const dossier = res1.data.dossier;
-          // Update dossier in localStorage
-          dossier.sujet = sujet;
-          user.dossier = dossier;
-          localStorage.setItem("user", JSON.stringify(user));
+          console.log("about to envoyer dossier");
 
           axios
             .post("/envoyer-dossier", {
@@ -150,14 +153,27 @@ const DepotDossierMaster = () => {
             })
             .then((res) => {
               console.log(res);
+
+              // Update dossier and user evolution in localStorage
+              dossier.sujet = sujet;
+              user.dossier = dossier;
+              localStorage.setItem("user", JSON.stringify(user));
+              localStorage.removeItem("evolution");
+
               toast.success("Succes!", { hideProgressBar: true });
-            })
-            .catch((err) => {
-              console.error(err);
-              toast.error("Une erreur est survenue!", {
-                hideProgressBar: true,
-              });
+
+              // Wait for some seconds then close all toasts and go to evolution page
+              setTimeout(() => {
+                toast.dismiss();
+                navigate("/account/evolution");
+              }, 3000);
             });
+          // .catch((err) => {
+          //   console.error(err);
+          //   toast.error("Une erreur est survenue!", {
+          //     hideProgressBar: true,
+          //   });
+          // });
         })
         .catch((err) => {
           console.error(err);

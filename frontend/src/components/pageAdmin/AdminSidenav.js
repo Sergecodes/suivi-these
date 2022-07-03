@@ -48,6 +48,11 @@ const AdminSidenav = () => {
             LECTURE
           </Link>
         </SidenavItem>
+        <SidenavItem>
+          <Link to="/acteur/admin/dossier-master">
+            <BsFillFileEarmarkSpreadsheetFill className="me-3" /> DOSSIER MASTER
+          </Link>
+        </SidenavItem>
       </SidenavTitle>
       <SidenavTitle titre="Rapports">
         <SidenavItem>

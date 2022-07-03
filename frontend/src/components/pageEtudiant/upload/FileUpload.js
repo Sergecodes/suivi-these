@@ -1,7 +1,7 @@
-import React from "react";
 import { Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import { CategorieFichierMaster,CategorieFichierThese } from "../../../constants/Constant";
 import {
   addMemoire,
   addAttestationLicense,
@@ -36,10 +36,9 @@ import {
   addAttestationInscriptionThese
 } from "../../../redux/TheseFilesUploadSlice";
 
-import { CategorieFichierMaster, CategorieFichierThese } from "../../../constants/Constant";
-
 const FileUpload = (props) => {
   const dispatch = useDispatch();
+
   function handleupload(file) {
     if (props.niveau === "master") {
       addFileMaster(file);
@@ -47,9 +46,13 @@ const FileUpload = (props) => {
     else if (props.niveau === "these") {
       addFileThese(file)
     }
+    // Prevent submitting file
+    return false;
   }
+
   function addFileMaster(file) {
-    if (props.name === CategorieFichierMaster.MEMOIRE) dispatch(addMemoire({ memoire: file }));
+    if (props.name === CategorieFichierMaster.MEMOIRE)
+      dispatch(addMemoire({ memoire: file }));
     else if (props.name === CategorieFichierMaster.ATTEST_LIC)
       dispatch(addAttestationLicense({ attestationLicense: file }));
     else if (props.name === CategorieFichierMaster.DROITS_UNIV)
