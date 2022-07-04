@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastiy';
+import { toast, ToastContainer } from 'react-toastify';
 import { Modal } from 'antd';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
