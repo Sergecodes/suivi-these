@@ -3,7 +3,7 @@ const isEmail = require('validator/lib/isEmail')
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
 const { 
-    StatutDossier, ModelNotif, TypeNotification, 
+    ActeurDossier, ModelNotif, TypeNotification, 
     AvisEmetteur, EtapeDossier  
 } = require('./types')
 const TypeAvis = require('./types').Avis;
@@ -77,14 +77,11 @@ DepartementSchema.virtual('notifications', {
  * @param raison
  */
  DepartementSchema.methods.validerDossier = async function (dossier) {
-    dossier.statut = StatutDossier.VALIDE_DEPARTEMENT;
     await dossier.incrementerEtape(EtapeDossier.DEUX_MASTER);
-    // No need to call save() since the method above saves the dossier object
-    // await dossier.save();
 
     // Notifier l'etudiant
     await Notification.create({
-        type: TypeNotification.DOSSIER_REJETE,
+        type: TypeNotification.DOSSIER_VALIDE,
         destinataire: dossier.etudiant,
         destinataireModel: ModelNotif.ETUDIANT,
         objetConcerne: dossier._id,
@@ -98,8 +95,8 @@ DepartementSchema.virtual('notifications', {
  * @param raison
  */
  DepartementSchema.methods.rejeterDossier = async function (dossier, raison) {
-    dossier.statut = StatutDossier.REJETE_DEPARTEMENT;
-    dossier.raisonStatut = raison;
+    dossier.rejeteParActeur = ActeurDossier.DEPARTEMENT;
+    dossier.raisonRejet = raison;
     await dossier.save();
 
     // Notifier l'etudiant

@@ -57,11 +57,11 @@ const columns = [
       return (
         <div>
           <div style={record.dateNotation !== "---" ? { display: "none" } : {}}>
-            <Link 
-              to="/acteur/jury/notation" 
+            <Link
+              to="/acteur/jury/notation"
               state={{
-                etudiantInfo: { 
-                  matricule: record.matricule, 
+                etudiantInfo: {
+                  matricule: record.matricule,
                   noms: record.name,
                   idDossier: record.idDossier
                 }
@@ -81,11 +81,11 @@ const columns = [
             </Link>
           </div>
           <div style={record.dateNotation === "---" ? { display: "none" } : {}}>
-            <Link 
-              to="/acteur/jury/notation" 
+            <Link
+              to="/acteur/jury/notation"
               state={{
-                etudiantInfo: { 
-                  matricule: record.matricule, 
+                etudiantInfo: {
+                  matricule: record.matricule,
                   noms: record.name,
                   idDossier: record.idDossier
                 }
@@ -165,7 +165,7 @@ const TableList = () => {
           />
         ),
         matricule: etud.matricule,
-        name: etud.nom + ' '  + etud.prenom,
+        name: etud.nom + ' ' + etud.prenom,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
         dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---',
         idDossier: envoiObj.dossier.id
@@ -179,8 +179,8 @@ const TableList = () => {
     <>
       <ToastContainer />
       <div className=" mx-3 my-3" style={{ overflow: "scroll" }}>
-        <div style={{backgroundColor: "#2a1c5a",borderRadius:"10px" }}>
-          <h5  className="text-center py-3" style={{color:"white"}}>
+        <div style={{ backgroundColor: "#2a1c5a", borderRadius: "10px" }}>
+          <h5 className="text-center py-3" style={{ color: "white" }}>
             LISTE DES DOSSIERS ETUDIANTS
           </h5>
         </div>

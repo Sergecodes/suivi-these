@@ -4,6 +4,7 @@ const {
   CategorieFichierThese,
   ModelNotif,
   Niveau,
+  RejetStatut,
   CategorieNote,
   ActeurDossier,
   EtapeDossier: EtapeDossierEnum,
@@ -21,13 +22,11 @@ const DossierSchema = new Schema(
   {
     etudiant: { type: Schema.Types.ObjectId, ref: "Etudiant", required: true },
     sujet: { type: String, required: true },
-    // statut: {
-    //     type: String,
-    //     required: true,
-    //     default: StatutDossier.ATTENTE_VALIDATION,
-    //     enum: Object.values(StatutDossier)
-    // },
-    // raisonStatut: String,
+    rejeteParActeur: {
+      type: String,
+      enum: Object.values(ActeurDossier)
+    },
+    raisonRejet: String,
   },
   {
     timestamps: { createdAt: "dateDepot", updatedAt: "misAJourLe" },

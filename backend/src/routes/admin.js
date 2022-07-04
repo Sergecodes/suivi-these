@@ -43,6 +43,18 @@ router.route('/etudiants/:id/rejeter-inscription').put(
    controller.rejeterInscriptionEtudiant
 );
 
+router.route('/etudiants/:id/set-juges').put(
+   isAdmin, 
+   getEtudiantFromParam,
+   controller.setEtudiantJuges
+);
+
+router.route('/etudiants/:id/envoyer-dossier-juges').post(
+   isAdmin,
+   getEtudiantFromParam,
+   controller.envoyerDossierJuges
+)
+
 router.route('/dossiers/:id/accepter').put(
    isAdmin, 
    getDossierFromParam,

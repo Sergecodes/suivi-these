@@ -1,10 +1,15 @@
 import { Table, Modal, Select, Button } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 import moment from "moment";
 import { BsPerson, BsX, BsCheck } from "react-icons/bs";
 import { MdSend } from "react-icons/md";
+import { ACTEURS } from '../../constants/Constant';
 
 const { Option } = Select;
+
 
 const DossierMaster = () => {
   let defaultJuries = (function () {
@@ -19,6 +24,9 @@ const DossierMaster = () => {
     }
     return output;
   })();
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
   const juryData = defaultJuries;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [listeJury, setListeJury] = useState([]);
@@ -28,24 +36,23 @@ const DossierMaster = () => {
   const [selectedJury, setSelectedJury] = useState(juryData);
   // tempJury to backup choices after user closes page
   const [tempJury, setTempJury] = useState([]);
-  const [data, setData] = useState([
-    {
-      key: "1",
-      photo: (
-        <img
-          src=""
-          alt="profil"
-          className="rounded-circle"
-          style={{ width: "50px", height: "50px" }}
-        />
-      ),
-      matricule: "19M2214",
-      name: "kuntz",
-      dateEnvoi: "20-11-2021",
-      dateVerification: "---",
-      jury: defaultJuries,
-    },
-  ]);
+  const [data, setData] = useState([{
+    key: "1",
+    photo: (
+      <img
+        src=""
+        alt="profil"
+        className="rounded-circle"
+        style={{ width: "50px", height: "50px" }}
+      />
+    ),
+    dossier: {},
+    matricule: "",
+    name: "",
+    dateEnvoi: "",
+    dateVerification: "---",
+    juries: defaultJuries,
+  }]);
 
   const columns = [
     {
@@ -89,35 +96,111 @@ const DossierMaster = () => {
     },
     {
       title: "Actions",
-      render: (record) => {
-        return (
-          <div className="d-flex fs-4 justify-content-around align-items-center">
-            <BsPerson
-              className="me-2"
-              style={{ color: "#513e8f" }}
-              onClick={() => {
-                showModal();
-                setListeJury(record.jury);
-              }}
-            />
-            <button
-              className="btn autorisationButton"
-              onClick={() => {
-                alert("envoi du dossier reussi");
-              }}
-            >
-              <MdSend className="me-1"/> Envoyer
-            </button>
-          </div>
-        );
-      },
+      render: (record) => (
+        <div className="d-flex fs-4 justify-content-around align-items-center">
+          <BsPerson
+            className="me-2"
+            style={{ color: "#513e8f" }}
+            onClick={() => {
+              showModal();
+              setListeJury(record.juries);
+            }}
+          />
+          <button
+            className="btn autorisationButton"
+            onClick={(e) => handleSubmit(e, record.dossier)}
+          >
+            <MdSend className="me-1" /> Envoyer
+          </button>
+        </div>
+      ),
       align: "center",
     },
   ];
 
-  const handleSubmit = () => {
-    setListeJury(tempJury);
-    setModified(false);
+  useEffect(() => {
+    Promise.all([
+      axios.get(`/admin/dossiers-master`),
+      // To get the dateVerification, we need to get the dossiers sent to the juries
+      // from the admin and retrieve the envoyeLe attribute.
+      axios.get('/dossiers-envoyes', {
+        envoyePar: user.id,
+        envoyeParModel: ACTEURS.ADMIN,
+        destinataireModel: ACTEURS.JURY
+      })
+    ])
+      .then(results => {
+        const [res1, res2] = results;
+        console.log(res1);
+        console.log(res2);
+        setData(parseResult(res1.data, res2.data));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue!", { hideProgressBar: true });
+      })
+  }, []);
+
+  const parseResult = (envois1Data, envois2Data) => {
+    let result = [];
+    for (let envoiObj of envois1Data) {
+      let dossier = envoiObj.dossier;
+      let etud = dossier.etudiant;
+      let envoi2Obj = envois2Data.find(obj => obj.dossier.id === dossier.id);
+
+      result.push({
+        key: envoiObj.id,
+        photo: (
+          <img
+            src={etud.urlPhotoProfil}
+            alt="profil"
+            className="rounded-circle"
+            style={{ width: "50px", height: "50px" }}
+          />
+        ),
+        dossier,
+        matricule: etud.matricule,
+        name: etud.nom + ' ' + etud.prenom,
+        dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
+        juries: etud.juges.map(jury => {
+          return { id: jury.id, nom: jury.nom, prenom: jury.prenom, email: jury.email }
+        })
+      });
+    }
+
+    return result;
+  }
+
+  const handleSubmit = (e, dossier) => {
+    console.log(listeJury);
+    let etud = dossier.etudiant;
+
+    Promise.all([
+      axios.put(`/admin/etudiants/${etud.id}/set-juges`, {
+        idDepartement: etud.departement,
+        juges: listeJury.map(jury => jury.id)
+      }),
+      axios.post(`/etudiants/${etud.id}/envoyer-dossier-juges`)
+    ])
+      .then(results => {
+        const [res1, res2] = results;
+        console.log(res1);
+        console.log(res2);
+
+        toast.success('Succes!', { hideProgressBar: true });
+
+        setTimeout(() => {
+          toast.dismiss();
+
+          // Reload(re-render) page
+          navigate(0);
+        }, 3000);
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue!", { hideProgressBar: true });
+      });
   };
 
   const showModal = () => setIsModalVisible(true);
@@ -134,7 +217,8 @@ const DossierMaster = () => {
   };
 
   return (
-    <section className = "mt-4">
+    <section className="mt-4">
+      <ToastContainer />
       <div className="tableTitleDisplay mx-3">
         <h5>DOSSIERS MASTER</h5>
         <p>
@@ -158,88 +242,89 @@ const DossierMaster = () => {
           ]}
         >
           <div>
-            {listeJury.map((jury, index) => {
-              return (
-                <div key={jury.id}>
-                  {!(modified && current === jury.id) ? (
-                    <div className="d-flex align-items-center justify-content-around">
-                      <p className="fw-lighter fs-6">{jury.email}</p>
-                      <p
-                        style={
-                          modified === true
-                            ? { display: "none" }
-                            : { color: "#513e8f", cursor: "pointer" }
-                        }
-                        onClick={() => {
-                          setModified(!modified);
-                          setIndex(index);
-                          setCurrent(jury.id);
-                          setSelectedJury(
-                            (function () {
-                              let output = [],
-                                first = 1,
-                                second = 2;
-                              if (index === 1) {
-                                first = 0;
-                                second = 2;
-                                console.log("enter");
-                              }
-                              if (index === 2) {
-                                first = 0;
-                                second = 1;
-                              }
-                              for (let i in juryData) {
-                                if (
-                                  juryData[i].email !==
-                                    listeJury[first].email &&
-                                  juryData[i].email !== listeJury[second].email
-                                ) {
-                                  output.push(juryData[i]);
-                                }
-                              }
-
-                              return output;
-                            })()
-                          );
-                        }}
-                      >
-                        Modifier
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="d-flex align-items-center justify-content-around my-1">
-                      {
-                        <Select
-                          defaultValue={selectedJury[0].email}
-                          onChange={(value, option) =>
-                            handleChange(value, option)
-                          }
-                        >
-                          {selectedJury.map((elt) => {
-                            return (
-                              <Option key={elt.id} value={elt.email}>
-                                {elt.email}
-                              </Option>
-                            );
-                          })}
-                        </Select>
+            {listeJury.map((jury, index) => (
+              <div key={jury.id}>
+                {!(modified && current === jury.id) ? (
+                  <div className="d-flex align-items-center justify-content-around">
+                    <p className="fw-lighter fs-6">{jury.email}</p>
+                    <p
+                      style={
+                        modified === true
+                          ? { display: "none" }
+                          : { color: "#513e8f", cursor: "pointer" }
                       }
-                      <div className="fs-3">
-                        <BsX
-                          style={{ color: "red", cursor: "pointer" }}
-                          onClick={() => setModified(false)}
-                        />
-                        <BsCheck
-                          className="ms-2"
-                          style={{ color: "green", cursor: "pointer" }}
-                          onClick={handleSubmit}
-                        />
-                      </div>
+                      onClick={() => {
+                        setModified(!modified);
+                        setIndex(index);
+                        setCurrent(jury.id);
+                        setSelectedJury(
+                          (function () {
+                            let output = [],
+                              first = 1,
+                              second = 2;
+                            if (index === 1) {
+                              first = 0;
+                              second = 2;
+                              console.log("enter");
+                            }
+                            if (index === 2) {
+                              first = 0;
+                              second = 1;
+                            }
+                            for (let i in juryData) {
+                              if (
+                                juryData[i].email !==
+                                listeJury[first].email &&
+                                juryData[i].email !== listeJury[second].email
+                              ) {
+                                output.push(juryData[i]);
+                              }
+                            }
+
+                            return output;
+                          })()
+                        );
+                      }}
+                    >
+                      Modifier
+                    </p>
+                  </div>
+                ) : (
+                  <div className="d-flex align-items-center justify-content-around my-1">
+                    {
+                      <Select
+                        defaultValue={selectedJury[0].email}
+                        onChange={(value, option) =>
+                          handleChange(value, option)
+                        }
+                      >
+                        {selectedJury.map((elt) => {
+                          return (
+                            <Option key={elt.id} value={elt.email}>
+                              {elt.email}
+                            </Option>
+                          );
+                        })}
+                      </Select>
+                    }
+                    <div className="fs-3">
+                      <BsX
+                        style={{ color: "red", cursor: "pointer" }}
+                        onClick={() => setModified(false)}
+                      />
+                      <BsCheck
+                        className="ms-2"
+                        style={{ color: "green", cursor: "pointer" }}
+                        onClick={() => {
+                          setListeJury(tempJury);
+                          setModified(false);
+                        }}
+                      />
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </Modal>
       </div>

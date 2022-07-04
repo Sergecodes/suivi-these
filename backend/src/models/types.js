@@ -117,15 +117,6 @@ const CategorieFichierThese = Object.freeze({
 });
 
 
-const StatutDossier = Object.freeze({
-    ATTENTE_VALIDATION: "En attente de validation",
-    ACCEPTE_ADMIN: "Validé par l'admin",
-    ACCEPTE_DEPARTEMENT: "Validé par le departement",
-    REJETE_ADMIN: "Rejeté par l'admin",
-    REJETE_DEPARTEMENT: "Rejeté par le departement" // Pour les etudiants de master
-});
-
-
 const TypeExpert = Object.freeze({
     INTERNE: "Interne",
     EXTERNE: "Externe"
@@ -194,7 +185,7 @@ const CategorieNote = Object.freeze({
 module.exports = {
     Niveau, Sexe, TypeNotification, ActeurDossier, GerantEtapeDossier,
     EtapeDossier, GradeExpert, AvisEmetteur, CategorieNote, AvisDestinataire,
-    StatutDossier, ModelNotif, Avis, TypeExpert, GradeJury, 
+    ModelNotif, Avis, TypeExpert, GradeJury, AvisDestinataire,
     CategorieFichierThese, CategorieFichierMaster, ACTEURS
 }
 

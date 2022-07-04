@@ -1,17 +1,29 @@
-import { useState } from "react";
-import { JuryData } from "../../constants/Constant";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import { toast, ToastContainer } from "react-toastify";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 
 const ProfilAdmin = () => {
-  const [tel, setTel] = useState(JuryData.numTelephone);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    alert(tel);
-  };
+  useEffect(() => {
+    toast.info(
+      "Vous devriez vous reconnecter si vous changez votre email ou mot de passe",
+      { hideProgressBar: true }
+    );
+  }, []);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+
+  }
+
   return (
     <section className="my-5">
+      <ToastContainer />
       <div
         className="row d-flex justify-content-center"
         style={{ width: "100%" }}
@@ -35,55 +47,17 @@ const ProfilAdmin = () => {
               </p>
             </div>
             <div className="col-12 col-md-6  ">
-              <div className="acteurInputDisabled">
-                <p> matricule</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.matricule}
-                ></input>
-              </div>
+
               <div className="acteurInputDisabled">
                 <p> Email</p>
                 <input
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.email}
+                  defaultValue="admin email"
                 ></input>
               </div>
-              <div className="acteurInputDisabled">
-                <p> Nom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.nom}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Prenom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.prenom}
-                ></input>
-              </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill className="me-1" />
-                  Modifier le numéro{" "}
-                </p>
-                <input
-                  className="form-control "
-                  type="text"
-                  value={tel}
-                  onChange={(e) => setTel(e.target.value)}
-                ></input>
-              </div>
+
               <div className="acteurInput">
                 <p>
                   {" "}
@@ -93,9 +67,9 @@ const ProfilAdmin = () => {
                 <input
                   className="form-control "
                   type="password"
-                  name="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  name="oldPassword"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
                 ></input>
               </div>
               <div className="acteurInput">
@@ -103,9 +77,9 @@ const ProfilAdmin = () => {
                   {" "}
                   <BsPencilFill
                     className="me-1"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    name="newPassword"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                   Confirmer le mot de passe
                 </p>
