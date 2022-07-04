@@ -37,7 +37,7 @@ const columns = [
     dataIndex: "dateEnvoi",
     sorter: {
       compare: (a, b) =>
-        moment(a.dateEnvoi).unix() - moment(b.dateEnvoi).unix(),
+        moment(a.initDateEnvoi).unix() - moment(b.initDateEnvoi).unix(),
     },
     align: "center",
   },
@@ -46,7 +46,7 @@ const columns = [
     dataIndex: "dateNotation",
     sorter: {
       compare: (a, b) =>
-        moment(a.dateEnvoi).unix() - moment(b.dateEnvoi).unix(),
+        moment(a.initDateNotation).unix() - moment(b.initDateNotation).unix(),
     },
     align: "center",
   },
@@ -166,7 +166,9 @@ const TableList = () => {
         ),
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
+        initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        initDateNotation: moment(noteObj.noteLe),
         dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---',
         idDossier: envoiObj.dossier.id
       });

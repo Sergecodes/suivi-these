@@ -23,7 +23,9 @@ const TableListDepartement = () => {
     ),
     matricule: "",
     name: "",
+    initDateEnvoi: '',
     dateEnvoi: '',
+    initDateVerification: '',
     dateVerification: "---"
   }]);
 
@@ -54,7 +56,7 @@ const TableListDepartement = () => {
       dataIndex: "dateEnvoi",
       sorter: {
         compare: (a, b) =>
-          moment(a.dateEnvoi).unix() - moment(b.dateEnvoi).unix(),
+          moment(a.initDateEnvoi).unix() - moment(b.initDateEnvoi).unix(),
       },
       align: "center",
     },
@@ -63,7 +65,7 @@ const TableListDepartement = () => {
       dataIndex: "dateVerification",
       sorter: {
         compare: (a, b) =>
-          moment(a.dateVerification).unix() - moment(b.dateVerification).unix(),
+          moment(a.initDateVerification).unix() - moment(b.initDateVerification).unix(),
       },
       align: "center",
     },
@@ -132,7 +134,9 @@ const TableListDepartement = () => {
         ),
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
+        initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        initDateVerification: envoi2Obj.envoyeLe,
         dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
       });
     }

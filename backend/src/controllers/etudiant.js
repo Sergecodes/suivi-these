@@ -15,8 +15,39 @@ const { removePassword, getEtapeWording, getActeur } = require('../utils');
 moment.locale('fr');
 
 
-exports.getAll = async function (req, res) {
-	res.json( await Etudiant.find({}) );
+exports.getEtudiants = async function (req, res) {
+   let filter = req.body.filter || {};
+   res.json(await Etudiant.find(filter));
+}
+
+exports.etudiantsMaster = async function (req, res) {
+   let etuds = await Etudiant
+      .find({ niveau: Types.Niveau.MASTER })
+      .where('compteValideLe').nin([undefined, ''])
+      .populate({
+         path: 'departement',
+         select: '-motDePasse',
+         populate: {
+            path: 'uniteRecherche'
+         }
+      });
+   
+   res.json(etuds);
+}
+
+exports.etudiantsThese = async function (req, res) {
+   let etuds = await Etudiant
+      .find({ niveau: Types.Niveau.THESE })
+      .where('compteValideLe').nin([undefined, ''])
+      .populate({
+         path: 'departement',
+         select: '-motDePasse',
+         populate: {
+            path: 'uniteRecherche'
+         }
+      });
+   
+   res.json(etuds);
 }
 
 exports.getOne = function (req, res) {
