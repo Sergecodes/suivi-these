@@ -49,7 +49,9 @@ const DossierMaster = () => {
     dossier: {},
     matricule: "",
     name: "",
+    initDateEnvoi: '',
     dateEnvoi: "",
+    initDateVerification: '',
     dateVerification: "---",
     juries: defaultJuries,
   }]);
@@ -81,7 +83,7 @@ const DossierMaster = () => {
       dataIndex: "dateEnvoi",
       sorter: {
         compare: (a, b) =>
-          moment(a.dateEnvoi).unix() - moment(b.dateEnvoi).unix(),
+          moment(a.initDateEnvoi).unix() - moment(b.initDateEnvoi).unix(),
       },
       align: "center",
     },
@@ -90,7 +92,7 @@ const DossierMaster = () => {
       dataIndex: "dateVerification",
       sorter: {
         compare: (a, b) =>
-          moment(a.dateVerification).unix() - moment(b.dateVerification).unix(),
+          moment(a.initDateVerification).unix() - moment(b.initDateVerification).unix(),
       },
       align: "center",
     },
@@ -161,7 +163,9 @@ const DossierMaster = () => {
         dossier,
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
+        initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        initDateVerification: envoi2Obj.envoyeLe,
         dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
         juries: etud.juges.map(jury => {
           return { id: jury.id, nom: jury.nom, prenom: jury.prenom, email: jury.email }

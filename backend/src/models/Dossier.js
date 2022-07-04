@@ -91,17 +91,16 @@ DossierSchema.methods.getEtapeActuelle = async function () {
 };
 
 DossierSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
-  await this.populate({
-    path: "etudiant",
-    select: "niveau",
-  });
+  let dossier = this;
+  await dossier.populate('etudiant', 'niveau');
+
   const numDerniereEtape = (function () {
-    return this.etudiant.niveau === Niveau.MASTER
+    return dossier.etudiant.niveau === Niveau.MASTER
       ? FINAL_NUM_ETAPE_MASTER
       : FINAL_NUM_ETAPE_THESE;
   })();
 
-  const etapeActu = await this.getEtapeActuelle();
+  const etapeActu = await dossier.getEtapeActuelle();
   if (numEtapeSuivante === undefined) {
     numEtapeSuivante = etapeActu.numEtape + 1;
   }
@@ -117,7 +116,7 @@ DossierSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
 
     try {
       await EtapeDossier.create({
-        dossier: this._id,
+        dossier: dossier._id,
         numEtape: numEtapeSuivante,
       });
     } catch (err) {

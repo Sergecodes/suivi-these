@@ -177,14 +177,20 @@ exports.notifications = async function (req, res) {
  * Obtenir les demandes d'inscription des etudiants
  */
 exports.demandesInscription = async function (req, res) {
-   let etudiants = [];
-   for (let etud of await Etudiant.find({})) {
-      if (await etud.getEtapeActuelle().numEtape === Types.EtapeDossier.ZERO) {
-         etudiants.push(etud);
-      }
-   }
+   // Get students whose accounts have not yet being validated
+   // (where compteValideLe is '')
+   let etuds = Etudiant
+      .where('compteValideLe')
+      .equals('')
+      .populate({
+         path: 'departement',
+         select: '-motDePasse',
+         populate: {
+            path: 'uniteRecherche'
+         }
+      });
 
-   res.json({ etudiants });
+   res.json(etuds);
 }
 
 exports.accepterInscriptionEtudiant = async function (req, res) {
