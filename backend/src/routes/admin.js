@@ -49,6 +49,12 @@ router.route('/etudiants/:id/set-juges').put(
    controller.setEtudiantJuges
 );
 
+router.route('/etudiants/:id/envoyer-dossier-juges').post(
+   isAdmin,
+   getEtudiantFromParam,
+   controller.envoyerDossierJuges
+)
+
 router.route('/dossiers/:id/accepter').put(
    isAdmin, 
    getDossierFromParam,

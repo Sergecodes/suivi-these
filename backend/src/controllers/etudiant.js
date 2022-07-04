@@ -572,7 +572,8 @@ exports.setJugesMaster = async function (req, res) {
 
    etudiant.juges = juges;
    await etudiant.save();
-   return res.send("Succes");
+   await etudiant.populate('juges', '-motDePasse');
+   res.json(etudiant.juges);
 }
 
 exports.datesSoutenance = function (req, res) {

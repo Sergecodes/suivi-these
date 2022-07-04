@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import moment from "moment";
 import { toast, ToastContainer } from 'react-toastify'
-import { BsPenFill} from "react-icons/bs";
+import { BsPenFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { ACTEURS } from '../../constants/Constant';
 
 
 const TableListDepartement = () => {
   const user = JSON.parse(localStorage.getItem('user'));
-  
+
   const [data, setData] = useState([{
     key: "1",
     photo: (
@@ -69,23 +69,21 @@ const TableListDepartement = () => {
     },
     {
       title: "Actions",
-      render: (record) => {
-        return (
-          <div className="d-flex fs-4 justify-content-around ">
-            <Link to="/acteur/departement/verification" 
-                state={{
-                  etudiantInfo: { 
-                    matricule: record.matricule, 
-                    name: record.name,
-                    dossier: record.dossier
-                  }
-                }}
-            >
-              <BsPenFill style={{ color: "#513e8f" }} />
-            </Link>
-          </div>
-        );
-      },
+      render: (record) => (
+        <div className="d-flex fs-4 justify-content-around ">
+          <Link to="/acteur/departement/verification"
+            state={{
+              etudiantInfo: {
+                matricule: record.matricule,
+                name: record.name,
+                dossier: record.dossier
+              }
+            }}
+          >
+            <BsPenFill style={{ color: "#513e8f" }} />
+          </Link>
+        </div>
+      ),
       align: "center",
     },
   ];
@@ -133,7 +131,7 @@ const TableListDepartement = () => {
           />
         ),
         matricule: etud.matricule,
-        name: etud.nom + ' '  + etud.prenom,
+        name: etud.nom + ' ' + etud.prenom,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
         dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
       });

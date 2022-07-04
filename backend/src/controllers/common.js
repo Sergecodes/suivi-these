@@ -42,12 +42,15 @@ exports.dossiersEnvoyes = async function (req, res) {
         envoyeParModel
     }).populate({
         path: 'dossier',
-        populate: {
-        path: 'etudiant',
-        select: '-motDePasse -niveau -dossier -misAJourLe',
-        // match: { niveau: Types.Niveau.MASTER },
-        // populate: 'juges'
-        }
+        populate: [
+            {
+                path: 'etudiant',
+                select: '-motDePasse -niveau -dossier -misAJourLe',
+                // match: { niveau: Types.Niveau.MASTER },
+                // populate: 'juges'
+            },
+			{ path: 'fichiers' }
+        ]
     });
   
     return res.json(envoisDossiers);
@@ -86,10 +89,10 @@ exports.avisDonnes = async function (req, res) {
     }).populate({
         path: 'dossier',
         populate: {
-        path: 'etudiant',
-        select: '-motDePasse -niveau -dossier -misAJourLe',
-        // match: { niveau: Types.Niveau.MASTER },
-        // populate: 'juges'
+            path: 'etudiant',
+            select: '-motDePasse -niveau -dossier -misAJourLe',
+            // match: { niveau: Types.Niveau.MASTER },
+            // populate: 'juges'
         }
     });
   

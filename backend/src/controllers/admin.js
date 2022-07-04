@@ -9,162 +9,162 @@ const { removePassword } = require('../utils');
 
 
 exports.getAll = async function (req, res) {
-	res.json( await Admin.find({}) );
+   res.json(await Admin.find({}));
 }
 
 exports.getOne = function (req, res) {
-	const { admin } = res.locals;
-	res.json(admin);
+   const { admin } = res.locals;
+   res.json(admin);
 }
 
 exports.delete = function (req, res) {
-	Admin.findByIdAndRemove(req.params.id, (err, doc) => {
-		if (!doc) {
-			return res.status(404).send("Not found");
-		}
+   Admin.findByIdAndRemove(req.params.id, (err, doc) => {
+      if (!doc) {
+         return res.status(404).send("Not found");
+      }
 
-		if (err) {
-			console.error(err);
-			return res.status(500).json(err);
-		}
+      if (err) {
+         console.error(err);
+         return res.status(500).json(err);
+      }
 
-		return res.status(204).send("Succes");
-	});
+      return res.status(204).send("Succes");
+   });
 }
 
 exports.register = function (req, res) {
-    let admin = new Admin();
-    admin.motDePasse = req.body.motDePasse;
-    admin.email = req.body.email;
+   let admin = new Admin();
+   admin.motDePasse = req.body.motDePasse;
+   admin.email = req.body.email;
 
-    admin.save(function (err, nouveau_admin) {
-        if (err) {
-            console.error("erreur lors de l'enregistrement dun admin: ", err);
-            return res.status(500).json({ 
-                success: false, 
-                message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique", 
-                error: err 
-            });
-        }
+   admin.save(function (err, nouveau_admin) {
+      if (err) {
+         console.error("erreur lors de l'enregistrement dun admin: ", err);
+         return res.status(500).json({
+            success: false,
+            message: "quelque chose s'est mal passer lors de l'enregistrement d'un nouveau conseil scientifique",
+            error: err
+         });
+      }
 
-        res.status(201).json({
-            success: true,
-            message: "Enregistre avec succes",
-            data: removePassword(nouveau_admin.toJSON())
-        });
-    })
+      res.status(201).json({
+         success: true,
+         message: "Enregistre avec succes",
+         data: removePassword(nouveau_admin.toJSON())
+      });
+   })
 }
 
 exports.login = async function (req, res) {
-    try {
-        const { email, motDePasse } = req.body;
-        let admin = await Admin.findOne({ email });
-        if (!admin) { return res.status(404).send("Invalid credentials") };
+   try {
+      const { email, motDePasse } = req.body;
+      let admin = await Admin.findOne({ email });
+      if (!admin) { return res.status(404).send("Invalid credentials") };
 
-        bcrypt.compare(motDePasse, admin.motDePasse, function (err, result) {
-            if (err) {
-                console.error("une erreur interne est suvenue: ", err);
-                return res.status(500).json({
-                    success: false, message: "une erreur interne est survenue",
-                    error: err
-                });
-            }
+      bcrypt.compare(motDePasse, admin.motDePasse, function (err, result) {
+         if (err) {
+            console.error("une erreur interne est suvenue: ", err);
+            return res.status(500).json({
+               success: false, message: "une erreur interne est survenue",
+               error: err
+            });
+         }
 
-            if (!result) {
-                res.status(404).json({
-                    success: false,
-                    message: "Invalid credentials"
-                })
+         if (!result) {
+            res.status(404).json({
+               success: false,
+               message: "Invalid credentials"
+            })
+         } else {
+            // Create user session
+            req.session.user = {
+               _id: admin._id,
+               model: Types.ACTEURS.ADMIN
+            };
+
+            res.json({
+               success: true,
+               message: "Connexion reussie",
+               data: removePassword(admin.toJSON())
+            });
+         }
+      })
+   } catch (error) {
+      console.error(error)
+      res.status(500).send("Something went wrong");
+   }
+
+}
+
+exports.changePassword = function (req, res) {
+   try {
+      const { admin } = res.locals;
+      const { actualPass, newPass } = req.body;
+
+      bcrypt.compare(actualPass, admin.motDePasse, function (err, result) {
+         if (err) {
+            console.error("une erreur est survenue: ", err);
+            return res.status(400).json({ success: false, message: "Une erreur est survenue", error: err })
+         }
+         if (result == true) {
+            if (newPass == '') {
+               return res.status(400).json({ success: false, message: "veuillez svp entrer un mot de passe" })
             } else {
-                // Create user session
-                req.session.user = {
-                    _id: admin._id,
-                    model: Types.ACTEURS.ADMIN
-                };
+               if (passwordComplexity().validate(newPass).error) {
+                  return res.status(400).json({ success: false, message: "mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre," });
+               } else {
+                  console.log("mot de passe valide");
 
-                res.json({
-                    success: true,
-                    message: "Connexion reussie",
-                    data: removePassword(admin.toJSON())
-                });
+               }
             }
-        })
-    } catch (error) {
-        console.error(error)
-        res.status(500).send("Something went wrong");
-    }
+            admin.motDePasse = newPass;
+            admin.save(function (err, newAdmin) {
+               if (err) {
+                  res.status(500).json({ success: false, message: "Une erreur est survenue lors de la mise a jour de vos informations", error: err })
+               } else {
+                  if (req.session)
+                     req.session.destroy();
 
+                  res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
+               }
+            })
+         } else {
+            res.status(401).json({ message: "les mots de passe ne correspondent pas" });
+         }
+      });
+
+   } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+   }
 }
 
-exports.changePassword = function(req,res) {
-	try{
-		const { admin } = res.locals;
-		const { actualPass, newPass } = req.body;
+exports.changeEmail = function (req, res) {
+   const { newEmail } = req.body;
+   const { admin } = res.locals;
 
-		bcrypt.compare(actualPass, admin.motDePasse,function(err,result){
-			if(err){
-				console.error("une erreur est survenue: " , err);
-				return res.status(400).json({success:false,message:"Une erreur est survenue",error:err})
-			}
-			if(result == true){
-				if(newPass == ''){
-					return res.status(400).json({success:false,message: "veuillez svp entrer un mot de passe"})
-				}else{
-					if(passwordComplexity().validate(newPass).error){
-						return res.status(400).json({success:false,message:"mot de passe invalide, Svp votre mot de passe doit contenir 8 caractere au minimum, et 26 au maximale,au moin 1 caractere minuscule, au moin un caractere majuscule,au moin un symbole, au moin un chiffre,"});
-					}else{
-						console.log("mot de passe valide");
+   if (!newEmail)
+      return res.send("newEmail n'est pas dans la requete").status(400);
 
-					}
-				}
-				admin.motDePasse = newPass;
-				admin.save(function(err, newAdmin){
-					if(err){
-						res.status(500).json({success:false,message:"Une erreur est survenue lors de la mise a jour de vos informations",error:err})
-					}else{
-						if (req.session)
-							req.session.destroy();
+   if (admin.email === newEmail) {
+      if (req.session)
+         req.session.destroy();
 
-						res.json({ success: true, message: "Mot de passe mis a jour, vous avez ete deconnecte" });
-					}
-				})
-			}else{
-				res.status(401).json({message:"les mots de passe ne correspondent pas"});
-			}
-		});
+      return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
+   }
 
-	} catch(error){
-		console.error(error);
-		res.status(500).send("Internal Server Error");
-	}
-}
+   admin.email = newEmail;
+   admin.save(function (err, newAdmin) {
+      if (err) {
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau email: ", err);
+         res.status(500).json({ success: false, message: "Internal server error", error: err });
+      }
 
-exports.changeEmail = function(req,res){
-	const { newEmail } = req.body;
-	const { admin } = res.locals;
+      if (req.session)
+         req.session.destroy();
 
-	if (!newEmail)
-		return res.send("newEmail n'est pas dans la requete").status(400);
-
-	if (admin.email === newEmail) {
-		if (req.session)
-			req.session.destroy();
-
-		return res.json({ message: "Cet email est votre email actuel, vous avez ete deconnecte" });
-	}
-	
-	admin.email = newEmail;
-	admin.save(function(err, newAdmin){
-		if(err){
-			console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau email: ", err);
-			res.status(500).json({success:false, message:"Internal server error", error:err});
-		}
-
-		if (req.session)
-			req.session.destroy();
-
-		res.json({success:true, message:"Email mis a jour, vous avez ete deconnecte"});
-	});
+      res.json({ success: true, message: "Email mis a jour, vous avez ete deconnecte" });
+   });
 }
 
 exports.notifications = async function (req, res) {
@@ -212,20 +212,48 @@ exports.rejeterInscriptionEtudiant = async function (req, res) {
 }
 
 exports.setEtudiantJuges = async function (req, res) {
-   const { idDepartement } = req.body;
+   const { idDepartement, juges } = req.body;
    const { etudiant } = res.locals;
 
-	if (etudiant.departement !== idDepartement) {
-		return res.status(403).send("Cet etudiant n'est pas de ce departement");
-	}
-	
+   if (etudiant.departement !== idDepartement) {
+      return res.status(403).send("Cet etudiant n'est pas de ce departement");
+   }
+
    if (etudiant.niveau !== Types.Niveau.MASTER) {
       return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
    }
 
-   etudiant.juges = req.body.juges;
+   etudiant.juges = juges;
    await etudiant.save();
-   res.send("Succes");
+   await etudiant.populate('juges', '-motDePasse');
+   res.json(etudiant.juges);
+}
+
+exports.envoyerDossierJuges = async function (req, res) {
+   const { etudiant } = res.locals;
+   const juges = etudiant.juges;
+   
+   let defaultObj = {
+      dossier: etudiant.dossier,
+      envoyerParModel: Types.ActeurDossier.ADMIN,
+      destinataireModel: Types.ActeurDossier.JURY,
+      fichiersConcernes: req.body.fichiersConcernes || [],
+      message: req.body.message || ''
+   };
+
+   let array = [];
+   for (let idJuge of juges) {
+      defaultObj['destinataire'] = idJuge;
+      array.push(defaultObj);
+   }
+
+   try {
+      await EnvoiDossier.insertMany(array);
+      return res.send("Envoye");
+   } catch (err) {
+      console.error(err);
+      return res.status(500).json({ err });
+   }
 }
 
 
@@ -260,20 +288,24 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
    })
       .populate({
          path: 'dossier',
-         populate: {
-            path: 'etudiant',
-            select: '-motDePasse -niveau -dossier -misAJourLe',
-            match: { niveau: Types.Niveau.MASTER },
-            populate: {
-               path: 'juges',
+         populate: [
+            {
+               path: 'etudiant',
+               select: '-motDePasse -niveau -dossier -misAJourLe',
+               match: { niveau: Types.Niveau.MASTER },
                populate: {
-                  path: 'departement',
-                  select: '-motDePasse'
+                  path: 'juges',
+                  select: '-motDePasse',
+                  populate: {
+                     path: 'departement',
+                     select: '-motDePasse'
+                  }
                }
-            }
-         }
+            },
+            { path: 'fichiers' }
+         ]
       });
- 
+
    return res.json(envoisDossiers);
 }
 
@@ -281,13 +313,16 @@ exports.dossiersEtudiantsThese = async function (req, res) {
    let envoisDossiers = await EnvoiDossier.find({
       destinataireModel: Types.ActeurDossier.ADMIN
    }).populate({
-         path: 'dossier',
-         populate: {
+      path: 'dossier',
+      populate: [
+         {
             path: 'etudiant',
             select: '-motDePasse -niveau -dossier -misAJourLe',
             match: { niveau: Types.Niveau.THESE },
-         }
-      });
+         },
+			{ path: 'fichiers' }
+      ]
+   });
 
    return res.json(envoisDossiers);
 }
