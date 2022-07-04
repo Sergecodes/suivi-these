@@ -31,17 +31,17 @@
     text-decoration: underline;
 }
 .autorisationButton{
-    padding:4px 6px;
-    color:green;
-    border:1px solid green;
-    background-color: transparent;
+    padding:4px 8qpx;
+    background-color:green;
+    color:white;
+    border:1px solid transparent;
    
 }
 
 .autorisationButton:hover{
-    background-color:green;
-    color:white;
-    border:1px solid transparent;
+    color:green;
+    border:1px solid green;
+    background-color: transparent;
 }
 
 .rejectButton{
@@ -80,7 +80,7 @@
     color:#513e8f
 }
 .btnEmpty{
-    padding:3px 5px;
+    padding:5px 8px;
     color:#513e8f;
     border:1px solid #513e8f;
     background-color: transparent;
@@ -90,3 +90,4 @@
     min-height: 25vh;
     
 }
+

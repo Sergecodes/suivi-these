@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import moment from "moment";
 import { BsPerson, BsX, BsCheck } from "react-icons/bs";
 import { MdSend } from "react-icons/md";
-import { ACTEURS } from '../../constants/Constant';
+import { ACTEURS } from '../../../constants/Constant';
 
 const { Option } = Select;
 
