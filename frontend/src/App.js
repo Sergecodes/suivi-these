@@ -149,6 +149,18 @@ const App = () => {
             path="/soutenances"
             element={<Soutenance />}
           />
+          <Route
+            path="/test"
+            element={<object 
+              data="https://firebasestorage.googleapis.com/v0/b/suivi-these.appspot.com/o/17M5678%20-%202022%5CM%C3%A9moire.pdf?alt=media&token=f3357be7-5cda-4ba0-a555-f15074a53b05"
+              type="application/pdf"
+              width="100%"
+              height="450px"
+            >
+              No pdf plugin
+            </object> }
+          />
+
 
           {/**
            *  */}
