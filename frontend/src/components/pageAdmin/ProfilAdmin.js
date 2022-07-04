@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import { toast, ToastContainer } from "react-toastify";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 
 const ProfilAdmin = () => {
@@ -6,12 +8,22 @@ const ProfilAdmin = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    
+  useEffect(() => {
+    toast.info(
+      "Vous devriez vous reconnecter si vous changez votre email ou mot de passe",
+      { hideProgressBar: true }
+    );
+  }, []);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+
   }
 
   return (
     <section className="my-5">
+      <ToastContainer />
       <div
         className="row d-flex justify-content-center"
         style={{ width: "100%" }}
@@ -35,7 +47,7 @@ const ProfilAdmin = () => {
               </p>
             </div>
             <div className="col-12 col-md-6  ">
-              
+
               <div className="acteurInputDisabled">
                 <p> Email</p>
                 <input
@@ -45,7 +57,7 @@ const ProfilAdmin = () => {
                   defaultValue="admin email"
                 ></input>
               </div>
-             
+
               <div className="acteurInput">
                 <p>
                   {" "}
