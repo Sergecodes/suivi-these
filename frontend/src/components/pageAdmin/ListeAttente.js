@@ -1,112 +1,183 @@
-import { Table } from "antd";
-import React from "react";
+import { Table, Modal } from "antd";
+import axios from 'axios';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { useEffect, useState } from 'react';
 import moment from "moment";
 import { BsCheck, BsX } from "react-icons/bs";
-import axios from "axios";
 
-const columns = [
-  {
-    title: <div className="text-center">Matricule</div>,
-    dataIndex: "matricule",
-    sorter: {
-      compare: (a, b) => a.matricule.localeCompare(b.matricule),
+const { confirm } = Modal;
+
+
+const ListeAttente = () => {
+  const navigate = useNavigate();
+  const [data, setData] = useState([{
+    key: "1",
+    matricule: "",
+    name: "Nom 1 prenom 1",
+    uniteRecherche: "MIBA",
+    email: "",
+    niveau: "",
+    initDateCreation: '',
+    dateCreation: '',
+  }]);
+
+  const columns = [
+    {
+      title: <div className="text-center">Matricule</div>,
+      dataIndex: "matricule",
+      sorter: {
+        compare: (a, b) => a.matricule.localeCompare(b.matricule),
+      },
     },
-  },
-  {
-    title: <div className="text-center">Nom et Prenom</div>,
-    dataIndex: "name",
-    sorter: {
-      compare: (a, b) => a.name.localeCompare(b.name),
+    {
+      title: <div className="text-center">Nom et Prenom</div>,
+      dataIndex: "name",
+      sorter: {
+        compare: (a, b) => a.name.localeCompare(b.name),
+      },
     },
-  },
-  {
-    title: <div className="text-center">Email</div>,
-    dataIndex: "email",
-    sorter: {
-      compare: (a, b) => a.name.localeCompare(b.name),
+    {
+      title: <div className="text-center">Email</div>,
+      dataIndex: "email",
+      sorter: {
+        compare: (a, b) => a.email.localeCompare(b.email),
+      },
     },
-  },
-  {
-    title: <div className="text-center">Unite de recherche</div>,
-    dataIndex: "uniteRecherche",
-    sorter: {
-      compare: (a, b) => a.name.localeCompare(b.name),
+    {
+      title: <div className="text-center">Unite de recherche</div>,
+      dataIndex: "uniteRecherche",
+      sorter: {
+        compare: (a, b) => a.uniteRecherche.localeCompare(b.uniteRecherche),
+      },
     },
-  },
-  {
-    title: <div className="text-center">Niveau</div>,
-    dataIndex: "niveau",
-    sorter: {
-      compare: (a, b) => a.name.localeCompare(b.name),
+    {
+      title: <div className="text-center">Niveau</div>,
+      dataIndex: "niveau",
+      sorter: {
+        compare: (a, b) => a.niveau.localeCompare(b.niveau),
+      },
     },
-  },
-  {
-    title: <div className="text-center">Date de creation</div>,
-    dataIndex: "dateCreation",
-    sorter: {
-      compare: (a, b) =>
-        moment(a.dateCreation).unix() - moment(b.dateCreation).unix(),
+    {
+      title: <div className="text-center">Date de creation</div>,
+      dataIndex: "dateCreation",
+      sorter: {
+        compare: (a, b) =>
+          moment(a.initDateCreation).unix() - moment(b.initDateCreation).unix(),
+      },
     },
-  },
-  {
-    title: "Actions",
-    render: (record) => {
-      return (
+    {
+      title: "Actions",
+      render: (record) => (
         <div className="d-flex fs-3 justify-content-center ">
           <BsCheck
             className="mx-1 correct"
-            onClick={() => {
-              alert("vous voulez confirmer la demande de " + record.matricule);
-            }}
+            onClick={(e) => handleConfirm(e, record)}
             style={{ color: "green" }}
           />
           <BsX
             className="mx-1 wrong"
-            onClick={() => {
-              alert("vous voulez annuler la demande de " + record.matricule);
-            }}
+            onClick={(e) => handleCancel(e, record)}
             style={{ color: "red" }}
           />
         </div>
-      );
+      )
     },
-  },
-];
-var today = new Date();
+  ];
 
-const data = [
-  {
-    key: "1",
-    matricule: "19M2216",
-    name: "Nom 1 prenom 1",
-    uniteRecherche: "MIBA",
-    email: "admin@gmail.com",
-    niveau: "master",
-    dateCreation: today.toLocaleString("en-US"),
-  },
-  {
-    key: "2",
-    matricule: "19M2217",
-    name: "Nom 1 prenom 1",
-    uniteRecherche: "MIBA",
-    email: "admin@gmail.com",
-    niveau: "master",
-    dateCreation: today.toLocaleString("en-US"),
-  },
-  {
-    key: "3",
-    matricule: "19M2218",
-    name: "Nom 1 prenom 1",
-    uniteRecherche: "MIBA",
-    email: "admin@gmail.com",
-    niveau: "master",
-    dateCreation: today.toLocaleString("en-US"),
-  },
-];
+  useEffect(() => {
+    axios.get('/demandes-inscription')
+      .then(res => {
+        console.log(res);
+        setData(parseResult(res.data));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue!", { hideProgressBar: true });
+      });
+  }, []);
 
-const ListeAttente = () => {
+  const parseResult = (resData) => {
+    let result = [];
+    for (let etud of resData) {
+      result.push({
+        key: etud.id,
+        matricule: etud.matricule,
+        name: etud.nom + ' ' + etud.prenom,
+        uniteRecherche: etud.departement.uniteRecherche.code,
+        email: etud.email,
+        niveau: etud.niveau,
+        initDateCreation: etud.creeLe,
+        dateCreation: moment(etud.creeLe).format('dddd, D MMMM YYYY'),
+      });
+    }
+
+    return result;
+  }
+
+  const handleConfirm = (e, etudiant) => {
+    confirm({
+      title: "Voulez-vouz valider la demande d'inscription de cet etudiant?",
+      content: <span className="fw-bold">{etudiant.name} ({ etudiant.matricule })</span>,
+      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
+      okText: 'Oui',
+      cancelText: 'Non',
+      async onOk() {
+        return axios.put(`/admin/etudiants/${etudiant.id}/accepter-inscription`)
+          .then(res => {
+            console.log(res);
+            toast.success("Succes!", { hideProgressBar: true });
+
+            setTimeout(() => {
+              toast.dismiss();
+              navigate(0);
+            }, 3000);
+          })
+          .catch(err => {
+            console.error(err);
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          });
+      },
+      onCancel() {
+
+      }
+    });
+  }
+
+  const handleCancel = (e, etudiant) => {
+    confirm({
+      title: "Voulez-vouz refuser la demande d'inscription de cet etudiant?",
+      content: <span className="fw-bold">{etudiant.name} ({ etudiant.matricule })</span>,
+      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
+      okText: 'Oui',
+      okType: 'danger',
+      cancelText: 'Non',
+      async onOk() {
+        return axios.put(`/admin/etudiants/${etudiant.id}/rejeter-inscription`)
+          .then(res => {
+            console.log(res);
+            toast.success("Succes!", { hideProgressBar: true });
+
+            setTimeout(() => {
+              toast.dismiss();
+              navigate(0);
+            }, 3000);
+          })
+          .catch(err => {
+            console.error(err);
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          });
+      },
+      onCancel() {
+
+      }
+    });
+  }
+
   return (
     <div className=" mx-3 my-3">
+      <ToastContainer />
       <div className="tableTitleDisplay">
         <h5>ATTENTE</h5>
         <p>
@@ -114,7 +185,7 @@ const ListeAttente = () => {
           d'inscription
         </p>
       </div>
-      <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
+      <Table columns={columns} dataSource={data} pagination={{ pageSize: 10 }} />
     </div>
   );
 };

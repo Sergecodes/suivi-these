@@ -52,7 +52,8 @@ const ListeEtudiantsThese = () => {
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
     email: "",
-    dateValidation: '',
+    initDateValidation: '',
+    dateValidation: ''
   }]);
 
   useEffect(() => {

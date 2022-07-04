@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { Modal } from 'antd';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
+
+const { confirm } = Modal;
 
 
 const RapportSoutenance = () => {
@@ -15,28 +19,39 @@ const RapportSoutenance = () => {
   const handleConfirm = () => {
     console.log("Value: ", value);
 
-    axios.post('/donner-avis', {
-      dossier: etudiantInfo.idDossier,
-      rapport: value,
-      type: "Autorisation de soutenance",
-      donnePar: user.id,
-      donneParModel: 'Admin',
-      destinataireModel: 'Coordonateur'
-    })
-      .then(res => {
-        console.log(res);
-        toast.success("Rapport envoyé au Coordonateur avec succes!", { hideProgressBar: true });
+    confirm({
+      title: "Envoyer le rapport?",
+      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
+      okText: 'Oui',
+      cancelText: 'Non',
+      async onOk() {
+        return axios.post('/donner-avis', {
+          dossier: etudiantInfo.idDossier,
+          rapport: value,
+          type: "Autorisation de soutenance",
+          donnePar: user.id,
+          donneParModel: 'Admin',
+          destinataireModel: 'Coordonateur'
+        })
+          .then(res => {
+            console.log(res);
+            toast.success("Rapport envoyé au Coordonateur avec succes!", { hideProgressBar: true });
+    
+            // Close toasts after x seconds and go to previous page
+            setTimeout(() => {
+              toast.dismiss();
+              navigate("/acteur/admin/notes-lecture");
+            }, 3000);
+          })
+          .catch(err => {
+            console.error(err);
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          });
+      },
+      onCancel() {
 
-        // Close toasts after x seconds and go to previous page
-        setTimeout(() => {
-          toast.dismiss();
-          navigate("/acteur/admin/notes-lecture");
-        }, 3000);
-      })
-      .catch(err => {
-        console.error(err);
-        toast.error("Une erreur est survenue!", { hideProgressBar: true });
-      });
+      }
+    });
   }
 
   return (
