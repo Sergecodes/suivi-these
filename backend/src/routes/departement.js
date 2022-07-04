@@ -2,8 +2,7 @@ const router = require('express').Router();
 const controller = require('../controllers/departement');
 const { 
    isAdmin, isDepartement, getDepartement, 
-   getDossierFromReq, getDepartementFromParam, 
-   getEtudiantFromParam 
+   getDossierFromReq, getDepartementFromParam
 } = require('../middlewares');
 
 
@@ -35,14 +34,14 @@ router.route('/dossiers-etudiants-master').get(
    controller.dossiersEtudsMaster
 );
 
-router.route('/valider-dossier').get(
+router.route('/valider-dossier').post(
    isDepartement, 
    getDossierFromReq,
    getDepartement,
    controller.validerDossier
 );
 
-router.route('/rejeter-dossier').get(
+router.route('/rejeter-dossier').post(
    isDepartement, 
    getDossierFromReq,
    getDepartement,
@@ -61,13 +60,6 @@ router.route('/donner-avis-admin').post(
    getDossierFromReq,
    getDepartement, 
    controller.donnerAvisAdmin
-);
-
-router.route('/etudiants/:id/set-juges').put(
-   isDepartement, 
-   getEtudiantFromParam,
-   getDepartement, 
-   controller.setEtudiantJuges
 );
 
 router.route('/:id/juries').get(controller.getJuries);

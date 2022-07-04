@@ -118,22 +118,13 @@ const DepotDossierMaster = () => {
         formData.append(getName(prop), files[prop]);
       }
 
-      // todo, insert sujet data in state too
-      const sujet = "sujet";
-      formData.append("sujet", sujet);
+      formData.append("sujet", dataInfo.masterSubject);
       formData.append("niveau", "MASTER 2");
 
       Promise.all([
         axios.put("/etudiants/uploader-fichiers", formData),
         axios.put(`/etudiants/${user.id}/set-juges`, {
-          juges: (function () {
-            let idJuges = [];
-            for (let juge of dataInfo.juries) {
-              idJuges.push(juge.id);
-            }
-
-            return idJuges;
-          })(),
+          juges: dataInfo.juries.map(jury => jury.id)
         }),
       ])
         .then((results) => {
@@ -141,6 +132,7 @@ const DepotDossierMaster = () => {
           console.log(res1);
           console.log(res2);
           const dossier = res1.data.dossier;
+          const juges = res2.data;
           console.log("about to envoyer dossier");
 
           axios
@@ -154,9 +146,13 @@ const DepotDossierMaster = () => {
             .then((res) => {
               console.log(res);
 
-              // Update dossier and user evolution in localStorage
-              dossier.sujet = sujet;
+              // Update dossier & juges and remove user evolution from localStorage
               user.dossier = dossier;
+              // Note: juges data in localStorage might be wrong in the future in the case where 
+              // the admin changes the juges of the user. 
+              // Thankfully, we won't really need the juges info after the user submits his
+              // file, and also, there will be a timeout for the localStorage store.
+              user.juges = juges;
               localStorage.setItem("user", JSON.stringify(user));
               localStorage.removeItem("evolution");
 

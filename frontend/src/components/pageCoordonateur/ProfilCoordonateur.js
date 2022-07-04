@@ -1,19 +1,28 @@
-import { useState } from 'react';
-import { JuryData } from '../../constants/Constant';
-import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
+import { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import { BsPencilFill } from "react-icons/bs";
 
 
 const ProfilCoordonateur = () => {
-  const [tel, setTel] = useState(JuryData.numTelephone);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [tel, setTel] = useState(user.numTelephone);
+  const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
+  useEffect(() => {
+    toast.info(
+      "Vous devriez vous reconnecter si vous changez votre email ou mot de passe",
+      { hideProgressBar: true }
+    );
+  }, []);
 
   const handleSubmit = (e) => {
     alert(tel)
   }
+
   return (
     <section className="my-5">
+      <ToastContainer />
       <div
         className="row d-flex justify-content-center"
         style={{ width: "100%" }}
@@ -26,35 +35,16 @@ const ProfilCoordonateur = () => {
             Modifier les informations
           </p>
           <div className="row" style={{ width: "100%", margin: "0" }}>
-            <div className="col-12 col-md-6 py-2 d-flex flex-column align-items-center justify-content-center modifPhotoActeur">
-              <BsPersonCircle
-                className="border rounded-circle"
-                style={{ height: "90px", width: "90px", color: "darkgray" }}
-              />
-              <p className="my-2">
-                <BsPencilFill className="me-1" />
-                Modifier votre photo
-              </p>
-            </div>
-            <div className="col-12 col-md-6  ">
+            <div className="col-12 col-md-6">
               <div className="acteurInputDisabled">
-                <p> matricule</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.matricule}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled"  >
                 <p> Email</p>
                 <input
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.email}
+                  defaultValue={user.email}
 
-                ></input>
+                />
               </div>
               <div className="acteurInputDisabled">
                 <p> Nom</p>
@@ -62,8 +52,8 @@ const ProfilCoordonateur = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.nom}
-                ></input>
+                  defaultValue={user.nom}
+                />
               </div>
               <div className="acteurInputDisabled">
                 <p> Prenom</p>
@@ -71,8 +61,8 @@ const ProfilCoordonateur = () => {
                   className="form-control "
                   type="text"
                   disabled={true}
-                  defaultValue={JuryData.prenom}
-                ></input>
+                  defaultValue={user.prenom}
+                />
               </div>
               <div className="acteurInput">
                 <p>
@@ -85,7 +75,7 @@ const ProfilCoordonateur = () => {
                   type="text"
                   value={tel}
                   onChange={(e) => setTel(e.target.value)}
-                ></input>
+                />
               </div>
               <div className="acteurInput">
                 <p>
@@ -96,23 +86,23 @@ const ProfilCoordonateur = () => {
                 <input
                   className="form-control "
                   type="password"
-                  name="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                ></input>
+                  name="oldPassword"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill
                     className="me-1"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    name="newPassword"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                   Confirmer le mot de passe
                 </p>
-                <input className="form-control " type="password"></input>
+                <input className="form-control " type="password" />
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
-const { StatutDossier, ModelNotif, TypeNotification, EtapeDossier } = require('./types')
+const { ActeurDossier, ModelNotif, TypeNotification, EtapeDossier } = require('./types');
 
 
 const AdminSchema = new Schema({
@@ -56,8 +56,8 @@ AdminSchema.virtual('notifications', {
  * @param raison
  */
 AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
-    dossier.statut = StatutDossier.REJETE_ADMIN;
-    dossier.raisonStatut = raison;
+    dossier.rejeteParActeur = ActeurDossier.ADMIN;
+    dossier.raisonRejet = raison;
     await dossier.save();
 
     // Notifier l'etudiant
@@ -71,9 +71,6 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
 }
 
 AdminSchema.methods.accepterDossier = async function (dossier) {
-    dossier.statut = StatutDossier.ACCEPTE_ADMIN;
-    dossier.raisonStatut = '';
-    await dossier.save();
     await dossier.incrementerEtape(EtapeDossier.DEUX_THESE);
 
     // Notifier l'etudiant
@@ -93,6 +90,7 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
     etudiant.compteValideLe = new Date();
     await etudiant.save();
     await etudiant.incrementerEtape(EtapeDossier.UNE);
+    
     await Notification.create({
         type: TypeNotification.COMPTE_VALIDE,
         destinataire: etudiant,

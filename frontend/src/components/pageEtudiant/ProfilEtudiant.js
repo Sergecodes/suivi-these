@@ -85,7 +85,8 @@ const StudentProfile = () => {
               "Mise a jour effectuee avec succes! Vous serez renvoyez a la page de connexion...",
               { hideProgressBar: true }
             );
-
+            
+            // Dismiss all toasts after 3 seconds then navigate to login page
             setTimeout(() => {
               toast.dismiss();
               navigate('/connexion');
