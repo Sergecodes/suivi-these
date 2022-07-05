@@ -133,7 +133,7 @@ import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutena
 /**************************************************************************************************/
 
 /********************************************autres******************************************************/
-import FullPdfDisplay from './components/common/FullPdfDisplay';
+import PdfViewer from './components/common/PdfViewer';
 
 // Configurer les options par defaut d'axios
 import axios from "axios";
@@ -159,7 +159,7 @@ const App = () => {
             path="/soutenances"
             element={<Soutenance />}
           />
-          <Route path="/pdf-viewer" element={<FullPdfDisplay/>} />
+          <Route path="/pdf-viewer" element={<PdfViewer/>} />
           
 
           {/**

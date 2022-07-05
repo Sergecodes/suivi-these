@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 import { DepartementData } from "../../constants/Constant";
+import { useNavigate } from "react-router-dom";
 
 const ProfilDepartement = () => {
-  const [tel, setTel] = useState(DepartementData.numTelephone);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [departementInfo, setDepartementInfo] = useState({
+    nom: DepartementData.nom + DepartementData.prenom,
+    email: DepartementData.email,
+    numTelephone: DepartementData.numTelephone,
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    console.log(departementInfo)
+  }
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setDepartementInfo({...departementInfo,[name]:value});
+  }
 
   return (
     <section className="my-5">
@@ -32,53 +48,46 @@ const ProfilDepartement = () => {
               </p>
             </div>
             <div className="col-12 col-md-6 py-2 ">
-              <div className="acteurInputDisabled">
-                <p> matricule</p>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Noms et prenoms{" "}
+                </p>
                 <input
                   className="form-control "
                   type="text"
-                  disabled={true}
-                  defaultValue={DepartementData.matricule}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Email</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={DepartementData.email}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Nom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={DepartementData.nom}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Prenom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={DepartementData.prenom}
+                  name="nom"
+                  value={departementInfo.nom}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le numéro{" "}
+                  Numéro{" "}
                 </p>
                 <input
                   className="form-control "
                   type="text"
-                  value={tel}
-                  onChange={(e) => setTel(e.target.value)}
+                  name="numTelephone"
+                  value={departementInfo.numTelephone}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInputDisabled">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Modifier l'email
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="email"
+                  value={departementInfo.email}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
@@ -91,30 +100,31 @@ const ProfilDepartement = () => {
                   className="form-control "
                   type="password"
                   name="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  value={departementInfo.newPassword}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
-                  <BsPencilFill
-                    className="me-1"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
+                  <BsPencilFill className="me-1" />
                   Confirmer le mot de passe
                 </p>
-                <input className="form-control " type="password"></input>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="confirmPassword"
+                  value={departementInfo.confirmPassword}
+                  onChange={handleChange}
+                ></input>
               </div>
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">
-            <button type="button" className="btn acteurInfoBtnBack">
+            <button type="button" className="btn acteurInfoBtnBack" onClick={() => navigate('/acteur/departement/dashboard')}>
               Retour
             </button>
-            <button type="button" className="btn acteurInfoBtnSubmit">
+            <button type="button" className="btn acteurInfoBtnSubmit" onClick={handleSubmit}>
               Confirmer
             </button>
           </div>
