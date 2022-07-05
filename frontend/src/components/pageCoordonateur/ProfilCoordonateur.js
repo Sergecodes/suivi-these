@@ -1,14 +1,20 @@
-import { useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import { BsPencilFill } from "react-icons/bs";
-
+import { useState, useEffect } from "react";
+//import axios from 'axios';
+import { toast, ToastContainer } from "react-toastify";
+import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const ProfilCoordonateur = () => {
   const user = JSON.parse(localStorage.getItem('user'));
-  const [tel, setTel] = useState(user.numTelephone);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-
+  const navigate = useNavigate();
+  const [coordoInfo, setCoordoInfo] = useState({
+    nom:"",
+    prenom:"",
+    email: "",
+    numTelephone: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   useEffect(() => {
     toast.info(
       "Vous devriez vous reconnecter si vous changez votre email ou mot de passe",
@@ -16,8 +22,15 @@ const ProfilCoordonateur = () => {
     );
   }, []);
 
-  const handleSubmit = (e) => {
-    alert(tel)
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setCoordoInfo({...coordoInfo,[name]:value});
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(coordoInfo)
   }
 
   return (
@@ -35,82 +48,112 @@ const ProfilCoordonateur = () => {
             Modifier les informations
           </p>
           <div className="row" style={{ width: "100%", margin: "0" }}>
-            <div className="col-12 col-md-6">
-              <div className="acteurInputDisabled">
-                <p> Email</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={user.email}
-
-                />
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Nom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={user.nom}
-                />
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Prenom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={user.prenom}
-                />
-              </div>
-              <div className="acteurInput">
+            <div className="col-12 col-md-6 py-2 d-flex flex-column align-items-center justify-content-center modifPhotoActeur">
+              <BsPersonCircle
+                className="border rounded-circle"
+                style={{ height: "90px", width: "90px", color: "darkgray" }}
+              />
+              <p className="my-2">
+                <BsPencilFill className="me-1" />
+                Modifier votre photo
+              </p>
+            </div>
+            <div className="col-12 col-md-6  ">
+            <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le numéro{" "}
+                  Nom{" "}
                 </p>
                 <input
                   className="form-control "
                   type="text"
-                  value={tel}
-                  onChange={(e) => setTel(e.target.value)}
-                />
+                  name="nom"
+                  value={coordoInfo.nom}
+                  onChange={handleChange}
+                ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le mot de passe
+                  Prenom{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="prenom"
+                  value={coordoInfo.prenom}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInputDisabled">
+              <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Email
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  value={coordoInfo.email}
+                  name="email"
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Numéro de télephone{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="numTelephone"
+                  value={coordoInfo.numTelephone}
+                  onChange={handleChange}
+                ></input>
+              </div>
+
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Nouveau mot de passe
                 </p>
                 <input
                   className="form-control "
                   type="password"
-                  name="oldPassword"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
+                  name="newPassword"
+                  value={coordoInfo.newPassword}
+                  onChange={handleChange}
+                ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill
                     className="me-1"
-                    name="newPassword"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+                    name="confirmPassword"
+                    value={coordoInfo.confirmPassword}
+                    onChange={handleChange}
                   />
                   Confirmer le mot de passe
                 </p>
-                <input className="form-control " type="password" />
+                <input className="form-control " type="password"></input>
               </div>
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">
-            <button type="button" className="btn acteurInfoBtnBack">
+            <button type="button" className="btn acteurInfoBtnBack" onClick={()=>{navigate('/acteur/coordonateur/dashboard')}}>
               Retour
             </button>
-            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn acteurInfoBtnSubmit"
+            >
               Confirmer
             </button>
           </div>
@@ -118,6 +161,6 @@ const ProfilCoordonateur = () => {
       </div>
     </section>
   );
-}
+};
 
-export default ProfilCoordonateur
+export default ProfilCoordonateur;

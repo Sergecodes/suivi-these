@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
+//import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const ProfilAdmin = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+  const [adminInfo, setAdminInfo] = useState({
+    email: "",
+    numTelephone: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   useEffect(() => {
     toast.info(
       "Vous devriez vous reconnecter si vous changez votre email ou mot de passe",
@@ -15,11 +20,16 @@ const ProfilAdmin = () => {
     );
   }, []);
 
-  const handleSubmit = e => {
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setAdminInfo({ ...adminInfo, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-
-  }
+    console.log(adminInfo);
+  };
 
   return (
     <section className="my-5">
@@ -47,14 +57,32 @@ const ProfilAdmin = () => {
               </p>
             </div>
             <div className="col-12 col-md-6  ">
-
-              <div className="acteurInputDisabled">
-                <p> Email</p>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Email
+                </p>
                 <input
                   className="form-control "
                   type="text"
-                  disabled={true}
-                  defaultValue="admin email"
+                  value={adminInfo.email}
+                  name="email"
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Numéro de télephone{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="numTelephone"
+                  value={adminInfo.numTelephone}
+                  onChange={handleChange}
                 ></input>
               </div>
 
@@ -62,14 +90,14 @@ const ProfilAdmin = () => {
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le mot de passe
+                  Nouveau mot de passe
                 </p>
                 <input
                   className="form-control "
                   type="password"
-                  name="oldPassword"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
+                  name="newPassword"
+                  value={adminInfo.newPassword}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
@@ -77,9 +105,9 @@ const ProfilAdmin = () => {
                   {" "}
                   <BsPencilFill
                     className="me-1"
-                    name="newPassword"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+                    name="confirmPassword"
+                    value={adminInfo.confirmPassword}
+                    onChange={handleChange}
                   />
                   Confirmer le mot de passe
                 </p>
@@ -88,7 +116,13 @@ const ProfilAdmin = () => {
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">
-            <button type="button" className="btn acteurInfoBtnBack">
+            <button
+              type="button"
+              className="btn acteurInfoBtnBack"
+              onClick={() => {
+                navigate("/acteur/admin/dashboard");
+              }}
+            >
               Retour
             </button>
             <button

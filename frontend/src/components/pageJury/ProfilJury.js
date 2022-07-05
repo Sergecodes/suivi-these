@@ -1,33 +1,29 @@
-import { useState } from 'react';
-import { JuryData } from '../../constants/Constant';
+import React, { useState } from "react";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
-import axios from 'axios';
-
+import { JuryData } from "../../constants/Constant";
+import { useNavigate } from "react-router-dom";
 
 const ProfilJury = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const [tel, setTel] = useState(JuryData.numTelephone);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [juryInfo, setJuryInfo] = useState({
+    nom: JuryData.nom ,
+    prenom: JuryData.prenom,
+    email: JuryData.email,
+    numTelephone: JuryData.numTelephone,
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const navigate = useNavigate();
 
-  axios.get('/jury/moi')
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.error(err);
-    })
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.put('/jury/change-number', { newPhoneNumber: tel })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
-      })
+  const handleSubmit = () => {
+    console.log(juryInfo)
   }
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setJuryInfo({...juryInfo,[name]:value});
+  }
+
   return (
     <section className="my-5">
       <div
@@ -36,7 +32,7 @@ const ProfilJury = () => {
       >
         <div className="col-12 col-sm-8  modifInfo pt-3 pb-5">
           <p
-            className="text-center fs-5 fw-light "
+            className="text-center fs-5 fw-light py-2"
             style={{ color: "rgb(87, 84, 84)" }}
           >
             Modifier les informations
@@ -48,95 +44,102 @@ const ProfilJury = () => {
                 style={{ height: "90px", width: "90px", color: "darkgray" }}
               />
               <p className="my-2">
-                <BsPencilFill className="me-1" />
+                <BsPencilFill />
                 Modifier votre photo
               </p>
             </div>
-            <div className="col-12 col-md-6  ">
-              <div className="acteurInputDisabled">
-                <p> matricule</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.matricule}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled"  >
-                <p> Email</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.email}
-
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Nom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.nom}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Prenom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.prenom}
-                ></input>
-              </div>
+            <div className="col-12 col-md-6 py-2 ">
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le numéro{" "}
+                  Nom{" "}
                 </p>
                 <input
                   className="form-control "
                   type="text"
-                  value={tel}
-                  onChange={(e) => setTel(e.target.value)}
+                  name="nom"
+                  value={juryInfo.nom}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le mot de passe
+                  Prenom{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="prenom"
+                  value={juryInfo.prenom}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Numéro de telephone{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="numTelephone"
+                  value={juryInfo.numTelephone}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Email
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="email"
+                  value={juryInfo.email}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Nouveau mot de passe
                 </p>
                 <input
                   className="form-control "
                   type="password"
                   name="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  value={juryInfo.newPassword}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
-                  <BsPencilFill
-                    className="me-1"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
+                  <BsPencilFill className="me-1" />
                   Confirmer le mot de passe
                 </p>
-                <input className="form-control " type="password"></input>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="confirmPassword"
+                  value={juryInfo.confirmPassword}
+                  onChange={handleChange}
+                ></input>
               </div>
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">
-            <button type="button" className="btn acteurInfoBtnBack">
+            <button type="button" className="btn acteurInfoBtnBack" onClick={() => navigate('/acteur/jury/dashboard')}>
               Retour
             </button>
-            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+            <button type="button" className="btn acteurInfoBtnSubmit" onClick={handleSubmit}>
               Confirmer
             </button>
           </div>
@@ -144,6 +147,6 @@ const ProfilJury = () => {
       </div>
     </section>
   );
-}
+};
 
-export default ProfilJury
+export default ProfilJury;

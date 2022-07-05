@@ -1,18 +1,27 @@
-import { useState } from 'react';
-import { JuryData } from '../../constants/Constant';
+import { useState } from "react";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
-
-const ProfilJury = () => {
-  const [tel, setTel] = useState(JuryData.numTelephone);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+const ProfilConseil = () => {
+  const navigate = useNavigate();
+  const [conseilInfo, setConseilInfo] = useState({
+    email: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
  
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setConseilInfo({ ...conseilInfo, [name]: value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-   
-  }
+    console.log(conseilInfo);
+  };
+
   return (
     <section className="my-5">
       <div
@@ -38,68 +47,32 @@ const ProfilJury = () => {
               </p>
             </div>
             <div className="col-12 col-md-6  ">
-              <div className="acteurInputDisabled">
-                <p> matricule</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.matricule}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled"  >
-                <p> Email</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.email}
-
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Nom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.nom}
-                ></input>
-              </div>
-              <div className="acteurInputDisabled">
-                <p> Prenom</p>
-                <input
-                  className="form-control "
-                  type="text"
-                  disabled={true}
-                  defaultValue={JuryData.prenom}
-                ></input>
-              </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le numéro{" "}
+                  Email
                 </p>
                 <input
                   className="form-control "
                   type="text"
-                  value={tel}
-                  onChange={(e) => setTel(e.target.value)}
+                  value={conseilInfo.email}
+                  name="email"
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le mot de passe
+                  Nouveau mot de passe
                 </p>
                 <input
                   className="form-control "
                   type="password"
                   name="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  value={conseilInfo.newPassword}
+                  onChange={handleChange}
                 ></input>
               </div>
               <div className="acteurInput">
@@ -108,8 +81,8 @@ const ProfilJury = () => {
                   <BsPencilFill
                     className="me-1"
                     name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={conseilInfo.confirmPassword}
+                    onChange={handleChange}
                   />
                   Confirmer le mot de passe
                 </p>
@@ -118,10 +91,20 @@ const ProfilJury = () => {
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">
-            <button type="button" className="btn acteurInfoBtnBack">
+            <button
+              type="button"
+              className="btn acteurInfoBtnBack"
+              onClick={() => {
+                navigate("/acteur/conseil/dashboard");
+              }}
+            >
               Retour
             </button>
-            <button type="button" onClick={handleSubmit} className="btn acteurInfoBtnSubmit">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn acteurInfoBtnSubmit"
+            >
               Confirmer
             </button>
           </div>
@@ -129,6 +112,6 @@ const ProfilJury = () => {
       </div>
     </section>
   );
-}
+};
 
-export default ProfilJury
+export default ProfilConseil;
