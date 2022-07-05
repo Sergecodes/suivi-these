@@ -13,14 +13,11 @@ const { confirm } = Modal;
 const VerificationMaster = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const location = useLocation(),
-    navigate = useNavigate();
+  const location = useLocation(), navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const { etudiantInfo } = location.state;
   const dossier = etudiantInfo.dossier;
   const listeFichiers = dossier.fichiers;
-
-  const handleCancel = () => {};
 
   const handleSubmit = () => {
     const idDossier = dossier.id;
@@ -33,7 +30,7 @@ const VerificationMaster = () => {
       async onOk() {
         // Send request to api (return promise to enable loading spinner near Ok button)
         return axios
-          .post("/departements/valider-dossier", { idDossier })
+          .put("/departements/valider-dossier", { idDossier })
           .then((res) => {
             console.log(res);
 
@@ -61,6 +58,38 @@ const VerificationMaster = () => {
           });
       },
       onCancel() {},
+    });
+  };
+
+  const handleCancel = () => {
+    confirm({
+      title: "Rejeter le dossier de cet etudiant?",
+      content: <span className="fw-bold">{etudiantInfo.name} ({ etudiantInfo.matricule })</span>,
+      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
+      okText: 'Oui',
+      okType: 'danger',
+      cancelText: 'Non',
+      async onOk() {
+        return axios.put('/departements/rejeter-dossier', {
+          idDossier: dossier.id
+        })
+          .then(res => {
+            console.log(res);
+            toast.success("Succes!", { hideProgressBar: true });
+
+            setTimeout(() => {
+              toast.dismiss();
+              navigate(0);
+            }, 3000);
+          })
+          .catch(err => {
+            console.error(err);
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          });
+      },
+      onCancel() {
+
+      }
     });
   };
 

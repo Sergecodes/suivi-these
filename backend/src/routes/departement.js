@@ -34,14 +34,14 @@ router.route('/dossiers-etudiants-master').get(
    controller.dossiersEtudsMaster
 );
 
-router.route('/valider-dossier').post(
+router.route('/valider-dossier').put(
    isDepartement, 
    getDossierFromReq,
    getDepartement,
    controller.validerDossier
 );
 
-router.route('/rejeter-dossier').post(
+router.route('/rejeter-dossier').put(
    isDepartement, 
    getDossierFromReq,
    getDepartement,
