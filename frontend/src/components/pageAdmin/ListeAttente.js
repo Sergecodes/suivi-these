@@ -14,6 +14,7 @@ const ListeAttente = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([{
     key: "1",
+    id: "1",
     matricule: "",
     name: "Nom 1 prenom 1",
     uniteRecherche: "MIBA",
@@ -87,7 +88,7 @@ const ListeAttente = () => {
   ];
 
   useEffect(() => {
-    axios.get('/demandes-inscription')
+    axios.get('/admin/demandes-inscription')
       .then(res => {
         console.log(res);
         setData(parseResult(res.data));
@@ -103,6 +104,7 @@ const ListeAttente = () => {
     for (let etud of resData) {
       result.push({
         key: etud.id,
+        id: etud.id,
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
         uniteRecherche: etud.departement.uniteRecherche.code,
@@ -117,10 +119,12 @@ const ListeAttente = () => {
   }
 
   const handleConfirm = (e, etudiant) => {
+    console.log(etudiant);
+
     confirm({
       title: "Voulez-vouz valider la demande d'inscription de cet etudiant?",
       content: <span className="fw-bold">{etudiant.name} ({ etudiant.matricule })</span>,
-      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
+      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16', fontWeight: 900 }} />,
       okText: 'Oui',
       cancelText: 'Non',
       async onOk() {

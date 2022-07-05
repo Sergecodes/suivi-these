@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingScreen from "../LoadingScreen";
-
+import "../../Styles/AdminConnexionScreen.css"
+import "../../Styles/Connexion.css"
 import {
   loginDepartement,
   resetDepartement,
 } from "../../redux/authentification/authDepartementSlice";
+
 
 function DepartementConnexionScreen() {
   const [user, setUser] = useState({
@@ -46,9 +48,7 @@ function DepartementConnexionScreen() {
 
   return (
     <div>
-      {isLoading == "true" ? (
-        <LoadingScreen />
-      ) : (
+      {isLoading ? <LoadingScreen /> : (
         <div>
           <div style={{ padding: "4%" }} className="container-connexion">
             <div className="container">

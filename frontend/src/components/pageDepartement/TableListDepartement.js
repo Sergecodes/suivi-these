@@ -96,10 +96,13 @@ const TableListDepartement = () => {
       axios.get(`/departements/dossiers-etudiants-master`),
       // To get the dateVerification, we need to get the dossiers sent to the admin
       // from the departement and retrieve the envoyeLe attribute.
+      // NOTE: use params instead of body since axios supports body only with put, post, patch, delete requests
       axios.get('/dossiers-envoyes', {
-        envoyePar: user.id,
-        envoyeParModel: ACTEURS.DEPARTEMENT,
-        destinataireModel: ACTEURS.ADMIN
+        params: {
+          envoyePar: user.id,
+          envoyeParModel: ACTEURS.DEPARTEMENT,
+          destinataireModel: ACTEURS.ADMIN
+        }
       })
     ])
       .then(results => {

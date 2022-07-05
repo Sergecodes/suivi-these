@@ -8,8 +8,8 @@ const Notification = require('./Notification');
 
 const AvisSchema = new Schema({
     type: { type: String, required: true, enum: Object.values(Avis) },
-    rapport: String, 
-    commentaire: String,  
+    rapport: { type: String, default: '' }, 
+    commentaire: { type: String, default: '' },  
     donneLe: { type: Date, default: Date.now, required: true },
     donnePar: { type: Schema.Types.ObjectId, refPath: 'donneParModel' },
     donneParModel: { type: String, required: true, enum: Object.values(AvisEmetteur) },
