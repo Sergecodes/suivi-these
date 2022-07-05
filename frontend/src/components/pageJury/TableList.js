@@ -170,7 +170,7 @@ const TableList = () => {
         name: etud.nom + ' ' + etud.prenom,
         initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
-        initDateNotation: noteObj.noteLe || 0,
+        initDateNotation: noteObj ? noteObj.noteLe : 0,
         dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---',
         idDossier: envoiObj.dossier.id
       });
