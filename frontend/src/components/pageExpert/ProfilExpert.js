@@ -1,88 +1,167 @@
-import React,{useState} from 'react';
-import { ExpertData } from '../../constants/Constant';
-import {BsArrowRepeat} from "react-icons/bs";
-import {GiCancel} from "react-icons/gi";
-import {BsPencil} from "react-icons/bs";
+import React, { useState } from "react";
+import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
+import { ExpertData } from "../../constants/Constant";
+import { useNavigate } from "react-router-dom";
 
-const StudentProfile = () => {
-  const [tel,setTel]=useState(ExpertData.numTelephone);
-  const [email,setEmail]=useState(ExpertData.email)
-  const [newPassword, setNewPassword]=useState("");
-  const [confirmPassword, setConfirmPassword]= useState("");
-  const [modification,setModification]=useState(false)
+const ProfilExpert = () => {
+  const [expertInfo, setExpertInfo] = useState({
+    nom: ExpertData.nom ,
+    prenom: ExpertData.prenom,
+    email: ExpertData.email,
+    ville:ExpertData.ville,
+    numTelephone: ExpertData.numTelephone,
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    console.log(expertInfo)
+  }
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setExpertInfo({...expertInfo,[name]:value});
+  }
 
   return (
-    <section className="mx-3 mt-3 mb-5">
-        <div className="my-2">
-          <form>
-            <div className="profileBlockInfo row">
-              <div className="col-12 col-sm-6">
-                <div className=" ">
-                  <p> Matricule</p>
-                  <input className="form-control " type="text" disabled={true} defaultValue={ExpertData.matricule} ></input>
-                </div>
-              </div>
-              <div className="col-12 col-sm-6 ">
-                <div className="">
-                  <p>Adresse mail</p>
-                  <input className="form-control " type="text " name="email" value={email} disabled={modification?false:true} onChange={(e)=>setEmail(e.target.value)} ></input>
-                </div>
-              </div>    
+    <section className="my-5">
+      <div
+        className="row d-flex justify-content-center"
+        style={{ width: "100%" }}
+      >
+        <div className="col-12 col-sm-8  modifInfo pt-3 pb-5">
+          <p
+            className="text-center fs-5 fw-light py-2"
+            style={{ color: "rgb(87, 84, 84)" }}
+          >
+            Modifier les informations
+          </p>
+          <div className="row" style={{ width: "100%", margin: "0" }}>
+            <div className="col-12 col-md-6 py-2 d-flex flex-column align-items-center justify-content-center modifPhotoActeur">
+              <BsPersonCircle
+                className="border rounded-circle"
+                style={{ height: "90px", width: "90px", color: "darkgray" }}
+              />
+              <p className="my-2">
+                <BsPencilFill />
+                Modifier votre photo
+              </p>
             </div>
-            <div className="profileBlockInfo row">
-             <div className="col-12 col-sm-6">
-                <div>
-                  <p>Nom</p>
-                  <input className="form-control " type="text" disabled={true} defaultValue={ExpertData.nom} ></input>
-                </div>
-             </div>
-              <div className='col-12 col-sm-6'>
-                <div>
-                  <p>Prenom</p>
-                  <input className="form-control " type="text" disabled={true} defaultValue={ExpertData.prenom } ></input>
-                </div>
+            <div className="col-12 col-md-6 py-2 ">
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Nom{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="nom"
+                  value={expertInfo.nom}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Prenom{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="prenom"
+                  value={expertInfo.prenom}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Numéro de telephone{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="numTelephone"
+                  value={expertInfo.numTelephone}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Email
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="email"
+                  value={expertInfo.email}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Ville
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="ville"
+                  value={expertInfo.ville}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Nouveau mot de passe
+                </p>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="newPassword"
+                  value={expertInfo.newPassword}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Confirmer le mot de passe
+                </p>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="confirmPassword"
+                  value={expertInfo.confirmPassword}
+                  onChange={handleChange}
+                ></input>
               </div>
             </div>
-            <div className="profileBlockInfo row">
-              <div className="col-12 col-sm-6">
-                <div>
-                  <p>Sexe</p>
-                  <div className="">
-                  <input className="form-check-input" type="radio"   checked={ExpertData.sexe==="M"?true:false}   disabled={true}/><span>Homme</span>
-                  <input className="form-check-input ms-3" type="radio"   checked={ExpertData.sexe==="F"?true:false}  disabled={true}/><span>Femme</span>
-                  </div>
-                </div>
-              </div>
-              <div className='col-12 col-sm-6'>
-                <div>
-                  <p>Numéro de téléphone</p>
-                  <input className="form-control txt" type="text " name="tel" value={tel} disabled={modification?false:true} onChange={(e)=>setTel(e.target.value)}></input>
-                </div>
-              </div>
-            </div>
-            <div className="profileBlockInfo row">
-              <div className='col-12 col-sm-6'>
-                <div>
-                  <p> Nouveau Mot de passe</p>
-                  <input className="form-control " type="password" name="newPassword" value={newPassword} disabled={modification?false:true}  onChange={(e)=>setNewPassword(e.target.value)}  ></input>
-                </div>
-              </div>
-              <div className='col-12 col-sm-6'>
-                <div>
-                  <p> Confirmation du mot de passe</p>
-                  <input className="form-control " type="password" name="confirmPassword" value={confirmPassword} disabled={modification?false:true} onChange={(e)=>setConfirmPassword(e.target.value)}></input>
-                </div>
-              </div>
-            </div>
-            <div className="profileModifButton  mt-4">
-              <button className="btn btn-secondary " type='button' style={modification===true?{display:'none'}:{}}  onClick={()=>setModification(true)}><BsPencil/>  Modifier informations</button>
-                <button className="btn btn-primary updatePassword me-3 " type="submit" style={modification===false?{display:'none'}:{}} > <BsArrowRepeat/>  Mettre à jour</button>
-                <button className="btn btn-danger ms-3" type='button' onClick={()=>setModification(false)} style={modification===false?{display:'none'}:{}} ><GiCancel/>  Annuler</button>
-            </div>
-          </form>
+          </div>
+          <div className="d-flex justify-content-between mx-4">
+            <button type="button" className="btn acteurInfoBtnBack" onClick={() => navigate('/acteur/expert/dashboard')}>
+              Retour
+            </button>
+            <button type="button" className="btn acteurInfoBtnSubmit" onClick={handleSubmit}>
+              Confirmer
+            </button>
+          </div>
         </div>
+      </div>
     </section>
-  )
-}
+  );
+};
 
-export default StudentProfile
+export default ProfilExpert;
