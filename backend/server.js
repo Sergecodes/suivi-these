@@ -3,7 +3,6 @@ const express = require('express');
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
-// const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
 
@@ -73,7 +72,6 @@ app.use(session({
         ttl: 7 * 24 * 60 * 60   // = 7 days. Default is 14 days
     })
 }));
-// app.use(cookieParser());
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,
@@ -107,6 +105,6 @@ app.use('/api/notifications', notificationRoutes);
 // Lancer le serveur
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
+    
 });
-
 
