@@ -25,7 +25,7 @@ const TableListDepartement = () => {
     name: "",
     initDateEnvoi: '',
     dateEnvoi: '',
-    initDateVerification: '',
+    initDateVerification: 0,
     dateVerification: "---"
   }]);
 
@@ -136,7 +136,7 @@ const TableListDepartement = () => {
         name: etud.nom + ' ' + etud.prenom,
         initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
-        initDateVerification: envoi2Obj.envoyeLe,
+        initDateVerification: envoi2Obj.envoyeLe || 0,
         dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
       });
     }

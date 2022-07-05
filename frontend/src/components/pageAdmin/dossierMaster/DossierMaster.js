@@ -51,7 +51,7 @@ const DossierMaster = () => {
     name: "",
     initDateEnvoi: '',
     dateEnvoi: "",
-    initDateVerification: '',
+    initDateVerification: 0,
     dateVerification: "---",
     juries: defaultJuries,
   }]);
@@ -165,7 +165,9 @@ const DossierMaster = () => {
         name: etud.nom + ' ' + etud.prenom,
         initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
-        initDateVerification: envoi2Obj.envoyeLe,
+        // Use 0 here becuse when displaying the table, we'll use moment(0).unix() which gives 0
+        // (no value)
+        initDateVerification: envoi2Obj.envoyeLe || 0,
         dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
         juries: etud.juges.map(jury => {
           return { id: jury.id, nom: jury.nom, prenom: jury.prenom, email: jury.email }
