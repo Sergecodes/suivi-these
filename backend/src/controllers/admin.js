@@ -179,9 +179,9 @@ exports.notifications = async function (req, res) {
 exports.demandesInscription = async function (req, res) {
    // Get students whose accounts have not yet being validated
    // (where compteValideLe is '')
-   let etuds = Etudiant
+   let etuds = await Etudiant
       .where('compteValideLe')
-      .equals('')
+      .in(['', undefined])
       .populate({
          path: 'departement',
          select: '-motDePasse',

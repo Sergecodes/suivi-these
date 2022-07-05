@@ -125,10 +125,13 @@ const DossierMaster = () => {
       axios.get(`/admin/dossiers-master`),
       // To get the dateVerification, we need to get the dossiers sent to the juries
       // from the admin and retrieve the envoyeLe attribute.
+      // NOTE: use params instead of body since axios supports body only with put, post, patch, delete requests
       axios.get('/dossiers-envoyes', {
-        envoyePar: user.id,
-        envoyeParModel: ACTEURS.ADMIN,
-        destinataireModel: ACTEURS.JURY
+        params: {
+          envoyePar: user.id,
+          envoyeParModel: ACTEURS.ADMIN,
+          destinataireModel: ACTEURS.JURY
+        }
       })
     ])
       .then(results => {
@@ -187,7 +190,7 @@ const DossierMaster = () => {
         idDepartement: etud.departement,
         juges: listeJury.map(jury => jury.id)
       }),
-      axios.post(`/etudiants/${etud.id}/envoyer-dossier-juges`)
+      axios.post(`/admin/etudiants/${etud.id}/envoyer-dossier-juges`)
     ])
       .then(results => {
         const [res1, res2] = results;

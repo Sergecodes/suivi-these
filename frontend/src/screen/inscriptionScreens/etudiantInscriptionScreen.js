@@ -57,6 +57,7 @@ function EtudiantInscriptionScreen() {
 
   useEffect(() => {
     if (isSuccess) {
+      console.log("isSuccess is true")
       setShowResult(true);
     }
   }, [isSuccess]);

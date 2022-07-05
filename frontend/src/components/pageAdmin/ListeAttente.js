@@ -87,7 +87,7 @@ const ListeAttente = () => {
   ];
 
   useEffect(() => {
-    axios.get('/demandes-inscription')
+    axios.get('/admin/demandes-inscription')
       .then(res => {
         console.log(res);
         setData(parseResult(res.data));
