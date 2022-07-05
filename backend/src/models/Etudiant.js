@@ -62,8 +62,8 @@ const EtudiantSchema = new Schema({
    // todo validate numTelephone
    numTelephone: { type: String, required: true },
    sexe: { type: String, required: true, enum: Object.values(Sexe) },
-   compteValideLe: String,
-   urlPhotoProfil: String,
+   compteValideLe: { type: String, default: '' },
+   urlPhotoProfil: { type: String, default: '' },
    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
    departement: { type: Schema.Types.ObjectId, ref: 'Departement', required: true },
    encadreur: { type: Schema.Types.ObjectId, ref: 'Jury', required: true },
