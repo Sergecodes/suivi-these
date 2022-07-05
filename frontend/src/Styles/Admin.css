@@ -91,3 +91,6 @@
     
 }
 
+.juryIcon:hover{
+    cursor: pointer;
+}
