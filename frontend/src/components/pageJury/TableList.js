@@ -126,6 +126,8 @@ const TableList = () => {
       matricule: "",
       name: "",
       dateEnvoi: '',
+      initDateEnvoi: '',
+      initDateNotation: 0,
       dateNotation: "---",
       idDossier: '1'
     },
@@ -168,7 +170,7 @@ const TableList = () => {
         name: etud.nom + ' ' + etud.prenom,
         initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
-        initDateNotation: moment(noteObj.noteLe),
+        initDateNotation: noteObj.noteLe || 0,
         dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---',
         idDossier: envoiObj.dossier.id
       });

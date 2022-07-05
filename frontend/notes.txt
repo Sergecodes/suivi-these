@@ -24,5 +24,7 @@ DIVERS
 - Documents importants
 
 
+* Add text like this on the registration page (in the form of toast ...)
+Apres inscription une validation sera faite afin de verifier vos information. veillez entrer une adresse mail valide pour recevoir une reponse apres analyse
 
 -----------------------------------
