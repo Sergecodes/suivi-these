@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// recuperer un etudiant dans le local storage
+// recuperer le rectorat dans le local storage
 const acteur = localStorage.getItem("actor");
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
   message: "",
 };
 
-// Login etudiant
+// Login rectorat
 export const loginRectorat = createAsyncThunk(
   "auth/loginRectorat",
   async (data, { rejectWithValue }) => {
@@ -24,14 +24,10 @@ export const loginRectorat = createAsyncThunk(
           code: data.code,
         }
       );
-      localStorage.setItem("user", JSON.stringify(value.data));
-      localStorage.setItem('actor', 'rectorat');
-      // console.log(data);
-      alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+
+      return value.data.data;
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }
@@ -50,7 +46,7 @@ export const authRectoratSlice = createSlice({
     },
     logoutRectorat: (state) => {
       localStorage.removeItem("rectoratInfos");
-      state.etudiant = null;
+      state.rectorat = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
@@ -68,21 +64,21 @@ export const authRectoratSlice = createSlice({
       .addCase(loginRectorat.fulfilled, (state, action) => {
         // console.log("login fulfilled");
         state.isSuccess = true;
-        state.etudiant = action.payload;
         state.isLoading = false;
+        state.message = "";
+        state.isError = false;
+        state.isRejected = false;
+        state.rectorat = action.payload;
 
-        console.log("je suis dans le isloading");
-
-        state.isRejected = true;
-        // state.message = action.payload.data.message;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem('actor', 'rectorat');
         return state;
       })
       .addCase(loginRectorat.rejected, (state, action) => {
-        // console.log("login rejected");
+        console.log("login rejected");
         state.isLoading = false;
-        state.etudiant = null;
+        state.rectorat = null;
         state.isRejected = true;
-
         state.isError = true;
         state.message = action.payload;
       });

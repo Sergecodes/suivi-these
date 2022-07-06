@@ -11,13 +11,15 @@ import { BsEyeFill, BsX, BsCheck, BsArrowLeft } from "react-icons/bs";
 const { confirm } = Modal;
 
 const VerificationMaster = () => {
-  const [fileUrl, setFileUrl] = useState("");
+  const [fileUrl, setFileUrl] = useState({nom:"",url:""});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const location = useLocation(), navigate = useNavigate();
+  const location = useLocation(),
+    navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const { etudiantInfo } = location.state;
   const dossier = etudiantInfo.dossier;
   const listeFichiers = dossier.fichiers;
+
 
   const handleSubmit = () => {
     const idDossier = dossier.id;
@@ -52,8 +54,10 @@ const VerificationMaster = () => {
                   navigate("/acteur/departement/dashboard");
                 }, 3000);
               })
-              .catch(err => {
-                toast.error("Une erreur est survenue!", { hideProgressBar: true });
+              .catch((err) => {
+                toast.error("Une erreur est survenue!", {
+                  hideProgressBar: true,
+                });
                 console.error(err);
               });
           })
@@ -69,16 +73,21 @@ const VerificationMaster = () => {
   const handleCancel = () => {
     confirm({
       title: "Rejeter le dossier de cet etudiant?",
-      content: <span className="fw-bold">{etudiantInfo.name} ({ etudiantInfo.matricule })</span>,
-      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
-      okText: 'Oui',
-      okType: 'danger',
-      cancelText: 'Non',
+      content: (
+        <span className="fw-bold">
+          {etudiantInfo.name} ({etudiantInfo.matricule})
+        </span>
+      ),
+      icon: <AiOutlineExclamationCircle style={{ color: "#F2AD16" }} />,
+      okText: "Oui",
+      okType: "danger",
+      cancelText: "Non",
       async onOk() {
-        return axios.put('/departements/rejeter-dossier', {
-          idDossier: dossier.id
-        })
-          .then(res => {
+        return axios
+          .put("/departements/rejeter-dossier", {
+            idDossier: dossier.id,
+          })
+          .then((res) => {
             console.log(res);
             toast.success("Succes!", { hideProgressBar: true });
 
@@ -87,14 +96,12 @@ const VerificationMaster = () => {
               navigate(0);
             }, 3000);
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
             toast.error("Une erreur est survenue!", { hideProgressBar: true });
           });
       },
-      onCancel() {
-
-      }
+      onCancel() {},
     });
   };
 
@@ -134,7 +141,7 @@ const VerificationMaster = () => {
                 type="button"
                 className="btn btnFull ms-1 mb-2"
                 onClick={() => {
-                  setFileUrl(fichier.url);
+                  setFileUrl({...fileUrl,nom:fichier.categorie,url:fichier.url});
                   setIsModalVisible(true);
                 }}
               >
@@ -146,7 +153,7 @@ const VerificationMaster = () => {
       </div>
       <div id="departementVerification">
         <Modal
-          title="Fichier etudiant"
+          title={fileUrl.nom}
           visible={isModalVisible}
           onOk={() => {
             setIsModalVisible(false);
@@ -170,8 +177,9 @@ const VerificationMaster = () => {
               </button>
             </div>,
           ]}
+          destroyOnClose={true}
         >
-          <PdfViewer url={fileUrl} height="100%" />
+          <PdfViewer url={fileUrl.url} height="100%" />
         </Modal>
       </div>
       <div className="d-flex justify-content-center">

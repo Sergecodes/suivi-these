@@ -35,8 +35,7 @@ export const registerEtudiant = createAsyncThunk(
         }
       );
 
-      alert(JSON.stringify(value.data));
-      return JSON.stringify(JSON.stringify(value.data));
+      return value.data.data;
     } catch (err) {
       console.error(err);
       return rejectWithValue(err.response.data);
@@ -56,14 +55,14 @@ export const registerEtudiantSlice = createSlice({
       state.isRejected = false;
     },
     logoutRegisterEtudiant: (state) => {
-      localStorage.removeItem("user");
-      localStorage.removeItem("actor");
       state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
       state.message = "";
+      localStorage.removeItem("user");
+      localStorage.removeItem("actor");
     },
   },
   extraReducers: (builder) => {
@@ -74,11 +73,10 @@ export const registerEtudiantSlice = createSlice({
       })
       .addCase(registerEtudiant.fulfilled, (state, action) => {
         console.log("login fulfilled");
-        state.isSuccess = true;
-        state.etudiant = action.payload;
         state.isLoading = false;
-        state.isRejected = false;
-        // state.message = action.payload.data.message;
+        state.isSuccess = true;
+        state.message = '';
+        state.isError = false;
         return state;
       })
       .addCase(registerEtudiant.rejected, (state, action) => {
