@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import LoadingScreen from "../LoadingScreen.js";
 import "../../Styles/AdminConnexionScreen.css"
 import "../../Styles/Connexion.css"
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 
 
 function EtudiantConnexionScreen() {

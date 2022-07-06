@@ -179,7 +179,7 @@ exports.notifications = async function (req, res) {
 exports.demandesInscription = async function (req, res) {
    // Get students whose accounts have not yet being validated
    // (where compteValideLe is '')
-   let etuds = Etudiant
+   let etuds = await Etudiant
       .where('compteValideLe')
       .equals('')
       .populate({
@@ -195,6 +195,7 @@ exports.demandesInscription = async function (req, res) {
 
 exports.accepterInscriptionEtudiant = async function (req, res) {
    const { admin, etudiant } = res.locals;
+
    try {
       await admin.accepterEtudiant(etudiant);
       res.send("Succes");
@@ -221,6 +222,8 @@ exports.setEtudiantJuges = async function (req, res) {
    const { idDepartement, juges } = req.body;
    const { etudiant } = res.locals;
 
+   console.log("in set etudiant juges");
+
    if (etudiant.departement !== idDepartement) {
       return res.status(403).send("Cet etudiant n'est pas de ce departement");
    }
@@ -236,12 +239,13 @@ exports.setEtudiantJuges = async function (req, res) {
 }
 
 exports.envoyerDossierJuges = async function (req, res) {
+   console.log("in envoyer dossier");
    const { etudiant } = res.locals;
    const juges = etudiant.juges;
    
    let defaultObj = {
       dossier: etudiant.dossier,
-      envoyerParModel: Types.ActeurDossier.ADMIN,
+      envoyeParModel: Types.ActeurDossier.ADMIN,
       destinataireModel: Types.ActeurDossier.JURY,
       fichiersConcernes: req.body.fichiersConcernes || [],
       message: req.body.message || ''
@@ -255,10 +259,10 @@ exports.envoyerDossierJuges = async function (req, res) {
 
    try {
       await EnvoiDossier.insertMany(array);
-      return res.send("Envoye");
+      res.send("Envoye");
    } catch (err) {
       console.error(err);
-      return res.status(500).json({ err });
+      return res.status(500).json(err);
    }
 }
 

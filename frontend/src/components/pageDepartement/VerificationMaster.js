@@ -28,6 +28,7 @@ const VerificationMaster = () => {
       okText: "Oui",
       cancelText: "Non",
       async onOk() {
+        console.log("user is ", user);
         // Send request to api (return promise to enable loading spinner near Ok button)
         return axios
           .put("/departements/valider-dossier", { idDossier })
@@ -50,6 +51,10 @@ const VerificationMaster = () => {
                   toast.dismiss();
                   navigate("/acteur/departement/dashboard");
                 }, 3000);
+              })
+              .catch(err => {
+                toast.error("Une erreur est survenue!", { hideProgressBar: true });
+                console.error(err);
               });
           })
           .catch((err) => {

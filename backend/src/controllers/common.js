@@ -33,14 +33,17 @@ exports.envoyerDossier = async function (req, res) {
 exports.dossiersEnvoyes = async function (req, res) {
     const { 
         destinataireModel, envoyePar, envoyeParModel
-    } = req.body;
+    } = req.query;
+
+    console.log(req.query);
+
+    let destinataire = req.query.destinataire;
+    let findQuery = { destinataireModel, envoyePar, envoyeParModel };
+    if (destinataire) {
+        findQuery['destinataire'] = destinataire;
+    }
   
-    let envoisDossiers = await EnvoiDossier.find({
-        destinataire: req.body.destinataire || null, 
-        destinataireModel,
-        envoyePar, 
-        envoyeParModel
-    }).populate({
+    let envoisDossiers = await EnvoiDossier.find(findQuery).populate({
         path: 'dossier',
         populate: [
             {
@@ -81,12 +84,17 @@ exports.donnerAvis = async function (req, res) {
 }
 
 exports.avisDonnes = async function (req, res) {
-    const { destinataireModel, donnePar, donneParModel } = req.body;
-  
-    let avis = await Avis.find({
-        destinataire: req.body.destinataire || null, 
-        destinataireModel, donnePar, donneParModel
-    }).populate({
+    const { destinataireModel, donnePar, donneParModel } = req.query;
+    console.log(req.query);
+
+    let destinataire = req.query.destinataire;
+    let findQuery = { destinataireModel, donnePar, donneParModel };
+
+    if (destinataire) {
+        findQuery['destinataire'] = destinataire;
+    }
+
+    let avis = await Avis.find(findQuery).populate({
         path: 'dossier',
         populate: {
             path: 'etudiant',

@@ -6,9 +6,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import moment from "moment";
 import { BsPerson, BsX, BsCheck } from "react-icons/bs";
 import { MdSend } from "react-icons/md";
+import { AiOutlineExclamationCircle } from 'react-icons/ai'
 import { ACTEURS } from '../../../constants/Constant';
 
 const { Option } = Select;
+const { confirm } = Modal;
 
 
 const DossierMaster = () => {
@@ -25,9 +27,11 @@ const DossierMaster = () => {
     return output;
   })();
 
+  // NOTE: juryData is an object with key <idDepartement> and values <array of juries>{id, nom, prenom, email}
+
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
-  const juryData = defaultJuries;
+  const [juryData, setJuryData] = useState(defaultJuries);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [listeJury, setListeJury] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -101,7 +105,7 @@ const DossierMaster = () => {
       render: (record) => (
         <div className="d-flex fs-4 justify-content-around align-items-center">
           <BsPerson
-            className="me-2"
+            className="me-2 juryIcon"
             style={{ color: "#513e8f" }}
             onClick={() => {
               showModal();
@@ -125,16 +129,21 @@ const DossierMaster = () => {
       axios.get(`/admin/dossiers-master`),
       // To get the dateVerification, we need to get the dossiers sent to the juries
       // from the admin and retrieve the envoyeLe attribute.
+      // NOTE: use params instead of body since axios supports body only with put, post, patch, delete requests
       axios.get('/dossiers-envoyes', {
-        envoyePar: user.id,
-        envoyeParModel: ACTEURS.ADMIN,
-        destinataireModel: ACTEURS.JURY
+        params: {
+          envoyePar: user.id,
+          envoyeParModel: ACTEURS.ADMIN,
+          destinataireModel: ACTEURS.JURY
+        }
       })
     ])
       .then(results => {
         const [res1, res2] = results;
         console.log(res1);
         console.log(res2);
+
+        // Get 
         setData(parseResult(res1.data, res2.data));
       })
       .catch(err => {
@@ -182,31 +191,43 @@ const DossierMaster = () => {
     console.log(listeJury);
     let etud = dossier.etudiant;
 
-    Promise.all([
-      axios.put(`/admin/etudiants/${etud.id}/set-juges`, {
-        idDepartement: etud.departement,
-        juges: listeJury.map(jury => jury.id)
-      }),
-      axios.post(`/etudiants/${etud.id}/envoyer-dossier-juges`)
-    ])
-      .then(results => {
-        const [res1, res2] = results;
-        console.log(res1);
-        console.log(res2);
+    confirm({
+      title: "Envoyer le dossier de cet etudiant aux membres de jury?",
+      content: <span className="fw-bold">{etud.nom + ' ' + etud.prenom} ({ etud.matricule })</span>,
+      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16', fontWeight: 900 }} />,
+      okText: 'Oui',
+      cancelText: 'Non',
+      async onOk() {
+        return Promise.all([
+          axios.put(`/admin/etudiants/${etud.id}/set-juges`, {
+            idDepartement: etud.departement,
+            juges: listeJury.map(jury => jury.id)
+          }),
+          axios.post(`/admin/etudiants/${etud.id}/envoyer-dossier-juges`)
+        ])
+          .then(results => {
+            const [res1, res2] = results;
+            console.log(res1);
+            console.log(res2);
+    
+            toast.success('Succes!', { hideProgressBar: true });
+    
+            setTimeout(() => {
+              toast.dismiss();
+    
+              // Reload(re-render) page
+              navigate(0);
+            }, 3000);
+          })
+          .catch(err => {
+            console.error(err);
+            toast.error("Une erreur est survenue!", { hideProgressBar: true });
+          });
+      },
+      onCancel() {
 
-        toast.success('Succes!', { hideProgressBar: true });
-
-        setTimeout(() => {
-          toast.dismiss();
-
-          // Reload(re-render) page
-          navigate(0);
-        }, 3000);
-      })
-      .catch(err => {
-        console.error(err);
-        toast.error("Une erreur est survenue!", { hideProgressBar: true });
-      });
+      }
+    });
   };
 
   const showModal = () => setIsModalVisible(true);
@@ -241,6 +262,7 @@ const DossierMaster = () => {
           title="ListeJury"
           visible={isModalVisible}
           onOk={handleOk}
+          onCancel = {() => setIsModalVisible(false)}
           footer={[
             <Button key="submit" type="primary" onClick={handleOk}>
               OK

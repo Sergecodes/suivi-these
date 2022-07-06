@@ -52,12 +52,10 @@ export const authSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem("user");
       localStorage.removeItem('actor');
-      // state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
-
       state.message = "";
     },
   },
@@ -75,23 +73,16 @@ export const authSlice = createSlice({
         localStorage.setItem("user", JSON.stringify(payload));
         localStorage.setItem('actor', 'etudiant');
         state.isSuccess = true;
-        // state.etudiant = action.payload;
         state.isLoading = false;
-
-        console.log("je suis dans le isloading");
-
         state.isRejected = true;
         // state.message = action.payload.data.message;
         return state;
       })
       .addCase(login.rejected, (state, action) => {
-        // console.log("login rejected");
         state.isLoading = false;
-        // state.etudiant = null;
         state.isRejected = true;
-
         state.isError = true;
-        state.message = action.payload;
+        // state.message = action.payload;
       });
   },
 });

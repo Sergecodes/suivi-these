@@ -26,7 +26,7 @@ const DossierSchema = new Schema(
       type: String,
       enum: Object.values(ActeurDossier)
     },
-    raisonRejet: String,
+    raisonRejet: { type: String, default: '' },
   },
   {
     timestamps: { createdAt: "dateDepot", updatedAt: "misAJourLe" },
@@ -167,10 +167,10 @@ const EtapeDossierSchema = new Schema({
   },
   dossier: { type: Schema.Types.ObjectId, ref: "Dossier", required: true },
   debuteeLe: { type: Date, default: Date.now, required: true },
-  description: String,
+  description: { type: String, default: '' },
   acheveeLe: Date,
   delai: Date,
-  extra: String,
+  extra: { type: String, default: '' },
   // acheveeLe: {
   //     type: String,
   //     required: true,
@@ -225,7 +225,7 @@ const NoteDossierSchema = new Schema({
   //     enum: Object.values(ActeurDossier)
   // },
   noteLe: { type: Date, default: Date.now, required: true },
-  commentaire: String,
+  commentaire: { type: String, default: '' },
 });
 
 NoteDossierSchema.pre("save", function (next) {

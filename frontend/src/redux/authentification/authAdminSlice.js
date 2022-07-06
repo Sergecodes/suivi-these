@@ -24,12 +24,8 @@ export const loginAdmin = createAsyncThunk(
           motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("user", JSON.stringify(value.data));
-      localStorage.setItem("actor", 'admin');
-      // console.log(data);
-      // alert(JSON.stringify(value.data));
-      // console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      
+      return value.data.data;
     } catch (err) {
       console.log(err.response.data);
       return rejectWithValue(err.response.data);
@@ -49,14 +45,14 @@ export const authAdminSlice = createSlice({
       state.isRejected = false;
     },
     logoutAdmin: (state) => {
-      localStorage.removeItem("adminInfos");
       state.etudiant = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
-
       state.message = "";
+      localStorage.removeItem("user");
+      localStorage.removeItem('actor');
     },
   },
   extraReducers: (builder) => {
@@ -66,27 +62,11 @@ export const authAdminSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
-        console.log(`le action payload est ${action.payload}`);
-
-        if (action.payload && JSON.parse(action.payload)._id) {
-          console.log("je suis dana le success");
-          state.isLoading = false;
-          console.log(`le JSON parse ici est ${action.payload}`);
-          state.isSuccess = true;
-          state.admin = action.payload;
-
-          localStorage.setItem(
-            "adminInfo",
-            JSON.stringify(JSON.parse(action.payload))
-          );
-        } else {
-          console.log(action.payload);
-          console.log("je suis danss le rejected");
-          state.isSuccess = false;
-          state.isLoading = false;
-          state.isRejected = true;
-          state.message = "Admin Not Found";
-        }
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.admin = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem("actor", 'admin');
 
         return state;
       })
@@ -95,7 +75,6 @@ export const authAdminSlice = createSlice({
         state.isLoading = false;
         state.etudiant = null;
         state.isRejected = true;
-
         state.isError = true;
         state.message = action.payload;
       });

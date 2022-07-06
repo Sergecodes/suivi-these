@@ -24,12 +24,9 @@ export const loginDepartement = createAsyncThunk(
           motDePasse: data.motDePasse,
         }
       );
-      localStorage.setItem("user", JSON.stringify(value.data));
-      localStorage.setItem('actor', 'departement');
-      // console.log(data);
+
       alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      return value.data.data;
     } catch (err) {
       console.log(err.response.data);
       return rejectWithValue(err.response.data);
@@ -55,7 +52,6 @@ export const authDepartementSlice = createSlice({
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
-
       state.message = "";
     },
   },
@@ -66,23 +62,22 @@ export const authDepartementSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginDepartement.fulfilled, (state, action) => {
-        // console.log("login fulfilled");
+        console.log("login fulfilled");
         state.isSuccess = true;
         state.etudiant = action.payload;
         state.isLoading = false;
-
-        console.log("je suis dans le isloading");
-
         state.isRejected = true;
         // state.message = action.payload.data.message;
+
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem('actor', 'departement');
         return state;
       })
       .addCase(loginDepartement.rejected, (state, action) => {
-        // console.log("login rejected");
+        console.log("login rejected");
         state.isLoading = false;
         state.etudiant = null;
         state.isRejected = true;
-
         state.isError = true;
         state.message = action.payload;
       });
