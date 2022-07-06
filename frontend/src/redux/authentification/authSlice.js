@@ -26,10 +26,8 @@ export const login = createAsyncThunk(
           email: data.email
         }
       );
-      console.log(value)
 
-      // console.log(data);
-      console.log(JSON.stringify(value.data));
+      console.log(value)
       return value.data.data;
     } catch (err) {
       console.error(err);
@@ -68,21 +66,18 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         // console.log("login fulfilled");
         const payload = action.payload;
-        console.log(payload);
-
-        localStorage.setItem("user", JSON.stringify(payload));
-        localStorage.setItem('actor', 'etudiant');
         state.isSuccess = true;
         state.isLoading = false;
         state.isRejected = true;
-        // state.message = action.payload.data.message;
+        localStorage.setItem("user", JSON.stringify(payload));
+        localStorage.setItem('actor', 'etudiant');
         return state;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isRejected = true;
         state.isError = true;
-        // state.message = action.payload;
+        state.message = action.payload;
       });
   },
 });

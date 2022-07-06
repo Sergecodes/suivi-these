@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// recuperer un etudiant dans le local storage
+// recuperer un expert dans le local storage
 const acteur = localStorage.getItem("actor");
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
   message: "",
 };
 
-// Login etudiant
+// Login expert
 export const loginExpert = createAsyncThunk(
   "auth/loginExpert",
   async (data, { rejectWithValue }) => {
@@ -24,12 +24,8 @@ export const loginExpert = createAsyncThunk(
           code: data.MotDePasse,
         }
       );
-      localStorage.setItem("user", JSON.stringify(value.data));
-      localStorage.setItem('actor', 'expert');
-      // console.log(data);
-      alert(JSON.stringify(value.data));
-      console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      
+      return value.data.data;
     } catch (err) {
       console.log(err.response.data);
       return rejectWithValue(err.response.data);
@@ -49,14 +45,14 @@ export const authExpertSlice = createSlice({
       state.isRejected = false;
     },
     logoutExpert: (state) => {
-      localStorage.removeItem("expertInfos");
-      state.etudiant = null;
+      state.expert = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
-
       state.message = "";
+      localStorage.removeItem('actor');
+      localStorage.removeItem('user');
     },
   },
   extraReducers: (builder) => {
@@ -68,21 +64,21 @@ export const authExpertSlice = createSlice({
       .addCase(loginExpert.fulfilled, (state, action) => {
         // console.log("login fulfilled");
         state.isSuccess = true;
-        state.etudiant = action.payload;
+        state.expert = action.payload;
         state.isLoading = false;
+        state.isRejected = false;
+        state.message = "";
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem('actor', 'expert');
 
-        console.log("je suis dans le isloading");
-
-        state.isRejected = true;
-        // state.message = action.payload.data.message;
         return state;
       })
       .addCase(loginExpert.rejected, (state, action) => {
         // console.log("login rejected");
+        state.isSuccess = false;
         state.isLoading = false;
-        state.etudiant = null;
+        state.expert = null;
         state.isRejected = true;
-
         state.isError = true;
         state.message = action.payload;
       });

@@ -3,15 +3,19 @@ const passwordComplexity = require("joi-password-complexity");
 const { Types } = require("../constants");
 const { NoteDossier } = require("../models/Dossier");
 const EnvoiDossier = require("../models/EnvoiDossier");
-const Avis = require("../models/Avis");
+const Jury = require('../models/Jury');
 const { removePassword } = require("../utils");
 
+
 exports.getAll = async function (req, res) {
-  res.json(await Jury.find({}));
+  let juries = await Jury.find({}).populate('departement');
+  res.json(juries);
 };
 
 exports.getOne = function (req, res) {
   const { jury } = res.locals;
+  jury.populate('departement');
+  
   res.json(jury);
 };
 

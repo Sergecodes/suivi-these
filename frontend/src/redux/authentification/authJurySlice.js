@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// recuperer un etudiant dans le local storage
+// recuperer un jury dans le local storage
 const acteur = localStorage.getItem("actor");
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
   message: "",
 };
 
-// Login etudiant
+// Login jury
 export const loginJury = createAsyncThunk(
   "auth/loginJury",
   async (data, { rejectWithValue }) => {
@@ -47,15 +47,14 @@ export const authJurySlice = createSlice({
       state.isRejected = false;
     },
     logoutJury: (state) => {
-      localStorage.removeItem("jury");
-      localStorage.removeItem("actor");
-      state.etudiant = null;
+      state.jury = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
-
       state.message = "";
+      localStorage.removeItem("jury");
+      localStorage.removeItem("actor");
     },
   },
   extraReducers: (builder) => {
@@ -66,33 +65,21 @@ export const authJurySlice = createSlice({
       })
       .addCase(loginJury.fulfilled, (state, action) => {
         console.log(action.payload);
-        if (action.payload && JSON.parse(action.payload)._id) {
-          console.log(`le action payload est ${action.payload}`);
-          state.isLoading = false;
-          state.isSuccess = true;
-          state.jury = action.payload;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = '';
+        state.isError = false;
+        state.jury = action.payload;
 
-          localStorage.setItem(
-            "user",
-            JSON.stringify(JSON.parse(action.payload))
-          );
-          localStorage.setItem('actor', 'jury');
-        } else {
-          state.isSuccess = false;
-          state.isLoading = false;
-          state.isRejected = true;
-          state.message = "Coodonateur Not Found";
-        }
-
-        // state.message = action.payload.data.message;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem('actor', 'expert');
         return state;
       })
       .addCase(loginJury.rejected, (state, action) => {
         // console.log("login rejected");
         state.isLoading = false;
-        state.etudiant = null;
+        state.jury = null;
         state.isRejected = true;
-
         state.isError = true;
         state.message = action.payload;
       });

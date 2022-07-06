@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-// recuperer un etudiant dans le local storage
+// recuperer l'admin dans le local storage
 const acteur = localStorage.getItem("actor");
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
   message: "",
 };
 
-// Login etudiant
+// Login admin
 export const loginAdmin = createAsyncThunk(
   "auth/loginAdmin",
   async (data, { rejectWithValue }) => {
@@ -27,7 +27,7 @@ export const loginAdmin = createAsyncThunk(
       
       return value.data.data;
     } catch (err) {
-      console.log(err.response.data);
+      console.error(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }
@@ -45,7 +45,7 @@ export const authAdminSlice = createSlice({
       state.isRejected = false;
     },
     logoutAdmin: (state) => {
-      state.etudiant = null;
+      state.admin = null;
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
@@ -64,6 +64,8 @@ export const authAdminSlice = createSlice({
       .addCase(loginAdmin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.message = '';
+        state.isError = false;
         state.admin = action.payload;
         localStorage.setItem("user", JSON.stringify(action.payload));
         localStorage.setItem("actor", 'admin');
@@ -73,7 +75,7 @@ export const authAdminSlice = createSlice({
       .addCase(loginAdmin.rejected, (state, action) => {
         // console.log("login rejected");
         state.isLoading = false;
-        state.etudiant = null;
+        state.admin = null;
         state.isRejected = true;
         state.isError = true;
         state.message = action.payload;

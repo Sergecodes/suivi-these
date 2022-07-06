@@ -221,10 +221,9 @@ exports.rejeterInscriptionEtudiant = async function (req, res) {
 exports.setEtudiantJuges = async function (req, res) {
    const { idDepartement, juges } = req.body;
    const { etudiant } = res.locals;
-
-   console.log("in set etudiant juges");
-
-   if (etudiant.departement !== idDepartement) {
+   
+   // Use toString() to convert departement which is an ObjectID to a string
+   if (etudiant.departement.toString() !== idDepartement) {
       return res.status(403).send("Cet etudiant n'est pas de ce departement");
    }
 
@@ -239,12 +238,13 @@ exports.setEtudiantJuges = async function (req, res) {
 }
 
 exports.envoyerDossierJuges = async function (req, res) {
-   console.log("in envoyer dossier");
-   const { etudiant } = res.locals;
-   const juges = etudiant.juges;
+   console.log("in envoyer dossier juges");
+   const { admin, etudiant } = res.locals;
+   const juges = [...etudiant.juges];
    
    let defaultObj = {
       dossier: etudiant.dossier,
+      envoyePar: admin._id,
       envoyeParModel: Types.ActeurDossier.ADMIN,
       destinataireModel: Types.ActeurDossier.JURY,
       fichiersConcernes: req.body.fichiersConcernes || [],
@@ -256,13 +256,15 @@ exports.envoyerDossierJuges = async function (req, res) {
       defaultObj['destinataire'] = idJuge;
       array.push(defaultObj);
    }
+   console.log("juges", juges);
+   console.log("array", array);
 
    try {
       await EnvoiDossier.insertMany(array);
       res.send("Envoye");
    } catch (err) {
       console.error(err);
-      return res.status(500).json(err);
+      res.status(500).json(err);
    }
 }
 

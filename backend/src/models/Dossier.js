@@ -196,9 +196,21 @@ const EtapeDossierSchema = new Schema({
 });
 
 // Set description to Etape Dossier
-EtapeDossierSchema.pre("save", function (next) {
-  if (this.isNew) {
-    this.description = getEtapeWording(this.numEtape);
+EtapeDossierSchema.pre("save", async function (next) {
+  if (this.isNew ||  !this.description) {
+    console.log("going to set etape dossier description");
+
+    // Get niveau of Etudiant
+    await this.populate({
+      path: 'dossier',
+      select: 'etudiant',
+      populate: {
+        path: 'etudiant',
+        select: 'niveau'
+      }
+    });
+    
+    this.description = getEtapeWording(this.numEtape, this.dossier.etudiant.niveau);
   }
 
   next();
