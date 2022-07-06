@@ -261,6 +261,7 @@ exports.envoyerDossierJuges = async function (req, res) {
 
    try {
       await EnvoiDossier.insertMany(array);
+      await etudiant.incrementerEtape(Types.EtapeDossier.QUATRE_MASTER);
       res.send("Envoye");
    } catch (err) {
       console.error(err);

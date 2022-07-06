@@ -53,22 +53,22 @@ exports.getActeur = (numEtape, niveau) => {
 exports.getEtapeWording = (numEtape, niveau) => {
     const EtapeDossier = Types.EtapeDossier;
     const wordingMaster = {
-        [EtapeDossier.DEUX_MASTER]: 'Vérification du dossier', // departement
-        [EtapeDossier.TROIS_MASTER]: 'Verification jury', // admin
+        [EtapeDossier.DEUX_MASTER]: 'Validation de la constitution du dossier', // departement
+        [EtapeDossier.TROIS_MASTER]: 'Validation des jurys', // admin
         [EtapeDossier.QUATRE_MASTER]: 'Notation du dossier', // jury
         [EtapeDossier.CINQ_MASTER]: 'Evaluation de la notation', // admin
-        [EtapeDossier.SIX_MASTER]: 'Vérification du rapport du CRFD', // coordonateur
+        [EtapeDossier.SIX_MASTER]: 'Validation du rapport du CRFD', // coordonateur
         [EtapeDossier.SEPT_MASTER]: 'Programmation de la date de soutenance' // coordonateur
     };
     const wordingThese = {
-        [EtapeDossier.DEUX_THESE]: 'Vérification du dossier', // admin
-        [EtapeDossier.TROIS_THESE]: 'Validation dossier', // coordo
-        [EtapeDossier.QUATRE_THESE]: 'Evaluation décision coordonateur', // admin
-        [EtapeDossier.CINQ_THESE]: 'Notation du dossier', // expert
+        [EtapeDossier.DEUX_THESE]: 'Validation de la constitution du dossier', // admin
+        [EtapeDossier.TROIS_THESE]: 'Validation du sujet de thèse', // coordo
+        [EtapeDossier.QUATRE_THESE]: 'Evaluation de la décision du Coordonateur', // admin
+        [EtapeDossier.CINQ_THESE]: 'Notation du dossier',  // expert
         [EtapeDossier.SIX_THESE]: 'Evaluation de la notation', // admin
-        [EtapeDossier.SEPT_THESE]: 'Appreciation du dossier par conseil ', // conseil
-        [EtapeDossier.HUIT_THESE]: 'Evaluation appréciation dossier',// admin
-        [EtapeDossier.NEUF_THESE]: 'Programmation date de soutenance',// rectorat
+        [EtapeDossier.SEPT_THESE]: 'Appréciation du dossier par le Conseil', // conseil
+        [EtapeDossier.HUIT_THESE]: "Evaluation de l'appréciation dossier",  // admin
+        [EtapeDossier.NEUF_THESE]: 'Programmation de la date de soutenance',  // rectorat
 
     };
 

@@ -62,7 +62,7 @@ CoordonateurSchema.virtual('notifications', {
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-    await etudiant.incrementerEtape(EtapeDossier.SIX_MASTER);
+    await etudiant.incrementerEtape(EtapeDossier.SEPT_MASTER);
     
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,

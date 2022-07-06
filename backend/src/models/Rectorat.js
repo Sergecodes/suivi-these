@@ -3,7 +3,7 @@ const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
 const Avis = require('./Avis');
-const { ModelNotif, AvisEmetteur, TypeNotification } = require('./types');
+const { ModelNotif, AvisEmetteur, TypeNotification, EtapeDossier } = require('./types');
 
 
 const RectoratSchema = new Schema({
@@ -54,7 +54,7 @@ RectoratSchema.virtual('notifications', {
 RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-    await etudiant.incrementerEtape();
+    await etudiant.incrementerEtape(EtapeDossier.NEUF_THESE);
     
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
