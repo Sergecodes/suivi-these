@@ -52,7 +52,7 @@ EnvoiDossierSchema.post('save', async function(envDossier) {
             objetConcerneModel: ModelNotif.ENVOI_DOSSIER
         }];
     
-        await Notification.create(notifs);
+        await Notification.insertMany(notifs);
     }
 });
 
