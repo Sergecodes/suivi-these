@@ -176,6 +176,31 @@ exports.change_email = function (req, res) {
 	});
 }
 
+exports.changePhoneNumber = function (req, res) {
+   const { expert } = res.locals;
+   const { newPhoneNumber } = req.body;
+
+   if (!newPhoneNumber)
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+
+   if (expert.numTelephone === newPhoneNumber) {
+		return res.status(400).send("Ce numero est votre numero actuel");
+	}
+
+   expert.numTelephone = newPhoneNumber;
+   expert.save(function (err, newExpert) {
+      if (err) {
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+      }
+      res.json({ 
+         success: true, 
+         message: "le nouveau numero de telephone a ete enregistrer avec success", 
+         numTelephone: newExpert.numTelephone 
+      });
+   });
+}
+
 
 // ----------
 exports.dossiersEtudsThese = async function (req, res) {
@@ -200,7 +225,7 @@ exports.dossiersEtudsThese = async function (req, res) {
 exports.notifications = async function (req, res) {
 	let { expert } = res.locals;
    await expert.populate('notifications');
-   res.json({ notifs: expert.notifications });
+   res.json(expert.notifications);
 }
 
 

@@ -163,13 +163,38 @@ exports.changeEmail = function (req, res) {
    });
 }
 
+exports.changePhoneNumber = function (req, res) {
+   const { rectorat } = res.locals;
+   const { newPhoneNumber } = req.body;
+
+   if (!newPhoneNumber)
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+
+   if (rectorat.numTelephone === newPhoneNumber) {
+		return res.status(400).send("Ce numero est votre numero actuel");
+	}
+
+   rectorat.numTelephone = newPhoneNumber;
+   rectorat.save(function (err, newRectorat) {
+      if (err) {
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+      }
+      res.json({ 
+         success: true, 
+         message: "le nouveau numero de telephone a ete enregistrer avec success", 
+         numTelephone: newRectorat.numTelephone 
+      });
+   });
+}
+
 
 // -------------------
 
 exports.notifications = async function (req, res) {
    let { rectorat } = res.locals;
    await rectorat.populate('notifications');
-   res.json({ notifs: rectorat.notifications });
+   res.json(rectorat.notifications);
 }
 
 exports.dossiersEtudsThese = async function (req, res) {

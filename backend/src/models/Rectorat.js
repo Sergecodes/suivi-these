@@ -3,13 +3,14 @@ const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
 const Avis = require('./Avis');
+const { validerNumTel } = require('../validators');
 const { ModelNotif, AvisEmetteur, TypeNotification, EtapeDossier } = require('./types');
 
 
 const RectoratSchema = new Schema({
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: { unique: true },
         trim: true,
         validate: {
@@ -17,18 +18,26 @@ const RectoratSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    motDePasse: { type: String, required: true }
+    motDePasse: { type: String, required: true },
+    numTelephone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: numTel => validerNumTel(numTel),
+            message: props => `${props.value} est un numero de telephone invalide!`
+        }
+    },
 });
 
-RectoratSchema.pre("save",function(next){
+RectoratSchema.pre("save", function (next) {
     const conseil = this;
-    if(this.isModified("motDePasse") || this.isNew){
-        bcrypt.genSalt(10,function(saltError,salt){
-            if(saltError){
+    if (this.isModified("motDePasse") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
                 return next(saltError)
-            }else{
-                bcrypt.hash(conseil.motDePasse,salt,function(hashError,hash){
-                    if(hashError){
+            } else {
+                bcrypt.hash(conseil.motDePasse, salt, function (hashError, hash) {
+                    if (hashError) {
                         return next(hashError)
                     }
                     conseil.motDePasse = hash;
@@ -37,7 +46,7 @@ RectoratSchema.pre("save",function(next){
                 })
             }
         })
-    }else{
+    } else {
         return next();
     }
 
@@ -51,11 +60,11 @@ RectoratSchema.virtual('notifications', {
 });
 
 
-RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, date) {
+RectoratSchema.methods.programmerDateSoutenanceThese = async function (etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
     await etudiant.incrementerEtape(EtapeDossier.NEUF_THESE);
-    
+
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
         destinataire: etudiant._id,
@@ -67,15 +76,15 @@ RectoratSchema.methods.programmerDateSoutenanceThese = async function(etudiant, 
 };
 
 
-RectoratSchema.methods.verifierAvisDonne = async function(idDossier) {
+RectoratSchema.methods.verifierAvisDonne = async function (idDossier) {
     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
     return Boolean(donne);
-}   
+}
 
-RectoratSchema.methods.donnerAvisTheseAdmin = async function(
-    type, 
-    commentaire, 
-    rapport, 
+RectoratSchema.methods.donnerAvisTheseAdmin = async function (
+    type,
+    commentaire,
+    rapport,
     idDossier
 ) {
     let donne = await this.verifierAvisDonne(idDossier);

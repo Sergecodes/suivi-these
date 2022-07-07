@@ -2,13 +2,14 @@ const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
+const { validerNumTel } = require('../validators');
 const { ActeurDossier, ModelNotif, TypeNotification, EtapeDossier } = require('./types');
 
 
 const AdminSchema = new Schema({
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: { unique: true },
         trim: true,
         validate: {
@@ -16,18 +17,26 @@ const AdminSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    motDePasse: { type: String, required: true }
+    motDePasse: { type: String, required: true },
+    numTelephone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: numTel => validerNumTel(numTel),
+            message: props => `${props.value} est un numero de telephone invalide!`
+        }
+    }
 });
 
-AdminSchema.pre("save",function(next){
+AdminSchema.pre("save", function (next) {
     const admin = this;
-    if(this.isModified("motDePasse") || this.isNew){
-        bcrypt.genSalt(10,function(saltError,salt){
-            if(saltError){
+    if (this.isModified("motDePasse") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
                 return next(saltError)
-            }else{
-                bcrypt.hash(admin.motDePasse,salt,function(hashError,hash){
-                    if(hashError){
+            } else {
+                bcrypt.hash(admin.motDePasse, salt, function (hashError, hash) {
+                    if (hashError) {
                         return next(hashError)
                     }
                     admin.motDePasse = hash;
@@ -36,7 +45,7 @@ AdminSchema.pre("save",function(next){
                 })
             }
         })
-    }else{
+    } else {
         return next();
     }
 
@@ -86,11 +95,11 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
 /**
  * Valider l'inscription d'un etudiant
  */
- AdminSchema.methods.accepterEtudiant = async function (etudiant) {
+AdminSchema.methods.accepterEtudiant = async function (etudiant) {
     etudiant.compteValideLe = new Date();
     await etudiant.save();
     await etudiant.incrementerEtape(EtapeDossier.UNE);
-    
+
     await Notification.create({
         type: TypeNotification.COMPTE_VALIDE,
         destinataire: etudiant,
@@ -106,7 +115,7 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
  * @param etudiant: L'objet document
  * @param raison
  */
- AdminSchema.methods.rejeterEtudiant = async function (etudiant, raison) {
+AdminSchema.methods.rejeterEtudiant = async function (etudiant, raison) {
     // Notifier l'etudiant
     await Notification.create({
         type: TypeNotification.COMPTE_REJETE,

@@ -167,10 +167,35 @@ exports.changeEmail = function (req, res) {
    });
 }
 
+exports.changePhoneNumber = function (req, res) {
+   const { admin } = res.locals;
+   const { newPhoneNumber } = req.body;
+
+   if (!newPhoneNumber)
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+
+   if (admin.numTelephone === newPhoneNumber) {
+		return res.status(400).send("Ce numero est votre numero actuel");
+	}
+
+   admin.numTelephone = newPhoneNumber;
+   admin.save(function (err, newAdmin) {
+      if (err) {
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+      }
+      res.json({ 
+         success: true, 
+         message: "le nouveau numero de telephone a ete enregistrer avec success", 
+         numTelephone: newAdmin.numTelephone 
+      });
+   });
+}
+
 exports.notifications = async function (req, res) {
    let { admin } = res.locals;
    await admin.populate('notifications');
-   res.json({ notifs: admin.notifications });
+   res.json(admin.notifications);
 }
 
 /**

@@ -2,16 +2,17 @@ const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
 const Avis = require('./Avis')
 const bcrypt = require('bcrypt');
+const { validerNumTel } = require('../validators');
 const { TypeExpert, GradeExpert, AvisEmetteur } = require('./types')
 
 
 const ExpertSchema = new Schema({
-    nom: { type: String, required: true }, 
-    prenom: { type: String, required: true }, 
-    motDePasse: { type: String, required: true },  
+    nom: { type: String, required: true },
+    prenom: { type: String, required: true },
+    motDePasse: { type: String, required: true },
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: { unique: true },
         trim: true,
         validate: {
@@ -19,29 +20,37 @@ const ExpertSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    ville: { type: String, required: true }, 
-    grade: { 
-        type: String, 
-        required: true, 
+    numTelephone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: numTel => validerNumTel(numTel),
+            message: props => `${props.value} est un numero de telephone invalide!`
+        }
+    },
+    ville: { type: String, required: true },
+    grade: {
+        type: String,
+        required: true,
         default: GradeExpert.UN,
         enum: Object.values(GradeExpert)
-    }, 
-    type: { 
-        type: String, 
-        default: TypeExpert.INTERNE, 
+    },
+    type: {
+        type: String,
+        default: TypeExpert.INTERNE,
         enum: Object.values(TypeExpert)
     }
 });
 
-ExpertSchema.pre("save",function(next){
+ExpertSchema.pre("save", function (next) {
     const expert = this;
-    if(this.isModified("motDePasse") || this.isNew){
-        bcrypt.genSalt(10,function(saltError,salt){
-            if(saltError){
+    if (this.isModified("motDePasse") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
                 return next(saltError)
-            }else{
-                bcrypt.hash(expert.motDePasse,salt,function(hashError,hash){
-                    if(hashError){
+            } else {
+                bcrypt.hash(expert.motDePasse, salt, function (hashError, hash) {
+                    if (hashError) {
                         return next(hashError)
                     }
                     expert.motDePasse = hash;
@@ -50,7 +59,7 @@ ExpertSchema.pre("save",function(next){
                 })
             }
         })
-    }else{
+    } else {
         return next();
     }
 
@@ -64,16 +73,16 @@ ExpertSchema.virtual('notifications', {
 });
 
 
-ExpertSchema.methods.verifierAvisDonne = async function(idDossier) {
+ExpertSchema.methods.verifierAvisDonne = async function (idDossier) {
     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
     return Boolean(donne);
-}   
+}
 
 
-ExpertSchema.methods.donnerAvisAdmin = async function(
-    type, 
-    commentaire, 
-    rapport, 
+ExpertSchema.methods.donnerAvisAdmin = async function (
+    type,
+    commentaire,
+    rapport,
     idDossier
 ) {
     let donne = await this.verifierAvisDonne(idDossier);

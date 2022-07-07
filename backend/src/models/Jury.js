@@ -1,19 +1,20 @@
 const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 const isEmail = require('validator/lib/isEmail');
-const { NoteDossier } = require('./Dossier');
+const { Dossier, NoteDossier } = require('./Dossier');
 const { GradeJury, ActeurDossier, AvisEmetteur, EtapeDossier } = require('./types')
 const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
-const bcrypt = require('bcrypt');
+const { validerNumTel } = require('../validators');
 
 
 const JurySchema = new Schema({
-    nom: { type: String, required: true }, 
-    prenom: { type: String, required: true }, 
+    nom: { type: String, required: true },
+    prenom: { type: String, required: true },
     motDePasse: { type: String, required: true },
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: { unique: true },
         trim: true,
         validate: {
@@ -21,25 +22,32 @@ const JurySchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
-    numTelephone: { type: String, required: true },
-    grade: { 
-        type: Number, 
-        required: true, 
-        default: GradeJury.UN,  
+    numTelephone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: numTel => validerNumTel(numTel),
+            message: props => `${props.value} est un numero de telephone invalide!`
+        }
+    },
+    grade: {
+        type: Number,
+        required: true,
+        default: GradeJury.UN,
         enum: Object.values(GradeJury)
     },
     departement: { type: Schema.Types.ObjectId, ref: 'Departement', required: true }
 });
 
-JurySchema.pre("save",function(next){
+JurySchema.pre("save", function (next) {
     const jury = this;
-    if(this.isModified("motDePasse") || this.isNew){
-        bcrypt.genSalt(10,function(saltError,salt){
-            if(saltError){
+    if (this.isModified("motDePasse") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
                 return next(saltError)
-            }else{
-                bcrypt.hash(jury.motDePasse,salt,function(hashError,hash){
-                    if(hashError){
+            } else {
+                bcrypt.hash(jury.motDePasse, salt, function (hashError, hash) {
+                    if (hashError) {
                         return next(hashError)
                     }
                     jury.motDePasse = hash;
@@ -48,7 +56,7 @@ JurySchema.pre("save",function(next){
                 })
             }
         })
-    }else{
+    } else {
         return next();
     }
 
@@ -75,13 +83,15 @@ JurySchema.virtual('notifications', {
 });
 
 
-JurySchema.methods.verifierDejaNoter = async function(idDossier) {
-    let note = await NoteDossier.findOne({ notePar: this._id, dossier: idDossier });
-    return Boolean(note);
-}   
+JurySchema.methods.verifierDejaNoter = async function (idDossier) {
+    let numNotes = await NoteDossier.countDocuments({ notePar: this._id, dossier: idDossier });
+    return numNotes === 0 ? false : true;
+}
 
 
-JurySchema.methods.attribuerNote = async function(idDossier, notes, commentaire) {
+JurySchema.methods.attribuerNote = async function (dossier, notes, commentaire) {
+    const idDossier = dossier._id;
+
     let dejaNote = await this.verifierDejaNoter(idDossier);
     if (dejaNote)
         throw "Dossier deja note par ce membre du jury";
@@ -97,10 +107,10 @@ JurySchema.methods.attribuerNote = async function(idDossier, notes, commentaire)
     // If number of notes is 3, move dossier to the next step
     const numJuries = 3;
     let numNotes = await NoteDossier.countDocuments({ dossier: idDossier });
-    console.log("nombre de notes", numNotes);
+    console.log("prev nombre de notes", numNotes);
 
     if (numNotes >= numJuries) {
-        throw `Le nombre maximum de notes pour un dossier est ${numJuries}`
+        throw `Le nombre maximum de notes pour un dossier est ${numJuries}`;
     } else {
         await NoteDossier.create({
             dossier: idDossier,
@@ -118,19 +128,19 @@ JurySchema.methods.attribuerNote = async function(idDossier, notes, commentaire)
             await dossier.incrementerEtape(EtapeDossier.CINQ_MASTER);
         }
     }
-}   
+}
 
 
-JurySchema.methods.verifierAvisDonne = async function(idDossier) {
-    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
-    return Boolean(donne);
-}   
+JurySchema.methods.verifierAvisDonne = async function (idDossier) {
+    let numAvis = await Avis.countDocuments({ donnePar: this._id, dossier: idDossier });
+    return numAvis === 0 ? false : true;
+}
 
 
-JurySchema.methods.donnerAvisAdmin = async function(
-    type, 
-    commentaire, 
-    rapport, 
+JurySchema.methods.donnerAvisAdmin = async function (
+    type,
+    commentaire,
+    rapport,
     idDossier
 ) {
     let donne = await this.verifierAvisDonne(idDossier);

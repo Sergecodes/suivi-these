@@ -18,6 +18,8 @@ router.route('/change-password').put(isExpert, getExpert, controller.change_expe
 
 router.route('/change-email').put(isExpert, getExpert, controller.change_email);
 
+router.route('/change-phone-number').put(isExpert, getExpert, controller.changePhoneNumber);
+
 router.route('/dossiers-etudiants-these').get(isExpert, getExpert, controller.dossiersEtudsThese);
 
 router.route('/notifications').get(isExpert, getExpert, controller.notifications);

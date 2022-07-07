@@ -16,6 +16,10 @@ router.route('/login').post(controller.login_jury);
 
 router.route('/change-email').put(isJury, getJury, controller.change_email);
 
+router.route('/change-password').put(isJury, getJury, controller.change_jury_pass);
+
+router.route('/change-phone-number').put(isJury, getJury, controller.changePhoneNumber);
+
 router.route('/dossiers-etudiants-master').get(isJury, getJury, controller.dossiersEtudsMaster);
 
 router.route('/notes-dossiers').get(isJury, getJury, controller.notesDossier);
@@ -30,10 +34,6 @@ router.route('/verifier-dossier-note').get(
 );
 
 router.route('/notifications').get(isJury, getJury, controller.notifications);
-
-router.route('/change-password').put(isJury, getJury, controller.change_jury_pass);
-
-router.route('/change-number').put(isJury, getJury, controller.changePhoneNumber);
 
 router.route('/verifier-avis-donne').get(
    isJury, 

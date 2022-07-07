@@ -16,6 +16,8 @@ router.route('/login').post(controller.conseil_login);
 
 router.route('/change-password').put(isConseil, getConseil, controller.change_conseil_pass);
 
+router.route('/change-phone-number').put(isConseil, getConseil, controller.changePhoneNumber);
+
 router.route('/change-email').put(isConseil, getConseil, controller.change_email);
 
 router.route('/notifications').get(isConseil, getConseil, controller.notifications);
