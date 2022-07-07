@@ -182,11 +182,12 @@ const VerificationMaster = () => {
           <PdfViewer url={fileUrl.url} height="100%" />
         </Modal>
       </div>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center" >
         <button
           className="btn rejectButton my-5 me-3 d-flex align-items-center"
           type="button"
           onClick={handleCancel}
+          disabled={etudiantInfo.dejaNote?true:false}
         >
           <BsX className="me-1 fs-4" /> REJETER
         </button>
@@ -194,6 +195,7 @@ const VerificationMaster = () => {
           className="btn autorisationButton my-5 d-flex align-items-center"
           type="button"
           onClick={handleSubmit}
+          disabled={etudiantInfo.dejaNote?true:false}
         >
           <BsCheck className=" fs-4" /> VALIDER
         </button>

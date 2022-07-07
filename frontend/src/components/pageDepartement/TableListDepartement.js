@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import moment from "moment";
 import { toast, ToastContainer } from 'react-toastify'
-import { BsPenFill } from "react-icons/bs";
+import { BsPenFill ,BsEyeFill} from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { ACTEURS } from '../../constants/Constant';
 
@@ -73,17 +73,34 @@ const TableListDepartement = () => {
       title: "Actions",
       render: (record) => (
         <div className="d-flex fs-4 justify-content-around ">
-          <Link to="/acteur/departement/verification"
-            state={{
-              etudiantInfo: {
-                matricule: record.matricule,
-                name: record.name,
-                dossier: record.dossier
-              }
-            }}
-          >
-            <BsPenFill style={{ color: "#513e8f" }} />
-          </Link>
+          <div style={record.dateVerification !== "---" ? { display: "none" } : {margin:0}}>
+            <Link to="/acteur/departement/verification"
+              state={{
+                etudiantInfo: {
+                  matricule: record.matricule,
+                  name: record.name,
+                  dossier: record.dossier,
+                  dejaNote:false
+                }
+              }}
+            >
+              <BsPenFill style={{ color: "#513e8f" ,cursor:"pointer"}} />
+            </Link>
+          </div>
+          <div style={record.dateVerification !== "---" ? {margin:0 } : {display: "none"}}>
+            <Link to="/acteur/departement/verification"
+              state={{
+                etudiantInfo: {
+                  matricule: record.matricule,
+                  name: record.name,
+                  dossier: record.dossier,
+                  dejaNote: true
+                }
+              }}
+            >
+              <BsEyeFill className="details" style={{ color: "#513e8f",cursor:"pointer" }} />
+            </Link>
+          </div>
         </div>
       ),
       align: "center",
