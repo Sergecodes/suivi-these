@@ -1,6 +1,6 @@
 /** Les fonctions de validation */
 
-const { Types } = require('./constants');
+// const { Types } = require('./constants');
 const { isNumeric } = require('./utils')
 
 
@@ -10,7 +10,7 @@ const { isNumeric } = require('./utils')
  * AA - deux derniers chiffres de l'annee (ex 19, 11, 10; 10-22 -- annee courante)
  * BC - une lettre B et un chiffre C
  * DD.. des chiffres
- * @param matricule String
+ * @param { String } matricule
  */
 function validerMatricule(matricule) {
     matricule = matricule.toString();
@@ -20,7 +20,7 @@ function validerMatricule(matricule) {
     if (length < 6 || length > 7) {
         return false;
     }
-    
+
     let aa = matricule.substring(0, 2), bc = matricule.substring(2, 4);
     let b = bc.charAt(0), c = bc.charAt(1);
     let dd = matricule.substring(4);
@@ -33,7 +33,7 @@ function validerMatricule(matricule) {
     aa = parseInt(aa, 10);
     let anneeCourante = new Date().getFullYear();
     let chiffresAnnee = parseInt(anneeCourante.toString().substring(2, 4), 10);
-    
+
     if (aa < 10 || aa > chiffresAnnee) {
         return false;
     }
@@ -49,6 +49,28 @@ function validerMatricule(matricule) {
     }
 
     return true;
+}
+
+/**
+ * 
+ * @param { String } numTel
+ */
+function validerNumTel(numTel) {
+    // Remove all white space
+    numTel = numTel.replace(/\s/g, '');
+
+    // Should have at least 9 characters
+    if (numTel.length < 9) {
+        console.log(`${numTel} has less than 9 characters`);
+        return false;
+    }
+
+    // If string begins with plus sign, remove it
+    if (numTel.charAt(0) === '+') {
+        numTel = numTel.slice(1);
+    }
+
+    return isNumeric(numTel);
 }
 
 
@@ -77,5 +99,5 @@ function validerMatricule(matricule) {
 // }
 
 
-module.exports = { validerMatricule };
+module.exports = { validerMatricule, validerNumTel };
 

@@ -2,12 +2,13 @@ const { Schema, model } = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
-const { 
-    ActeurDossier, ModelNotif, TypeNotification, 
-    AvisEmetteur, EtapeDossier  
+const {
+    ActeurDossier, ModelNotif, TypeNotification,
+    AvisEmetteur, EtapeDossier
 } = require('./types')
 const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
+const { validerNumTel } = require('../validators');
 
 
 const DepartementSchema = new Schema({
@@ -15,7 +16,7 @@ const DepartementSchema = new Schema({
     motDePasse: { type: String, required: true },
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: { unique: true },
         trim: true,
         validate: {
@@ -23,19 +24,27 @@ const DepartementSchema = new Schema({
             message: props => `${props.value} est un email invalide!`
         }
     },
+    numTelephone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: numTel => validerNumTel(numTel),
+            message: props => `${props.value} est un numero de telephone invalide!`
+        }
+    },
     uniteRecherche: { type: Schema.Types.ObjectId, ref: 'UniteRecherche', required: true },
 });
 
 
-DepartementSchema.pre("save",function(next){
+DepartementSchema.pre("save", function (next) {
     const departement = this;
-    if(this.isModified("motDePasse") || this.isNew){
-        bcrypt.genSalt(10,function(saltError,salt){
-            if(saltError){
+    if (this.isModified("motDePasse") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
                 return next(saltError)
-            }else{
-                bcrypt.hash(departement.motDePasse,salt,function(hashError,hash){
-                    if(hashError){
+            } else {
+                bcrypt.hash(departement.motDePasse, salt, function (hashError, hash) {
+                    if (hashError) {
                         return next(hashError)
                     }
                     departement.motDePasse = hash;
@@ -44,7 +53,7 @@ DepartementSchema.pre("save",function(next){
                 })
             }
         })
-    }else{
+    } else {
         return next();
     }
 });
@@ -76,7 +85,7 @@ DepartementSchema.virtual('notifications', {
  * @param dossier: L'objet document
  * @param raison
  */
- DepartementSchema.methods.validerDossier = async function (dossier) {
+DepartementSchema.methods.validerDossier = async function (dossier) {
     await dossier.incrementerEtape(EtapeDossier.TROIS_MASTER);
 
     // Notifier l'etudiant
@@ -94,7 +103,7 @@ DepartementSchema.virtual('notifications', {
  * @param dossier: L'objet document
  * @param raison
  */
- DepartementSchema.methods.rejeterDossier = async function (dossier, raison) {
+DepartementSchema.methods.rejeterDossier = async function (dossier, raison) {
     dossier.rejeteParActeur = ActeurDossier.DEPARTEMENT;
     dossier.raisonRejet = raison;
     await dossier.save();
@@ -110,16 +119,16 @@ DepartementSchema.virtual('notifications', {
 }
 
 
-DepartementSchema.methods.verifierAvisDonne = async function(idDossier) {
+DepartementSchema.methods.verifierAvisDonne = async function (idDossier) {
     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
     return Boolean(donne);
-}   
+}
 
 
-DepartementSchema.methods.donnerAvisAdmin = async function(
-    type, 
-    commentaire, 
-    rapport, 
+DepartementSchema.methods.donnerAvisAdmin = async function (
+    type,
+    commentaire,
+    rapport,
     idDossier
 ) {
     let donne = await this.verifierAvisDonne(idDossier);

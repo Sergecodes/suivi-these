@@ -19,6 +19,8 @@ router.route('/change-email').put(isAdmin, getAdmin, controller.changeEmail);
 
 router.route('/change-password').put(isAdmin, getAdmin, controller.changePassword);
 
+router.route('/change-phone-number').put(isAdmin, getAdmin, controller.changePhoneNumber);
+
 router.route('/demandes-inscription').get(isAdmin, controller.demandesInscription);
 
 router.route('/notifications').get(isAdmin, getAdmin, controller.notifications);

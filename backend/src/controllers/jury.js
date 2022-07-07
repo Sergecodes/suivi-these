@@ -228,36 +228,25 @@ exports.changePhoneNumber = function (req, res) {
   const { newPhoneNumber } = req.body;
 
   if (!newPhoneNumber)
-    return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+   return res.status(400).send("newPhoneNumber n'est pas dans la requete");
 
   if (jury.numTelephone === newPhoneNumber) {
-    return res.json({ message: "Ce numero est votre numero actuel" });
-  }
+   return res.status(400).send("Ce numero est votre numero actuel");
+ }
 
   jury.numTelephone = newPhoneNumber;
   jury.save(function (err, newJury) {
-    if (err) {
-      console.log(
-        "Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ",
-        err
-      );
-      res
-        .status(500)
-        .json({
-          success: false,
-          message:
-            "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone",
-          error: err,
-        });
-    }
-
-    res.json({
-      success: true,
-      message: "le nouveau numero de telephone a ete enregistrer avec success",
-      data: newJury.telephone,
-    });
+     if (err) {
+        console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+        res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+     }
+     res.json({ 
+        success: true, 
+        message: "le nouveau numero de telephone a ete enregistrer avec success", 
+        numTelephone: newJury.numTelephone 
+     });
   });
-};
+}
 
 // ------------
 exports.dossiersEtudsMaster = async function (req, res) {
@@ -328,7 +317,7 @@ exports.verifierNoterDossier = async function (req, res) {
 exports.notifications = async function (req, res) {
   let { jury } = res.locals;
   await jury.populate("notifications");
-  res.json({ notifs: jury.notifications });
+  res.json(jury.notifications);
 };
 
 exports.verifierAvisDonne = async function (req, res) {
