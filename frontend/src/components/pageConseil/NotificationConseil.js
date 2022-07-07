@@ -36,7 +36,7 @@ const Notificationconseil = () => {
 
   return (
     <>
-      <NotificationsActeurs notifications={notificationsConseil}/>
+      <NotificationsActeurs notifs={notificationsConseil}/>
     </>
   )
 };

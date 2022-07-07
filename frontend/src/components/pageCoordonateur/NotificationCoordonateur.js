@@ -47,7 +47,7 @@ const notificationsCoordonateur = [
 const NotificationCoordonateur = () => {
   return (
     <>
-      <NotificationsActeurs notifications={notificationsCoordonateur}/>
+      <NotificationsActeurs notifs={notificationsCoordonateur}/>
     </>
   )
 };

@@ -70,7 +70,7 @@ const notificationsAdmin = [
 const NotificationsAdmin = () => {
   return (
     <>
-      <NotificationsActeurs notifications={notificationsAdmin} />
+      <NotificationsActeurs notifs={notificationsAdmin} />
     </>
   );
 };
