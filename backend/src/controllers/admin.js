@@ -231,9 +231,11 @@ exports.setEtudiantJuges = async function (req, res) {
       return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
    }
 
+   console.log(juges);
    etudiant.juges = juges;
    await etudiant.save();
    await etudiant.populate('juges', '-motDePasse');
+   console.log(etudiant);
    res.json(etudiant.juges);
 }
 
@@ -253,8 +255,8 @@ exports.envoyerDossierJuges = async function (req, res) {
 
    let array = [];
    for (let idJuge of juges) {
-      defaultObj['destinataire'] = idJuge;
-      array.push(defaultObj);
+      let newObj = { ...defaultObj, destinataire: idJuge };
+      array.push(newObj);
    }
    console.log("juges", juges);
    console.log("array", array);

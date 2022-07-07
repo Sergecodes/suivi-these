@@ -63,7 +63,7 @@ const columns = [
                 etudiantInfo: {
                   matricule: record.matricule,
                   noms: record.name,
-                  idDossier: record.idDossier
+                  dossier: record.dossier
                 }
               }}
             >
@@ -80,14 +80,14 @@ const columns = [
               </button>
             </Link>
           </div>
-          <div style={record.dateNotation === "---" ? { display: "none" } : {}}>
+          <div style={record.dateNotation !== "---" ? {} : {display: "none"}}>
             <Link
               to="/acteur/jury/notation"
               state={{
                 etudiantInfo: {
                   matricule: record.matricule,
                   noms: record.name,
-                  idDossier: record.idDossier
+                  dossier: record.dossier
                 }
               }}
             >
@@ -95,12 +95,12 @@ const columns = [
                 type="button"
                 className="btn py-1"
                 style={{
-                  color: "green",
+                  color: "white",
                   cursor: "pointer",
-                  backgroundColor: "transparent",
+                  backgroundColor: "var(--secondaryColor)",
                 }}
               >
-                <BsArrowRight /> Déja noté
+                <MdSend /> Notation
               </button>
             </Link>
           </div>
@@ -129,7 +129,7 @@ const TableList = () => {
       initDateEnvoi: '',
       initDateNotation: 0,
       dateNotation: "---",
-      idDossier: '1'
+      dossier: {}
     },
   ]);
 
@@ -172,7 +172,7 @@ const TableList = () => {
         dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
         initDateNotation: noteObj ? noteObj.noteLe : 0,
         dateNotation: noteObj ? moment(noteObj.noteLe).format('dddd, D MMM YYYY') : '---',
-        idDossier: envoiObj.dossier.id
+        dossier: envoiObj.dossier
       });
     }
 
@@ -182,7 +182,7 @@ const TableList = () => {
   return (
     <>
       <ToastContainer />
-      <div className=" mx-3 my-3" style={{ overflow: "scroll" }}>
+      <div className=" mx-3 my-3" >
         <div style={{ backgroundColor: "#2a1c5a", borderRadius: "10px" }}>
           <h5 className="text-center py-3" style={{ color: "white" }}>
             LISTE DES DOSSIERS ETUDIANTS

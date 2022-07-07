@@ -111,6 +111,7 @@ EtudiantSchema.methods.verifyPassword = function (motDePasse, cb) {
 };
 
 EtudiantSchema.methods.getDossierObj = async function () {
+   console.log("in get dossier obj")
    return await Dossier.findById(this.dossier);
 };
 
@@ -191,7 +192,7 @@ EtudiantSchema.methods.reinitialiser = async function () {
 
 EtudiantSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
    if (this.dossier)
-      return await this.getDossierObj().incrementerEtape(numEtapeSuivante);
+      return await (await this.getDossierObj()).incrementerEtape(numEtapeSuivante);
 }
 
 EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {
