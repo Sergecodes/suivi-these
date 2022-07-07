@@ -200,7 +200,7 @@ exports.dossiersEtudsThese = async function (req, res) {
 exports.notifications = async function (req, res) {
 	let { expert } = res.locals;
    await expert.populate('notifications');
-   res.json({ notifs: expert.notifications });
+   res.json(expert.notifications);
 }
 
 

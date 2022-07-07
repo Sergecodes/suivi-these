@@ -170,7 +170,7 @@ exports.changeEmail = function (req, res) {
 exports.notifications = async function (req, res) {
    let { admin } = res.locals;
    await admin.populate('notifications');
-   res.json({ notifs: admin.notifications });
+   res.json(admin.notifications);
 }
 
 /**

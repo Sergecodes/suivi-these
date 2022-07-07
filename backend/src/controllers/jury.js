@@ -328,7 +328,7 @@ exports.verifierNoterDossier = async function (req, res) {
 exports.notifications = async function (req, res) {
   let { jury } = res.locals;
   await jury.populate("notifications");
-  res.json({ notifs: jury.notifications });
+  res.json(jury.notifications);
 };
 
 exports.verifierAvisDonne = async function (req, res) {

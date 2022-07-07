@@ -58,7 +58,7 @@ exports.getOne = function (req, res) {
 exports.notifications = async function (req, res) {
    let { etudiant } = res.locals;
    await etudiant.populate('notifications');
-   res.json({ notifs: etudiant.notifications });
+   res.json(etudiant.notifications);
 }
 
 

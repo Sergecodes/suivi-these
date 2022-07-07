@@ -183,7 +183,7 @@ exports.notifications = async function (req, res) {
 	let { conseil } = res.locals;
 	await conseil.populate('notifications');
 
-	res.json({ notifs: conseil.notifications });
+	res.json(conseil.notifications);
 };
 
 

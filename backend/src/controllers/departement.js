@@ -189,7 +189,7 @@ exports.change_email = function(req,res){
 exports.notifications = async function (req, res) {
 	let { depart } = res.locals;
 	await depart.populate('notifications');
-   res.json({ notifs: depart.notifications });
+   res.json(depart.notifications);
 }
 
 

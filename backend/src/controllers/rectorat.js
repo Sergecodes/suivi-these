@@ -169,7 +169,7 @@ exports.changeEmail = function (req, res) {
 exports.notifications = async function (req, res) {
    let { rectorat } = res.locals;
    await rectorat.populate('notifications');
-   res.json({ notifs: rectorat.notifications });
+   res.json(rectorat.notifications);
 }
 
 exports.dossiersEtudsThese = async function (req, res) {
