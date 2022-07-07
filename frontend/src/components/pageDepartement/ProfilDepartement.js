@@ -152,7 +152,7 @@ const ProfilDepartement = () => {
               <div className="acteurInput">
                 <p>
                   {" "}
-                  <BsPencilFill className="me-1" />
+                  <BsPencilFill className="me-1 acteurInputDisabled" />
                   Noms et prenoms{" "}
                 </p>
                 <input

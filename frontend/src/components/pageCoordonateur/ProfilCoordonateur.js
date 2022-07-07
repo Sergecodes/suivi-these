@@ -8,10 +8,10 @@ const ProfilCoordonateur = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const [coordoInfo, setCoordoInfo] = useState({
-    nom:"",
-    prenom:"",
-    email: "",
-    numTelephone: "",
+    nom:user.nom,
+    prenom:user.prenom,
+    email: user.email,
+    numTelephone: user.numTelephone,
     newPassword: "",
     confirmPassword: "",
   });
@@ -148,7 +148,7 @@ const ProfilCoordonateur = () => {
             <div className="acteurInput">
                 <p>
                   {" "}
-                  <BsPencilFill className="me-1" />
+                  <BsPencilFill className="me-1 acteurInputDisabled" />
                   Nom{" "}
                 </p>
                 <input
@@ -162,15 +162,15 @@ const ProfilCoordonateur = () => {
               <div className="acteurInput">
                 <p>
                   {" "}
-                  <BsPencilFill className="me-1" />
+                  <BsPencilFill className="me-1 acteurInputDisabled" />
                   Prenom{" "}
                 </p>
                 <input
                   className="form-control "
                   type="text"
                   name="prenom"
-                  value={coordoInfo.prenom}
-                  onChange={handleChange}
+                  defaultValue={coordoInfo.prenom}
+                  disabled = {true}
                 />
               </div>
               <div className="acteurInputDisabled">

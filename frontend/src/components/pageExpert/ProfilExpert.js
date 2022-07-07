@@ -151,7 +151,7 @@ const ProfilExpert = () => {
               <div className="acteurInput">
                 <p>
                   {" "}
-                  <BsPencilFill className="me-1" />
+                  <BsPencilFill className="me-1 acteurInputDisabled" />
                   Nom{" "}
                 </p>
                 <input
@@ -162,7 +162,7 @@ const ProfilExpert = () => {
                   disabled = {true}
                 />
               </div>
-              <div className="acteurInput">
+              <div className="me-1 acteurInputDisabled">
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
