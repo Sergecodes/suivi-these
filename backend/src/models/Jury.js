@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const isEmail = require('validator/lib/isEmail');
-const { NoteDossier } = require('./Dossier');
+const { Dossier, NoteDossier } = require('./Dossier');
 const { GradeJury, ActeurDossier, AvisEmetteur, EtapeDossier } = require('./types')
 const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
@@ -84,8 +84,8 @@ JurySchema.virtual('notifications', {
 
 
 JurySchema.methods.verifierDejaNoter = async function (idDossier) {
-    let note = await NoteDossier.findOne({ notePar: this._id, dossier: idDossier });
-    return Boolean(note);
+    let numNotes = await NoteDossier.countDocuments({ notePar: this._id, dossier: idDossier });
+    return numNotes === 0 ? false : true;
 }
 
 
@@ -123,6 +123,7 @@ JurySchema.methods.attribuerNote = async function (idDossier, notes, commentaire
 
         // Increment step of dossier since all juries have given note to dossier
         if (numNotes === numJuries) {
+            let dossier = await Dossier.findById(idDossier);
             await dossier.incrementerEtape(EtapeDossier.CINQ_MASTER);
         }
     }
