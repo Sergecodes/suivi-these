@@ -1,14 +1,14 @@
 const { Schema, model } = require("mongoose");
 const isEmail = require("validator/lib/isEmail");
 const isDate = require("validator/lib/isDate");
-const { 
-   Niveau, Sexe, ActeurDossier, TypeNotification, 
+const {
+   Niveau, Sexe, ActeurDossier, TypeNotification,
    ModelNotif, EtapeDossier
 } = require("./types");
 const EnvoiDossier = require("./EnvoiDossier");
 const { Dossier } = require("./Dossier");
 const Notification = require('./Notification');
-const { validerMatricule } = require("../validators");
+const { validerMatricule, validerNumTel } = require("../validators");
 const bcrypt = require("bcrypt");
 
 
@@ -37,8 +37,8 @@ const EtudiantSchema = new Schema({
          message: props => `${props.value} est un email invalide!`
       }
    },
-   dateNaissance: { 
-      type: String, 
+   dateNaissance: {
+      type: String,
       required: true,
       validate: {
          validator: (date) => isDate(date),
@@ -48,7 +48,7 @@ const EtudiantSchema = new Schema({
          `,
       },
    },
-   dateSoutenance: { 
+   dateSoutenance: {
       type: String,
       validate: {
          validator: (date) => isDate(date),
@@ -59,8 +59,14 @@ const EtudiantSchema = new Schema({
       },
    },
    lieuNaissance: { type: String, required: true },
-   // todo validate numTelephone
-   numTelephone: { type: String, required: true },
+   numTelephone: {
+      type: String,
+      required: true,
+      validate: {
+         validator: numTel => validerNumTel(numTel),
+         message: props => `${props.value} est un numero de telephone invalide!`
+      }
+   },
    sexe: { type: String, required: true, enum: Object.values(Sexe) },
    compteValideLe: { type: String, default: '' },
    urlPhotoProfil: { type: String, default: '' },
@@ -78,7 +84,7 @@ const EtudiantSchema = new Schema({
 );
 
 // Unique together constraint
-EtudiantSchema.index( { matricule: 1, niveau: 1 }, { unique: true } );
+EtudiantSchema.index({ matricule: 1, niveau: 1 }, { unique: true });
 
 
 EtudiantSchema.pre("save", function (next) {

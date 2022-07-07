@@ -1,15 +1,16 @@
 const { Schema, model } = require('mongoose')
-const isEmail = require( 'validator/lib/isEmail')
+const bcrypt = require('bcrypt');
+const isEmail = require('validator/lib/isEmail')
 const Avis = require('./Avis')
 const Notification = require('./Notification')
 const { AvisEmetteur, EtapeDossier } = require('./types')
-const bcrypt = require('bcrypt');
+const { validerNumTel } = require('../validators');
 
 
 const CoordonateurSchema = new Schema({
     email: {
         type: String,
-        required: true, 
+        required: true,
         index: { unique: true },
         trim: true,
         validate: {
@@ -18,19 +19,27 @@ const CoordonateurSchema = new Schema({
         }
     },
     motDePasse: { type: String, required: true },
-    nom: { type: String, required: true }, 
+    nom: { type: String, required: true },
     prenom: { type: String, required: true },
+    numTelephone: {
+        type: String,
+        default: '',
+        validate: {
+            validator: numTel => validerNumTel(numTel),
+            message: props => `${props.value} est un numero de telephone invalide!`
+        }
+    }
 });
 
-CoordonateurSchema.pre("save",function(next){
+CoordonateurSchema.pre("save", function (next) {
     const coordonateur = this;
-    if(this.isModified("motDePasse") || this.isNew){
-        bcrypt.genSalt(10,function(saltError,salt){
-            if(saltError){
+    if (this.isModified("motDePasse") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
                 return next(saltError)
-            }else{
-                bcrypt.hash(coordonateur.motDePasse,salt,function(hashError,hash){
-                    if(hashError){
+            } else {
+                bcrypt.hash(coordonateur.motDePasse, salt, function (hashError, hash) {
+                    if (hashError) {
                         return next(hashError)
                     }
                     coordonateur.motDePasse = hash;
@@ -39,7 +48,7 @@ CoordonateurSchema.pre("save",function(next){
                 })
             }
         })
-    }else{
+    } else {
         return next();
     }
 
@@ -59,11 +68,11 @@ CoordonateurSchema.virtual('notifications', {
 });
 
 
-CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudiant, date) {
+CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function (etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
     await etudiant.incrementerEtape(EtapeDossier.SEPT_MASTER);
-    
+
     await Notification.create({
         type: TypeNotification.SOUTENANCE_PROGRAMMEE,
         destinataire: etudiant._id,
@@ -72,15 +81,15 @@ CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function(etudi
     });
 };
 
-CoordonateurSchema.methods.verifierAvisDonne = async function(idDossier) {
+CoordonateurSchema.methods.verifierAvisDonne = async function (idDossier) {
     let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
     return Boolean(donne);
-}   
+}
 
-CoordonateurSchema.methods.donnerAvisTheseAdmin = async function(
-    type, 
-    commentaire, 
-    rapport, 
+CoordonateurSchema.methods.donnerAvisTheseAdmin = async function (
+    type,
+    commentaire,
+    rapport,
     idDossier
 ) {
     let donne = await this.verifierAvisDonne(idDossier);

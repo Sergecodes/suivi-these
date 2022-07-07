@@ -17,6 +17,35 @@ exports.removePassword = obj => {
     return obj;
 }
 
+// Numeric string mask:
+// https://stackoverflow.com/a/70697511/10526469
+
+/**
+ * Appropriately print a phone number.
+    For an odd number, separate figures before printing.
+    For an even number, return same number.
+    Number should normally be odd.(like 6 51 20 98 98)
+    e.g. 651234566(odd number) should return 6 51 23 45 66
+ * @param {String} numTel 
+ */
+exports.parseNumTel = (numTel) => {
+    let n = numTel.length;
+
+    // if number is even, return it
+	if (n % 2 === 0)
+		return numTel;
+	
+	// if number is odd, stylize it.
+	result = numTel.charAt(0);
+
+    for (let i = 1; i < n; i += 2) {
+        let temp = numTel.charAt(i) + numTel.charAt(i+1);
+        result = result + ' ' + temp;
+    }
+
+	return result
+}
+
 exports.getActeur = (numEtape, niveau) => {
     const { EtapeDossier, ActeurDossier } = Types;
     const acteurMaster = {
