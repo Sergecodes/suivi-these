@@ -301,7 +301,7 @@ exports.noterDossier = async function (req, res) {
   console.log('notes', notes);
 
   try {
-    await jury.attribuerNote(dossier._id, notes, req.body.commentaire || "");
+    await jury.attribuerNote(dossier, notes, req.body.commentaire || "");
   } catch (err) {
     return res.status(400).json(err);
   }
