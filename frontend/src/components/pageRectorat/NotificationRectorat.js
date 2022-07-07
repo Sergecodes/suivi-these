@@ -33,7 +33,7 @@ const notificationRectorat = [
 const NotificationDepartement = () => {
   return (
     <>
-      <NotificationsActeurs notifications={notificationRectorat}/>
+      <NotificationsActeurs notifs={notificationRectorat}/>
     </>
   )
 };

@@ -36,8 +36,8 @@ const StudentProfile = () => {
       requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: tel });
     }
 
-    if (newPassword !== '') {
-      if (oldPassword === '') {
+    if (newPassword.trim() !== '') {
+      if (oldPassword.trim() === '') {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
@@ -122,7 +122,7 @@ const StudentProfile = () => {
       <ToastContainer />
       <section className="mx-3 mt-3 mb-5">
         <div className="ModifiedProfileImg align-items-center " style={modification === false ? { display: "flex" } : { display: "none" }}>
-          <img src={user.urlPhotoProfil} alt="profil" className=""></img>
+          <img src={user.urlPhotoProfil} alt="profil" className="" />
           <p className="fs-6 fw-lighter ms-2">
             Cliquez sur modifier pour pouvoir modifier votre photo de profil
           </p>
@@ -146,7 +146,14 @@ const StudentProfile = () => {
                 <div className="">
                   <p>Adresse mail</p>
                   {/* <input className="form-control" type="text" disabled={true} defaultValue={user.email}  /> */}
-                  <input className="form-control" type="email " name="email" value={email} disabled={modification ? false : true} onChange={(e) => setEmail(e.target.value)} />
+                  <input 
+                    className="form-control" 
+                    type="email" 
+                    name="email" 
+                    value={email} 
+                    disabled={modification ? false : true} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                  />
                 </div>
               </div>
             </div>
