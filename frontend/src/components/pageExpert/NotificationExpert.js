@@ -35,7 +35,7 @@ const notificationsExpert = [
 const NotificationExpert = () => {
   return (
     <>
-      <NotificationsActeurs notifications={notificationsExpert}/>
+      <NotificationsActeurs notifs={notificationsExpert}/>
     </>
   )
 };

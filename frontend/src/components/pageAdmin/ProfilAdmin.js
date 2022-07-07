@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-//import axios from 'axios';
+import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,8 @@ const ProfilAdmin = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [adminInfo, setAdminInfo] = useState({
-    email: "",
-    numTelephone: "",
+    email: user.email,
+    numTelephone: user.numTelephone,
     newPassword: "",
     confirmPassword: "",
   });
@@ -28,9 +28,94 @@ const ProfilAdmin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(adminInfo);
-  };
+    let requests = {};
 
+    if (user.email !== adminInfo.email) {
+      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: adminInfo.email });
+    }
+
+    if (user.numTelephone !== adminInfo.numTelephone) {
+      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: adminInfo.numTelephone });
+    }
+
+    if (adminInfo.newPassword.trim() !== '') {
+      if (adminInfo.oldPassword.trim() === '') {
+        toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
+        return false;
+      } else {
+        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
+          pass: adminInfo.oldPassword, newPass: adminInfo.oldPassword
+        });
+      }
+    }
+    console.log(requests);
+
+    // we can start sending requests, so stop modification
+    let numReqs = Object.keys(requests).length;
+
+    if (numReqs > 0) {
+      Promise.all(Object.values(requests))
+        .then(results => {
+          const [res1, res2, res3] = results;
+          console.log(results)
+          console.log(res1);
+          console.log(res2);
+          console.log(res3);
+          const data1 = res1.data, data2 = res2 && res2.data, data3 = res3 && res3.data;
+
+          if (requests.telRequest) {
+            // No need to test for undefined, the first of these data to have numTelephone
+            // will prevent the next from executing
+            user.numTelephone = data1.numTelephone || data2.numTelephone || data3.numTelephone;
+          }
+
+          // No need to set email in localStorage since user will be redirected
+          // to logout page and after relogging in, his email will be set
+          // if (requests.emailRequest) {
+          //   user.email = data1.newEmail || data2.newEmail || data3.newEmail;
+          // }
+
+          localStorage.setItem('user', JSON.stringify(user));
+
+          if (requests.passwordRequest || requests.emailRequest) {
+            localStorage.removeItem('user');
+            localStorage.removeItem('actor');
+
+            toast.success(
+              "Mise a jour effectuee avec succes! Vous serez renvoyez a la page de connexion...",
+              { hideProgressBar: true }
+            );
+
+            // Dismiss all toasts after 3 seconds then navigate to login page
+            setTimeout(() => {
+              toast.dismiss();
+              navigate('/connexion');
+            }, 3000);
+
+          } else {
+            toast.success("Mise a jour effectuee avec succes!", { hideProgressBar: true });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+
+          if ('passwordRequest' in requests && err.response.status === 401) {
+            toast.error("Votre ancien mot de passe est incorrect", { hideProgressBar: true });
+          } else {
+            toast.error("Une erreur est survenue", { hideProgressBar: true });
+          }
+        });
+    } else {
+      toast.info("Aucune modification faite", { hideProgressBar: true });
+    }
+
+    // For some reason, toasts are displayed after clicking the modification button
+    // for a second time. Do this to force-remove all toasts
+    setTimeout(() => {
+      console.log("in set time out....");
+      toast.dismiss();
+    }, 4000);
+  }
   return (
     <section className="my-5">
       <ToastContainer />

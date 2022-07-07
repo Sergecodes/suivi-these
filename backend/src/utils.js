@@ -55,7 +55,6 @@ exports.getActeur = (numEtape, niveau) => {
         [EtapeDossier.QUATRE_MASTER]: ActeurDossier.JURY,
         [EtapeDossier.CINQ_MASTER]: 'CRFD-STG',
         [EtapeDossier.SIX_MASTER]: ActeurDossier.COORDONATEUR,
-        [EtapeDossier.SEPT_MASTER]: ActeurDossier.COORDONATEUR,
 
     };
     const acteurThese = {
@@ -86,8 +85,7 @@ exports.getEtapeWording = (numEtape, niveau) => {
         [EtapeDossier.TROIS_MASTER]: 'Validation des jurys', // admin
         [EtapeDossier.QUATRE_MASTER]: 'Notation du dossier', // jury
         [EtapeDossier.CINQ_MASTER]: 'Evaluation de la notation', // admin
-        [EtapeDossier.SIX_MASTER]: 'Validation du rapport du CRFD', // coordonateur
-        [EtapeDossier.SEPT_MASTER]: 'Programmation de la date de soutenance' // coordonateur
+        [EtapeDossier.SIX_MASTER]: 'Programmation de la date de soutenance', // coordonateur
     };
     const wordingThese = {
         [EtapeDossier.DEUX_THESE]: 'Validation de la constitution du dossier', // admin
