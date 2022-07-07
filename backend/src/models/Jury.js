@@ -89,7 +89,9 @@ JurySchema.methods.verifierDejaNoter = async function (idDossier) {
 }
 
 
-JurySchema.methods.attribuerNote = async function (idDossier, notes, commentaire) {
+JurySchema.methods.attribuerNote = async function (dossier, notes, commentaire) {
+    const idDossier = dossier._id;
+
     let dejaNote = await this.verifierDejaNoter(idDossier);
     if (dejaNote)
         throw "Dossier deja note par ce membre du jury";
@@ -105,10 +107,10 @@ JurySchema.methods.attribuerNote = async function (idDossier, notes, commentaire
     // If number of notes is 3, move dossier to the next step
     const numJuries = 3;
     let numNotes = await NoteDossier.countDocuments({ dossier: idDossier });
-    console.log("nombre de notes", numNotes);
+    console.log("prev nombre de notes", numNotes);
 
     if (numNotes >= numJuries) {
-        throw `Le nombre maximum de notes pour un dossier est ${numJuries}`
+        throw `Le nombre maximum de notes pour un dossier est ${numJuries}`;
     } else {
         await NoteDossier.create({
             dossier: idDossier,
@@ -123,7 +125,6 @@ JurySchema.methods.attribuerNote = async function (idDossier, notes, commentaire
 
         // Increment step of dossier since all juries have given note to dossier
         if (numNotes === numJuries) {
-            let dossier = await Dossier.findById(idDossier);
             await dossier.incrementerEtape(EtapeDossier.CINQ_MASTER);
         }
     }
@@ -131,8 +132,8 @@ JurySchema.methods.attribuerNote = async function (idDossier, notes, commentaire
 
 
 JurySchema.methods.verifierAvisDonne = async function (idDossier) {
-    let donne = await Avis.findOne({ donnePar: this._id, dossier: idDossier });
-    return Boolean(donne);
+    let numAvis = await Avis.countDocuments({ donnePar: this._id, dossier: idDossier });
+    return numAvis === 0 ? false : true;
 }
 
 
