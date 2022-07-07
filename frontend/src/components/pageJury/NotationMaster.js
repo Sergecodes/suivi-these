@@ -98,7 +98,7 @@ const NotationMaster = () => {
       </Link>
       <section className="notation">
         <p>Vous ètes sur le point de noter l'étudiant {etudiantInfo.noms} </p>
-        <div className=" py-4 px-3" style={{width:"100%"}}>
+        <div className=" py-4 px-5" style={{width:"100%"}}>
             <PdfViewer url={memoireEtudiant.url} height="800px" />
         </div>
         <div className="my-5" style={{ width: "75%" }}>

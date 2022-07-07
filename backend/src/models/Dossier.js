@@ -258,7 +258,7 @@ NoteDossierSchema.virtual("total").get(function () {
   return sum(Object.values(this.notes || {}));
 });
 
-NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true });
+NoteDossierSchema.index({ dossier: 1, notePar: 1 }, { unique: true });
 
 /*
  * Envoyer une notification a l'administrateur

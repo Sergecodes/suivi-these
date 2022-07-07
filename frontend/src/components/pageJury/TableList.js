@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from "react";
 import moment from "moment";
 import { MdSend } from "react-icons/md";
-import { BsArrowRight } from "react-icons/bs";
+import { BsEyeFill } from "react-icons/bs";
 import { toast, ToastContainer } from 'react-toastify';
 import { Link } from "react-router-dom";
 
@@ -69,13 +69,9 @@ const columns = [
             >
               <button
                 type="button"
-                className="btn py-1"
-                style={{
-                  color: "white",
-                  cursor: "pointer",
-                  backgroundColor: "var(--secondaryColor)",
-                }}
-              >
+                className="btn btnFull py-1"
+               
+              >     
                 <MdSend /> Notation
               </button>
             </Link>
@@ -93,14 +89,13 @@ const columns = [
             >
               <button
                 type="button"
-                className="btn py-1"
+                className="btn details py-1"
                 style={{
-                  color: "white",
-                  cursor: "pointer",
-                  backgroundColor: "var(--secondaryColor)",
+                  color: "green",
+                  cursor: "pointer"
                 }}
               >
-                <MdSend /> Notation
+                <BsEyeFill /> Visualiser
               </button>
             </Link>
           </div>

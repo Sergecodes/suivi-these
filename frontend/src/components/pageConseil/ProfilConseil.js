@@ -6,6 +6,7 @@ const ProfilConseil = () => {
   const navigate = useNavigate();
   const [conseilInfo, setConseilInfo] = useState({
     email: "",
+    numTelephone: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -58,6 +59,20 @@ const ProfilConseil = () => {
                   type="text"
                   value={conseilInfo.email}
                   name="email"
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Numéro de télephone{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="numTelephone"
+                  value={conseilInfo.numTelephone}
                   onChange={handleChange}
                 ></input>
               </div>

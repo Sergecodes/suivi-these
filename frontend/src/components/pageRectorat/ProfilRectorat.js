@@ -8,6 +8,7 @@ const ProfilRectorat = () => {
     email: "",
     newPassword: "",
     confirmPassword: "",
+    numTelephone:""
   });
  
 
@@ -58,6 +59,20 @@ const ProfilRectorat = () => {
                   type="text"
                   value={rectoratInfo.email}
                   name="email"
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Numéro de télephone{" "}
+                </p>
+                <input
+                  className="form-control "
+                  type="text"
+                  name="numTelephone"
+                  value={rectoratInfo.numTelephone}
                   onChange={handleChange}
                 ></input>
               </div>
