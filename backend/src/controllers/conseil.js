@@ -178,6 +178,30 @@ exports.change_email = function (req, res) {
 	})
 }
 
+exports.changePhoneNumber = function (req, res) {
+   const { conseil } = res.locals;
+   const { newPhoneNumber } = req.body;
+
+   if (!newPhoneNumber)
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+
+   if (conseil.numTelephone === newPhoneNumber) {
+		return res.status(400).send("Ce numero est votre numero actuel");
+	}
+
+   conseil.numTelephone = newPhoneNumber;
+   conseil.save(function (err, newConseil) {
+      if (err) {
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+      }
+      res.json({ 
+         success: true, 
+         message: "le nouveau numero de telephone a ete enregistrer avec success", 
+         numTelephone: newConseil.numTelephone 
+      });
+   });
+}
 
 exports.notifications = async function (req, res) {
 	let { conseil } = res.locals;

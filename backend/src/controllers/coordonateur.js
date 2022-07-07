@@ -205,6 +205,31 @@ exports.change_email = function (req, res) {
   })
 }
 
+exports.changePhoneNumber = function (req, res) {
+   const { coordo } = res.locals;
+   const { newPhoneNumber } = req.body;
+
+   if (!newPhoneNumber)
+		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+
+   if (coordo.numTelephone === newPhoneNumber) {
+		return res.status(400).send("Ce numero est votre numero actuel");
+	}
+
+   coordo.numTelephone = newPhoneNumber;
+   coordo.save(function (err, newCoordo) {
+      if (err) {
+         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
+         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+      }
+      res.json({ 
+         success: true, 
+         message: "le nouveau numero de telephone a ete enregistrer avec success", 
+         numTelephone: newCoordo.numTelephone 
+      });
+   });
+}
+
 // ----------
 exports.dossiersEtudsThese = async function (req, res) {
   const { coordo } = res.locals;

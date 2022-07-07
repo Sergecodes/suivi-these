@@ -23,6 +23,12 @@ router.route('/change-password').put(
 
 router.route('/change-email').put(isCoordonateur, getCoordonateur, controller.change_email);
 
+router.route('/change-phone-number').put(
+   isCoordonateur, 
+   getCoordonateur, 
+   controller.changePhoneNumber
+);
+
 router.route('/programmer-date-soutenance-master').put(
    isCoordonateur, 
    getEtudiantFromReq,
