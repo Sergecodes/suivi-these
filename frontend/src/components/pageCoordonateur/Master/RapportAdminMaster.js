@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 const RapportAdminMaster = () => {
   const location = useLocation();
   const { etudiantInfo } = location.state;
+  const rapportHtml = <div dangerouslySetInnerHTML={{ __html: etudiantInfo.rapport }}></div>;
 
   return (
     <section>
@@ -11,6 +12,7 @@ const RapportAdminMaster = () => {
         Ici sera affiché le rapport de l'étudiant {etudiantInfo.nom} de 
         matricule {etudiantInfo.matricule}
       </h4>
+      {rapportHtml}
     </section>
   )
 }

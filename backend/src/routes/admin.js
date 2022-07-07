@@ -2,8 +2,7 @@ const router = require('express').Router();
 const controller = require('../controllers/admin');
 const { 
    isAdmin, getAdmin, getAdminFromParam,
-   getEtudiantFromParam, getDossierFromParam,
-
+   getEtudiantFromParam, getDossierFromParam
 } = require('../middlewares');
 
 

@@ -91,7 +91,7 @@ exports.login = async function (req, res) {
       })
    } catch (error) {
       console.error(error)
-      res.status(500).send("Something went wrong");
+      res.status(500).json(err);
    }
 
 }
@@ -225,8 +225,8 @@ exports.accepterInscriptionEtudiant = async function (req, res) {
       await admin.accepterEtudiant(etudiant);
       res.send("Succes");
    } catch (err) {
-      console.error(error);
-      res.status(500).send("Something went wrong");
+      console.error(err);
+      res.status(500).json(err);
    }
 }
 
@@ -238,8 +238,8 @@ exports.rejeterInscriptionEtudiant = async function (req, res) {
       await admin.rejeterEtudiant(etudiant, raison);
       res.send("Succes");
    } catch (err) {
-      console.error(error);
-      res.status(500).send("Something went wrong");
+      console.error(err);
+      res.status(500).json(err);
    }
 }
 
@@ -304,8 +304,8 @@ exports.accepterDossierEtudiant = async function (req, res) {
       // todo Send dossier to coordonateur if etudiant is from these
       res.send("Succes, dossier envoye au coordonateur");
    } catch (err) {
-      console.error(error);
-      res.status(500).send("Something went wrong");
+      console.error(err);
+      res.status(500).json(err);
    }
 }
 
@@ -317,13 +317,17 @@ exports.rejeterDossierEtudiant = async function (req, res) {
       await admin.rejeterDossier(dossier, raison);
       res.send("Succes");
    } catch (err) {
-      console.error(error);
-      res.status(500).send("Something went wrong");
+      console.error(err);
+      res.status(500).json(err);
    }
 }
 
+/**
+ * Recuperer les dossiers que les departements ont envoyes a l'admin
+ */
 exports.dossiersEtudiantsMaster = async function (req, res) {
    let envoisDossiers = await EnvoiDossier.find({
+      envoyeParModel: Types.ActeurDossier.DEPARTEMENT,
       destinataireModel: Types.ActeurDossier.ADMIN
    })
       .populate({
@@ -333,14 +337,20 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
                path: 'etudiant',
                select: '-motDePasse -niveau -dossier -misAJourLe',
                match: { niveau: Types.Niveau.MASTER },
-               populate: {
-                  path: 'juges',
-                  select: '-motDePasse',
-                  populate: {
+               populate: [
+                  {
+                     path: 'juges',
+                     select: '-motDePasse',
+                     populate: {
+                        path: 'departement',
+                        select: '-motDePasse'
+                     }
+                  },
+                  {
                      path: 'departement',
                      select: '-motDePasse'
                   }
-               }
+               ]
             },
             { path: 'fichiers' }
          ]
@@ -351,6 +361,7 @@ exports.dossiersEtudiantsMaster = async function (req, res) {
 
 exports.dossiersEtudiantsThese = async function (req, res) {
    let envoisDossiers = await EnvoiDossier.find({
+      envoyeParModel: Types.ActeurDossier.ETUDIANT,
       destinataireModel: Types.ActeurDossier.ADMIN
    }).populate({
       path: 'dossier',
@@ -359,6 +370,10 @@ exports.dossiersEtudiantsThese = async function (req, res) {
             path: 'etudiant',
             select: '-motDePasse -niveau -dossier -misAJourLe',
             match: { niveau: Types.Niveau.THESE },
+            populate: {
+               path: 'departement',
+               select: '-motDePasse'
+            }
          },
 			{ path: 'fichiers' }
       ]
@@ -381,6 +396,8 @@ exports.notesDossiers = async function (req, res) {
             // match: { niveau: Types.Niveau.MASTER },
          }
       });
+
+   console.log(notesDossiers);
 
    // result = {
    //    <idDossier>: {

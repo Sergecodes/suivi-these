@@ -55,6 +55,7 @@ const DossierMaster = () => {
       dossier: {},
       matricule: "",
       name: "",
+      departement: "",
       initDateEnvoi: "",
       dateEnvoi: "",
       initDateVerification: 0,
@@ -86,6 +87,14 @@ const DossierMaster = () => {
       align: "center",
     },
     {
+      title: "Departement",
+      dataIndex: "departement",
+      sorter: {
+        compare: (a, b) => a.departement.localeCompare(b.departement),
+      },
+      align: "center",
+    },
+    {
       title: "Date Envoi",
       dataIndex: "dateEnvoi",
       sorter: {
@@ -108,22 +117,44 @@ const DossierMaster = () => {
       title: "Actions",
       render: (record) => (
         <div className="d-flex fs-4 justify-content-around align-items-center">
-          <BsPerson
-            className="me-2 juryIcon"
-            style={{ color: "#513e8f" }}
-            onClick={() => {
-              showModal();
-              setListeJury(record.juries);
-              setDossier(record.dossier);
-              setResetJuries(record.juries);
-            }}
-          />
-          <button
-            className="btn autorisationButton"
-            onClick={(e) => handleSubmit(e, record.dossier)}
+          <div
+            style={record.dateVerification !== "---" ? { display: "none" } : {}}
           >
-            <MdSend className="me-1" /> Envoyer
-          </button>
+            <BsPerson
+              className="me-2 juryIcon"
+              style={{ color: "#513e8f" }}
+              onClick={() => {
+                showModal();
+                setListeJury(record.juries);
+                setDossier(record.dossier);
+                setResetJuries(record.juries);
+              }}
+            />
+            <button
+              className="btn autorisationButton"
+              onClick={(e) => handleSubmit(e, record.dossier)}
+            >
+              <MdSend className="me-1" /> Envoyer
+            </button>
+          </div>
+          <div>
+            <div
+              style={
+                record.dateVerification !== "---" ? {} : { display: "none" }
+              }
+            >
+              <BsPerson
+                className="me-2 juryIcon"
+                style={{ color: "#513e8f" }}
+                onClick={() => {
+                  showModal();
+                  setListeJury(record.juries);
+                  setDossier(record.dossier);
+                  setResetJuries(record.juries);
+                }}
+              />
+            </div>
+          </div>
         </div>
       ),
       align: "center",
@@ -201,6 +232,7 @@ const DossierMaster = () => {
         dossier,
         matricule: etud.matricule,
         name: etud.nom + " " + etud.prenom,
+        departement: etud.departement.nom,
         initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format("dddd, D MMMM YYYY"),
         // Use 0 here becuse when displaying the table, we'll use moment(0).unix() which gives 0
@@ -225,7 +257,7 @@ const DossierMaster = () => {
 
   const handleSubmit = (e, dossier) => {
     const etud = dossier.etudiant;
-    
+
     confirm({
       title: "Envoyer le dossier de cet etudiant aux membres de jury?",
       content: (

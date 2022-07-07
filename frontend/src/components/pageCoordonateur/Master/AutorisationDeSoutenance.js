@@ -31,7 +31,7 @@ const columns = [
         <div className="d-flex justify-content-around align-items-center ">
           <Link 
             to="/acteur/coordonateur/rapport-master" 
-            state={{ etudiantInfo: { matricule: record.matricule, nom: record.name } }}
+            state={{ etudiantInfo: { rapport:record.rapport, matricule: record.matricule, nom: record.name } }}
           > 
             <p className="details pt-2">
               <BsEyeFill className="me-2" /> Visualiser
@@ -55,6 +55,7 @@ const AutorisationDeSoutenance = () => {
     key: "1",
     matricule: "",
     name: "Nom 1 prenom 1",
+    rapport:"",
     score: 15
   }]);
 
@@ -80,6 +81,7 @@ const AutorisationDeSoutenance = () => {
         id: etud.id,
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
+        rapport : avis.rapport,
         score: (function () {
           let result = [], maxTotal = 60;
           for (let noteObj of avis.dossier.notes) {
