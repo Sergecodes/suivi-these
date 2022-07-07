@@ -1,4 +1,4 @@
-import { Table, Modal, Select, Button } from "antd";
+import { Table, Modal, Select, Button, Tooltip } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -32,6 +32,7 @@ const DossierMaster = () => {
   const navigate = useNavigate();
   const [juryData, setJuryData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModal, setIsModal] = useState(false); //modal used to display the list of judges without any operations on them when the admin has already submited the judges
   const [listeJury, setListeJury] = useState([]);
   const [current, setCurrent] = useState(1);
   const [index, setIndex] = useState(1);
@@ -120,28 +121,10 @@ const DossierMaster = () => {
           <div
             style={record.dateVerification !== "---" ? { display: "none" } : {}}
           >
-            <BsPerson
-              className="me-2 juryIcon"
-              style={{ color: "#513e8f" }}
-              onClick={() => {
-                showModal();
-                setListeJury(record.juries);
-                setDossier(record.dossier);
-                setResetJuries(record.juries);
-              }}
-            />
-            <button
-              className="btn autorisationButton"
-              onClick={(e) => handleSubmit(e, record.dossier)}
-            >
-              <MdSend className="me-1" /> Envoyer
-            </button>
-          </div>
-          <div>
-            <div
-              style={
-                record.dateVerification !== "---" ? {} : { display: "none" }
-              }
+            <Tooltip
+              placement="bottom"
+              title="Editer la liste des jury"
+              arrowPointAtCenter
             >
               <BsPerson
                 className="me-2 juryIcon"
@@ -153,6 +136,41 @@ const DossierMaster = () => {
                   setResetJuries(record.juries);
                 }}
               />
+            </Tooltip>
+
+            <Tooltip
+              placement="bottom"
+              title="Soumettre la liste des jury"
+              arrowPointAtCenter
+            >
+              <button
+                className="btn autorisationButton"
+                onClick={(e) => handleSubmit(e, record.dossier)}
+              >
+                <MdSend className="me-1" /> Envoyer
+              </button>
+            </Tooltip>
+          </div>
+          <div>
+            <div
+              style={
+                record.dateVerification !== "---" ? {} : { display: "none" }
+              }
+            >
+              <Tooltip
+                placement="bottom"
+                title="Visualiser les jury attribués à l'étudiant"
+                arrowPointAtCenter
+              >
+                <BsPerson
+                  className="me-2 juryIcon"
+                  style={{ color: "#513e8f" }}
+                  onClick={() => {
+                    setIsModal(true);
+                    setListeJury(record.juries);
+                  }}
+                />
+              </Tooltip>
             </div>
           </div>
         </div>
@@ -364,6 +382,7 @@ const DossierMaster = () => {
               OK
             </Button>,
           ]}
+          destroyOnClose={true}
         >
           <div>
             {listeJury.map((jury, index) => (
@@ -454,6 +473,38 @@ const DossierMaster = () => {
           </div>
         </Modal>
       </div>
+      <Modal
+        title={"Liste des jury"}
+        visible={isModal}
+        onOk={() => {
+          setIsModal(false);
+        }}
+        onCancel={() => {
+          setIsModal(false);
+        }}
+        footer={[
+          <div key="close" className="d-flex justify-content-center my-2">
+            <button
+              className="btn btnEmpty"
+              type="button"
+              onClick={() => {
+                setIsModal(false);
+              }}
+            >
+              OK
+            </button>
+          </div>,
+        ]}
+        destroyOnClose={true}
+      >
+        <div>
+          {listeJury.map((jury) => (
+            <div key={jury.id} className="text-center">
+              <p className="fw-lighter fs-6">{jury.email}</p>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </section>
   );
 };

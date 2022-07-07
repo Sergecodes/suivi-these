@@ -1,28 +1,29 @@
-import { Table, Modal } from "antd";
-import axios from 'axios';
-import { AiOutlineExclamationCircle } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import { Table, Modal, Tooltip } from "antd";
+import axios from "axios";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { BsCheck, BsX } from "react-icons/bs";
 
 const { confirm } = Modal;
 
-
 const ListeAttente = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([{
-    key: "1",
-    id: "1",
-    matricule: "",
-    name: "Nom 1 prenom 1",
-    uniteRecherche: "MIBA",
-    email: "",
-    niveau: "",
-    initDateCreation: '',
-    dateCreation: '',
-  }]);
+  const [data, setData] = useState([
+    {
+      key: "1",
+      id: "1",
+      matricule: "",
+      name: "Nom 1 prenom 1",
+      uniteRecherche: "MIBA",
+      email: "",
+      niveau: "",
+      initDateCreation: "",
+      dateCreation: "",
+    },
+  ]);
 
   const columns = [
     {
@@ -72,28 +73,41 @@ const ListeAttente = () => {
       title: "Actions",
       render: (record) => (
         <div className="d-flex fs-3 justify-content-center ">
-          <BsCheck
-            className="mx-1 correct"
-            onClick={(e) => handleConfirm(e, record)}
-            style={{ color: "green" }}
-          />
-          <BsX
-            className="mx-1 wrong"
-            onClick={(e) => handleCancel(e, record)}
-            style={{ color: "red" }}
-          />
+          <Tooltip
+            placement="bottom"
+            title="Autoriser la demande"
+            arrowPointAtCenter
+          >
+            <BsCheck
+              className="mx-1 correct"
+              onClick={(e) => handleConfirm(e, record)}
+              style={{ color: "green" }}
+            />
+          </Tooltip>
+          <Tooltip
+            placement="bottom"
+            title="Rejeter la demande"
+            arrowPointAtCenter
+          >
+            <BsX
+              className="mx-1 wrong"
+              onClick={(e) => handleCancel(e, record)}
+              style={{ color: "red" }}
+            />
+          </Tooltip>
         </div>
-      )
+      ),
     },
   ];
 
   useEffect(() => {
-    axios.get('/admin/demandes-inscription')
-      .then(res => {
+    axios
+      .get("/admin/demandes-inscription")
+      .then((res) => {
         console.log(res);
         setData(parseResult(res.data));
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         toast.error("Une erreur est survenue!", { hideProgressBar: true });
       });
@@ -106,30 +120,39 @@ const ListeAttente = () => {
         key: etud.id,
         id: etud.id,
         matricule: etud.matricule,
-        name: etud.nom + ' ' + etud.prenom,
+        name: etud.nom + " " + etud.prenom,
         uniteRecherche: etud.departement.uniteRecherche.code,
         email: etud.email,
         niveau: etud.niveau,
         initDateCreation: etud.creeLe,
-        dateCreation: moment(etud.creeLe).format('dddd, D MMMM YYYY'),
+        dateCreation: moment(etud.creeLe).format("dddd, D MMMM YYYY"),
       });
     }
 
     return result;
-  }
+  };
 
   const handleConfirm = (e, etudiant) => {
     console.log(etudiant);
 
     confirm({
       title: "Voulez-vouz valider la demande d'inscription de cet etudiant?",
-      content: <span className="fw-bold">{etudiant.name} ({ etudiant.matricule })</span>,
-      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16', fontWeight: 900 }} />,
-      okText: 'Oui',
-      cancelText: 'Non',
+      content: (
+        <span className="fw-bold">
+          {etudiant.name} ({etudiant.matricule})
+        </span>
+      ),
+      icon: (
+        <AiOutlineExclamationCircle
+          style={{ color: "#F2AD16", fontWeight: 900 }}
+        />
+      ),
+      okText: "Oui",
+      cancelText: "Non",
       async onOk() {
-        return axios.put(`/admin/etudiants/${etudiant.id}/accepter-inscription`)
-          .then(res => {
+        return axios
+          .put(`/admin/etudiants/${etudiant.id}/accepter-inscription`)
+          .then((res) => {
             console.log(res);
             toast.success("Succes!", { hideProgressBar: true });
 
@@ -138,28 +161,31 @@ const ListeAttente = () => {
               navigate(0);
             }, 3000);
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
             toast.error("Une erreur est survenue!", { hideProgressBar: true });
           });
       },
-      onCancel() {
-
-      }
+      onCancel() {},
     });
-  }
+  };
 
   const handleCancel = (e, etudiant) => {
     confirm({
       title: "Voulez-vouz refuser la demande d'inscription de cet etudiant?",
-      content: <span className="fw-bold">{etudiant.name} ({ etudiant.matricule })</span>,
-      icon: <AiOutlineExclamationCircle style={{ color: '#F2AD16' }} />,
-      okText: 'Oui',
-      okType: 'danger',
-      cancelText: 'Non',
+      content: (
+        <span className="fw-bold">
+          {etudiant.name} ({etudiant.matricule})
+        </span>
+      ),
+      icon: <AiOutlineExclamationCircle style={{ color: "#F2AD16" }} />,
+      okText: "Oui",
+      okType: "danger",
+      cancelText: "Non",
       async onOk() {
-        return axios.put(`/admin/etudiants/${etudiant.id}/rejeter-inscription`)
-          .then(res => {
+        return axios
+          .put(`/admin/etudiants/${etudiant.id}/rejeter-inscription`)
+          .then((res) => {
             console.log(res);
             toast.success("Succes!", { hideProgressBar: true });
 
@@ -168,16 +194,14 @@ const ListeAttente = () => {
               navigate(0);
             }, 3000);
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
             toast.error("Une erreur est survenue!", { hideProgressBar: true });
           });
       },
-      onCancel() {
-
-      }
+      onCancel() {},
     });
-  }
+  };
 
   return (
     <div className=" mx-3 my-3">
@@ -189,7 +213,11 @@ const ListeAttente = () => {
           d'inscription
         </p>
       </div>
-      <Table columns={columns} dataSource={data} pagination={{ pageSize: 10 }} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={{ pageSize: 10 }}
+      />
     </div>
   );
 };

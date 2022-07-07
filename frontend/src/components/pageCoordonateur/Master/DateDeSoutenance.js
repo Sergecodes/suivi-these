@@ -17,8 +17,8 @@ const DateDeSoutenance = () => {
 
   const handleSubmit = () => {
     const date = dateRef.current.value;
-
-    confirm({
+    console.log(date)
+   /* confirm({
       title: "Programmer la date de soutenance de cet etudiant?",
       content: etudiantInfo.nom + " " + etudiantInfo.matricule,
       icon: <AiOutlineExclamationCircle style={{ color: "#F2AD16" }} />,
@@ -48,7 +48,7 @@ const DateDeSoutenance = () => {
           });
       },
       onCancel() {},
-    });
+    });*/
   };
 
   return (
@@ -82,10 +82,10 @@ const DateDeSoutenance = () => {
           <div className="dateInput px-2 pt-4">
             <p>Selectionnez une date</p>
             <input
-              type="date"
+              type="datetime-local"
               ref={dateRef}
-              min={today.format("YYYY-MM-DD")}
-              max={today.add(1, "year").format("YYYY-MM-DD")}
+              //min={today.format("YYYY-MM-DD")}
+              //max={today.add(1, "year").format("YYYY-MM-DD")}
               name="dateSoutenance"
             />
           </div>

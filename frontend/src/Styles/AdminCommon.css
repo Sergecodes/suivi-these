@@ -224,4 +224,17 @@ hr{
   position:relative;
 }
 
+
+/*RAPPORT COORDO SOUMIS PAR ADMIN*/
+.logoUy1{
+  height:200px;
+  width:200px;
+}
+.rapportPresoutenance,.rapportHeader{
+  width:100%
+}
+.rapportHeader p{
+  margin:0px;
+  line-height: 1;
+}
  

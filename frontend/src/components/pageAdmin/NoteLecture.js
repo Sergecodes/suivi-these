@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
-import { Table, Modal } from "antd";
+import { Table, Modal, Tooltip } from "antd";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
-import RejetDossier from "./RejetDossier";
+import RejetDossier from "../common/RejetDossier";
 import { useDispatch } from "react-redux";
 import { BsX, BsCheck } from "react-icons/bs";
 import { setRejectModal } from "../../redux/DashboardDisplaySlice";
 import { average } from "../../utils";
 import { ACTEURS } from "../../constants/Constant";
-
 
 const Notation = () => {
   const dispatch = useDispatch();
@@ -82,34 +81,52 @@ const Notation = () => {
               }}
             >
               {" "}
-              <BsCheck className="mx-1 correct fs-2" />
+              <Tooltip
+                placement="bottom"
+                title="Rediger rapport de soutenance"
+                arrowPointAtCenter
+              >
+                <BsCheck className="mx-1 correct fs-2" />
+              </Tooltip>
             </Link>
-            <BsX
-              className="mx-1 wrong fs-2"
-              style={{ color: "red", cursor: "pointer" }}
-              onClick={() => {
-                dispatch(setRejectModal({ choix: true }));
-                setEtudiant({ idDossier: record.idDossier,mmatricule: record.matricule, nom: record.name });
-              }}
-            />
+            <Tooltip
+              placement="bottom"
+              title="Rejeter dossier"
+              arrowPointAtCenter
+            >
+              <BsX
+                className="mx-1 wrong fs-2"
+                style={{ color: "red", cursor: "pointer" }}
+                onClick={() => {
+                  dispatch(setRejectModal({ choix: true }));
+                  setEtudiant({
+                    idDossier: record.idDossier,
+                    matricule: record.matricule,
+                    nom: record.name,
+                  });
+                }}
+              />
+            </Tooltip>
           </div>
         );
       },
       align: "center",
     },
   ];
-  const [data, setData] = useState([{
-    key: "1",
-    matricule: "",
-    name: "Nom 1 prenom 1",
-    juges: [],
-    idDossier: "",
-    firstJuryTotal: 0,
-    secondJuryTotal: 0,
-    thirdJuryTotal: 0,
-    score: 0,
-    marks: [{}, {}, {}],
-  }]);
+  const [data, setData] = useState([
+    {
+      key: "1",
+      matricule: "",
+      name: "Nom 1 prenom 1",
+      juges: [],
+      idDossier: "",
+      firstJuryTotal: 0,
+      secondJuryTotal: 0,
+      thirdJuryTotal: 0,
+      score: 0,
+      marks: [{}, {}, {}],
+    },
+  ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [etudiant, setEtudiant] = useState({});
 

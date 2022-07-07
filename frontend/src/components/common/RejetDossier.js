@@ -103,7 +103,7 @@ const RejetDossier = (props) => {
           <span className="fw-bold">{etudiant.matricule}.</span> Veuillez
           spécifiier les raisons de votre rejet dans la case ci-dessous
         </p>
-        <ReactQuill theme="snow" value={value} onChange={setValue} />
+        <ReactQuill theme="snow"  onChange={setValue} />
       </div>
     </Modal>
   );

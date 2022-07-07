@@ -68,7 +68,7 @@ const RapportSoutenance = () => {
               Vous redigez la lettre d'autorisation de soutenance de l'étudiant{" "}
               <strong>{etudiantInfo.nom}</strong>
             </p>
-            <ReactQuill theme="snow" value={value} onChange={setValue} />
+            <ReactQuill theme="snow" onChange={setValue} />
             <div className="d-flex justify-content-between mx-2 my-3">
               <button
                 type="button"
