@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const isEmail = require("validator/lib/isEmail");
+const isISO8601 = require('validator/lib/isISO8601');
 const isDate = require("validator/lib/isDate");
 const {
    Niveau, Sexe, ActeurDossier, TypeNotification,
@@ -51,10 +52,10 @@ const EtudiantSchema = new Schema({
    dateSoutenance: {
       type: String,
       validate: {
-         validator: (date) => isDate(date),
+         validator: (date) => isISO8601(date),
          message: (props) => `
             ${props.value} est une date invalide. 
-            Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
+            Elle doit etre a la formeISO8601
          `,
       },
    },
