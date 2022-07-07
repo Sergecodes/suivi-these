@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Modal } from 'antd';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { Modal } from "antd";
+import PropTypes from "prop-types";
+//import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { Dropdown, Menu, Space } from "antd";
 import "../../Styles/AdminCommon.css";
 
-const { confirm } = Modal;
-
+//const { confirm } = Modal;
 
 const NotificationsActeurs = (props) => {
   // const notifs = [{
@@ -15,32 +15,33 @@ const NotificationsActeurs = (props) => {
   //   description: (
   //     <div>
   //       <p>
-  //         Vous avez reçu une nouvelle demande de programmation de 
+  //         Vous avez reçu une nouvelle demande de programmation de
   //         date de soutenance venant de l'étudiant{" "}
   //         <Link to="">ATANGANA JEAN MBARGA HELENE</Link>
   //       </p>
   //     </div>
   //   ),
-    // vueLe: '' or date int
+  // vueLe: '' or date int
   // }];
 
-  console.log('props', props);
+  console.log("props", props);
   // acteur and notifs should be passed as props
-  const { acteur, notifs: allNotifs } = props;
+  //const { acteur, notifs: allNotifs } = props;
 
-  const [notifs, setNotifs] = [...allNotifs];
+  const [notifs, setNotifs] = useState(props.notifs);
   const [clicked, setClicked] = useState(true);
+  const [current, setCurrent] = useState({});
 
   const handleClickTout = () => {
-    setNotifs(allNotifs);
+    // setNotifs(allNotifs);
     setClicked(!clicked);
-  }
+  };
 
   const handleClickNonLu = () => {
-    // Set notifs to notifications that 
-    setNotifs(notifs.filter(notif => Boolean(notif.vueLe) === false));
+    // Set notifs to notifications that
+    setNotifs(notifs.filter((notif) => Boolean(notif.vueLe) === false));
     setClicked(!clicked);
-  }
+  };
 
   const handleClickEffacerTout = () => {
     // confirm({
@@ -54,7 +55,6 @@ const NotificationsActeurs = (props) => {
     //       .then(res => {
     //         console.log(res);
     //         toast.success("Succes!", { hideProgressBar: true });
-
     //         setTimeout(() => {
     //           toast.dismiss();
     //           navigate(0);
@@ -66,20 +66,52 @@ const NotificationsActeurs = (props) => {
     //       });
     //   },
     //   onCancel() {
-
     //   }
     // });
-  }
+  };
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: (
+            <p
+              onClick={() =>
+                {
+                  console.log(current.title);
+                }
+              }
+            >
+              Marquer comme lu
+            </p>
+          ),
+          key: "0",
+        },
+        {
+          label: (
+            <p
+              onClick={() =>
+                console.log("supprimer la notification de titre", current.title)
+              }
+            >
+              Supprimer la notification
+            </p>
+          ),
+          key: "1",
+        },
+      ]}
+    />
+  );
 
   return (
-    <section 
-      className="mx-4 my-5 d-flex flex-column align-items-center row" 
+    <section
+      className="mx-4 my-5 d-flex flex-column align-items-center row"
       style={{ minHeight: "67vh" }}
     >
       <ToastContainer />
       <p className="fs-4 fw-bolder text-center mb-2">Notifications</p>
       <div className="col-12 col-md-10 d-flex justify-content-between actionsNotification">
-        <div className="d-flex align-items-center ">
+        <div className="d-flex flex-start align-items-center ">
           <button
             type="button"
             className="btn rounded-pill px-4 py-1"
@@ -105,13 +137,26 @@ const NotificationsActeurs = (props) => {
             Non lu
           </button>
         </div>
-        <p style={{ cursor: 'pointer' }} onClick={handleClickEffacerTout}>
-          Effacer tout
-        </p>
       </div>
       <div className="col-12 col-md-10">
         {notifs.map((notif) => (
-          <div key={notif.id} className="contentNotification my-3 px-3 py-3">
+          <div
+            key={notif.id}
+            className="contentNotification my-3 px-3 py-3"
+            style={{ position: "relative" }}
+          >
+            <div style={{ position: "absolute", right: "3%", top: "0%" }}>
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a onClick={() => setCurrent(notif)}>
+                  <Space
+                    className="fs-3"
+                    style={{ color: "var(--secondaryColor)" }}
+                  >
+                    ...
+                  </Space>
+                </a>
+              </Dropdown>
+            </div>
             <h5>{notif.title}</h5>
             <div>{notif.description}</div>
           </div>
@@ -121,11 +166,9 @@ const NotificationsActeurs = (props) => {
   );
 };
 
-
 NotificationsActeurs.propTypes = {
   notifs: PropTypes.array.isRequired,
-  acteur: PropTypes.string.isRequired
-}
-
+  acteur: PropTypes.string.isRequired,
+};
 
 export default NotificationsActeurs;

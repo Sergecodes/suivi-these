@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { BsPersonCircle, BsPencilFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast, ToastContainer } from "antd";
+import { toast, ToastContainer } from "react-toastify";
 
 const ProfilRectorat = () => {
   const user = JSON.parse(localStorage.getItem('user'));
