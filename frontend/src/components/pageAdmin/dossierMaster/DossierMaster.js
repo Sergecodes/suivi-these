@@ -224,10 +224,8 @@ const DossierMaster = () => {
   };
 
   const handleSubmit = (e, dossier) => {
-    console.log(listeJury);
-    let etud = dossier.etudiant;
-    console.log("etud is", etud);
-
+    const etud = dossier.etudiant;
+    
     confirm({
       title: "Envoyer le dossier de cet etudiant aux membres de jury?",
       content: (

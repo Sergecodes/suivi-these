@@ -1,10 +1,16 @@
 import { useState } from "react";
 import axios from 'axios';
+import { Modal } from 'antd';
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { toast, ToastContainer } from 'react-toastify';
 import moment from 'moment';
 import { criteres } from "../../constants/Constant";
 import { useLocation, useNavigate } from "react-router-dom";
 import PdfViewer from "../common/PdfViewer";
+import { Link } from "react-router-dom";
+import {BsArrowLeft } from "react-icons/bs";
+
+const { confirm } = Modal;
 
 moment.locale('fr');
 
@@ -16,6 +22,8 @@ const NotationMaster = () => {
   const { etudiantInfo } = location.state;
   const [notation, setNotation] = useState(criteres);
   const [somme, setSomme] = useState(0);
+  const memoireEtudiant = etudiantInfo.dossier.fichiers.find(fichier => fichier.categorie === "Mémoire");
+  console.log(memoireEtudiant)
 
   function calculSomme(notes) {
     let temp = 0;
@@ -27,7 +35,7 @@ const NotationMaster = () => {
 
   const handleChange = (e, index) => {
     let newNotation = notation.slice();
-    newNotation[index].note = e.target.value;
+    newNotation[index].note = parseInt(e.target.value, 10);
     setNotation(newNotation);
     setSomme(calculSomme(newNotation));
   };
@@ -42,44 +50,57 @@ const NotationMaster = () => {
       return result;
     })();
 
-    Promise.all([
-      axios.post('/jury/noter-dossier', {
-        notes,
-        dossier: etudiantInfo.idDossier,
-      }),
-      // Send dossier to admin
-      axios.post('/envoyer-dossier', {
-        dossier: etudiantInfo.idDossier,
-        envoyePar: user.id,
-        envoyeParModel: 'Jury',
-        destinataireModel: 'Admin'
-      })
-    ])
-      .then(results => {
-        console.log(results);
-
-        // Default autoclose delay is 5000ms (5s)
-        toast.success("Succes!", { hideProgressBar: true });
-
-        // Close toasts after x seconds and go to previous page
-        // remove item in case it was in localStorage so as to get updated info
-        setTimeout(() => {
-          toast.dismiss();
-          navigate('/acteur/jury/notation');
-        }, 3000);
-      })
-      .catch(err => {
-        toast.error("Une erreur est survenue", { hideProgressBar: true });
-        console.error(err);
-      })
+    confirm({
+      title: "Soumettre cette notation?",
+      icon: <AiOutlineExclamationCircle style={{ color: "gold" }} />,
+      okText: "Oui",
+      cancelText: "Non",
+      async onOk() {
+        return Promise.all([
+          axios.post('/jury/noter-dossier', {
+            notes,
+            idDossier: etudiantInfo.dossier.id,
+          }),
+          // Send dossier to admin
+          axios.post('/envoyer-dossier', {
+            dossier: etudiantInfo.dossier.id,
+            envoyePar: user.id,
+            envoyeParModel: 'Jury',
+            destinataireModel: 'Admin'
+          })
+        ])
+          .then(results => {
+            console.log(results);
+            toast.success("Succes!", { hideProgressBar: true });
+    
+            setTimeout(() => {
+              toast.dismiss();
+              navigate('/acteur/jury/dashboard');
+            }, 3000);
+          })
+          .catch(err => {
+            toast.error("Une erreur est survenue", { hideProgressBar: true });
+            console.error(err);
+          })
+      },
+      onCancel() {},
+    });
   }
-
+  
   return (
     <>
       <ToastContainer />
+      <Link to="/acteur/jury/dashboard">
+        <div className="details fs-4 ms-3 mt-3">
+          <BsArrowLeft className="me-1" />
+          <span>Retour</span>
+        </div>
+      </Link>
       <section className="notation">
         <p>Vous ètes sur le point de noter l'étudiant {etudiantInfo.noms} </p>
-        <PdfViewer />
+        <div className=" py-4 px-3" style={{width:"100%"}}>
+            <PdfViewer url={memoireEtudiant.url} height="800px" />
+        </div>
         <div className="my-5" style={{ width: "75%" }}>
           <div className="notationHeader">
             <p>MATRICULE: {etudiantInfo.matricule}</p>
@@ -114,7 +135,7 @@ const NotationMaster = () => {
         </div>
         <div className="my-3 fs-5">Note totale : {somme} / 60</div>
         <div className=" d-flex justify-content-center">
-          <button className="btn submitNotation" type="button" onClick={handleSubmit}>
+          <button className="btn btnFull" type="button" onClick={handleSubmit}>
             Soumettre notation
           </button>
         </div>

@@ -77,7 +77,7 @@ DepartementSchema.virtual('notifications', {
  * @param raison
  */
  DepartementSchema.methods.validerDossier = async function (dossier) {
-    await dossier.incrementerEtape(EtapeDossier.DEUX_MASTER);
+    await dossier.incrementerEtape(EtapeDossier.TROIS_MASTER);
 
     // Notifier l'etudiant
     await Notification.create({

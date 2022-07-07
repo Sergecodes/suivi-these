@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const { NoteDossier } = require('./Dossier');
-const { GradeJury, ActeurDossier, AvisEmetteur } = require('./types')
+const { GradeJury, ActeurDossier, AvisEmetteur, EtapeDossier } = require('./types')
 const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
 const bcrypt = require('bcrypt');
@@ -94,13 +94,30 @@ JurySchema.methods.attribuerNote = async function(idDossier, notes, commentaire)
     //     donneParModel: AvisEmetteur.JURY
     // });
 
-    await NoteDossier.create({
-        dossier: idDossier,
-        notes,
-        notePar: this._id,
-        noteParModel: ActeurDossier.JURY,
-        commentaire
-    });
+    // If number of notes is 3, move dossier to the next step
+    const numJuries = 3;
+    let numNotes = await NoteDossier.countDocuments({ dossier: idDossier });
+    console.log("nombre de notes", numNotes);
+
+    if (numNotes >= numJuries) {
+        throw `Le nombre maximum de notes pour un dossier est ${numJuries}`
+    } else {
+        await NoteDossier.create({
+            dossier: idDossier,
+            notes,
+            notePar: this._id,
+            noteParModel: ActeurDossier.JURY,
+            commentaire
+        });
+
+        // Increment number of notes since we're just from adding a note
+        numNotes += 1;
+
+        // Increment step of dossier since all juries have given note to dossier
+        if (numNotes === numJuries) {
+            await dossier.incrementerEtape(EtapeDossier.CINQ_MASTER);
+        }
+    }
 }   
 
 

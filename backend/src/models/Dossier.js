@@ -91,6 +91,7 @@ DossierSchema.methods.getEtapeActuelle = async function () {
 };
 
 DossierSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
+  console.log("in incrementer etape");
   let dossier = this;
   await dossier.populate('etudiant', 'niveau');
 
@@ -253,7 +254,8 @@ NoteDossierSchema.pre("save", function (next) {
 });
 
 NoteDossierSchema.virtual("total").get(function () {
-  return sum(Object.values(this.notes));
+  // Pass empty array if notes is undefined
+  return sum(Object.values(this.notes || {}));
 });
 
 NoteDossierSchema.index({ dossier: 1, categorie: 1 }, { unique: true });

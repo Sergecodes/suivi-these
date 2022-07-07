@@ -290,6 +290,10 @@ exports.notesDossier = async function (req, res) {
     noteParModel: Types.ActeurDossier.JURY,
   }).populate({
     path: "dossier",
+    populate: {
+      path: 'notes',
+      select: '-dossier'
+    }
     // populate: {
     //   path: 'etudiant',
     //   select: '-motDePasse -niveau -dossier -misAJourLe',
@@ -304,6 +308,8 @@ exports.notesDossier = async function (req, res) {
 exports.noterDossier = async function (req, res) {
   const { notes } = req.body;
   const { jury, dossier } = res.locals;
+  console.log("in noter dossier");
+  console.log('notes', notes);
 
   try {
     await jury.attribuerNote(dossier._id, notes, req.body.commentaire || "");
