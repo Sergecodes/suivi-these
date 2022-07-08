@@ -7,10 +7,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import PdfViewer from "../common/PdfViewer";
 import { ACTEURS } from "../../constants/Constant";
 import { BsEyeFill, BsX, BsCheck, BsArrowLeft } from "react-icons/bs";
+import RejetDossier from "../common/RejetDossier";
+import { setRejectModal } from "../../redux/DashboardDisplaySlice";
+import { useDispatch } from "react-redux";
+
 
 const { confirm } = Modal;
 
 const VerificationMaster = () => {
+  const dispatch = useDispatch()
   const [fileUrl, setFileUrl] = useState({nom:"",url:""});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const location = useLocation(),
@@ -70,7 +75,7 @@ const VerificationMaster = () => {
     });
   };
 
-  const handleCancel = () => {
+/*  const handleCancel = () => {
     confirm({
       title: "Rejeter le dossier de cet etudiant?",
       content: (
@@ -103,7 +108,7 @@ const VerificationMaster = () => {
       },
       onCancel() {},
     });
-  };
+  };*/
 
   return (
     <section className="mx-3 my-3 ">
@@ -186,11 +191,12 @@ const VerificationMaster = () => {
         <button
           className="btn rejectButton my-5 me-3 d-flex align-items-center"
           type="button"
-          onClick={handleCancel}
+          onClick={()=>{dispatch(setRejectModal({ choix: true }));}}
           disabled={etudiantInfo.dejaNote?true:false}
         >
           <BsX className="me-1 fs-4" /> REJETER
         </button>
+        <RejetDossier etudiant={{idDossier:dossier.id,matricule:etudiantInfo.matricule,nom:etudiantInfo.name}} acteur={ACTEURS.DEPARTEMENT} />
         <button
           className="btn autorisationButton my-5 d-flex align-items-center"
           type="button"

@@ -1,33 +1,34 @@
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import moment from "moment";
-import { toast, ToastContainer } from 'react-toastify'
-import { BsPenFill ,BsEyeFill} from "react-icons/bs";
+import { toast, ToastContainer } from "react-toastify";
+import { BsPenFill, BsEyeFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { ACTEURS } from '../../constants/Constant';
-
+import { ACTEURS } from "../../constants/Constant";
 
 const TableListDepartement = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const [data, setData] = useState([{
-    key: "1",
-    photo: (
-      <img
-        src=""
-        alt="profil"
-        className="rounded-circle"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-    matricule: "",
-    name: "",
-    initDateEnvoi: '',
-    dateEnvoi: '',
-    initDateVerification: 0,
-    dateVerification: "---"
-  }]);
+  const [data, setData] = useState([
+    {
+      key: "1",
+      photo: (
+        <img
+          src=""
+          alt="profil"
+          className="rounded-circle"
+          style={{ width: "50px", height: "50px" }}
+        />
+      ),
+      matricule: "",
+      name: "",
+      initDateEnvoi: "",
+      dateEnvoi: "",
+      initDateVerification: 0,
+      dateVerification: "---",
+    },
+  ]);
 
   const columns = [
     {
@@ -65,7 +66,8 @@ const TableListDepartement = () => {
       dataIndex: "dateVerification",
       sorter: {
         compare: (a, b) =>
-          moment(a.initDateVerification).unix() - moment(b.initDateVerification).unix(),
+          moment(a.initDateVerification).unix() -
+          moment(b.initDateVerification).unix(),
       },
       align: "center",
     },
@@ -73,32 +75,62 @@ const TableListDepartement = () => {
       title: "Actions",
       render: (record) => (
         <div className="d-flex fs-4 justify-content-around ">
-          <div style={record.dateVerification !== "---" ? { display: "none" } : {margin:0}}>
-            <Link to="/acteur/departement/verification"
+          <div
+            style={
+              record.dateVerification !== "---"
+                ? { display: "none" }
+                : { margin: 0 }
+            }
+          >
+            <Link
+              to="/acteur/departement/verification"
               state={{
                 etudiantInfo: {
                   matricule: record.matricule,
                   name: record.name,
                   dossier: record.dossier,
-                  dejaNote:false
-                }
+                  dejaNote: false,
+                },
               }}
             >
-              <BsPenFill style={{ color: "#513e8f" ,cursor:"pointer"}} />
+               <Tooltip
+                placement="bottom"
+                title="Noter le dossier"
+                arrowPointAtCenter
+              >
+                 <BsPenFill style={{ color: "#513e8f", cursor: "pointer" }} />
+              </Tooltip>
+             
             </Link>
           </div>
-          <div style={record.dateVerification !== "---" ? {margin:0 } : {display: "none"}}>
-            <Link to="/acteur/departement/verification"
+          <div
+            style={
+              record.dateVerification !== "---"
+                ? { margin: 0 }
+                : { display: "none" }
+            }
+          >
+            <Link
+              to="/acteur/departement/verification"
               state={{
                 etudiantInfo: {
                   matricule: record.matricule,
                   name: record.name,
                   dossier: record.dossier,
-                  dejaNote: true
-                }
+                  dejaNote: true,
+                },
               }}
             >
-              <BsEyeFill className="details" style={{ color: "#513e8f",cursor:"pointer" }} />
+              <Tooltip
+                placement="bottom"
+                title="Visualiser le dossier"
+                arrowPointAtCenter
+              >
+                <BsEyeFill
+                  className="details"
+                  style={{ color: "#513e8f", cursor: "pointer" }}
+                />
+              </Tooltip>
             </Link>
           </div>
         </div>
@@ -107,31 +139,30 @@ const TableListDepartement = () => {
     },
   ];
 
-
   useEffect(() => {
     Promise.all([
       axios.get(`/departements/dossiers-etudiants-master`),
       // To get the dateVerification, we need to get the dossiers sent to the admin
       // from the departement and retrieve the envoyeLe attribute.
       // NOTE: use params instead of body since axios supports body only with put, post, patch, delete requests
-      axios.get('/dossiers-envoyes', {
+      axios.get("/dossiers-envoyes", {
         params: {
           envoyePar: user.id,
           envoyeParModel: ACTEURS.DEPARTEMENT,
-          destinataireModel: ACTEURS.ADMIN
-        }
-      })
+          destinataireModel: ACTEURS.ADMIN,
+        },
+      }),
     ])
-      .then(results => {
+      .then((results) => {
         const [res1, res2] = results;
         console.log(res1);
         console.log(res2);
         setData(parseResult(res1.data, res2.data));
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         toast.error("Une erreur est survenue!", { hideProgressBar: true });
-      })
+      });
   }, []);
 
   const parseResult = (envois1Data, envois2Data) => {
@@ -139,7 +170,7 @@ const TableListDepartement = () => {
     for (let envoiObj of envois1Data) {
       let dossier = envoiObj.dossier;
       let etud = dossier.etudiant;
-      let envoi2Obj = envois2Data.find(obj => obj.dossier.id === dossier.id);
+      let envoi2Obj = envois2Data.find((obj) => obj.dossier.id === dossier.id);
 
       result.push({
         key: envoiObj.id,
@@ -153,24 +184,30 @@ const TableListDepartement = () => {
           />
         ),
         matricule: etud.matricule,
-        name: etud.nom + ' ' + etud.prenom,
+        name: etud.nom + " " + etud.prenom,
         initDateEnvoi: envoiObj.envoyeLe,
-        dateEnvoi: moment(envoiObj.envoyeLe).format('dddd, D MMMM YYYY'),
+        dateEnvoi: moment(envoiObj.envoyeLe).format("dddd, D MMMM YYYY"),
         initDateVerification: envoi2Obj ? envoi2Obj.envoyeLe : 0,
-        dateVerification: envoi2Obj ? moment(envoi2Obj.envoyeLe).format('dddd, D MMM YYYY') : '---',
+        dateVerification: envoi2Obj
+          ? moment(envoi2Obj.envoyeLe).format("dddd, D MMM YYYY")
+          : "---",
       });
     }
 
     return result;
-  }
+  };
 
   return (
-    <>
+    <section style={{minHeight:"80vh"}}>
       <ToastContainer />
-      <div className=" mx-3 my-3" style={{ overflow: "scroll" }}>
-        <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
+      <div className=" mx-3 my-3" >
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{ pageSize: 5 }}
+        />
       </div>
-    </>
+    </section>
   );
 };
 

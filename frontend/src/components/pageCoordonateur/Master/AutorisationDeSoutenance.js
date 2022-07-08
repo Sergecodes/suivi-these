@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import { Table } from "antd";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { Table, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { BsEyeFill } from "react-icons/bs";
-import { sum } from '../../../utils';
-
+import { sum } from "../../../utils";
 
 const columns = [
   {
@@ -14,7 +13,7 @@ const columns = [
     sorter: {
       compare: (a, b) => a.matricule.localeCompare(b.matricule),
     },
-    align: "center"
+    align: "center",
   },
   {
     title: <div>Nom et Prenom</div>,
@@ -22,49 +21,77 @@ const columns = [
     sorter: {
       compare: (a, b) => a.name.localeCompare(b.name),
     },
-    align: "center"
+    align: "center",
   },
   {
     title: <div>Actions</div>,
     render: (record) => {
       return (
         <div className="d-flex justify-content-around align-items-center ">
-          <Link 
-            to="/acteur/coordonateur/rapport-master" 
-            state={{ etudiantInfo: { matricule: record.matricule, nom: record.name } }}
-          > 
+          <Link
+            to="/acteur/coordonateur/rapport-master"
+            state={{
+              etudiantInfo: {
+                rapport: record.rapport,
+                matricule: record.matricule,
+                nom: record.name,
+              },
+            }}
+          >
             <p className="details pt-2">
-              <BsEyeFill className="me-2" /> Visualiser
+              <Tooltip
+                placement="bottom"
+                title="Visualiser le rapport du CRFD"
+                arrowPointAtCenter
+              >
+                <BsEyeFill className="me-2" /> Visualiser
+              </Tooltip>
             </p>
           </Link>
-          <Link 
-            to="/acteur/coordonateur/date" 
-            state={{ etudiantInfo: { id: record.id, matricule: record.matricule, nom: record.name } }}
-          > 
-            <button className="btn autorisationButton">Autoriser</button>
+          <Link
+            to="/acteur/coordonateur/date"
+            state={{
+              etudiantInfo: {
+                id: record.id,
+                matricule: record.matricule,
+                nom: record.name,
+              },
+            }}
+          >
+            <Tooltip
+              placement="bottom"
+              title="Programmer la date de soutenance"
+              arrowPointAtCenter
+            >
+              <button className="btn autorisationButton">Programmer</button>
+            </Tooltip>
           </Link>
         </div>
       );
     },
-    align: "center"
+    align: "center",
   },
 ];
 
 const AutorisationDeSoutenance = () => {
-  const [data, setData] = useState([{
-    key: "1",
-    matricule: "",
-    name: "Nom 1 prenom 1",
-    score: 15
-  }]);
+  const [data, setData] = useState([
+    {
+      key: "1",
+      matricule: "",
+      name: "Nom 1 prenom 1",
+      rapport: "",
+      score: 15,
+    },
+  ]);
 
   useEffect(() => {
-    axios.get('/coordonateurs/autorisations-soutenances-master')
-      .then(res => {
+    axios
+      .get("/coordonateurs/autorisations-soutenances-master")
+      .then((res) => {
         console.log(res);
         setData(parseResult(res.data));
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         toast.error("Une erreur est survenue!", { hideProgressBar: true });
       });
@@ -79,24 +106,26 @@ const AutorisationDeSoutenance = () => {
         key: avis.id,
         id: etud.id,
         matricule: etud.matricule,
-        name: etud.nom + ' ' + etud.prenom,
+        name: etud.nom + " " + etud.prenom,
+        rapport: avis.rapport,
         score: (function () {
-          let result = [], maxTotal = 60;
+          let result = [],
+            maxTotal = 60;
           for (let noteObj of avis.dossier.notes) {
             // max for total is 60
             result.push(noteObj.total);
           }
 
-          // y * n  gives the number by which we have to divide 
+          // y * n  gives the number by which we have to divide
           // to get the average over 20.
-          // y is the total mark divided by 20 & n is the number of marks 
-          return sum(result) / ((maxTotal / 20) * result.length)
-        })()
-      })
+          // y is the total mark divided by 20 & n is the number of marks
+          return sum(result) / ((maxTotal / 20) * result.length);
+        })(),
+      });
     }
 
     return result;
-  }
+  };
 
   return (
     <div className=" mx-3 my-3">

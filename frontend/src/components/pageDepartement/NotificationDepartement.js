@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import NotificationsActeurs from "../common/NotificationsActeurs";
+import {ACTEURS} from '../../constants/Constant'
 
 const notificationsDepartement = [
   {
@@ -34,7 +35,7 @@ const notificationsDepartement = [
 const NotificationDepartement = () => {
   return (
     <>
-      <NotificationsActeurs notifs={notificationsDepartement}/>
+      <NotificationsActeurs notifs={notificationsDepartement} acteur={ACTEURS.DEPARTEMENT}/>
     </>
   )
 };

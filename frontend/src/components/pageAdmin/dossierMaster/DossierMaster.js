@@ -1,4 +1,4 @@
-import { Table, Modal, Select, Button } from "antd";
+import { Table, Modal, Select, Button, Tooltip } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -32,6 +32,7 @@ const DossierMaster = () => {
   const navigate = useNavigate();
   const [juryData, setJuryData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModal, setIsModal] = useState(false); //modal used to display the list of judges without any operations on them when the admin has already submited the judges
   const [listeJury, setListeJury] = useState([]);
   const [current, setCurrent] = useState(1);
   const [index, setIndex] = useState(1);
@@ -55,6 +56,7 @@ const DossierMaster = () => {
       dossier: {},
       matricule: "",
       name: "",
+      departement: "",
       initDateEnvoi: "",
       dateEnvoi: "",
       initDateVerification: 0,
@@ -86,6 +88,14 @@ const DossierMaster = () => {
       align: "center",
     },
     {
+      title: "Departement",
+      dataIndex: "departement",
+      sorter: {
+        compare: (a, b) => a.departement.localeCompare(b.departement),
+      },
+      align: "center",
+    },
+    {
       title: "Date Envoi",
       dataIndex: "dateEnvoi",
       sorter: {
@@ -108,22 +118,61 @@ const DossierMaster = () => {
       title: "Actions",
       render: (record) => (
         <div className="d-flex fs-4 justify-content-around align-items-center">
-          <BsPerson
-            className="me-2 juryIcon"
-            style={{ color: "#513e8f" }}
-            onClick={() => {
-              showModal();
-              setListeJury(record.juries);
-              setDossier(record.dossier);
-              setResetJuries(record.juries);
-            }}
-          />
-          <button
-            className="btn autorisationButton"
-            onClick={(e) => handleSubmit(e, record.dossier)}
+          <div
+            style={record.dateVerification !== "---" ? { display: "none" } : {}}
           >
-            <MdSend className="me-1" /> Envoyer
-          </button>
+            <Tooltip
+              placement="bottom"
+              title="Editer la liste des jury"
+              arrowPointAtCenter
+            >
+              <BsPerson
+                className="me-2 juryIcon"
+                style={{ color: "#513e8f" }}
+                onClick={() => {
+                  showModal();
+                  setListeJury(record.juries);
+                  setDossier(record.dossier);
+                  setResetJuries(record.juries);
+                }}
+              />
+            </Tooltip>
+
+            <Tooltip
+              placement="bottom"
+              title="Soumettre la liste des jury"
+              arrowPointAtCenter
+            >
+              <button
+                className="btn autorisationButton"
+                onClick={(e) => handleSubmit(e, record.dossier)}
+              >
+                <MdSend className="me-1" /> Envoyer
+              </button>
+            </Tooltip>
+          </div>
+          <div>
+            <div
+              style={
+                record.dateVerification !== "---" ? {} : { display: "none" }
+              }
+            >
+              <Tooltip
+                placement="bottom"
+                title="Visualiser les jury attribués à l'étudiant"
+                arrowPointAtCenter
+              >
+                <BsPerson
+                  className="me-2 juryIcon"
+                  style={{ color: "#513e8f" }}
+                  onClick={() => {
+                    setIsModal(true);
+                    setListeJury(record.juries);
+                  }}
+                />
+              </Tooltip>
+            </div>
+          </div>
         </div>
       ),
       align: "center",
@@ -201,6 +250,7 @@ const DossierMaster = () => {
         dossier,
         matricule: etud.matricule,
         name: etud.nom + " " + etud.prenom,
+        departement: etud.departement.nom,
         initDateEnvoi: envoiObj.envoyeLe,
         dateEnvoi: moment(envoiObj.envoyeLe).format("dddd, D MMMM YYYY"),
         // Use 0 here becuse when displaying the table, we'll use moment(0).unix() which gives 0
@@ -225,7 +275,7 @@ const DossierMaster = () => {
 
   const handleSubmit = (e, dossier) => {
     const etud = dossier.etudiant;
-    
+
     confirm({
       title: "Envoyer le dossier de cet etudiant aux membres de jury?",
       content: (
@@ -332,6 +382,7 @@ const DossierMaster = () => {
               OK
             </Button>,
           ]}
+          destroyOnClose={true}
         >
           <div>
             {listeJury.map((jury, index) => (
@@ -422,6 +473,38 @@ const DossierMaster = () => {
           </div>
         </Modal>
       </div>
+      <Modal
+        title={"Liste des jury"}
+        visible={isModal}
+        onOk={() => {
+          setIsModal(false);
+        }}
+        onCancel={() => {
+          setIsModal(false);
+        }}
+        footer={[
+          <div key="close" className="d-flex justify-content-center my-2">
+            <button
+              className="btn btnEmpty"
+              type="button"
+              onClick={() => {
+                setIsModal(false);
+              }}
+            >
+              OK
+            </button>
+          </div>,
+        ]}
+        destroyOnClose={true}
+      >
+        <div>
+          {listeJury.map((jury) => (
+            <div key={jury.id} className="text-center">
+              <p className="fw-lighter fs-6">{jury.email}</p>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </section>
   );
 };

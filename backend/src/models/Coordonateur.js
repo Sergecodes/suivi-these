@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const isEmail = require('validator/lib/isEmail')
 const Avis = require('./Avis')
 const Notification = require('./Notification')
-const { AvisEmetteur, EtapeDossier } = require('./types')
+const { AvisEmetteur, EtapeDossier, TypeNotification, ModelNotif } = require('./types')
 const { validerNumTel } = require('../validators');
 
 
