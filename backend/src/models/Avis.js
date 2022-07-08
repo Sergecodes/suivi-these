@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose')
 const { 
-    Avis, AvisEmetteur, AvisDestinataire, 
-    ModelNotif, TypeNotification 
+    Avis, ActeurDossier, ModelNotif, TypeNotification 
 } = require('./types')
 const Notification = require('./Notification');
 
@@ -10,20 +9,19 @@ const AvisSchema = new Schema({
     type: { type: String, required: true, enum: Object.values(Avis) },
     rapport: { type: String, default: '' }, 
     commentaire: { type: String, default: '' },  
-    donneLe: { type: Date, default: Date.now, required: true },
     donnePar: { type: Schema.Types.ObjectId, refPath: 'donneParModel' },
-    donneParModel: { type: String, required: true, enum: Object.values(AvisEmetteur) },
+    donneParModel: { type: String, required: true, enum: Object.values(ActeurDossier) },
     destinataire: { type: Schema.Types.ObjectId, refPath: 'destinataireModel' },
     destinataireModel: {
         type: String,
         required: true,
-        default: AvisDestinataire.ADMIN,
-        enum: Object.values(AvisDestinataire)
+        default: ActeurDossier.ADMIN,
+        enum: Object.values(ActeurDossier)
     },
     vueLe: Date,
     dossier: { type: Schema.Types.ObjectId, ref: 'Dossier', required: true },
 }, {
-    timestamps: { createdAt: 'creeLe', updatedAt: 'misAJourLe' }
+    timestamps: { createdAt: 'donneLe', updatedAt: 'misAJourLe' }
 });
 
 

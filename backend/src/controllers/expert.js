@@ -224,7 +224,12 @@ exports.dossiersEtudsThese = async function (req, res) {
 
 exports.notifications = async function (req, res) {
 	let { expert } = res.locals;
-   await expert.populate('notifications');
+   await expert.populate({
+      path: 'notifications',
+      populate: {
+         path: 'objetConcerne'
+      }
+   });
    res.json(expert.notifications);
 }
 

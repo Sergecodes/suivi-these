@@ -213,7 +213,12 @@ exports.changePhoneNumber = function (req, res) {
 // -----
 exports.notifications = async function (req, res) {
 	let { depart } = res.locals;
-	await depart.populate('notifications');
+	await depart.populate({
+      path: 'notifications',
+      populate: {
+         path: 'objetConcerne'
+      }
+   });
    res.json(depart.notifications);
 }
 

@@ -193,7 +193,12 @@ exports.changePhoneNumber = function (req, res) {
 
 exports.notifications = async function (req, res) {
    let { rectorat } = res.locals;
-   await rectorat.populate('notifications');
+   await rectorat.populate({
+      path: 'notifications',
+      populate: {
+         path: 'objetConcerne'
+      }
+   });
    res.json(rectorat.notifications);
 }
 

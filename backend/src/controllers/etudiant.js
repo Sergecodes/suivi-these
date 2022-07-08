@@ -57,7 +57,12 @@ exports.getOne = function (req, res) {
 
 exports.notifications = async function (req, res) {
    let { etudiant } = res.locals;
-   await etudiant.populate('notifications');
+   await etudiant.populate({
+      path: 'notifications',
+      populate: {
+         path: 'objetConcerne'
+      }
+   });
    res.json(etudiant.notifications);
 }
 

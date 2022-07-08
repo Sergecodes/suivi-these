@@ -5,10 +5,12 @@ import axios from "axios";
 import moment from "moment";
 import {AiOutlineExclamationCircle} from "react-icons/ai"
 import { toast, ToastContainer } from "react-toastify";
+import { ACTEURS } from "../../../constants/Constant";
 
 const { confirm } = Modal;
 
 const DateDeSoutenance = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const location = useLocation();
   const navigate = useNavigate();
   const dateRef = useRef();
@@ -17,21 +19,33 @@ const DateDeSoutenance = () => {
 
   const handleSubmit = () => {
     const date = dateRef.current.value;
-    console.log(date)
-   /* confirm({
+    console.log(date);
+
+    confirm({
       title: "Programmer la date de soutenance de cet etudiant?",
       content: etudiantInfo.nom + " " + etudiantInfo.matricule,
       icon: <AiOutlineExclamationCircle style={{ color: "#F2AD16" }} />,
       okText: "Oui",
       cancelText: "Non",
       async onOk() {
-        return axios
-          .put("/coordonateurs/programmer-date-soutenance-master", {
+        return Promise.all([
+          axios.put("/coordonateurs/programmer-date-soutenance-master", {
             dateSoutient: date,
             idEtudiant: etudiantInfo.id,
+          }),
+          axios.post('/donner-avis', {
+            dossier: etudiantInfo.idDossier,
+            type: "Date de soutenance programmée",
+            donnePar: user.id,
+            donneParModel: ACTEURS.COORDONATEUR,
+            destinataire: etudiantInfo.id,
+            destinataireModel: ACTEURS.ETUDIANT
           })
-          .then((res) => {
-            console.log(res);
+        ])
+          .then(results => {
+            const [res1, res2] = results;
+            console.log(res1);
+            console.log(res2);
             toast.success("Date de soutenance programmee avec succes!", {
               hideProgressBar: true,
             });
@@ -48,7 +62,7 @@ const DateDeSoutenance = () => {
           });
       },
       onCancel() {},
-    });*/
+    });
   };
 
   return (

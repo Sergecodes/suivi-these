@@ -39,7 +39,7 @@ const TypeNotification = Object.freeze({
     NOTE_JURY: "Nouvelle note de jury",
     SOUTENANCE_PROGRAMMEE: "Date de soutenance programmeé",
     AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
-    SOUTENANCE_NON_VALIDEE: "Soutenance non validé",
+    SOUTENANCE_NON_VALIDEE: "Soutenance non validée",
     THESE_REJETE: 'Thèse rejeté'
 });
 
@@ -60,8 +60,9 @@ const Avis = Object.freeze({
     FAVORABLE_SOUS_RESERVE: "Soutenance favorable sous reserve",
     DEFAVORABLE: "Défavorable",
     // Autorisation de soutenance envoyee de l'admin au coordonateur 
-    AUTORISATION_SOUTENANCE: "Autorisation de soutenance"
-
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
+    // Envoye a l'etudiant
+    SOUTENANCE_PROGRAMMEE: "Date de soutenance programmée"
 });
 
 

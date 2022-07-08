@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
+import { ACTEURS } from "../../../constants/Constant";
 
 const { confirm } = Modal;
 
@@ -30,8 +31,8 @@ const RapportSoutenance = () => {
           rapport: value,
           type: "Autorisation de soutenance",
           donnePar: user.id,
-          donneParModel: 'Admin',
-          destinataireModel: 'Coordonateur'
+          donneParModel: ACTEURS.ADMIN,
+          destinataireModel: ACTEURS.COORDONATEUR
         })
           .then(res => {
             console.log(res);

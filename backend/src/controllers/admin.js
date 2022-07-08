@@ -194,7 +194,13 @@ exports.changePhoneNumber = function (req, res) {
 
 exports.notifications = async function (req, res) {
    let { admin } = res.locals;
-   await admin.populate('notifications');
+   await admin.populate({
+      path: 'notifications',
+      populate: {
+         path: 'objetConcerne'
+      }
+   });
+   
    res.json(admin.notifications);
 }
 
