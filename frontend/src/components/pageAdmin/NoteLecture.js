@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, Tooltip } from "antd";
 import axios from "axios";
+import moment from 'moment';
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import RejetDossier from "../common/RejetDossier";
@@ -10,7 +11,11 @@ import { setRejectModal } from "../../redux/DashboardDisplaySlice";
 import { average } from "../../utils";
 import { ACTEURS } from "../../constants/Constant";
 
+moment.locale('fr');
+
+
 const Notation = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const dispatch = useDispatch();
   const columns = [
     {
@@ -58,6 +63,16 @@ const Notation = () => {
       dataIndex: "score",
       sorter: {
         compare: (a, b) => a.score.localeCompare(b.score),
+      },
+      align: "center",
+    },
+    {
+      title: "Date Verification",
+      dataIndex: "dateVerification",
+      sorter: {
+        compare: (a, b) =>
+          moment(a.initDateVerification).unix() -
+          moment(b.initDateVerification).unix(),
       },
       align: "center",
     },
@@ -125,18 +140,30 @@ const Notation = () => {
       thirdJuryTotal: 0,
       score: 0,
       marks: [{}, {}, {}],
+      initDateVerification: 0,
+      dateVerification: '---'
     },
   ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [etudiant, setEtudiant] = useState({});
-
   const [selectedJuries, setSelectedJuries] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/admin/notes-dossiers")
-      .then((res) => {
-        setData(parseResult(res.data));
+    Promise.all([
+      axios.get("/admin/notes-dossiers"),
+      axios.get("/avis-donnes", {
+        params: {
+          donnePar: user.id,
+          donneParModel: ACTEURS.ADMIN,
+          destinataireModel: ACTEURS.COORDONATEUR,
+        },
+      }),
+    ])
+      .then(results => {
+        const [res1, res2] = results;
+        console.log(res1);
+        console.log(res2);
+        setData(parseResult(res1.data, res2.data));
       })
       .catch((err) => {
         console.error(err);
@@ -144,11 +171,12 @@ const Notation = () => {
       });
   }, []);
 
-  const parseResult = (resData) => {
+  const parseResult = (res1Data, res2Data) => {
     let result = [];
-    for (const [idDossier, valObj] of Object.entries(resData)) {
+    for (const [idDossier, valObj] of Object.entries(res1Data)) {
       const etud = valObj.dossierInfo.etudiant;
       const sommes = valObj.sommes;
+      const avisObj = res2Data.find(avis => avis.dossier.id === idDossier);
 
       result.push({
         key: idDossier,
@@ -161,6 +189,10 @@ const Notation = () => {
         thirdJuryTotal: sommes[2] || "",
         score: average(sommes).toFixed(2),
         marks: valObj.notes,
+        initDateVerification: avisObj ? avisObj.donneLe : 0,
+        dateVerification: avisObj
+          ? moment(avisObj.donneLe).format("dddd, D MMM YYYY")
+          : "---",
       });
     }
 

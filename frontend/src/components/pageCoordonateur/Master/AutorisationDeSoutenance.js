@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import moment from 'moment';
 import { toast, ToastContainer } from "react-toastify";
 import { Table, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { BsEyeFill } from "react-icons/bs";
 import { sum } from "../../../utils";
+import { ACTEURS } from "../../../constants/Constant";
+
+moment.locale('fr');
+
 
 const columns = [
   {
@@ -20,6 +25,16 @@ const columns = [
     dataIndex: "name",
     sorter: {
       compare: (a, b) => a.name.localeCompare(b.name),
+    },
+    align: "center",
+  },
+  {
+    title: "Date de programmation",
+    dataIndex: "dateProgrammation",
+    sorter: {
+      compare: (a, b) =>
+        moment(a.initDateProgrammation).unix() -
+        moment(b.initDateProgrammation).unix(),
     },
     align: "center",
   },
@@ -53,6 +68,7 @@ const columns = [
             state={{
               etudiantInfo: {
                 id: record.id,
+                idDossier: record.idDossier,
                 matricule: record.matricule,
                 nom: record.name,
               },
@@ -74,22 +90,37 @@ const columns = [
 ];
 
 const AutorisationDeSoutenance = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const [data, setData] = useState([
     {
       key: "1",
+      id: '1',
+      idDossier: '',
       matricule: "",
       name: "Nom 1 prenom 1",
       rapport: "",
       score: 15,
+      initDateProgrammation: 0,
+      dateProgrammation: '---'
     },
   ]);
 
   useEffect(() => {
-    axios
-      .get("/coordonateurs/autorisations-soutenances-master")
-      .then((res) => {
-        console.log(res);
-        setData(parseResult(res.data));
+    Promise.all([
+      axios.get("/coordonateurs/autorisations-soutenances-master"),
+      axios.get("/avis-donnes", {
+        params: {
+          donnePar: user.id,
+          donneParModel: ACTEURS.COORDONATEUR,
+          destinataireModel: ACTEURS.ETUDIANT,
+        },
+      }),
+    ])
+      .then(results => {
+        const [res1, res2] = results;
+        console.log(res1);
+        console.log(res2);
+        setData(parseResult(res1.data, res2.data));
       })
       .catch((err) => {
         console.error(err);
@@ -97,17 +128,23 @@ const AutorisationDeSoutenance = () => {
       });
   }, []);
 
-  const parseResult = (resData) => {
+  const parseResult = (res1Data, res2Data) => {
     let result = [];
-    for (let avis of resData) {
+    for (let avis of res1Data) {
       let etud = avis.dossier.etudiant;
+      let avisProgramme = res2Data.find(avisObj => avisObj.dossier.id === avis.dossier.id);
 
       result.push({
         key: avis.id,
         id: etud.id,
+        idDossier: avis.dossier.id,
         matricule: etud.matricule,
         name: etud.nom + " " + etud.prenom,
         rapport: avis.rapport,
+        initDateProgrammation: avisProgramme ? avisProgramme.donneLe : 0,
+        dateProgrammation: avisProgramme
+          ? moment(avisProgramme.donneLe).format("dddd, D MMM YYYY")
+          : "---",
         score: (function () {
           let result = [],
             maxTotal = 60;

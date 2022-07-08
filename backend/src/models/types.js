@@ -60,8 +60,9 @@ const Avis = Object.freeze({
     FAVORABLE_SOUS_RESERVE: "Soutenance favorable sous reserve",
     DEFAVORABLE: "Défavorable",
     // Autorisation de soutenance envoyee de l'admin au coordonateur 
-    AUTORISATION_SOUTENANCE: "Autorisation de soutenance"
-
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
+    // Envoye a l'etudiant
+    SOUTENANCE_PROGRAMMEE: "Date de soutenance programmée"
 });
 
 
