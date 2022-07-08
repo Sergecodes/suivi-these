@@ -5,27 +5,27 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from "react-toastify";
 import { Dropdown, Menu, Space } from "antd";
+import { ACTEURS, TypeNotification } from "../../constants/Constant";
 import "../../Styles/AdminCommon.css";
 
+const TypeNotif = TypeNotification;
 moment.locale('fr');
 
 
 const NotificationsActeurs = (props) => {
   // const notifs = [{
   //   id: "1",
-  //   title: "Nouveau dossier envoyé",
-  //   description: `
+  //   type: "Nouveau dossier envoyé",
+  //   message: `
   //     Vous avez reçu une nouvelle demande de programmation de
-  //     date de soutenance venant de l'étudiant.
-  //   ` or React Node,
+  //     date de soutenance venant de l'étudiant`,
   //   creeLe: formatted date string
   //   vueLe: '' or date string,
-  //   redirectLink: ''
   // }];
 
   console.log("props", props);
   // acteur and notifs should be passed as props
-  const { notifs: allNotifs } = props;
+  const { acteur, notifs: allNotifs } = props;
 
   const [notifs, setNotifs] = useState(props.notifs);
   const [clicked, setClicked] = useState(true);
@@ -82,13 +82,29 @@ const NotificationsActeurs = (props) => {
       });
   }
 
+  const getDescription = (notif) => {
+    // let type = notif.type;
+
+    return notif.message;
+  }
+
+  const getNotifLink = (notif) => {
+
+    if (notif.type === TypeNotif.NOUVEAU_ETUDIANT) {
+      if (acteur === ACTEURS.ADMIN)
+        return '/...'
+    }
+
+    // Pas de lien
+    return '';
+  }
+
   const menu = (
-    <Menu
-      items={[
+    <Menu items={[
         {
           type: "divider",
           label: (
-            <p onClick={handleMarquerLu}>
+            <p onClick={handleMarquerLu} style={current.vueLe ? { display: 'none' } : {}}>
               Marquer comme lu
             </p>
           ),
@@ -108,11 +124,14 @@ const NotificationsActeurs = (props) => {
     />
   );
 
-  const getNotifDisplay = (link, notif) => {
+  const getNotifDisplay = (notif) => {
     const render = (
       <div
         key={notif.id}
-        className="contentNotification my-3 px-3 py-3"
+        className={`
+          contentNotification my-3 px-3 py-3 
+          ${notif.vueLe ? '' : 'bg-info bg-gradient'}
+        `}
         style={{ position: "relative" }}
       >
         <div style={{ position: "absolute", right: "3%", top: "0%" }}>
@@ -127,13 +146,15 @@ const NotificationsActeurs = (props) => {
             </span>
           </Dropdown>
         </div>
-        <h5>{notif.title}</h5>
+        <h5>{notif.type}</h5>
         <div>
-          <p>{notif.description}</p>
+          <p>{getDescription(notif)}</p>
         </div>
         <p>{moment(notif.creeLe).format("dddd, D MMMM YYYY")}</p>
       </div>
     );
+
+    let link = getNotifLink(notif);
 
     if (link) {
       return <Link to={link}>{render}</Link>;
@@ -178,7 +199,7 @@ const NotificationsActeurs = (props) => {
         </div>
       </div>
       <div className="col-12 col-md-10">
-        {notifs.map((notif) => getNotifDisplay(notif.redirectLink, notif))}
+        {notifs.map((notif) => getNotifDisplay(notif))}
       </div>
     </section>
   );
@@ -187,7 +208,7 @@ const NotificationsActeurs = (props) => {
 
 NotificationsActeurs.propTypes = {
   notifs: PropTypes.array.isRequired,
-  // acteur: PropTypes.string.isRequired,
+  acteur: PropTypes.string.isRequired,
 };
 
 export default NotificationsActeurs;

@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PdfViewer from "../common/PdfViewer";
 import { Link } from "react-router-dom";
 import {BsArrowLeft } from "react-icons/bs";
+import { ACTEURS } from "../../constants/Constant";
 
 const { confirm } = Modal;
 
@@ -65,8 +66,8 @@ const NotationMaster = () => {
           axios.post('/envoyer-dossier', {
             dossier: etudiantInfo.dossier.id,
             envoyePar: user.id,
-            envoyeParModel: 'Jury',
-            destinataireModel: 'Admin'
+            envoyeParModel: ACTEURS.JURY,
+            destinataireModel: ACTEURS.ADMIN
           })
         ])
           .then(results => {
