@@ -18,7 +18,7 @@ router.route('/change-password').put(isExpert, getExpert, controller.change_expe
 
 router.route('/change-email').put(isExpert, getExpert, controller.change_email);
 
-router.route('/change-phone-number').put(isExpert, getExpert, controller.changePhoneNumber);
+router.route('/update-profile').put(isExpert, getExpert, controller.updateProfile);
 
 router.route('/dossiers-etudiants-these').get(isExpert, getExpert, controller.dossiersEtudsThese);
 

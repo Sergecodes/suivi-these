@@ -40,7 +40,7 @@ const ProfilExpert = () => {
     }
 
     if (user.numTelephone !== expertInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: expertInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: expertInfo.numTelephone });
     }
 
     if (expertInfo.newPassword.trim() !== '') {
@@ -49,7 +49,7 @@ const ProfilExpert = () => {
         return false;
       } else {
         requests['passwordRequest'] = axios.put('/etudiants/change-password', {
-          pass: expertInfo.oldPassword, newPass: expertInfo.oldPassword
+          pass: expertInfo.oldPassword, newPass: expertInfo.newPassword
         });
       }
     }

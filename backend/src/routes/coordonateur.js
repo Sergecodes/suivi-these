@@ -23,10 +23,10 @@ router.route('/change-password').put(
 
 router.route('/change-email').put(isCoordonateur, getCoordonateur, controller.change_email);
 
-router.route('/change-phone-number').put(
+router.route('/update-profile').put(
    isCoordonateur, 
    getCoordonateur, 
-   controller.changePhoneNumber
+   controller.updateProfile
 );
 
 router.route('/programmer-date-soutenance-master').put(

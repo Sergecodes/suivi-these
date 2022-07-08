@@ -41,7 +41,7 @@ const ProfilJury = () => {
     }
 
     if (user.numTelephone !== juryInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: juryInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: juryInfo.numTelephone });
     }
 
     if (juryInfo.newPassword.trim() !== '') {

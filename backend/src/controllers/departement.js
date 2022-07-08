@@ -184,29 +184,20 @@ exports.change_email = function(req,res){
 	});
 }
 
-exports.changePhoneNumber = function (req, res) {
-   const { depart } = res.locals;
-   const { newPhoneNumber } = req.body;
+exports.updateProfile = function (req, res) {
+	const { depart } = res.locals;
+	// Info: nom, numTelephone
+	// depart.nom = req.body.nom || depart.nom;
+	depart.numTelephone = req.body.numTelephone || depart.numTelephone;
 
-   if (!newPhoneNumber)
-		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
-
-   if (depart.numTelephone === newPhoneNumber) {
-		return res.status(400).send("Ce numero est votre numero actuel");
-	}
-
-   depart.numTelephone = newPhoneNumber;
-   depart.save(function (err, newDepart) {
-      if (err) {
-         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+	depart.save((err, newDepart) => {
+		if (err) {
+         console.error(err);
+         res.status(500).json(err)
       }
-      res.json({ 
-         success: true, 
-         message: "le nouveau numero de telephone a ete enregistrer avec success", 
-         numTelephone: newDepart.numTelephone 
-      });
-   });
+
+      res.json(newDepart);
+	});
 }
 
 

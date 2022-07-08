@@ -10,6 +10,23 @@ exports.getOne = function (req, res) {
 	res.json(unite);
 }
 
+exports.update = async function (req, res) {
+  // Info: code, intitule, idCoordonateur
+  const unite = await Unite.findById(req.params.id);
+  unite.code = req.body.code || unite.code;
+  unite.intitule = req.body.intitule || unite.intitule;
+  unite.coordonateur = req.body.idCoordonateur || unite.coordonateur;
+
+	unite.save((err, newUnite) => {
+		if (err) {
+         console.error(err);
+         res.status(500).json(err)
+      }
+
+      res.json(newUnite);
+	});
+}
+
 exports.delete = function (req, res) {
 	Unite.findByIdAndRemove(req.params.id, (err, doc) => {
 		if (!doc) {

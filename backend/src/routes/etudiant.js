@@ -25,7 +25,7 @@ router.route('/change-email').put(isEtudiant, getEtudiant, controller.changeEmai
 
 router.route('/change-password').put(isEtudiant, getEtudiant, controller.change_student_password);
 
-router.route('/change-phone-number').put(isEtudiant, getEtudiant, controller.changePhoneNumber);
+router.route('/update-profile').put(isEtudiant, getEtudiant, controller.updateProfile);
 
 router.route('/uploader-fichiers').put(isEtudiant, getEtudiant, controller.uploadFiles);
 

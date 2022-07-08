@@ -163,29 +163,19 @@ exports.changeEmail = function (req, res) {
    });
 }
 
-exports.changePhoneNumber = function (req, res) {
-   const { rectorat } = res.locals;
-   const { newPhoneNumber } = req.body;
+exports.updateProfile = function (req, res) {
+	const { rectorat } = res.locals;
+	// Info: numTelephone
+	rectorat.numTelephone = req.body.numTelephone || rectorat.numTelephone;
 
-   if (!newPhoneNumber)
-		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
-
-   if (rectorat.numTelephone === newPhoneNumber) {
-		return res.status(400).send("Ce numero est votre numero actuel");
-	}
-
-   rectorat.numTelephone = newPhoneNumber;
-   rectorat.save(function (err, newRectorat) {
-      if (err) {
-         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+	rectorat.save((err, newRectorat) => {
+		if (err) {
+         console.error(err);
+         res.status(500).json(err)
       }
-      res.json({ 
-         success: true, 
-         message: "le nouveau numero de telephone a ete enregistrer avec success", 
-         numTelephone: newRectorat.numTelephone 
-      });
-   });
+
+      res.json(newRectorat);
+	});
 }
 
 

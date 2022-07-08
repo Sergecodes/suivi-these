@@ -18,7 +18,7 @@ router.route('/change-email').put(isJury, getJury, controller.change_email);
 
 router.route('/change-password').put(isJury, getJury, controller.change_jury_pass);
 
-router.route('/change-phone-number').put(isJury, getJury, controller.changePhoneNumber);
+router.route('/update-profile').put(isJury, getJury, controller.updateProfile);
 
 router.route('/dossiers-etudiants-master').get(isJury, getJury, controller.dossiersEtudsMaster);
 

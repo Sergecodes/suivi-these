@@ -279,30 +279,19 @@ exports.changeEmail = function (req, res) {
    });
 }
 
-exports.changePhoneNumber = function (req, res) {
-   console.log("in change phone number");
-   const { etudiant } = res.locals;
-   const { newPhoneNumber } = req.body;
+exports.updateProfile = function (req, res) {
+	const { etudiant } = res.locals;
+	// Info: numTelephone
+	etudiant.numTelephone = req.body.numTelephone || etudiant.numTelephone;
 
-   if (!newPhoneNumber)
-		return res.status(400).send("newPhoneNumber n'est pas dans la requete");
-
-   if (etudiant.numTelephone === newPhoneNumber) {
-		return res.status(400).send("Ce numero est votre numero actuel");
-	}
-
-   etudiant.numTelephone = newPhoneNumber;
-   etudiant.save(function (err, newStudent) {
-      if (err) {
-         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+	etudiant.save((err, newEtudiant) => {
+		if (err) {
+         console.error(err);
+         res.status(500).json(err)
       }
-      res.json({ 
-         success: true, 
-         message: "le nouveau numero de telephone a ete enregistrer avec success", 
-         numTelephone: newStudent.numTelephone 
-      });
-   });
+
+      res.json(newEtudiant);
+	});
 }
 
 

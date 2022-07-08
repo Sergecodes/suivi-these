@@ -20,7 +20,7 @@ router.route('/change-password').put(isRectorat, getRectorat, controller.changeP
 
 router.route('/change-email').put(isRectorat, getRectorat, controller.changeEmail);
 
-router.route('/change-phone-number').put(isRectorat, getRectorat, controller.changePhoneNumber);
+router.route('/update-profile').put(isRectorat, getRectorat, controller.updateProfile);
 
 router.route('/programmer-date-soutenance-these').post(
    isRectorat, 
