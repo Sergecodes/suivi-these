@@ -9,28 +9,23 @@ export const JuryData = {
     urlPhotoProfil: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
 }
 
-export const ExpertData = {
-    id: 21221155,
-    matricule: "17T2345",
-    nom: "NCHOUWET MFOUAPON",
-    prenom: "Kuntz Stephane",
-    email: "stephane@gmail.com",
-    numTelephone: "+237 655 55 55 55",
-    ville:"yaoundé",
-    sexe: "M",
-    urlPhotoProfil: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
-}
-
-export const DepartementData = {
-    id: 21221155,
-    matricule: "17T2345",
-    nom: "NCHOUWET MFOUAPON",
-    prenom: "Kuntz Stephane",
-    email: "stephane@gmail.com",
-    numTelephone: "+237 655 55 55 55",
-    sexe: "M",
-    urlPhotoProfil: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6n_sDg2-zfzhaGPyi4aXh8TVGfEBj6cLJwQ&usqp=CAU",
-}
+export const TypeNotification = Object.freeze({
+    RAPPEL: "Rappel",
+    // Message d'un acteur a un autre (eg. admin a jury)
+    MESSAGE: "Message", 
+    NOUVEAU_ETUDIANT: "Nouveau étudiant",
+    NOUVEL_AVIS: 'Nouvel avis dossier',
+    DOSSIER_ENVOYE: "Dossier de l'étudiant envoyé",
+    DOSSIER_VALIDE: "Dossier de l'étudiant validé",
+    DOSSIER_REJETE: "Dossier de l'étudiant rejeté",
+    COMPTE_REJETE: "Compte de l'étudiant rejeté",
+    COMPTE_VALIDE: "Compte de l'étudiant validé",
+    NOTE_JURY: "Nouvelle note de jury",
+    SOUTENANCE_PROGRAMMEE: "Date de soutenance programmeé",
+    AUTORISATION_SOUTENANCE: "Autorisation de soutenance",
+    SOUTENANCE_NON_VALIDEE: "Soutenance non validée",
+    THESE_REJETE: 'Thèse rejeté'
+});
 
 export const RectoratData = {
     id: 21221155,

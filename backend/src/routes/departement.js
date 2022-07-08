@@ -26,7 +26,7 @@ router.route('/change-email').put(
    controller.change_email
 );
 
-router.route('/change-phone-number').put(isDepartement, getDepartement, controller.changePhoneNumber);
+router.route('/update-profile').put(isDepartement, getDepartement, controller.updateProfile);
 
 router.route('/notifications').get(isDepartement, getDepartement, controller.notifications);
 

@@ -33,7 +33,7 @@ const StudentProfile = () => {
     }
 
     if (user.numTelephone !== tel) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: tel });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: tel });
     }
 
     if (newPassword.trim() !== '') {

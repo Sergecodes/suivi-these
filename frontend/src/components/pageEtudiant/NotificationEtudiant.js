@@ -5,11 +5,11 @@ import NotificationsActeurs from "../common/NotificationsActeurs";
 import { ACTEURS } from "../../constants/Constant";
 
 
-const NotificationsAdmin = () => {
+const NotificationsEtudiant = () => {
   const [notifs, setNotifs] = useState([]);
 
   useEffect(() => {
-    axios.get('/admin/notifications')
+    axios.get('/etudiants/notifications')
       .then(res => {
         console.log(res);
         setNotifs(parseResult(res.data));
@@ -38,9 +38,9 @@ const NotificationsAdmin = () => {
   return (
     <>
       <ToastContainer />
-      <NotificationsActeurs notifs={notifs} acteur={ACTEURS.ADMIN} />
+      <NotificationsActeurs notifs={notifs} acteur={ACTEURS.ETUDIANT} />
     </>
   );
 };
 
-export default NotificationsAdmin;
+export default NotificationsEtudiant;

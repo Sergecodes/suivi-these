@@ -1,43 +1,46 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 import NotificationsActeurs from "../common/NotificationsActeurs";
-import {ACTEURS} from '../../constants/Constant'
+import { ACTEURS } from "../../constants/Constant";
 
-const notificationsDepartement = [
-  {
-    id: "1",
-    title: "Nouveau dossier envoyé",
-    description: (
-      <div>
-        <p>
-          L'étudiant{" "}
-          <Link to="/acteur/departement/profil">ATANGANA JEAN MBARGA HELENE</Link>{" "}
-          viens de soumettre son dossier de soutenance et est en attente d'une verification
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "2",
-    title: "Rappel delai d'envoi ",
-    description: (
-      <div>
-        <p>
-          Le dossier de l'etudiant{" "}
-          <Link to="/acteur/departement/profil">ATANGANA JEAN MBARGA HELENE</Link>,
-          est toujours en attente d'un avis, veuillez soummettre votre decision le plus tot possible
-        </p>
-      </div>
-    ),
-  },
-];
 
-const NotificationDepartement = () => {
+const NotificationsDepartement = () => {
+  const [notifs, setNotifs] = useState([]);
+
+  useEffect(() => {
+    axios.get('/departements/notifications')
+      .then(res => {
+        console.log(res);
+        setNotifs(parseResult(res.data));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue", { hideProgressBar: true });
+      });
+  }, []);
+
+  const parseResult = (resData) => {
+    let result = [];
+    for (let notif of resData) {
+      result.push({
+        id: notif.id,
+        type: notif.type,
+        message: notif.message,
+        creeLe: notif.creeLe,
+        vueLe: notif.vueLe || '',
+      });
+    }
+
+    return result;
+  }
+
   return (
     <>
-      <NotificationsActeurs notifs={notificationsDepartement} acteur={ACTEURS.DEPARTEMENT}/>
+      <ToastContainer />
+      <NotificationsActeurs notifs={notifs} acteur={ACTEURS.DEPARTEMENT} />
     </>
-  )
+  );
 };
 
-export default NotificationDepartement;
+export default NotificationsDepartement;

@@ -37,7 +37,7 @@ const ProfilCoordonateur = () => {
     }
 
     if (user.numTelephone !== coordoInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: coordoInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: coordoInfo.numTelephone });
     }
 
     if (coordoInfo.newPassword.trim() !== '') {

@@ -223,29 +223,21 @@ exports.change_email = function (req, res) {
   });
 };
 
-exports.changePhoneNumber = function (req, res) {
-  const { jury } = res.locals;
-  const { newPhoneNumber } = req.body;
+exports.updateProfile = function (req, res) {
+	const { jury } = res.locals;
+	// Info: nom, prenom, numTelephone
+	jury.nom = req.body.nom || jury.nom;
+	jury.prenom = req.body.prenom || jury.prenom;
+	jury.numTelephone = req.body.numTelephone || jury.numTelephone;
 
-  if (!newPhoneNumber)
-   return res.status(400).send("newPhoneNumber n'est pas dans la requete");
+	jury.save((err, newJury) => {
+		if (err) {
+         console.error(err);
+         res.status(500).json(err)
+      }
 
-  if (jury.numTelephone === newPhoneNumber) {
-   return res.status(400).send("Ce numero est votre numero actuel");
- }
-
-  jury.numTelephone = newPhoneNumber;
-  jury.save(function (err, newJury) {
-     if (err) {
-        console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-        res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
-     }
-     res.json({ 
-        success: true, 
-        message: "le nouveau numero de telephone a ete enregistrer avec success", 
-        numTelephone: newJury.numTelephone 
-     });
-  });
+      res.json(newJury);
+	});
 }
 
 // ------------

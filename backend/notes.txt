@@ -29,6 +29,9 @@ TODO:
     - prevent server from crashing when error
     - use callbacks ... where necessary, also improve queries
 
+    - remove isAdmin & getAdmin and allow only getAdmin.  do this for all actors.
+    (to limit queries)
+
 * setup access-control for bucket
 https://stackoverflow.com/questions/37760695/firebase-storage-and-access-control-allow-origin?rq=1
 

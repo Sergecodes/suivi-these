@@ -16,7 +16,7 @@ router.route('/login').post(controller.conseil_login);
 
 router.route('/change-password').put(isConseil, getConseil, controller.change_conseil_pass);
 
-router.route('/change-phone-number').put(isConseil, getConseil, controller.changePhoneNumber);
+router.route('/update-profile').put(isConseil, getConseil, controller.updateProfile);
 
 router.route('/change-email').put(isConseil, getConseil, controller.change_email);
 

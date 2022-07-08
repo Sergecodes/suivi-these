@@ -41,7 +41,7 @@ const ProfilDepartement = () => {
     }
 
     if (user.numTelephone !== departementInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: departementInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: departementInfo.numTelephone });
     }
 
     if (departementInfo.newPassword.trim() !== '') {

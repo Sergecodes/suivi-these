@@ -7,8 +7,10 @@ router.route('').get(controller.getAll);
 
 router.route('/register').post(controller.register_unite);
 
-router.route('/:id').get(getUniteFromParam, controller.getOne)
-.delete(isAdmin, controller.delete);
+router.route('/:id')
+.get(getUniteFromParam, controller.getOne)
+.delete(isAdmin, controller.delete)
+.put(isAdmin, controller.update);
 
 
 module.exports = router;

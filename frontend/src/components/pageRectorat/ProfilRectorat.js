@@ -37,7 +37,7 @@ const ProfilRectorat = () => {
     }
 
     if (user.numTelephone !== rectoratInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: rectoratInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: rectoratInfo.numTelephone });
     }
 
     if (rectoratInfo.newPassword.trim() !== '') {

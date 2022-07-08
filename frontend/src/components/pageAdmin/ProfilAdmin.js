@@ -35,7 +35,7 @@ const ProfilAdmin = () => {
     }
 
     if (user.numTelephone !== adminInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: adminInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: adminInfo.numTelephone });
     }
 
     if (adminInfo.newPassword.trim() !== '') {

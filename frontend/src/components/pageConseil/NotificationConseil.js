@@ -1,44 +1,46 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 import NotificationsActeurs from "../common/NotificationsActeurs";
+import { ACTEURS } from "../../constants/Constant";
 
-const notificationsConseil = [
-  {
-    id: "1",
-    title: "Nouvelle demande de Notation",
-    description: (
-      <div>
-        <p>
-          L'étudiant{" "}
-          <Link to="/acteur/conseil/profil">ATANGANA JEAN MBARGA HELENE</Link>{" "}
-          viens de soumettre sa thèse et est en attente d'une notation
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "2",
-    title: "Rappel delai d'envoi ",
-    description: (
-      <div>
-        <p>
-          il vous reste 4 jours pour soummettre une note concernant le dossier
-          de l'etudiant{" "}
-          <Link to="/acteur/conseil/profil">ATANGANA JEAN MBARGA HELENE</Link>,
-          veuillez le soummettre avant le 12/05/2022
-        </p>
-      </div>
-    ),
-  },
-];
 
-const Notificationconseil = () => {
+const NotificationsConseil = () => {
+  const [notifs, setNotifs] = useState([]);
+
+  useEffect(() => {
+    axios.get('/conseils/notifications')
+      .then(res => {
+        console.log(res);
+        setNotifs(parseResult(res.data));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.error("Une erreur est survenue", { hideProgressBar: true });
+      });
+  }, []);
+
+  const parseResult = (resData) => {
+    let result = [];
+    for (let notif of resData) {
+      result.push({
+        id: notif.id,
+        type: notif.type,
+        message: notif.message,
+        creeLe: notif.creeLe,
+        vueLe: notif.vueLe || '',
+      });
+    }
+
+    return result;
+  }
 
   return (
     <>
-      <NotificationsActeurs notifs={notificationsConseil}/>
+      <ToastContainer />
+      <NotificationsActeurs notifs={notifs} acteur={ACTEURS.CONSEIL} />
     </>
-  )
+  );
 };
 
-export default Notificationconseil;
+export default NotificationsConseil;

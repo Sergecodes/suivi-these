@@ -37,7 +37,7 @@ const ProfilConseil = () => {
     }
 
     if (user.numTelephone !== conseilInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/change-phone-number', { newPhoneNumber: conseilInfo.numTelephone });
+      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: conseilInfo.numTelephone });
     }
 
     if (conseilInfo.newPassword.trim() !== '') {
