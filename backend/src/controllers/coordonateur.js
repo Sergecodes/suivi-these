@@ -280,7 +280,12 @@ exports.autorisationsSoutenanceMaster = async function (req, res) {
 
 exports.notifications = async function (req, res) {
   const { coordo } = res.locals;
-  await coordo.populate('notifications');
+  await coordo.populate({
+      path: 'notifications',
+      populate: {
+         path: 'objetConcerne'
+      }
+   });
   res.json(coordo.notifications);
 };
 
