@@ -10,7 +10,6 @@ const {
 const Avis = require("./Avis");
 const { sum, getEtapeWording } = require("../utils");
 // const isDate = require("validator/lib/isDate");
-const Etudiant = require('./Etudiant');
 const EnvoiDossier = require("./EnvoiDossier");
 const Notification = require("./Notification");
 
@@ -75,6 +74,8 @@ DossierSchema.pre("remove", function (next) {
 });
 
 DossierSchema.methods.getEtudiantObj = async function () {
+  const Etudiant = require('./Etudiant');
+  
   return await Etudiant.findById(this.etudiant);
 }
 
