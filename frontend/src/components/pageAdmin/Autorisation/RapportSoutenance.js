@@ -5,13 +5,11 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
-import { ACTEURS } from "../../../constants/Constant";
 
 const { confirm } = Modal;
 
 
 const RapportSoutenance = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
   const location = useLocation();
   const navigate = useNavigate();
   const { etudiantInfo } = location.state;
@@ -26,13 +24,8 @@ const RapportSoutenance = () => {
       okText: 'Oui',
       cancelText: 'Non',
       async onOk() {
-        return axios.post('/donner-avis', {
-          dossier: etudiantInfo.idDossier,
+        return axios.put(`/dossiers/${etudiantInfo.idDossier}/valider-notation`, {
           rapport: value,
-          type: "Autorisation de soutenance",
-          donnePar: user.id,
-          donneParModel: ACTEURS.ADMIN,
-          destinataireModel: ACTEURS.COORDONATEUR
         })
           .then(res => {
             console.log(res);

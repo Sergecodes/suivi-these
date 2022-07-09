@@ -483,12 +483,6 @@ exports.uploadFiles = async function (req, res) {
          etudiant.dossier = dossier._id;
          await etudiant.save();
 
-         // Create first etape dossier (default numEtape is 1)
-         await EtapeDossier.create({
-            dossier: dossier._id,
-            acheveeLe: new Date()
-         });
-
          // Upload files
          const etudDir = `${etudiant.matricule} - ${new Date().getFullYear()}/`;
 
