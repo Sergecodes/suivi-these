@@ -1,6 +1,7 @@
 const EnvoiDossier = require('../models/EnvoiDossier');
 const Avis = require('../models/Avis');
-// const { Types } = require('../constants');
+const { EtapeDossier } = require('../models/Dossier');
+const { Types } = require('../constants');
 
 
 exports.logout = function (req, res) {
@@ -23,6 +24,24 @@ exports.envoyerDossier = async function (req, res) {
             fichiersConcernes: req.body.fichiersConcernes || [],
             message: req.body.message || ''
         });
+
+        // If dossier is from etudiant, create first etape
+        // and initialize second etape
+        if (envoyeParModel === Types.ActeurDossier.ETUDIANT) {
+            let now = new Date();
+            let etapes = [{
+                dossier,
+                numEtape: Types.EtapeDossier.UNE,
+                debuteeLe: now,
+                acheveeLe: now
+            }, {
+                dossier,
+                numEtape: Types.EtapeDossier.DEUX,
+                debuteeLe: now
+            }];
+            await EtapeDossier.insertMany(etapes);
+        }
+
         return res.send("Envoye");
     } catch (err) {
         console.error(err);

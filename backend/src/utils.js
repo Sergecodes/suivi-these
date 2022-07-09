@@ -73,8 +73,8 @@ exports.getActeur = (numEtape, niveau) => {
     const { EtapeDossier, ActeurDossier } = Types;
     const acteurMaster = {
         [EtapeDossier.UNE]: ActeurDossier.ETUDIANT,
-        [EtapeDossier.DEUX_MASTER]: 'CRFD-STG',
-        [EtapeDossier.TROIS_MASTER]: ActeurDossier.DEPARTEMENT,
+        [EtapeDossier.DEUX]: ActeurDossier.DEPARTEMENT,
+        [EtapeDossier.TROIS_MASTER]: 'CRFD-STG',
         [EtapeDossier.QUATRE_MASTER]: ActeurDossier.JURY,
         [EtapeDossier.CINQ_MASTER]: 'CRFD-STG',
         [EtapeDossier.SIX_MASTER]: ActeurDossier.COORDONATEUR,
@@ -82,7 +82,7 @@ exports.getActeur = (numEtape, niveau) => {
     };
     const acteurThese = {
         [EtapeDossier.UNE]: ActeurDossier.ETUDIANT,
-        [EtapeDossier.DEUX_THESE]: 'CRFD-STG',
+        [EtapeDossier.DEUX]: 'CRFD-STG',
         [EtapeDossier.TROIS_THESE]: ActeurDossier.COORDONATEUR,
         [EtapeDossier.QUATRE_THESE]: 'CRFD-STG',
         [EtapeDossier.CINQ_THESE]: ActeurDossier.EXPERT,
@@ -92,9 +92,7 @@ exports.getActeur = (numEtape, niveau) => {
         [EtapeDossier.NEUF_THESE]: ActeurDossier.RECTORAT,
     };
 
-    if (numEtape === EtapeDossier.ZERO) {
-        return ActeurDossier.ADMIN;
-    } else if (niveau === Types.Niveau.THESE) {
+    if (niveau === Types.Niveau.THESE) {
         return acteurThese[numEtape];
     } else if (niveau === Types.Niveau.MASTER) {
         return acteurMaster[numEtape];
@@ -104,14 +102,12 @@ exports.getActeur = (numEtape, niveau) => {
 exports.getEtapeWording = (numEtape, niveau) => {
     const EtapeDossier = Types.EtapeDossier;
     const wordingMaster = {
-        [EtapeDossier.DEUX_MASTER]: 'Validation de la constitution du dossier', // departement
         [EtapeDossier.TROIS_MASTER]: 'Validation des jurys', // admin
         [EtapeDossier.QUATRE_MASTER]: 'Notation du dossier', // jury
         [EtapeDossier.CINQ_MASTER]: 'Evaluation de la notation', // admin
         [EtapeDossier.SIX_MASTER]: 'Programmation de la date de soutenance', // coordonateur
     };
     const wordingThese = {
-        [EtapeDossier.DEUX_THESE]: 'Validation de la constitution du dossier', // admin
         [EtapeDossier.TROIS_THESE]: 'Validation du sujet de thèse', // coordo
         [EtapeDossier.QUATRE_THESE]: 'Evaluation de la décision du Coordonateur', // admin
         [EtapeDossier.CINQ_THESE]: 'Notation du dossier',  // expert
@@ -122,10 +118,10 @@ exports.getEtapeWording = (numEtape, niveau) => {
 
     };
 
-    if (numEtape === EtapeDossier.ZERO) {
-        return "Creation et validation de compte";
-    } else if (numEtape === EtapeDossier.UNE) {
+    if (numEtape === EtapeDossier.UNE) {
         return "Envoi du dossier de soutenance";
+    } else if (numEtape === EtapeDossier.DEUX) {
+        return 'Validation de la constitution du dossier'; // departement (master), admin (these)
     } else if (niveau === Types.Niveau.THESE) {
         return wordingThese[numEtape];
     } else if (niveau === Types.Niveau.MASTER) {

@@ -13,8 +13,8 @@ const { sum, getEtapeWording } = require("../utils");
 const EnvoiDossier = require("./EnvoiDossier");
 const Notification = require("./Notification");
 
-const FINAL_NUM_ETAPE_MASTER = 8;
-const FINAL_NUM_ETAPE_THESE = 8;
+const FINAL_NUM_ETAPE_MASTER = 6;
+const FINAL_NUM_ETAPE_THESE = 9;
 
 const DossierSchema = new Schema(
   {

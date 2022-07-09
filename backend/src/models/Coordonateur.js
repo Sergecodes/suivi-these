@@ -71,14 +71,25 @@ CoordonateurSchema.virtual('notifications', {
 CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function (etudiant, date) {
     etudiant.dateSoutenance = date;
     await etudiant.save();
-    await etudiant.incrementerEtape(EtapeDossier.SEPT_MASTER);
 
-    await Notification.create({
-        type: TypeNotification.SOUTENANCE_PROGRAMMEE,
-        destinataire: etudiant._id,
-        destinataireModel: ModelNotif.ETUDIANT,
-        message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
-    });
+    let etapeActu = await (await etudiant.getDossierObj()).getEtapeActuelle();
+    console.log(typeof etapeActu);
+    console.log('etapeActu', etapeActu);
+    
+    // Mark last etape as achevee
+    if (etapeActu.numEtape === EtapeDossier.SIX_MASTER) {
+        etapeActu.acheveeLe = new Date();
+        etapeActu.save();
+
+        await Notification.create({
+            type: TypeNotification.SOUTENANCE_PROGRAMMEE,
+            destinataire: etudiant._id,
+            destinataireModel: ModelNotif.ETUDIANT,
+            message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
+        });
+    } else {
+        throw "Ce dossier n'a pas encore atteint cette etape";
+    } 
 };
 
 CoordonateurSchema.methods.verifierAvisDonne = async function (idDossier) {

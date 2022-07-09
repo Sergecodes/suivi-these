@@ -95,7 +95,7 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
 }
 
 AdminSchema.methods.accepterDossier = async function (dossier) {
-    await dossier.incrementerEtape(EtapeDossier.DEUX_THESE);
+    await dossier.incrementerEtape(EtapeDossier.DEUX);
 
     let etud = await dossier.getEtudiantObj();
 
@@ -124,7 +124,6 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
 AdminSchema.methods.accepterEtudiant = async function (etudiant) {
     etudiant.compteValideLe = new Date();
     await etudiant.save();
-    await etudiant.incrementerEtape(EtapeDossier.UNE);
 
     await Notification.create({
         type: TypeNotification.COMPTE_VALIDE,
@@ -160,6 +159,22 @@ AdminSchema.methods.rejeterEtudiant = async function (etudiant, raison) {
         objetConcerneModel: ModelNotif.ETUDIANT,
         message: raison
     });
+
+    if (process.env.SEND_EMAILS === "true") {
+        sendEmail(
+            etudiant.email, 
+            'Compte rejeté', 
+            `Votre demande de creation de compte a été rejeté. <br>
+            Vous trouverez le rapport ci-dessous: <br><br> ${raison}`
+        );
+    }
+}
+
+/**
+ * Valider la notation des jurys
+ */
+AdminSchema.methods.validerNotation = async function (dossier) {
+    await dossier.incrementerEtape(EtapeDossier.SIX_MASTER);
 }
 
 
