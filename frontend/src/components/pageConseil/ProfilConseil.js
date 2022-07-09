@@ -33,11 +33,11 @@ const ProfilConseil = () => {
     let requests = {};
 
     if (user.email !== conseilInfo.email) {
-      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: conseilInfo.email });
+      requests['emailRequest'] = axios.put('/conseils/change-email', { newEmail: conseilInfo.email });
     }
 
     if (user.numTelephone !== conseilInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: conseilInfo.numTelephone });
+      requests['telRequest'] = axios.put('/conseils/update-profile', { numTelephone: conseilInfo.numTelephone });
     }
 
     if (conseilInfo.newPassword.trim() !== '') {
@@ -45,8 +45,8 @@ const ProfilConseil = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
-          pass: conseilInfo.oldPassword, newPass: conseilInfo.oldPassword
+        requests['passwordRequest'] = axios.put('/conseils/change-password', {
+          pass: conseilInfo.oldPassword, newPass: conseilInfo.newPassword
         });
       }
     }

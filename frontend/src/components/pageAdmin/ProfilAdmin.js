@@ -31,11 +31,11 @@ const ProfilAdmin = () => {
     let requests = {};
 
     if (user.email !== adminInfo.email) {
-      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: adminInfo.email });
+      requests['emailRequest'] = axios.put('/admin/change-email', { newEmail: adminInfo.email });
     }
 
     if (user.numTelephone !== adminInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: adminInfo.numTelephone });
+      requests['telRequest'] = axios.put('/admin/update-profile', { numTelephone: adminInfo.numTelephone });
     }
 
     if (adminInfo.newPassword.trim() !== '') {
@@ -43,8 +43,8 @@ const ProfilAdmin = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
-          pass: adminInfo.oldPassword, newPass: adminInfo.oldPassword
+        requests['passwordRequest'] = axios.put('/admin/change-password', {
+          pass: adminInfo.oldPassword, newPass: adminInfo.newPassword
         });
       }
     }

@@ -37,11 +37,11 @@ const ProfilJury = () => {
     let requests = {};
 
     if (user.email !== juryInfo.email) {
-      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: juryInfo.email });
+      requests['emailRequest'] = axios.put('/jury/change-email', { newEmail: juryInfo.email });
     }
 
     if (user.numTelephone !== juryInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: juryInfo.numTelephone });
+      requests['telRequest'] = axios.put('/jury/update-profile', { numTelephone: juryInfo.numTelephone });
     }
 
     if (juryInfo.newPassword.trim() !== '') {
@@ -49,8 +49,8 @@ const ProfilJury = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
-          pass: juryInfo.oldPassword, newPass: juryInfo.oldPassword
+        requests['passwordRequest'] = axios.put('/jury/change-password', {
+          pass: juryInfo.oldPassword, newPass: juryInfo.newPassword
         });
       }
     }

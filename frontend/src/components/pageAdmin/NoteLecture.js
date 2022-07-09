@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, Tooltip } from "antd";
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import RejetDossier from "../common/RejetDossier";
@@ -11,11 +11,10 @@ import { setRejectModal } from "../../redux/DashboardDisplaySlice";
 import { average } from "../../utils";
 import { ACTEURS } from "../../constants/Constant";
 
-moment.locale('fr');
-
+moment.locale("fr");
 
 const Notation = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const columns = [
     {
@@ -81,47 +80,62 @@ const Notation = () => {
       render: (record) => {
         return (
           <div className="d-flex justify-content-between align-items-center ">
-            <p className="details pt-3" onClick={() => handleDetails(record)}>
-              Détails
-            </p>
-            <Link
-              to="/acteur/admin/rapport-soutenance"
-              style={{ color: "green", cursor: "pointer" }}
-              state={{
-                etudiantInfo: {
-                  matricule: record.matricule,
-                  nom: record.name,
-                  idDossier: record.idDossier,
-                },
+            <p
+              className="details pt-3"
+              onClick={() => {
+                handleDetails(record);
               }}
             >
-              {" "}
-              <Tooltip
-                placement="bottom"
-                title="Rediger rapport de soutenance"
-                arrowPointAtCenter
-              >
-                <BsCheck className="mx-1 correct fs-2" />
-              </Tooltip>
-            </Link>
-            <Tooltip
-              placement="bottom"
-              title="Rejeter dossier"
-              arrowPointAtCenter
+              Détails
+            </p>
+            <div
+              style={
+                record.dateVerification === "---"
+                  ? {
+                      display: "flex",
+                    }
+                  : { display: "none " }
+              }
             >
-              <BsX
-                className="mx-1 wrong fs-2"
-                style={{ color: "red", cursor: "pointer" }}
-                onClick={() => {
-                  dispatch(setRejectModal({ choix: true }));
-                  setEtudiant({
-                    idDossier: record.idDossier,
+              <Link
+                to="/acteur/admin/rapport-soutenance"
+                style={{ color: "green", cursor: "pointer" }}
+                state={{
+                  etudiantInfo: {
                     matricule: record.matricule,
                     nom: record.name,
-                  });
+                    idDossier: record.idDossier,
+                  },
                 }}
-              />
-            </Tooltip>
+              >
+                {" "}
+                <Tooltip
+                  placement="bottom"
+                  title="Rediger rapport de soutenance"
+                  arrowPointAtCenter
+                >
+                  <BsCheck className="mx-1 correct fs-2" />
+                </Tooltip>
+              </Link>
+              <Tooltip
+                placement="bottom"
+                title="Rejeter dossier"
+                arrowPointAtCenter
+              >
+                <BsX
+                  className="mx-1 wrong fs-2"
+                  style={{ color: "red", cursor: "pointer" }}
+                  onClick={() => {
+                    dispatch(setRejectModal({ choix: true }));
+                    setEtudiant({
+                      idDossier: record.idDossier,
+                      matricule: record.matricule,
+                      nom: record.name,
+                    });
+                  }}
+                />
+              </Tooltip>
+            </div>
           </div>
         );
       },
@@ -141,7 +155,7 @@ const Notation = () => {
       score: 0,
       marks: [{}, {}, {}],
       initDateVerification: 0,
-      dateVerification: '---'
+      dateVerification: "---",
     },
   ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -159,7 +173,7 @@ const Notation = () => {
         },
       }),
     ])
-      .then(results => {
+      .then((results) => {
         const [res1, res2] = results;
         console.log(res1);
         console.log(res2);
@@ -176,7 +190,7 @@ const Notation = () => {
     for (const [idDossier, valObj] of Object.entries(res1Data)) {
       const etud = valObj.dossierInfo.etudiant;
       const sommes = valObj.sommes;
-      const avisObj = res2Data.find(avis => avis.dossier.id === idDossier);
+      const avisObj = res2Data.find((avis) => avis.dossier.id === idDossier);
 
       result.push({
         key: idDossier,

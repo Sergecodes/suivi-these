@@ -36,11 +36,11 @@ const ProfilExpert = () => {
     let requests = {};
 
     if (user.email !== expertInfo.email) {
-      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: expertInfo.email });
+      requests['emailRequest'] = axios.put('/experts/change-email', { newEmail: expertInfo.email });
     }
 
     if (user.numTelephone !== expertInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: expertInfo.numTelephone });
+      requests['telRequest'] = axios.put('/experts/update-profile', { numTelephone: expertInfo.numTelephone });
     }
 
     if (expertInfo.newPassword.trim() !== '') {
@@ -48,7 +48,7 @@ const ProfilExpert = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
+        requests['passwordRequest'] = axios.put('/experts/change-password', {
           pass: expertInfo.oldPassword, newPass: expertInfo.newPassword
         });
       }

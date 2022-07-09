@@ -33,11 +33,11 @@ const ProfilRectorat = () => {
     let requests = {};
 
     if (user.email !== rectoratInfo.email) {
-      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: rectoratInfo.email });
+      requests['emailRequest'] = axios.put('/rectorat/change-email', { newEmail: rectoratInfo.email });
     }
 
     if (user.numTelephone !== rectoratInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: rectoratInfo.numTelephone });
+      requests['telRequest'] = axios.put('/rectorat/update-profile', { numTelephone: rectoratInfo.numTelephone });
     }
 
     if (rectoratInfo.newPassword.trim() !== '') {
@@ -45,8 +45,8 @@ const ProfilRectorat = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
-          pass: rectoratInfo.oldPassword, newPass: rectoratInfo.oldPassword
+        requests['passwordRequest'] = axios.put('/rectorat/change-password', {
+          pass: rectoratInfo.oldPassword, newPass: rectoratInfo.newPassword
         });
       }
     }

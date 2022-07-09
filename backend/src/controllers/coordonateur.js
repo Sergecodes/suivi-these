@@ -205,29 +205,21 @@ exports.change_email = function (req, res) {
   })
 }
 
-exports.changePhoneNumber = function (req, res) {
-   const { coordo } = res.locals;
-   const { numTelephone } = req.body;
+exports.updateProfile = function (req, res) {
+	const { coordo } = res.locals;
+	// Info: nom, prenom, numTelephone
+	coordo.nom = req.body.nom || coordo.nom;
+	coordo.prenom = req.body.prenom || coordo.prenom;
+	coordo.numTelephone = req.body.numTelephone || coordo.numTelephone;
 
-   if (!numTelephone)
-		return res.status(400).send("numTelephone n'est pas dans la requete");
-
-   if (coordo.numTelephone === numTelephone) {
-		return res.status(400).send("Ce numero est votre numero actuel");
-	}
-
-   coordo.numTelephone = numTelephone;
-   coordo.save(function (err, newCoordo) {
-      if (err) {
-         console.error("Une erreur s'est produite au niveau de l'enregistrement du nouveau numero de telephone: ", err);
-         res.status(500).json({ success: false, message: "Une erreur s'est produite au niveau de l'enregistrement du nouveau numerode telephone", error: err })
+	coordo.save((err, newCoordo) => {
+		if (err) {
+         console.error(err);
+         res.status(500).json(err)
       }
-      res.json({ 
-         success: true, 
-         message: "le nouveau numero de telephone a ete enregistrer avec success", 
-         numTelephone: newCoordo.numTelephone 
-      });
-   });
+
+      res.json(newCoordo);
+	});
 }
 
 // ----------
