@@ -89,6 +89,9 @@ EtudiantSchema.index({ matricule: 1, niveau: 1 }, { unique: true });
 
 
 EtudiantSchema.pre("save", function (next) {
+   // This attribute will be passed to the post save hook
+   this.wasNew = this.isNew;
+
    const user = this;
    if (this.isModified("motDePasse") || this.isNew) {
       bcrypt.genSalt(10, function (saltError, salt) {
@@ -110,12 +113,26 @@ EtudiantSchema.pre("save", function (next) {
    }
 });
 
-EtudiantSchema.methods.verifyPassword = function (motDePasse, cb) {
-   bcrypt.compare(motDePasse, this.motDePasse, function (err, isMatch) {
-      if (err) return cb(err);
-      cb(null, isMatch);
-   });
-};
+EtudiantSchema.post('save', async function (etud, next) {
+   if (this.wasNew) {
+      // Send notification to admin
+      await Notification.create({
+         type: TypeNotification.NOUVEAU_ETUDIANT,
+         destinataireModel: ModelNotif.ADMIN,
+         objetConcerne: etud._id,
+         objetConcerneModel: ModelNotif.ETUDIANT,
+      });
+   }
+
+   next();
+});
+
+// EtudiantSchema.methods.verifyPassword = function (motDePasse, cb) {
+//    bcrypt.compare(motDePasse, this.motDePasse, function (err, isMatch) {
+//       if (err) return cb(err);
+//       cb(null, isMatch);
+//    });
+// };
 
 EtudiantSchema.methods.getDossierObj = async function () {
    console.log("in get dossier obj")

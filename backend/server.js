@@ -5,6 +5,7 @@ const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
+// const schedule = require('node-schedule');
 
 // Importer les routes
 const etudiantRoutes = require('./src/routes/etudiant');
@@ -102,9 +103,24 @@ app.use('/api/unite', uniteRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 
+/**
+ * Send email to actors that have unread notifications, reminding them to 
+ * login to the platform.
+ */
+const emailActors = () => {
+    // Admin, etudiants, conseils, coordonateurs,
+    // departements, experts, jurys, rectorat
+    
+}
+
 // Lancer le serveur
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
-    
+
+    // Run everyday at 5am;
+    // Basically send emails to all actors to login to the website
+    // schedule.scheduleJob('0 5 * * *', () => { 
+    //     emailActors();
+    // });
 });
 

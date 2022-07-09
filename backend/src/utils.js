@@ -1,6 +1,29 @@
 /** Les fonctions d'utilite */
 const { Types } = require('./constants');
+const mailTransporter = require('../nodemailer.config');
 
+
+exports.sendEmail = (toEmail, subject, message) => {
+    let mailOptions = {
+        from: `Ecole Doctorale STG <${process.env.MAIL_FROM}>` ,
+        to: toEmail,
+        subject,
+        text: message,
+        html: `<p>${message}</p>`
+    };
+
+    mailTransporter.sendMail(mailOptions, function(err, info) {
+        console.log('info:', info);
+
+        if (err) {
+            console.error(err);
+            return err;
+        } else {
+            console.log("Email sent successfully");
+            return true;
+        }
+    });
+}
 
 exports.sum = (arr) => arr.reduce((partialSum, a) => partialSum + a, 0);
 

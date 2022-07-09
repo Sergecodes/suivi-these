@@ -6,8 +6,9 @@ const {
     ActeurDossier, ModelNotif, TypeNotification,
     AvisEmetteur, EtapeDossier
 } = require('./types')
-const TypeAvis = require('./types').Avis;
+// const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
+const { sendEmail } = require('../utils');
 const { validerNumTel } = require('../validators');
 
 
@@ -88,14 +89,25 @@ DepartementSchema.virtual('notifications', {
 DepartementSchema.methods.validerDossier = async function (dossier) {
     await dossier.incrementerEtape(EtapeDossier.TROIS_MASTER);
 
+    let etud = await dossier.getEtudiantObj();
+
     // Notifier l'etudiant
     await Notification.create({
         type: TypeNotification.DOSSIER_VALIDE,
-        destinataire: dossier.etudiant,
+        destinataire: etud._id,
         destinataireModel: ModelNotif.ETUDIANT,
         objetConcerne: dossier._id,
         objetConcerneModel: ModelNotif.DOSSIER
     });
+
+    if (process.env.SEND_EMAILS === "true") {
+        sendEmail(
+            etud.email, 
+            'Dossier validé', 
+            `Votre dossier a été validé par le <strong>Département ${this.nom}</strong>. <br>
+            Veuillez vous connecter sur la plateforme pour suivre son évolution.`
+        );
+    }
 }
 
 /**
@@ -106,16 +118,28 @@ DepartementSchema.methods.validerDossier = async function (dossier) {
 DepartementSchema.methods.rejeterDossier = async function (dossier, raison) {
     dossier.rejeteParActeur = ActeurDossier.DEPARTEMENT;
     dossier.raisonRejet = raison;
+    dossier.rejeteLe = new Date();
     await dossier.save();
+
+    let etud = await dossier.getEtudiantObj();
 
     // Notifier l'etudiant
     await Notification.create({
         type: TypeNotification.DOSSIER_REJETE,
-        destinataire: dossier.etudiant,
+        destinataire: etud._id,
         destinataireModel: ModelNotif.ETUDIANT,
         objetConcerne: dossier._id,
         objetConcerneModel: ModelNotif.DOSSIER
     });
+
+    if (process.env.SEND_EMAILS === "true") {
+        sendEmail(
+            etud.email, 
+            'Dossier rejete', 
+            `Votre dossier a ete rejete par le <strong>Département ${this.nom}</strong>! <br>
+            Vous trouverez le rapport ci-dessous: <br><br> ${raison}`
+        );
+    }
 }
 
 

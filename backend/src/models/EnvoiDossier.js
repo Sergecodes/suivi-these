@@ -33,11 +33,18 @@ const EnvoiDossierSchema = new Schema({
 });
 
 
+EnvoiDossierSchema.pre('save', function (next) {
+    // This attribute will be passed to the post save hook
+    this.wasNew = this.isNew;
+    next();
+});
+
+
 /**
  * Envoyer une notification aux destinataire et emetteur
  */
-EnvoiDossierSchema.post('save', async function(envDossier) {
-    if (this.isNew) {
+EnvoiDossierSchema.post('save', async function(envDossier, next) {
+    if (this.wasNew) {
         let notifs = [{
             type: TypeNotification.DOSSIER_ENVOYE,
             destinataire: envDossier.envoyePar,
@@ -54,6 +61,8 @@ EnvoiDossierSchema.post('save', async function(envDossier) {
     
         await Notification.insertMany(notifs);
     }
+
+    next();
 });
 
 
