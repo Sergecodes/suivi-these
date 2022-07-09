@@ -63,25 +63,29 @@ const columns = [
               </Tooltip>
             </p>
           </Link>
-          <Link
-            to="/acteur/coordonateur/date"
-            state={{
-              etudiantInfo: {
-                id: record.id,
-                idDossier: record.idDossier,
-                matricule: record.matricule,
-                nom: record.name,
-              },
-            }}
-          >
-            <Tooltip
-              placement="bottom"
-              title="Programmer la date de soutenance"
-              arrowPointAtCenter
+          <div style={record.dateProgrammation !== "---"?{}:{display:"none"}}>
+            <Link
+              to="/acteur/coordonateur/date"
+              state={{
+                etudiantInfo: {
+                  id: record.id,
+                  idDossier: record.idDossier,
+                  matricule: record.matricule,
+                  nom: record.name,
+                },
+              }}
+              
+            
             >
-              <button className="btn autorisationButton">Programmer</button>
-            </Tooltip>
-          </Link>
+              <Tooltip
+                placement="bottom"
+                title="Programmer la date de soutenance"
+                arrowPointAtCenter
+              >
+                <button className="btn autorisationButton"  >Programmer</button>
+              </Tooltip>
+            </Link>
+          </div>
         </div>
       );
     },

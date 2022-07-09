@@ -6,6 +6,7 @@ const { Types } = require('../constants');
 const EnvoiDossier = require('../models/EnvoiDossier');
 const Admin = require('../models/Admin');
 const { removePassword } = require('../utils');
+const Notification = require('../models/Notification');
 
 
 exports.getAll = async function (req, res) {
@@ -183,15 +184,10 @@ exports.updateProfile = function (req, res) {
 }
 
 exports.notifications = async function (req, res) {
-   let { admin } = res.locals;
-   await admin.populate({
-      path: 'notifications',
-      populate: {
-         path: 'objetConcerne'
-      }
-   });
-   
-   res.json(admin.notifications);
+   let notifs = 
+   await Notification.find({ destinataireModel: Types.ACTEURS.ADMIN }).populate("objetConcerne");
+
+    res.json(notifs);
 }
 
 /**

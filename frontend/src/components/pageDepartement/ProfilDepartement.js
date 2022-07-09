@@ -37,11 +37,11 @@ const ProfilDepartement = () => {
     let requests = {};
 
     if (user.email !== departementInfo.email) {
-      requests['emailRequest'] = axios.put('/etudiants/change-email', { newEmail: departementInfo.email });
+      requests['emailRequest'] = axios.put('/departements/change-email', { newEmail: departementInfo.email });
     }
 
     if (user.numTelephone !== departementInfo.numTelephone) {
-      requests['telRequest'] = axios.put('/etudiants/update-profile', { numTelephone: departementInfo.numTelephone });
+      requests['telRequest'] = axios.put('/departements/update-profile', { numTelephone: departementInfo.numTelephone });
     }
 
     if (departementInfo.newPassword.trim() !== '') {
@@ -49,8 +49,8 @@ const ProfilDepartement = () => {
         toast.error("Entrez votre ancien mot de passe", { hideProgressBar: true });
         return false;
       } else {
-        requests['passwordRequest'] = axios.put('/etudiants/change-password', {
-          pass: departementInfo.oldPassword, newPass: departementInfo.oldPassword
+        requests['passwordRequest'] = axios.put('/departements/change-password', {
+          pass: departementInfo.oldPassword, newPass: departementInfo.newPassword
         });
       }
     }
