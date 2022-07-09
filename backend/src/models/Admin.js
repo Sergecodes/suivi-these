@@ -84,12 +84,14 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
         objetConcerneModel: ModelNotif.DOSSIER
     });
 
-    sendEmail(
-        etud.email, 
-        'Dossier rejeté', 
-        `Votre dossier a été rejeté par le <strong>CRFD-STG</strong>! 
-        Vous trouverez le rapport ci-dessous: <br><br> ${raison}`
-    );
+    if (process.env.SEND_EMAILS === "true") {
+        sendEmail(
+            etud.email, 
+            'Dossier rejeté', 
+            `Votre dossier a été rejeté par le <strong>CRFD-STG</strong>! <br> 
+            Vous trouverez le rapport ci-dessous: <br><br> ${raison}`
+        );
+    }
 }
 
 AdminSchema.methods.accepterDossier = async function (dossier) {
@@ -106,12 +108,14 @@ AdminSchema.methods.accepterDossier = async function (dossier) {
         objetConcerneModel: ModelNotif.DOSSIER
     });
 
-    sendEmail(
-        etud.email, 
-        'Dossier validé', 
-        `Votre dossier a été validé par le <strong>CRFD-STG</strong>. <br>
-        Veuillez vous connecter sur la plateforme pour suivre votre dossier.`
-    );
+    if (process.env.SEND_EMAILS === "true") {
+        sendEmail(
+            etud.email, 
+            'Dossier validé', 
+            `Votre dossier a été validé par <strong>l'Ecole Doctorale</strong>. <br>
+            Veuillez vous connecter sur la plateforme pour suivre son évolution.`
+        );
+    }
 }
 
 /**
@@ -130,12 +134,14 @@ AdminSchema.methods.accepterEtudiant = async function (etudiant) {
         objetConcerneModel: ModelNotif.ETUDIANT,
     });
 
-    sendEmail(
-        etudiant.email, 
-        'Compte validé', 
-        `Votre demande de creation de compte a été validé. <br>
-        Veuillez vous connecter sur la plateforme pour uploader votre dossier.`
-    );
+    if (process.env.SEND_EMAILS === "true") {
+        sendEmail(
+            etudiant.email, 
+            'Compte validé', 
+            `Votre demande de creation de compte a été validé. <br>
+            Veuillez vous connecter sur la plateforme pour uploader votre dossier.`
+        );
+    }
 }
 
 

@@ -27,7 +27,7 @@ export const loginJury = createAsyncThunk(
       
       // console.log(data);
       console.log(JSON.stringify(value.data));
-      return JSON.stringify(value.data.data);
+      return value.data.data;
     } catch (err) {
       console.log(err.response.data);
       return rejectWithValue(err.response.data);
@@ -72,7 +72,7 @@ export const authJurySlice = createSlice({
         state.jury = action.payload;
 
         localStorage.setItem("user", JSON.stringify(action.payload));
-        localStorage.setItem('actor', 'expert');
+        localStorage.setItem('actor', 'jury');
         return state;
       })
       .addCase(loginJury.rejected, (state, action) => {

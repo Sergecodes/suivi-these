@@ -9,7 +9,6 @@ const { storage } = require('../../firebase.config');
 const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
-const Notification = require('../models/Notification');
 const { removePassword, getEtapeWording, getActeur, sendEmail } = require('../utils');
 
 moment.locale('fr');
@@ -138,12 +137,14 @@ exports.register = function (req, res) {
       }
 
       // Send email to user
-      sendEmail(
-         newEtud.email, 
-         "Demande de création de compte envoyé",
-         `Votre demande de création de compte a été envoyé,
-         vous recevrez un email lorsque votre demande sera accepté. `
-      );
+      if (process.env.SEND_EMAILS === "true") {
+         sendEmail(
+            newEtud.email, 
+            "Demande de création de compte envoyé",
+            `Votre demande de création de compte a été envoyé,
+            vous recevrez un email lorsque votre demande sera accepté. `
+         );
+      }
 
       // Create user session
       req.session.user = {
