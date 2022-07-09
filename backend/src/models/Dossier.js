@@ -4,14 +4,13 @@ const {
   CategorieFichierThese,
   ModelNotif,
   Niveau,
-  RejetStatut,
-  CategorieNote,
   ActeurDossier,
   EtapeDossier: EtapeDossierEnum,
 } = require("./types");
 const Avis = require("./Avis");
 const { sum, getEtapeWording } = require("../utils");
 // const isDate = require("validator/lib/isDate");
+const Etudiant = require('./Etudiant');
 const EnvoiDossier = require("./EnvoiDossier");
 const Notification = require("./Notification");
 
@@ -27,6 +26,7 @@ const DossierSchema = new Schema(
       enum: Object.values(ActeurDossier)
     },
     raisonRejet: { type: String, default: '' },
+    rejeteLe: Date
   },
   {
     timestamps: { createdAt: "dateDepot", updatedAt: "misAJourLe" },
@@ -73,6 +73,10 @@ DossierSchema.pre("remove", function (next) {
 
   next();
 });
+
+DossierSchema.methods.getEtudiantObj = async function () {
+  return await Etudiant.findById(this.etudiant);
+}
 
 DossierSchema.methods.getNotesTotales = async function () {
   await this.populate("notes");

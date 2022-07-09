@@ -10,7 +10,7 @@ const { ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage"
 const { Types } = require('../constants');
 const Etudiant = require('../models/Etudiant');
 const Notification = require('../models/Notification');
-const { removePassword, getEtapeWording, getActeur } = require('../utils');
+const { removePassword, getEtapeWording, getActeur, sendEmail } = require('../utils');
 
 moment.locale('fr');
 
@@ -127,7 +127,7 @@ exports.register = function (req, res) {
       }
    } 
 
-   etud.save(async function (err, nouveau_etudiant) {
+   etud.save(async function (err, newEtud) {
       if (err) {
          console.error(err);
          return res.status(500).json({ 
@@ -137,24 +137,24 @@ exports.register = function (req, res) {
          });
       }
 
-      // Send notification to admin
-      await Notification.create({
-         type: Types.TypeNotification.NOUVEAU_ETUDIANT,
-         destinataireModel: Types.ModelNotif.ADMIN,
-         objetConcerne: etud._id,
-         objetConcerneModel: Types.ModelNotif.ETUDIANT
-      });
+      // Send email to user
+      sendEmail(
+         newEtud.email, 
+         "Demande de création de compte envoyé",
+         `Votre demande de création de compte a été envoyé,
+         vous recevrez un email lorsque votre demande sera accepté. `
+      );
 
       // Create user session
       req.session.user = {
-         _id: nouveau_etudiant._id,
+         _id: newEtud._id,
          model: Types.ACTEURS.ETUDIANT
       };
 
       res.status(201).json({
          success: true,
          message: "Enregistre avec succes",
-         data: removePassword(nouveau_etudiant.toJSON())
+         data: removePassword(newEtud.toJSON())
       });
    })
 }

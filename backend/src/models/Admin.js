@@ -3,7 +3,10 @@ const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
 const Notification = require('./Notification');
 const { validerNumTel } = require('../validators');
-const { ActeurDossier, ModelNotif, TypeNotification, EtapeDossier } = require('./types');
+const { 
+    ActeurDossier, ModelNotif, TypeNotification, EtapeDossier 
+} = require('./types');
+const { sendEmail } = require('../utils');
 
 
 const AdminSchema = new Schema({
@@ -67,29 +70,48 @@ AdminSchema.virtual('notifications', {
 AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
     dossier.rejeteParActeur = ActeurDossier.ADMIN;
     dossier.raisonRejet = raison;
+    dossier.rejeteLe = new Date();
     await dossier.save();
 
-    // Notifier l'etudiant
+    let etud = await dossier.getEtudiantObj();
+
+    // Notifier l'etudiant et envoyer un email
     await Notification.create({
         type: TypeNotification.DOSSIER_REJETE,
-        destinataire: dossier.etudiant,
+        destinataire: etud._id,
         destinataireModel: ModelNotif.ETUDIANT,
         objetConcerne: dossier._id,
         objetConcerneModel: ModelNotif.DOSSIER
     });
+
+    sendEmail(
+        etud.email, 
+        'Dossier rejeté', 
+        `Votre dossier a été rejeté par le <strong>CRFD-STG</strong>! 
+        Vous trouverez le rapport ci-dessous: <br><br> ${raison}`
+    );
 }
 
 AdminSchema.methods.accepterDossier = async function (dossier) {
     await dossier.incrementerEtape(EtapeDossier.DEUX_THESE);
 
+    let etud = await dossier.getEtudiantObj();
+
     // Notifier l'etudiant
     await Notification.create({
         type: TypeNotification.DOSSIER_VALIDE,
-        destinataire: dossier.etudiant,
+        destinataire: etud._id,
         destinataireModel: ModelNotif.ETUDIANT,
         objetConcerne: dossier._id,
         objetConcerneModel: ModelNotif.DOSSIER
     });
+
+    sendEmail(
+        etud.email, 
+        'Dossier validé', 
+        `Votre dossier a été validé par le <strong>CRFD-STG</strong>. <br>
+        Veuillez vous connecter sur la plateforme pour suivre votre dossier.`
+    );
 }
 
 /**
@@ -102,11 +124,18 @@ AdminSchema.methods.accepterEtudiant = async function (etudiant) {
 
     await Notification.create({
         type: TypeNotification.COMPTE_VALIDE,
-        destinataire: etudiant,
+        destinataire: etudiant._id,
         destinataireModel: ModelNotif.ETUDIANT,
         objetConcerne: etudiant._id,
         objetConcerneModel: ModelNotif.ETUDIANT,
     });
+
+    sendEmail(
+        etudiant.email, 
+        'Compte validé', 
+        `Votre demande de creation de compte a été validé. <br>
+        Veuillez vous connecter sur la plateforme pour uploader votre dossier.`
+    );
 }
 
 
