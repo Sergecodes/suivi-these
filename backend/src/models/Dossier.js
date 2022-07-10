@@ -177,28 +177,6 @@ const EtapeDossierSchema = new Schema({
   acheveeLe: Date,
   delai: Date,
   extra: { type: String, default: '' },
-  // acheveeLe: {
-  //     type: String,
-  //     required: true,
-  //     validate: {
-  //        validator: (date) => isDate(date),
-  //        message: (props) => `
-  //           ${props.value} est une date invalide.
-  //           Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
-  //        `,
-  //     },
-  //  },
-  // delai: {
-  //     type: String,
-  //     validate: {
-  //        validator: (date) => isDate(date),
-  //        message: (props) => `
-  //           ${props.value} est une date invalide.
-  //           Elle doit etre a la forme YYYY/MM/DD ou YYYY-MM-DD
-  //        `,
-  //     },
-  //  },
-  // extra: String,
 });
 
 // Set description to Etape Dossier
