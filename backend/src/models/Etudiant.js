@@ -52,7 +52,7 @@ const EtudiantSchema = new Schema({
    dateSoutenance: {
       type: String,
       validate: {
-         validator: (date) => isISO8601(date),
+         validator: (date) => date !== '' ? isISO8601(date) : true,
          message: (props) => `
             ${props.value} est une date invalide. 
             Elle doit etre a la formeISO8601
@@ -69,7 +69,7 @@ const EtudiantSchema = new Schema({
       }
    },
    sexe: { type: String, required: true, enum: Object.values(Sexe) },
-   compteValideLe: { type: String, default: '' },
+   compteValideLe: Date,
    urlPhotoProfil: { type: String, default: '' },
    dossier: { type: Schema.Types.ObjectId, ref: 'Dossier' },
    departement: { type: Schema.Types.ObjectId, ref: 'Departement', required: true },
@@ -174,9 +174,7 @@ EtudiantSchema.methods.peutUploader = async function () {
    // il peut uploader. 
    // sinon il ne peut pas
 
-   const dossierObj = await this.getDossierObj();
-
-   if (!dossierObj || await dossierObj.getEtapeActuelle() === EtapeDossier.UNE)
+   if (!(this.dossier) || await dossierObj.getEtapeActuelle() === EtapeDossier.UNE)
       return true;
 
    return false;
