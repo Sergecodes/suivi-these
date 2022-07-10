@@ -1,4 +1,5 @@
 const Etudiant = require('../models/Etudiant');
+const Avis = require('../models/Avis');
 const { NoteDossier } = require('../models/Dossier');
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require('bcrypt');
@@ -275,8 +276,6 @@ exports.envoyerDossierJuges = async function (req, res) {
       let newObj = { ...defaultObj, destinataire: idJuge };
       array.push(newObj);
    }
-   console.log("juges", juges);
-   console.log("array", array);
 
    try {
       await EnvoiDossier.insertMany(array);
@@ -307,6 +306,27 @@ exports.rejeterDossierEtudiant = async function (req, res) {
 
    try {
       await admin.rejeterDossier(dossier, raison);
+      res.send("Succes");
+   } catch (err) {
+      console.error(err);
+      res.status(500).json(err);
+   }
+}
+
+exports.validerNotationJurys = async function (req, res) {
+   const { admin, dossier } = res.locals;
+   const { rapport } = req.body;
+   
+   try {
+      await admin.validerNotation(dossier);
+      await Avis.create({
+         dossier: dossier._id,
+         rapport,
+         type: Types.Avis.AUTORISATION_SOUTENANCE,
+         donnePar: admin._id,
+         donneParModel: Types.ActeurDossier.ADMIN,
+         destinataireModel: Types.ActeurDossier.COORDONATEUR
+      });
       res.send("Succes");
    } catch (err) {
       console.error(err);

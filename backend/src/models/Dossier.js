@@ -4,8 +4,6 @@ const {
   CategorieFichierThese,
   ModelNotif,
   Niveau,
-  RejetStatut,
-  CategorieNote,
   ActeurDossier,
   EtapeDossier: EtapeDossierEnum,
 } = require("./types");
@@ -15,8 +13,8 @@ const { sum, getEtapeWording } = require("../utils");
 const EnvoiDossier = require("./EnvoiDossier");
 const Notification = require("./Notification");
 
-const FINAL_NUM_ETAPE_MASTER = 8;
-const FINAL_NUM_ETAPE_THESE = 8;
+const FINAL_NUM_ETAPE_MASTER = 6;
+const FINAL_NUM_ETAPE_THESE = 9;
 
 const DossierSchema = new Schema(
   {
@@ -27,6 +25,7 @@ const DossierSchema = new Schema(
       enum: Object.values(ActeurDossier)
     },
     raisonRejet: { type: String, default: '' },
+    rejeteLe: Date
   },
   {
     timestamps: { createdAt: "dateDepot", updatedAt: "misAJourLe" },
@@ -73,6 +72,12 @@ DossierSchema.pre("remove", function (next) {
 
   next();
 });
+
+DossierSchema.methods.getEtudiantObj = async function () {
+  const Etudiant = require('./Etudiant');
+  
+  return await Etudiant.findById(this.etudiant);
+}
 
 DossierSchema.methods.getNotesTotales = async function () {
   await this.populate("notes");

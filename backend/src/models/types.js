@@ -135,10 +135,8 @@ const GradeExpert = GradeJury;
 
 
 const EtapeDossier = Object.freeze({
-    ZERO: 0,  // Attente validation de l'etudiant par admin
-    UNE: 1,     // Attente de validation du dossier par admin
-    DEUX_MASTER: 2, 
-    DEUX_THESE: 2,
+    UNE: 1,     
+    DEUX: 2,
     TROIS_MASTER: 3,
     TROIS_THESE: 3,
     QUATRE_MASTER: 4,

@@ -71,6 +71,13 @@ router.route('/dossiers/:id/rejeter').put(
    controller.rejeterDossierEtudiant
 );
 
+router.route('/dossiers/:id/valider-notation').put(
+   isAdmin,
+   getDossierFromParam,
+   getAdmin,
+   controller.validerNotationJurys
+);
+
 router.route('/:id').get(getAdminFromParam, controller.getOne)
 .delete(isAdmin, controller.delete);
 
