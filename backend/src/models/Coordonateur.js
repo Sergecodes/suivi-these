@@ -25,7 +25,7 @@ const CoordonateurSchema = new Schema({
         type: String,
         default: '',
         validate: {
-            validator: numTel => validerNumTel(numTel),
+            validator: numTel => numTel !== '' ? validerNumTel(numTel) : true,
             message: props => `${props.value} est un numero de telephone invalide!`
         }
     }

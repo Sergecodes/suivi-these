@@ -18,7 +18,12 @@ const FINAL_NUM_ETAPE_THESE = 9;
 
 const DossierSchema = new Schema(
   {
-    etudiant: { type: Schema.Types.ObjectId, ref: "Etudiant", required: true },
+    etudiant: { 
+      type: Schema.Types.ObjectId, 
+      ref: "Etudiant", 
+      required: true,
+      index: { unique: true }
+    },
     sujet: { type: String, required: true },
     rejeteParActeur: {
       type: String,
