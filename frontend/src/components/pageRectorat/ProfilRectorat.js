@@ -173,6 +173,20 @@ const ProfilRectorat = () => {
                   onChange={handleChange}
                 ></input>
               </div>
+              
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill
+                    className="me-1"
+                    name="oldPassword"
+                    value={rectoratInfo.oldPassword}
+                    onChange={handleChange}
+                  />
+                  Ancien mot de passe
+                </p>
+                <input className="form-control " type="password"></input>
+              </div>
               <div className="acteurInput">
                 <p>
                   {" "}
@@ -186,19 +200,6 @@ const ProfilRectorat = () => {
                   value={rectoratInfo.newPassword}
                   onChange={handleChange}
                 ></input>
-              </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill
-                    className="me-1"
-                    name="oldPassword"
-                    value={rectoratInfo.oldPassword}
-                    onChange={handleChange}
-                  />
-                  Confirmer le mot de passe
-                </p>
-                <input className="form-control " type="password"></input>
               </div>
             </div>
           </div>

@@ -11,7 +11,7 @@ const ProfilConseil = () => {
     email: user.email,
     numTelephone: user.numTelephone,
     newPassword: "",
-    confirmPassword: "",
+    oldPassword: "",
   });
  
   useEffect(() => {
@@ -176,6 +176,19 @@ const ProfilConseil = () => {
               <div className="acteurInput">
                 <p>
                   {" "}
+                  <BsPencilFill
+                    className="me-1"
+                    name="oldPassword"
+                    value={conseilInfo.oldPassword}
+                    onChange={handleChange}
+                  />
+                  Ancien mot de passe
+                </p>
+                <input className="form-control " type="password"></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
                   <BsPencilFill className="me-1" />
                   Nouveau mot de passe
                 </p>
@@ -187,19 +200,7 @@ const ProfilConseil = () => {
                   onChange={handleChange}
                 ></input>
               </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill
-                    className="me-1"
-                    name="confirmPassword"
-                    value={conseilInfo.confirmPassword}
-                    onChange={handleChange}
-                  />
-                  Confirmer le mot de passe
-                </p>
-                <input className="form-control " type="password"></input>
-              </div>
+              
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">

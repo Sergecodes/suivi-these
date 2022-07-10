@@ -218,6 +218,21 @@ const ProfilExpert = () => {
                   disabled = {true}
                 />
               </div>
+              
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
+                  Ancien mot de passe
+                </p>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="newPassword"
+                  value={expertInfo.newPassword}
+                  onChange={handleChange}
+                />
+              </div>
               <div className="acteurInput">
                 <p>
                   {" "}
@@ -229,20 +244,6 @@ const ProfilExpert = () => {
                   type="password"
                   name="oldPassword"
                   value={expertInfo.oldPassword}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill className="me-1" />
-                  Confirmer le mot de passe
-                </p>
-                <input
-                  className="form-control "
-                  type="password"
-                  name="newPassword"
-                  value={expertInfo.newPassword}
                   onChange={handleChange}
                 />
               </div>

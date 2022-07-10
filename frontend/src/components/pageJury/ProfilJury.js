@@ -7,6 +7,8 @@ import { toast, ToastContainer } from "react-toastify";
 const ProfilJury = () => {
 
   const user = JSON.parse(localStorage.getItem('user'));
+  console.log('le type de user est',typeof(user))
+  console.log("user du jury est ", user.nom);
 
   const [juryInfo, setJuryInfo] = useState({
     nom: user.nom,
@@ -14,7 +16,7 @@ const ProfilJury = () => {
     email: user.email,
     numTelephone: user.numTelephone,
     newPassword: "",
-    confirmPassword: "",
+    olPassword: "",
   });
   const navigate = useNavigate();
 
@@ -211,6 +213,20 @@ const ProfilJury = () => {
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
+                  Ancien mot de passe
+                </p>
+                <input
+                  className="form-control "
+                  type="password"
+                  name="olPassword"
+                  value={juryInfo.olPassword}
+                  onChange={handleChange}
+                ></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill className="me-1" />
                   Nouveau mot de passe
                 </p>
                 <input
@@ -221,20 +237,7 @@ const ProfilJury = () => {
                   onChange={handleChange}
                 ></input>
               </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill className="me-1" />
-                  Confirmer le mot de passe
-                </p>
-                <input
-                  className="form-control "
-                  type="password"
-                  name="confirmPassword"
-                  value={juryInfo.confirmPassword}
-                  onChange={handleChange}
-                ></input>
-              </div>
+              
             </div>
           </div>
           <div className="d-flex justify-content-between mx-4">

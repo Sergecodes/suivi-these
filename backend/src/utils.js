@@ -50,8 +50,8 @@ exports.getActeur = (numEtape, niveau) => {
     const { EtapeDossier, ActeurDossier } = Types;
     const acteurMaster = {
         [EtapeDossier.UNE]: ActeurDossier.ETUDIANT,
-        [EtapeDossier.DEUX_MASTER]: 'CRFD-STG',
-        [EtapeDossier.TROIS_MASTER]: ActeurDossier.DEPARTEMENT,
+        [EtapeDossier.DEUX_MASTER]: ActeurDossier.DEPARTEMENT,
+        [EtapeDossier.TROIS_MASTER]: 'CRFD-STG',
         [EtapeDossier.QUATRE_MASTER]: ActeurDossier.JURY,
         [EtapeDossier.CINQ_MASTER]: 'CRFD-STG',
         [EtapeDossier.SIX_MASTER]: ActeurDossier.COORDONATEUR,
