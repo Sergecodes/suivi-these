@@ -128,6 +128,9 @@ import NotificationsAdmin from "./components/pageAdmin/NotificationsAdmin";
 import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
 import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise";
 import DossierMaster from "./components/pageAdmin/dossierMaster/DossierMaster";
+import TableListThese from "./components/pageAdmin/dossierThese/TableListThese";
+import VerificationDossierThese from "./components/pageAdmin/dossierThese/VerificationDossierThese";
+
 /**************************************************************************************************/
 
 /**************************************************************************************************/
@@ -337,6 +340,14 @@ const App = () => {
             <Route
               path="/acteur/admin/dossier-master"
               element={<DossierMaster />}
+            />
+             <Route
+              path="/acteur/admin/dossier-these"
+              element={<TableListThese />}
+            />
+             <Route
+              path="/acteur/admin/verification-these"
+              element={<VerificationDossierThese />}
             />
           </Route>
 
