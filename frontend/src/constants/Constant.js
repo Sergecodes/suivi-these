@@ -107,7 +107,7 @@ export const CategorieFichierMaster = Object.freeze({
     FICHE_INSCRIP: "Fiche d'inscription",
     DROITS_UNIV: 'Droits universitaires',
     RAPPORT_PRESOUTIENT: 'Rapport pre soutenance',
-    ATTEST_LIC: 'Attestation de license',
+    ATTEST_LIC: 'Attestation de licence',
 });
 
 export const CategorieFichierThese = Object.freeze({
