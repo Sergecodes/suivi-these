@@ -472,6 +472,7 @@ exports.uploadFiles = async function (req, res) {
       { sujet, etudiant: etudiant._id },
       async function (err, dossier) {
          if (err) {
+            console.error(err);
             return res.status(500).json({
                   success: false,
                   message: "erreur lors de la creation du dossier",
@@ -519,7 +520,24 @@ exports.uploadFiles = async function (req, res) {
                         i++;
 
                         // Return response if for loop is over
-                        if (i == n - 1) {
+                        if (i === n - 1) {
+                           await etudiant.populate('departement', 'nom');
+
+                           let verifiePar = (function () {
+                           if (etudiant.niveau === Types.Niveau.THESE)
+                              return "L'Ecole doctorale";
+                           
+                           return `Le Departement ${etudiant.departement.nom}`;
+                           })();
+
+                           sendEmail(
+                              etudiant.email, 
+                              'Dossier recu', 
+                              `Votre dossier a été recu. Il sera verifié par <strong>${verifiePar}</strong> et 
+                              vous serez notifier. <br>
+                              Veuillez également vous connecter sur la plateforme pour suivre son évolution.`
+                           );
+
                            await dossier.populate('fichiers');
                            return res.status(201).json({
                               success: true,
@@ -570,7 +588,24 @@ exports.uploadFiles = async function (req, res) {
                   i++;
                   
                   // Return response if for loop is over
-                  if (i == n - 1) {
+                  if (i === n - 1) {
+                     await etudiant.populate('departement', 'nom');
+
+                     let verifiePar = (function () {
+                     if (etudiant.niveau === Types.Niveau.THESE)
+                        return "L'Ecole doctorale";
+                     
+                     return `Le Departement ${etudiant.departement.nom}`;
+                     })();
+
+                     sendEmail(
+                        etudiant.email, 
+                        'Dossier recu', 
+                        `Votre dossier a été recu. Il sera verifié par <strong>${verifiePar}</strong> et 
+                        vous serez notifier. <br>
+                        Veuillez également vous connecter sur la plateforme pour suivre son évolution.`
+                     );
+
                      await dossier.populate('fichiers');
                      return res.status(201)
                      .json({ success: true, message: "Files uploaded!", dossier });
