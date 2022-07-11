@@ -73,8 +73,15 @@ const EvolutionDossier = () => {
                 >
                   <div className="d-flex align-items-center">
                     <p>{item.debuteeLe}</p>
-                    <span className="mx-2 pb-3">-</span>
+
+                  {/* Remove acheveeLe section if debuteeLe & acheveeLe datetimes
+                    are the same. This is the case with the "Envoi du dossier de soutenance"
+                    step (which is the first step).
+                   */}
+                  <div style={item.debuteeLe === item.acheveeLe ? { display: 'none' } : {}}>
+                    <span className="mx-2">-</span>
                     <p>{item.acheveeLe}</p>
+                  </div>
                   </div>
                   <p>
                     <span className="fw-bold">Geree par: </span> 

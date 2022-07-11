@@ -185,10 +185,11 @@ exports.updateProfile = function (req, res) {
 }
 
 exports.notifications = async function (req, res) {
-   let notifs = 
-   await Notification.find({ destinataireModel: Types.ACTEURS.ADMIN }).populate("objetConcerne");
+   let notifs = await Notification
+      .find({ destinataireModel: Types.ACTEURS.ADMIN })
+      .populate("objetConcerne");
 
-    res.json(notifs);
+   res.json(notifs);
 }
 
 /**
@@ -239,6 +240,9 @@ exports.rejeterInscriptionEtudiant = async function (req, res) {
 exports.setEtudiantJuges = async function (req, res) {
    const { idDepartement, juges } = req.body;
    const { etudiant } = res.locals;
+
+   console.log("in set etudiant juges");
+   console.log('etudiant', etudiant);
    
    // Use toString() to convert departement which is an ObjectID to a string
    if (etudiant.departement.toString() !== idDepartement) {
@@ -249,11 +253,10 @@ exports.setEtudiantJuges = async function (req, res) {
       return res.status(400).send("Juste les etudiants de master peuvent avoir des juges");
    }
 
-   console.log(juges);
    etudiant.juges = juges;
    await etudiant.save();
    await etudiant.populate('juges', '-motDePasse');
-   console.log(etudiant);
+
    res.json(etudiant.juges);
 }
 
@@ -288,18 +291,23 @@ exports.envoyerDossierJuges = async function (req, res) {
 }
 
 
+/**
+ * Accepter le dossier d'un etudiant de these
+ */
 exports.accepterDossierEtudiant = async function (req, res) {
    const { admin, dossier } = res.locals;
    try {
       await admin.accepterDossier(dossier);
-      // todo Send dossier to coordonateur if etudiant is from these
-      res.send("Succes, dossier envoye au coordonateur");
+      res.send("Succes");
    } catch (err) {
       console.error(err);
       res.status(500).json(err);
    }
 }
 
+/**
+ * Rejeter le dossier d'un etudiant de these
+ */
 exports.rejeterDossierEtudiant = async function (req, res) {
    const { admin, dossier } = res.locals;
    const { raison } = req.body.raison;
@@ -384,7 +392,14 @@ exports.dossiersEtudiantsThese = async function (req, res) {
             match: { niveau: Types.Niveau.THESE },
             populate: {
                path: 'departement',
-               select: '-motDePasse'
+               select: '-motDePasse',
+               populate: {
+                  path: 'uniteRecherche',
+                  populate: {
+                     path: 'coordonateur',
+                     select: '-motDePasse'
+                  }
+               }
             }
          },
 			{ path: 'fichiers' }

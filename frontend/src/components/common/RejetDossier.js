@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "antd";
 // import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import ReactQuill from "react-quill";
 import { ACTEURS } from "../../constants/Constant";
 
 const { confirm } = Modal;
+
 
 const RejetDossier = (props) => {
   const { etudiant, acteur } = props;
@@ -31,7 +32,7 @@ const RejetDossier = (props) => {
     console.log('value: ', value);
     if (value.trim() === '') {
       toast.error(
-        "Vous devez entrer une raison pour le rejet du dossier", 
+        "Vous devez entrer une raison pour le rejet du dossier",
         { hideProgressBar: true }
       );
 
@@ -45,17 +46,17 @@ const RejetDossier = (props) => {
       okType: "danger",
       cancelText: 'Non',
       async onOk() {
-        if (acteur === ACTEURS.ADMIN) {
+        if (acteur === ACTEURS.ADMIN || acteur === ACTEURS.DEPARTEMENT) {
           return axios.put(`/dossiers/${etudiant.idDossier}/rejeter`, {
             raison: value
           })
             .then(res => {
               // Close modal
               dispatch(setRejectModal());
-              
+
               console.log(res);
-              toast.success("Dossier rejete!", { hideProgressBar: true });
-      
+              toast.success("Dossier rejeté!", { hideProgressBar: true });
+
               // Close toasts after x seconds and refresh page
               setTimeout(() => {
                 toast.dismiss();
@@ -67,10 +68,10 @@ const RejetDossier = (props) => {
               toast.error("Une erreur est survenue!", { hideProgressBar: true });
             });
         }
-        
+
       },
       onCancel() {
-        
+
       }
     });
   };
@@ -80,32 +81,35 @@ const RejetDossier = (props) => {
   };
 
   return (
-    <Modal
-      title="Rejet etudiant"
-      visible={isModalVisible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      footer={
-        <div className="d-flex justify-content-between align-items-center">
-          <button type="button" className="btn btnEmpty" onClick={handleCancel}>
-            Retour
-          </button>
-          <button type="button" className="btn btnFull" onClick={handleOk}>
-            Rejeter
-          </button>
+    <>
+      <ToastContainer />
+      <Modal
+        title="Rejet dossier"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={
+          <div className="d-flex justify-content-between align-items-center">
+            <button type="button" className="btn btnEmpty" onClick={handleCancel}>
+              Retour
+            </button>
+            <button type="button" className="btn btnFull" onClick={handleOk}>
+              Rejeter
+            </button>
+          </div>
+        }
+      >
+        <div>
+          <p className="fs-6 text-center">
+            Vous êtes sur le point de rejéter le dossier de l'étudiant{" "}
+            <span className="fw-bold">{etudiant.nom}</span> de matricule{" "}
+            <span className="fw-bold">{etudiant.matricule}.</span> Veuillez
+            spécifier les raisons de votre rejet dans la case ci-dessous
+          </p>
+          <ReactQuill theme="snow" onChange={setValue} />
         </div>
-      }
-    >
-      <div>
-        <p className="fs-6 text-center">
-          Vous ètes sur le point de rejeter le dossier de l'étudiant{" "}
-          <span className="fw-bold">{etudiant.nom}</span> de matricule{" "}
-          <span className="fw-bold">{etudiant.matricule}.</span> Veuillez
-          spécifiier les raisons de votre rejet dans la case ci-dessous
-        </p>
-        <ReactQuill theme="snow"  onChange={setValue} />
-      </div>
-    </Modal>
+      </Modal>
+    </>
   );
 };
 

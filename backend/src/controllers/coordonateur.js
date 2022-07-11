@@ -110,7 +110,7 @@ exports.login_coordonateur = async function (req, res) {
       }
 
       if (!result) {
-        res.json({
+        return res.status(400).json({
           success: false,
           message: "Invalid credentials",
         });
@@ -206,20 +206,20 @@ exports.change_email = function (req, res) {
 }
 
 exports.updateProfile = function (req, res) {
-	const { coordo } = res.locals;
-	// Info: nom, prenom, numTelephone
-	coordo.nom = req.body.nom || coordo.nom;
-	coordo.prenom = req.body.prenom || coordo.prenom;
-	coordo.numTelephone = req.body.numTelephone || coordo.numTelephone;
+  const { coordo } = res.locals;
+  // Info: nom, prenom, numTelephone
+  coordo.nom = req.body.nom || coordo.nom;
+  coordo.prenom = req.body.prenom || coordo.prenom;
+  coordo.numTelephone = req.body.numTelephone || coordo.numTelephone;
 
-	coordo.save((err, newCoordo) => {
-		if (err) {
-         console.error(err);
-         res.status(500).json(err)
-      }
+  coordo.save((err, newCoordo) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json(err)
+    }
 
-      res.json(newCoordo);
-	});
+    res.json(newCoordo);
+  });
 }
 
 // ----------
@@ -235,7 +235,6 @@ exports.dossiersEtudsThese = async function (req, res) {
       path: 'etudiant',
       select: '-motDePasse -niveau -dossier -departement -misAJourLe',
       match: { niveau: Types.Niveau.THESE },
-      populate: 'juges'
     }
   });
 
@@ -255,8 +254,6 @@ exports.autorisationsSoutenanceMaster = async function (req, res) {
       {
         path: 'etudiant',
         select: 'nom prenom matricule',
-        // Pas besoin de selectionner le niveau, car 
-        // on doit normalement avoir juste les etudiants du MASTER ??
         match: { niveau: Types.Niveau.MASTER }
       },
       {
@@ -273,11 +270,11 @@ exports.autorisationsSoutenanceMaster = async function (req, res) {
 exports.notifications = async function (req, res) {
   const { coordo } = res.locals;
   await coordo.populate({
-      path: 'notifications',
-      populate: {
-         path: 'objetConcerne'
-      }
-   });
+    path: 'notifications',
+    populate: {
+      path: 'objetConcerne'
+    }
+  });
   res.json(coordo.notifications);
 };
 
@@ -296,7 +293,8 @@ exports.programmerDateSoutenanceMaster = async function (req, res) {
 }
 
 exports.etudiantsMasterProgrammes = async function (req, res) {
-  let etudiants = await Etudiant.find({ niveau: Types.Niveau.MASTER })
+  let etudiants = await Etudiant
+    .find({ niveau: Types.Niveau.MASTER })
     .where('dateSoutenance').nin([undefined, '']);
 
   res.json(etudiants);

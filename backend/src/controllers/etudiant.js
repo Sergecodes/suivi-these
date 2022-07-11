@@ -736,9 +736,64 @@ exports.getEvolutionDossier = async function (req, res) {
            acheveeLe: etapes[6].acheveeLe && moment(etapes[6].acheveeLe).format('llll'),
            gereePar: getActeur(6, MASTER)
          },
-       };
+      };
    } else {
-      evolution = { };
+      evolution = {
+         1: {
+           titre: getEtapeWording(1, THESE),
+           debuteeLe: etapes[1].debuteeLe && moment(etapes[1].debuteeLe).format('llll'),
+           acheveeLe: etapes[1].acheveeLe && moment(etapes[1].acheveeLe).format('llll'),
+           gereePar: getActeur(1, THESE),
+         },
+         2: {
+           titre: getEtapeWording(2, THESE),
+           debuteeLe: etapes[2].debuteeLe && moment(etapes[2].debuteeLe).format('llll'),
+           acheveeLe: etapes[2].acheveeLe && moment(etapes[2].acheveeLe).format('llll'),
+           gereePar: getActeur(2, THESE)
+         },
+         3: {
+           titre: getEtapeWording(3, THESE),
+           debuteeLe: etapes[3].debuteeLe && moment(etapes[3].debuteeLe).format('llll'),
+           acheveeLe: etapes[3].acheveeLe && moment(etapes[3].acheveeLe).format('llll'),
+           gereePar: getActeur(3, THESE)
+         },
+         4: {
+           titre: getEtapeWording(4, THESE),
+           debuteeLe: etapes[4].debuteeLe && moment(etapes[4].debuteeLe).format('llll'),
+           acheveeLe: etapes[4].acheveeLe && moment(etapes[4].acheveeLe).format('llll'),
+           gereePar: getActeur(4, THESE)
+         },
+         5: {
+           titre: getEtapeWording(5, THESE),
+           debuteeLe: etapes[5].debuteeLe && moment(etapes[5].debuteeLe).format('llll'),
+           acheveeLe: etapes[5].acheveeLe && moment(etapes[5].acheveeLe).format('llll'),
+           gereePar: getActeur(5, THESE)
+         },
+         6: {
+           titre: getEtapeWording(6, THESE),
+           debuteeLe: etapes[6].debuteeLe && moment(etapes[6].debuteeLe).format('llll'),
+           acheveeLe: etapes[6].acheveeLe && moment(etapes[6].acheveeLe).format('llll'),
+           gereePar: getActeur(6, THESE)
+         },
+         7: {
+            titre: getEtapeWording(4, THESE),
+            debuteeLe: etapes[4].debuteeLe && moment(etapes[4].debuteeLe).format('llll'),
+            acheveeLe: etapes[4].acheveeLe && moment(etapes[4].acheveeLe).format('llll'),
+            gereePar: getActeur(4, THESE)
+         },
+         8: {
+            titre: getEtapeWording(5, THESE),
+            debuteeLe: etapes[5].debuteeLe && moment(etapes[5].debuteeLe).format('llll'),
+            acheveeLe: etapes[5].acheveeLe && moment(etapes[5].acheveeLe).format('llll'),
+            gereePar: getActeur(5, THESE)
+         },
+         9: {
+            titre: getEtapeWording(6, THESE),
+            debuteeLe: etapes[6].debuteeLe && moment(etapes[6].debuteeLe).format('llll'),
+            acheveeLe: etapes[6].acheveeLe && moment(etapes[6].acheveeLe).format('llll'),
+            gereePar: getActeur(6, THESE)
+         },
+      };
    }
    
    res.json({ numEtapeActuelle: numEtapeActu, evolution});
