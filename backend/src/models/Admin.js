@@ -95,7 +95,7 @@ AdminSchema.methods.rejeterDossier = async function (dossier, raison) {
 }
 
 AdminSchema.methods.accepterDossier = async function (dossier) {
-    await dossier.incrementerEtape(EtapeDossier.DEUX);
+    await dossier.incrementerEtape(EtapeDossier.TROIS_THESE);
 
     let etud = await dossier.getEtudiantObj();
 

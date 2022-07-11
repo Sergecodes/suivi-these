@@ -236,13 +236,18 @@ exports.dossiersEtudsMaster = async function (req, res) {
    return res.json(envoisDossiers);
 }
 
-
+/**
+ * Valider le dossier d'un etudiant de master 
+ */
 exports.validerDossier = async function (req, res) {
 	const { depart, dossier } = res.locals;
 	await depart.validerDossier(dossier);
 	res.send("Succes!");
 }
 
+/**
+ * Rejeter le dossier d'un etudiant de master
+ */
 exports.rejeterDossier = async function (req, res) {
 	const { depart, dossier } = res.locals;
 	const { raison } = req.body;
