@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const { Step } = Steps;
 
-const EvolutionDossier = () => {
+const EvolutionDossierThese = () => {
   const [currentEtape, setCurrentEtape] = useState(0);
   const [evolution, setEvolution] = useState({
     1: {
@@ -90,4 +90,4 @@ const EvolutionDossier = () => {
   );
 };
 
-export default EvolutionDossier;
+export default EvolutionDossierThese;

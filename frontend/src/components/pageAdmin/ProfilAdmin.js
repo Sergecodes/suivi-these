@@ -11,7 +11,7 @@ const ProfilAdmin = () => {
     email: user.email,
     numTelephone: user.numTelephone,
     newPassword: "",
-    confirmPassword: "",
+    oldPassword: "",
   });
   useEffect(() => {
     toast.info(
@@ -170,7 +170,19 @@ const ProfilAdmin = () => {
                   onChange={handleChange}
                 ></input>
               </div>
-
+              <div className="acteurInput">
+                <p>
+                  {" "}
+                  <BsPencilFill
+                    className="me-1"
+                    name="oldPassword"
+                    value={adminInfo.oldPassword}
+                    onChange={handleChange}
+                  />
+                  Ancien mot de passe
+                </p>
+                <input className="form-control " type="password"></input>
+              </div>
               <div className="acteurInput">
                 <p>
                   {" "}
@@ -184,19 +196,6 @@ const ProfilAdmin = () => {
                   value={adminInfo.newPassword}
                   onChange={handleChange}
                 ></input>
-              </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill
-                    className="me-1"
-                    name="confirmPassword"
-                    value={adminInfo.confirmPassword}
-                    onChange={handleChange}
-                  />
-                  Confirmer le mot de passe
-                </p>
-                <input className="form-control " type="password"></input>
               </div>
             </div>
           </div>

@@ -14,7 +14,7 @@ const ProfilDepartement = () => {
     email: user.email,
     numTelephone: user.numTelephone,
     newPassword: "",
-    confirmPassword: "",
+    oldPassword: "",
   });
   const navigate = useNavigate();
 
@@ -195,13 +195,13 @@ const ProfilDepartement = () => {
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Modifier le mot de passe
+                  Ancien mot de passe
                 </p>
                 <input
                   className="form-control "
                   type="password"
-                  name="newPassword"
-                  value={departementInfo.newPassword}
+                  name="oldPassword"
+                  value={departementInfo.oldPassword}
                   onChange={handleChange}
                 ></input>
               </div>
@@ -209,13 +209,13 @@ const ProfilDepartement = () => {
                 <p>
                   {" "}
                   <BsPencilFill className="me-1" />
-                  Confirmer le mot de passe
+                  Nouveau mot de passe
                 </p>
                 <input
                   className="form-control "
                   type="password"
-                  name="confirmPassword"
-                  value={departementInfo.confirmPassword}
+                  name="newPassword"
+                  value={departementInfo.newPassword}
                   onChange={handleChange}
                 ></input>
               </div>

@@ -18,7 +18,7 @@ function EtudiantInscriptionScreen() {
     nom: "",
     prenom: "",
     motDePasse: "",
-    confirmPassword: "",
+    oldPassword: "",
     niveau: "MASTER 2",
     email: "",
     dateNaissance: "",
@@ -92,11 +92,11 @@ function EtudiantInscriptionScreen() {
       user.departement === "" ||
       user.matricule === "" ||
       user.niveau === "" ||
-      user.confirmPassword === ""
+      user.oldPassword === ""
     ) {
       alert("renseignez toutes vos informations");
       console.log(user);
-    } else if (user.motDePasse !== user.confirmPassword) {
+    } else if (user.motDePasse !== user.oldPassword) {
       toast.error("Les mots de passes ne sont pas identiques!", {
         hideProgressBar: true
       });
@@ -222,7 +222,7 @@ function EtudiantInscriptionScreen() {
                           className="form-control"
                           id="Confirm"
                           onChange={(e) =>
-                            setUser({ ...user, confirmPassword: e.target.value })
+                            setUser({ ...user, oldPassword: e.target.value })
                           }
                         />
                       </div>

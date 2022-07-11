@@ -13,7 +13,7 @@ const ProfilCoordonateur = () => {
     email: user.email,
     numTelephone: user.numTelephone,
     newPassword: "",
-    confirmPassword: "",
+    oldPassword: "",
   });
   useEffect(() => {
     toast.info(
@@ -205,6 +205,19 @@ const ProfilCoordonateur = () => {
               <div className="acteurInput">
                 <p>
                   {" "}
+                  <BsPencilFill
+                    className="me-1"
+                    name="oldPassword"
+                    value={coordoInfo.oldPassword}
+                    onChange={handleChange}
+                  />
+                  Ancien mot de passe
+                </p>
+                <input className="form-control " type="password"></input>
+              </div>
+              <div className="acteurInput">
+                <p>
+                  {" "}
                   <BsPencilFill className="me-1" />
                   Nouveau mot de passe
                 </p>
@@ -215,19 +228,6 @@ const ProfilCoordonateur = () => {
                   value={coordoInfo.newPassword}
                   onChange={handleChange}
                 />
-              </div>
-              <div className="acteurInput">
-                <p>
-                  {" "}
-                  <BsPencilFill
-                    className="me-1"
-                    name="confirmPassword"
-                    value={coordoInfo.confirmPassword}
-                    onChange={handleChange}
-                  />
-                  Confirmer le mot de passe
-                </p>
-                <input className="form-control " type="password"></input>
               </div>
             </div>
           </div>

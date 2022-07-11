@@ -25,6 +25,8 @@ export const loginDepartement = createAsyncThunk(
         }
       );
 
+      console.log("data est",data)
+
       return value.data.data;
     } catch (err) {
       console.error(err.response.data);

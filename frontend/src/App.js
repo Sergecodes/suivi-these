@@ -4,9 +4,8 @@ import "antd/dist/antd.min.css";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import "react-toastify/dist/ReactToastify.css";
-import 'moment/locale/fr';
+import "moment/locale/fr";
 import { Result } from "antd";
-
 
 /*************************************page accueil************************************/
 import Accueil from "./screen/Accueil";
@@ -47,8 +46,11 @@ import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementC
 /************************************************page etudiant************************************/
 import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
+import DepotDossierThese from "./components/pageEtudiant/DepotDossierThese";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
+import EvolutionDossierThese from "./components/pageEtudiant/EvolutionDossierThese";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
+
 /**************************************************************************************************/
 
 /************************************************page expert************************************/
@@ -83,7 +85,6 @@ import NotificationJury from "./components/pageJury/NotificationJury";
 import DashboardJury from "./components/pageJury/DashboardJury";
 /**************************************************************************************************/
 
-
 /************************************************page jury************************************/
 import Conseil from "./screen/Conseil";
 import NotationConseil from "./components/pageConseil/NotationConseil";
@@ -93,7 +94,6 @@ import DashboardConseil from "./components/pageConseil/DashboardConseil";
 import ViewTheseEtudiant from "./components/pageConseil/ViewTheseEtudiant";
 
 /**************************************************************************************************/
-
 
 /************************************************page coordonateur************************************/
 import Coordonateur from "./screen/Coordonateur";
@@ -108,36 +108,38 @@ import NotificationCoordonateur from "./components/pageCoordonateur/Notification
 import RapportAdminMaster from "./components/pageCoordonateur/Master/RapportAdminMaster";
 import DateDeSoutenance from "./components/pageCoordonateur/Master/DateDeSoutenance";
 
-    /***************************************************************************************************/
+/***************************************************************************************************/
 
-    /************************************************page admin************************************/
-    import Admin from "./screen/Admin";
-    import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
-    import ListeAttente from "./components/pageAdmin/ListeAttente";
-    import ListeEtudiants from "./components/pageAdmin/ListeEtudiants";
-    import NoteLecture from "./components/pageAdmin/NoteLecture";
-    import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
-    import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
-    import ListeJury from "./components/pageAdmin/Liste/ListeJury";
-    import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
-    import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo";
-    import ListeConseil from "./components/pageAdmin/Liste/ListeConseil"; 
-    import ListeExpert from "./components/pageAdmin/Liste/ListeExpert";
-    import ListeRectorat from "./components/pageAdmin/Liste/ListeRectorat";
-    import NotificationsAdmin from "./components/pageAdmin/NotificationsAdmin";
-    import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
-    import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise"
-    import DossierMaster from "./components/pageAdmin/dossierMaster/DossierMaster"
-    /**************************************************************************************************/
+/************************************************page admin************************************/
+import Admin from "./screen/Admin";
+import DashboardAdmin from "./components/pageAdmin/DashboardAdmin";
+import ListeAttente from "./components/pageAdmin/ListeAttente";
+import ListeEtudiants from "./components/pageAdmin/ListeEtudiants";
+import NoteLecture from "./components/pageAdmin/NoteLecture";
+import DetailsNotation from "./components/pageAdmin/Autorisation/DetailsNotation";
+import RapportSoutenance from "./components/pageAdmin/Autorisation/RapportSoutenance";
+import ListeJury from "./components/pageAdmin/Liste/ListeJury";
+import ListeDepartement from "./components/pageAdmin/Liste/ListeDepartement";
+import ListeCoordo from "./components/pageAdmin/Liste/ListeCoordo";
+import ListeConseil from "./components/pageAdmin/Liste/ListeConseil";
+import ListeExpert from "./components/pageAdmin/Liste/ListeExpert";
+import ListeRectorat from "./components/pageAdmin/Liste/ListeRectorat";
+import NotificationsAdmin from "./components/pageAdmin/NotificationsAdmin";
+import ProfilAdmin from "./components/pageAdmin/ProfilAdmin";
+import RapportExpertise from "./components/pageAdmin/Rapports/RapportExpertise/RapportExpertise";
+import DossierMaster from "./components/pageAdmin/dossierMaster/DossierMaster";
+import TableListThese from "./components/pageAdmin/dossierThese/TableListThese";
+import VerificationDossierThese from "./components/pageAdmin/dossierThese/VerificationDossierThese";
+
+/**************************************************************************************************/
 
 /**************************************************************************************************/
 
 /********************************************autres******************************************************/
-import PdfViewer from './components/common/PdfViewer';
+import PdfViewer from "./components/common/PdfViewer";
 
 // Configurer les options par defaut d'axios
 import axios from "axios";
-
 
 if (process.env.REACT_APP_API_BASE_URL === undefined) {
   throw Error("Set REACT_APP_API_BASE_URL in .env");
@@ -146,28 +148,45 @@ if (process.env.REACT_APP_API_BASE_URL === undefined) {
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
+const actor = localStorage.actor;
+const user = JSON.parse(localStorage.getItem("user"));
 
 const App = () => {
   document.title = "Ecole Doctorale STG";
- 
+
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Accueil  />} />
-          <Route
-            path="/soutenances"
-            element={<Soutenance />}
-          />
-          <Route path="/pdf-viewer" element={<PdfViewer/>} />
-          
+          <Route path="/" element={<Accueil />} />
+          <Route path="/soutenances" element={<Soutenance />} />
+          <Route path="/pdf-viewer" element={<PdfViewer />} />
 
           {/**
-           *  */}
+           *  */
+          /*user.niveau === "MASTER 2"?<div>steph</div>:*/}
           <Route path="/account" element={<Etudiant />}>
-            <Route path="/account/depot" element={<DepotDossierMaster />} />
+            <Route
+              path="/account/depot"
+              element={
+                actor === "etudiant" && user.niveau === "MASTER 2" ? (
+                  <DepotDossierMaster />
+                ) : (
+                  <DepotDossierThese />
+                )
+              }
+            />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
-            <Route path="/account/evolution" element={<EvolutionDossier />} />
+            <Route
+              path="/account/evolution"
+              element={
+                actor === "etudiant" && user.niveau === "MASTER 2" ? (
+                  <EvolutionDossier />
+                ) : (
+                  <EvolutionDossierThese />
+                )
+              }
+            />
             <Route
               path="/account/changement-sujet"
               element={<Result title="En cours d'implémentation" />}
@@ -191,10 +210,19 @@ const App = () => {
 
           {/**/}
           <Route path="/acteur/conseil" element={<Conseil />}>
-            <Route path="/acteur/conseil/dashboard" element={<DashboardConseil />} />
-            <Route path="/acteur/conseil/notation" element={<NotationConseil />} />
+            <Route
+              path="/acteur/conseil/dashboard"
+              element={<DashboardConseil />}
+            />
+            <Route
+              path="/acteur/conseil/notation"
+              element={<NotationConseil />}
+            />
             <Route path="/acteur/conseil/profil" element={<ProfilConseil />} />
-            <Route path="/acteur/conseil/visualiser" element={<ViewTheseEtudiant />} />
+            <Route
+              path="/acteur/conseil/visualiser"
+              element={<ViewTheseEtudiant />}
+            />
             <Route
               path="/acteur/conseil/notifications"
               element={<NotificationConseil />}
@@ -253,25 +281,75 @@ const App = () => {
               element={<Programmation />}
             />
           </Route>
-  
-          <Route path="/acteur/admin" element={<Admin/>} >
-                <Route path="/acteur/admin/dashboard" element={<DashboardAdmin />} />
-                <Route path="/acteur/admin/liste-attente" element={<ListeAttente/>}/>
-                <Route path="/acteur/admin/liste-etudiants" element={<ListeEtudiants/>}/>
-                <Route path="/acteur/admin/notes-lecture" element={<NoteLecture/>}/>
-                <Route path="/acteur/admin/detail-notation" element={<DetailsNotation/>}/>
-                <Route path="/acteur/admin/rapport-soutenance" element={<RapportSoutenance/>}/>
-                <Route path="/acteur/admin/liste-jury" element={<ListeJury/>}/>
-                <Route path="/acteur/admin/liste-departement" element={<ListeDepartement/>}/>
-                <Route path="/acteur/admin/liste-coordo" element={<ListeCoordo/>}/>
-                <Route path="/acteur/admin/liste-conseil" element={<ListeConseil/>}/>
-                <Route path="/acteur/admin/liste-rectorat" element={<ListeRectorat/>}/>
-                <Route path="/acteur/admin/liste-expert" element={<ListeExpert/>}/>
-                <Route path="/acteur/admin/profil" element={<ProfilAdmin/>}/>
-                <Route path="/acteur/admin/notifications" element={<NotificationsAdmin/>}/>
-                <Route path="/acteur/admin/rapport-expertise" element={<RapportExpertise/>}/>
-                <Route path="/acteur/admin/dossier-master" element={<DossierMaster/>}/>
-           </Route>
+
+          <Route path="/acteur/admin" element={<Admin />}>
+            <Route
+              path="/acteur/admin/dashboard"
+              element={<DashboardAdmin />}
+            />
+            <Route
+              path="/acteur/admin/liste-attente"
+              element={<ListeAttente />}
+            />
+            <Route
+              path="/acteur/admin/liste-etudiants"
+              element={<ListeEtudiants />}
+            />
+            <Route
+              path="/acteur/admin/notes-lecture"
+              element={<NoteLecture />}
+            />
+            <Route
+              path="/acteur/admin/detail-notation"
+              element={<DetailsNotation />}
+            />
+            <Route
+              path="/acteur/admin/rapport-soutenance"
+              element={<RapportSoutenance />}
+            />
+            <Route path="/acteur/admin/liste-jury" element={<ListeJury />} />
+            <Route
+              path="/acteur/admin/liste-departement"
+              element={<ListeDepartement />}
+            />
+            <Route
+              path="/acteur/admin/liste-coordo"
+              element={<ListeCoordo />}
+            />
+            <Route
+              path="/acteur/admin/liste-conseil"
+              element={<ListeConseil />}
+            />
+            <Route
+              path="/acteur/admin/liste-rectorat"
+              element={<ListeRectorat />}
+            />
+            <Route
+              path="/acteur/admin/liste-expert"
+              element={<ListeExpert />}
+            />
+            <Route path="/acteur/admin/profil" element={<ProfilAdmin />} />
+            <Route
+              path="/acteur/admin/notifications"
+              element={<NotificationsAdmin />}
+            />
+            <Route
+              path="/acteur/admin/rapport-expertise"
+              element={<RapportExpertise />}
+            />
+            <Route
+              path="/acteur/admin/dossier-master"
+              element={<DossierMaster />}
+            />
+             <Route
+              path="/acteur/admin/dossier-these"
+              element={<TableListThese />}
+            />
+             <Route
+              path="/acteur/admin/verification-these"
+              element={<VerificationDossierThese />}
+            />
+          </Route>
 
           <Route
             path="/*"
@@ -295,7 +373,7 @@ const App = () => {
               path="/acteur/coordonateur/audition"
               element={<RapportAudition />}
             />
-             <Route
+            <Route
               path="/acteur/coordonateur/redaction-rapport"
               element={<RedactionRapport />}
             />
@@ -328,8 +406,8 @@ const App = () => {
               element={<RapportAdminMaster />}
             />
           </Route>
-          
-            {/*-------------*/}
+
+          {/*-------------*/}
 
           <Route
             path="/connexion"
