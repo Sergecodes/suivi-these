@@ -291,6 +291,9 @@ exports.envoyerDossierJuges = async function (req, res) {
 }
 
 
+/**
+ * Accepter le dossier d'un etudiant de these
+ */
 exports.accepterDossierEtudiant = async function (req, res) {
    const { admin, dossier } = res.locals;
    try {
@@ -302,6 +305,9 @@ exports.accepterDossierEtudiant = async function (req, res) {
    }
 }
 
+/**
+ * Rejeter le dossier d'un etudiant de these
+ */
 exports.rejeterDossierEtudiant = async function (req, res) {
    const { admin, dossier } = res.locals;
    const { raison } = req.body.raison;
