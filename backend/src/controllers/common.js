@@ -57,24 +57,38 @@ exports.dossiersEnvoyes = async function (req, res) {
     console.log(req.query);
 
     let destinataire = req.query.destinataire;
-    let findQuery = { destinataireModel, envoyePar, envoyeParModel };
-    if (destinataire) {
+    let findQuery = { destinataireModel, envoyeParModel };
+    if (destinataire) 
         findQuery['destinataire'] = destinataire;
+
+    let dossierPopulate = [{ path: 'fichiers' }];
+    if (req.body.getCoordonateur === true) {
+        dossierPopulate.push({
+            path: 'etudiant',
+            select: '-motDePasse -niveau -dossier -misAJourLe',
+            // match: { niveau: Types.Niveau.MASTER },
+            populate: {
+                path: 'departement',
+                select: '-motDePasse',
+                populate: {
+                    path: 'uniteRecherche',
+                    populate: 'coordonateur'
+                }
+            }
+        });
+    } else {
+        dossierPopulate.push({
+            path: 'etudiant',
+            select: '-motDePasse -niveau -dossier -misAJourLe',
+            // match: { niveau: Types.Niveau.MASTER },
+            // populate: 'juges'
+        });
     }
-  
+
     let envoisDossiers = await EnvoiDossier.find(findQuery).populate({
         path: 'dossier',
-        populate: [
-            {
-                path: 'etudiant',
-                select: '-motDePasse -niveau -dossier -misAJourLe',
-                // match: { niveau: Types.Niveau.MASTER },
-                // populate: 'juges'
-            },
-			{ path: 'fichiers' }
-        ]
+        populate: dossierPopulate
     });
-  
     return res.json(envoisDossiers);
 }
 

@@ -207,6 +207,7 @@ const DossierMaster = () => {
         console.error(err);
         toast.error("Une erreur est survenue!", { hideProgressBar: true });
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const parseJuryResult = (juries) => {
