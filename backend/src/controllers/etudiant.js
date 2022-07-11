@@ -193,6 +193,13 @@ exports.login_student = async function (req, res) {
          if (!result) {
             return res.status(404).send("User Not found")
          } else {
+            if (!etudiant.compteValideLe) {
+               return res.status(403).json({
+                  message: "Votre demande de création de compte n'a pas encore été validé",
+                  success: false
+               });
+            }
+
             // Create user session
             req.session.user = {
                _id: etudiant._id,

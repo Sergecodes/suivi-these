@@ -23,15 +23,28 @@ const DepotDossierMaster = () => {
 
   // Verifier si l'etudiant peut uploader
   useEffect(() => {
-    axios
-      .get("/etudiants/peut-uploader")
-      .then((res) => {
-        console.log(res);
-        setCanUpload(res.data.peutUploader);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    let peutUploader = localStorage.getItem('peutUploader');
+    
+    if (peutUploader === "false") {
+      setCanUpload(false);
+      console.log("Cet etudiant ne peux pas/plus uploader");
+    } else {
+      axios
+        .get("/etudiants/peut-uploader")
+        .then((res) => {
+          console.log(res);
+          peutUploader = res.data.peutUploader;
+          setCanUpload(peutUploader);
+
+          // Store in localStorage only when he can no longer upload.
+          if (peutUploader === false) {
+            localStorage.setItem('peutUploader', false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }, []);
 
   const steps = [
@@ -128,21 +141,14 @@ const DepotDossierMaster = () => {
         formData.append(getName(prop), files[prop]);
       }
 
-      // todo, insert sujet data in state too
-      const sujet = "sujet";
-      formData.append("sujet", sujet);
+      formData.append("sujet", dataInfo.theseSubject);
       formData.append("niveau", "DOCTORAT");
 
       axios
         .put("/etudiants/uploader-fichiers", formData)
         .then((res) => {
           console.log(res);
-
           const dossier = res.data.dossier;
-          // Update dossier in localStorage
-          dossier.sujet = sujet;
-          user.dossier = dossier;
-          localStorage.setItem("user", JSON.stringify(user));
 
           axios
             .post("/envoyer-dossier", {
@@ -153,7 +159,18 @@ const DepotDossierMaster = () => {
             })
             .then((res) => {
               console.log(res);
+              // Update dossier in localStorage
+              user.dossier = dossier;
+              localStorage.setItem("user", JSON.stringify(user));
+              localStorage.removeItem("evolution");
+
               toast.success("Succes!", { hideProgressBar: true });
+
+              // Wait for some seconds then close all toasts and display success 
+              setTimeout(() => {
+                toast.dismiss();
+                setShowResult(true);
+              }, 3000);
             });
         })
         .catch((err) => {
@@ -169,7 +186,7 @@ const DepotDossierMaster = () => {
 
   const handleResultClick = () => {
     setShowResult(false);
-    navigate("/account");
+    navigate("/account/evolution");
   };
 
   const getReturnOutput = () => {
@@ -234,8 +251,8 @@ const DepotDossierMaster = () => {
       return (
         <Result
           status="success"
-          title="Dossier envoye avec succes!"
-          subTitle="Vous recevrez un email dès que votre dossier sera valide. "
+          title="Dossier envoyé avec succes!"
+          subTitle="Vous recevrez un email dès que votre dossier sera validé. "
           extra={
             <Button type="primary" key="ok" onClick={handleResultClick}>
               OK
