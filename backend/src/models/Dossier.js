@@ -18,19 +18,19 @@ const FINAL_NUM_ETAPE_THESE = 9;
 
 const DossierSchema = new Schema(
   {
-    etudiant: { 
-      type: Schema.Types.ObjectId, 
-      ref: "Etudiant", 
+    etudiant: {
+      type: Schema.Types.ObjectId,
+      ref: "Etudiant",
       required: true,
-      index: { unique: true }
+      index: { unique: true },
     },
     sujet: { type: String, required: true },
     rejeteParActeur: {
       type: String,
-      enum: Object.values(ActeurDossier)
+      enum: Object.values(ActeurDossier),
     },
-    raisonRejet: { type: String, default: '' },
-    rejeteLe: Date
+    raisonRejet: { type: String, default: "" },
+    rejeteLe: Date,
   },
   {
     timestamps: { createdAt: "dateDepot", updatedAt: "misAJourLe" },
@@ -61,7 +61,6 @@ DossierSchema.virtual("avis", {
   foreignField: "dossier",
 });
 
-
 // pre- remove middleware
 // Delete etapes, notes and fichiers when dossier is deleted
 DossierSchema.pre("remove", function (next) {
@@ -79,10 +78,10 @@ DossierSchema.pre("remove", function (next) {
 });
 
 DossierSchema.methods.getEtudiantObj = async function () {
-  const Etudiant = require('./Etudiant');
-  
+  const Etudiant = require("./Etudiant");
+
   return await Etudiant.findById(this.etudiant);
-}
+};
 
 DossierSchema.methods.getNotesTotales = async function () {
   await this.populate("notes");
@@ -97,13 +96,20 @@ DossierSchema.methods.getNotesTotales = async function () {
 
 DossierSchema.methods.getEtapeActuelle = async function () {
   await this.populate("etapes");
-  return this.etapes.at(-1);
+  let etapes = this.etapes;
+  for (let i = etapes.length - 1; i >= 0; i--) {
+    let etape = etapes[i];
+    if (etape.acheveeLe) return etape;
+  }
+
+  console.log("no étape achevée, getting first etape or null");
+  return etapes[0] || null;
 };
 
 DossierSchema.methods.incrementerEtape = async function (numEtapeSuivante) {
   console.log("in incrementer etape");
   let dossier = this;
-  await dossier.populate('etudiant', 'niveau');
+  await dossier.populate("etudiant", "niveau");
 
   const numDerniereEtape = (function () {
     return dossier.etudiant.niveau === Niveau.MASTER
@@ -178,28 +184,31 @@ const EtapeDossierSchema = new Schema({
   },
   dossier: { type: Schema.Types.ObjectId, ref: "Dossier", required: true },
   debuteeLe: { type: Date, default: Date.now, required: true },
-  description: { type: String, default: '' },
+  description: { type: String, default: "" },
   acheveeLe: Date,
   delai: Date,
-  extra: { type: String, default: '' },
+  extra: { type: String, default: "" },
 });
 
 // Set description to Etape Dossier
 EtapeDossierSchema.pre("save", async function (next) {
-  if (this.isNew ||  !this.description) {
+  if (this.isNew || !this.description) {
     console.log("going to set etape dossier description");
 
     // Get niveau of Etudiant
     await this.populate({
-      path: 'dossier',
-      select: 'etudiant',
+      path: "dossier",
+      select: "etudiant",
       populate: {
-        path: 'etudiant',
-        select: 'niveau'
-      }
+        path: "etudiant",
+        select: "niveau",
+      },
     });
-    
-    this.description = getEtapeWording(this.numEtape, this.dossier.etudiant.niveau);
+
+    this.description = getEtapeWording(
+      this.numEtape,
+      this.dossier.etudiant.niveau
+    );
   }
 
   next();
@@ -227,7 +236,7 @@ const NoteDossierSchema = new Schema({
   //   enum: Object.values(ActeurDossier)
   // },
   noteLe: { type: Date, default: Date.now, required: true },
-  commentaire: { type: String, default: '' },
+  commentaire: { type: String, default: "" },
 });
 
 NoteDossierSchema.pre("save", function (next) {

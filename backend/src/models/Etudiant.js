@@ -164,7 +164,7 @@ EtudiantSchema.methods.getEtapeActuelle = async function () {
    let dossierObj = await this.getDossierObj();
 
    if (dossierObj)
-      return dossierObj.getEtapeActuelle();
+      return await dossierObj.getEtapeActuelle();
 
    return EtapeDossier.UNE;
 };
@@ -173,6 +173,7 @@ EtudiantSchema.methods.peutUploader = async function () {
    // Si l'utilisateur est a la premiere etape ou si il n'a pas de dossier
    // il peut uploader. 
    // sinon il ne peut pas
+   console.log("this.dossier is", this.dossier)
    if (!(this.dossier))
       return true;
 

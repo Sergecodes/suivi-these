@@ -73,7 +73,7 @@ const EvolutionDossier = () => {
                 >
                   <div className="d-flex align-items-center">
                     <p>{item.debuteeLe}</p>
-                    <span className="mx-2">-</span>
+                    <span className="mx-2 pb-3">-</span>
                     <p>{item.acheveeLe}</p>
                   </div>
                   <p>

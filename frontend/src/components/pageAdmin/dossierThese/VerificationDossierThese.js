@@ -8,7 +8,7 @@ import PdfViewer from "../../common/PdfViewer";
 import { ACTEURS } from "../../../constants/Constant";
 import { BsEyeFill, BsX, BsCheck, BsArrowLeft } from "react-icons/bs";
 import RejetDossier from "../../common/RejetDossier";
-import { setRejectModal } from "../../redux/DashboardDisplaySlice";
+import { setRejectModal } from "../../../redux/DashboardDisplaySlice";
 import { useDispatch } from "react-redux";
 
 const VerificationDossierThese = () => {
@@ -24,8 +24,8 @@ const VerificationDossierThese = () => {
    // const { confirm } = Modal;
   
   
-   /* const handleSubmit = () => {
-      const idDossier = dossier.id;
+   const handleSubmit = () => {
+     /*  const idDossier = dossier.id;
   
       confirm({
         title: "Valider ce dossier?",
@@ -70,8 +70,8 @@ const VerificationDossierThese = () => {
             });
         },
         onCancel() {},
-      });
-    };*/
+      });*/
+    };
   
     return (
       <section className="mx-3 my-3 ">
