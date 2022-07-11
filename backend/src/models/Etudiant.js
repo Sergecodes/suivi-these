@@ -161,7 +161,7 @@ EtudiantSchema.methods.setSujet = async function (sujet) {
 }
 
 EtudiantSchema.methods.getEtapeActuelle = async function () {
-   const dossierObj = await this.getDossierObj();
+   let dossierObj = await this.getDossierObj();
 
    if (dossierObj)
       return dossierObj.getEtapeActuelle();
@@ -173,8 +173,15 @@ EtudiantSchema.methods.peutUploader = async function () {
    // Si l'utilisateur est a la premiere etape ou si il n'a pas de dossier
    // il peut uploader. 
    // sinon il ne peut pas
+   if (!(this.dossier))
+      return true;
 
-   if (!(this.dossier) || await dossierObj.getEtapeActuelle() === EtapeDossier.UNE)
+   let dossierObj = await this.getDossierObj();
+
+   if (dossierObj === null)
+      throw "Dossier correspondant non trouvé, il n'existe pas dans la bd."
+
+   if (await dossierObj.getEtapeActuelle() === EtapeDossier.UNE)
       return true;
 
    return false;
@@ -227,7 +234,7 @@ EtudiantSchema.methods.changerEncadreur = async function (idNouveauEncadreur) {
 };
 
 EtudiantSchema.methods.changerSujet = async function (nouveauSujet) {
-   await this.dossierObj.changerSujet(nouveauSujet);
+   await (await this.getDossierObj).changerSujet(nouveauSujet);
 };
 
 EtudiantSchema.methods.envoyerDossier = async function (
