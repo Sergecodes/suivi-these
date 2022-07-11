@@ -57,7 +57,7 @@ router.route('/etudiants/:id/envoyer-dossier-juges').post(
    controller.envoyerDossierJuges
 )
 
-router.route('/dossiers/:id/accepter').put(
+router.route('/dossiers/:id/valider').put(
    isAdmin, 
    getDossierFromParam,
    getAdmin, 

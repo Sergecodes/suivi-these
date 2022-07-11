@@ -16,7 +16,7 @@ const { confirm } = Modal;
 
 const VerificationMaster = () => {
   const dispatch = useDispatch()
-  const [fileUrl, setFileUrl] = useState({nom:"",url:""});
+  const [fileUrl, setFileUrl] = useState({ nom: "", url: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const location = useLocation(),
     navigate = useNavigate();
@@ -38,7 +38,7 @@ const VerificationMaster = () => {
         console.log("user is ", user);
         // Send request to api (return promise to enable loading spinner near Ok button)
         return axios
-          .put("/departements/valider-dossier", { idDossier })
+          .put(`/departements/dossiers/${idDossier}/valider`)
           .then((res) => {
             console.log(res);
 
@@ -59,56 +59,15 @@ const VerificationMaster = () => {
                   navigate("/acteur/departement/dashboard");
                 }, 3000);
               })
-              .catch((err) => {
-                toast.error("Une erreur est survenue!", {
-                  hideProgressBar: true,
-                });
-                console.error(err);
-              });
           })
           .catch((err) => {
             console.error(err);
             toast.error("Une erreur est survenue!", { hideProgressBar: true });
           });
       },
-      onCancel() {},
+      onCancel() { },
     });
   };
-
-/*  const handleCancel = () => {
-    confirm({
-      title: "Rejeter le dossier de cet etudiant?",
-      content: (
-        <span className="fw-bold">
-          {etudiantInfo.name} ({etudiantInfo.matricule})
-        </span>
-      ),
-      icon: <AiOutlineExclamationCircle style={{ color: "#F2AD16" }} />,
-      okText: "Oui",
-      okType: "danger",
-      cancelText: "Non",
-      async onOk() {
-        return axios
-          .put("/departements/rejeter-dossier", {
-            idDossier: dossier.id,
-          })
-          .then((res) => {
-            console.log(res);
-            toast.success("Succes!", { hideProgressBar: true });
-
-            setTimeout(() => {
-              toast.dismiss();
-              navigate(0);
-            }, 3000);
-          })
-          .catch((err) => {
-            console.error(err);
-            toast.error("Une erreur est survenue!", { hideProgressBar: true });
-          });
-      },
-      onCancel() {},
-    });
-  };*/
 
   return (
     <section className="mx-3 my-3 ">
@@ -146,7 +105,7 @@ const VerificationMaster = () => {
                 type="button"
                 className="btn btnFull ms-1 mb-2"
                 onClick={() => {
-                  setFileUrl({...fileUrl,nom:fichier.categorie,url:fichier.url});
+                  setFileUrl({ ...fileUrl, nom: fichier.categorie, url: fichier.url });
                   setIsModalVisible(true);
                 }}
               >
@@ -191,17 +150,17 @@ const VerificationMaster = () => {
         <button
           className="btn rejectButton my-5 me-3 d-flex align-items-center"
           type="button"
-          onClick={()=>{dispatch(setRejectModal({ choix: true }));}}
-          disabled={etudiantInfo.dejaNote?true:false}
+          onClick={() => { dispatch(setRejectModal({ choix: true })); }}
+          disabled={etudiantInfo.dejaNote ? true : false}
         >
           <BsX className="me-1 fs-4" /> REJETER
         </button>
-        <RejetDossier etudiant={{idDossier:dossier.id,matricule:etudiantInfo.matricule,nom:etudiantInfo.name}} acteur={ACTEURS.DEPARTEMENT} />
+        <RejetDossier etudiant={{ idDossier: dossier.id, matricule: etudiantInfo.matricule, nom: etudiantInfo.name }} acteur={ACTEURS.DEPARTEMENT} />
         <button
           className="btn autorisationButton my-5 d-flex align-items-center"
           type="button"
           onClick={handleSubmit}
-          disabled={etudiantInfo.dejaNote?true:false}
+          disabled={etudiantInfo.dejaNote ? true : false}
         >
           <BsCheck className=" fs-4" /> VALIDER
         </button>
