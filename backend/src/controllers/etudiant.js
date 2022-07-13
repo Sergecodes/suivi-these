@@ -682,9 +682,9 @@ exports.getEvolutionDossier = async function (req, res) {
 
       const numEtapes = etapesDossier.length;
       if (numEtapes === 0) 
-         numEtapeActu = Types.EtapeDossier.UNE;
+         numEtapeActu = 0;
       else
-         numEtapeActu = etapesDossier.at(-1).numEtape;
+      numEtapeActu = (await etudiant.getEtapeActuelle()).numEtape;
 
       let defaultVal = { debuteeLe: '', acheveeLe: '', };
       let result = { 

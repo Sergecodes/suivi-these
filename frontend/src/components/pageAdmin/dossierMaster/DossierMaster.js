@@ -276,6 +276,9 @@ const DossierMaster = () => {
 
   const handleSubmit = (e, dossier) => {
     const etud = dossier.etudiant;
+    if(listeJury.length === 0){
+      setListeJury(dossier.etudiant.juges)
+    }
 
     confirm({
       title: "Envoyer le dossier de cet etudiant aux membres de jury?",
@@ -294,7 +297,7 @@ const DossierMaster = () => {
       async onOk() {
         return Promise.all([
           axios.put(`/admin/etudiants/${etud.id}/set-juges`, {
-            idDepartement: etud.departement,
+            idDepartement: etud.departement.id,
             juges: listeJury.map((jury) => jury.id),
           }),
           axios.post(`/admin/etudiants/${etud.id}/envoyer-dossier-juges`),
@@ -354,7 +357,7 @@ const DossierMaster = () => {
   const handleChange = (value, option) => {
     console.log(option);
     let newListe = [...listeJury];
-    newListe[index] = juryData[dossier.etudiant.departement].find(
+    newListe[index] = juryData[dossier.etudiant.departement.id].find(
       (elt) => elt.email === value
     );
     setTempJury(newListe);
@@ -416,10 +419,11 @@ const DossierMaster = () => {
                             }
 
                             for (let idDepart in juryData) {
-                              if (idDepart === dossier.etudiant.departement) {
+                              if (idDepart === dossier.etudiant.departement.id) {
                                 let tempJuries = juryData[idDepart];
 
                                 for (let jury of tempJuries) {
+                                  console.log("jury is",jury);
                                   if (
                                     jury.email !== listeJury[first].email &&
                                     jury.email !== listeJury[second].email

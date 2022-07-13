@@ -43,7 +43,7 @@ const EvolutionDossierThese = () => {
           setEvolution(evolution);
           setCurrentEtape(numEtapeActuelle);
           // todo also set validity period
-          localStorage.setItem('evolution', JSON.stringify(evolution));
+          //localStorage.setItem('evolution', JSON.stringify(evolution));
           localStorage.setItem('numEtapeActuelle', numEtapeActuelle);
         })
         .catch(err => {

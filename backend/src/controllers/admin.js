@@ -243,6 +243,12 @@ exports.setEtudiantJuges = async function (req, res) {
 
    console.log("in set etudiant juges");
    console.log('etudiant', etudiant);
+   console.log("req.body", req.body);
+
+   const numJuges = 3;
+   if (juges.length !== numJuges) {
+      return res.status(400).send("Nombre de juges invalide");
+   }
    
    // Use toString() to convert departement which is an ObjectID to a string
    if (etudiant.departement.toString() !== idDepartement) {

@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import { toast, ToastContainer } from 'react-toastify';
 import { Table } from "antd";
+
+moment.locale('fr');
 
 
 const columns = [
@@ -25,7 +28,7 @@ const columns = [
     title: <div>Soutient le</div>,
     dataIndex: "soutenance",
     sorter: {
-      compare: (a, b) => a.soutenance.localeCompare(b.soutenance),
+      compare: (a, b) => moment(a.initSoutenance).unix() - moment(b.initSoutenance).unix(),
     },
     align:"center"
   }
@@ -59,7 +62,8 @@ const AutorisationDeSoutenance = () => {
         key: etud.id,
         matricule: etud.matricule,
         name: etud.nom + ' ' + etud.prenom,
-        soutenance: etud.dateSoutenance
+        initSoutenance: etud.dateSoutenance,
+        soutenance: moment(etud.dateSoutenance).format('llll')
       })
     }
 

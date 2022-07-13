@@ -125,6 +125,7 @@ const NotificationsActeurs = (props) => {
   );
 
   const getNotifDisplay = (notif) => {
+    console.log("notif is",notif);
     const render = (
       <div
         key={notif.id}

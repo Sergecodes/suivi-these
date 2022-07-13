@@ -8,14 +8,14 @@ import axios from "axios";
 
 const TopHeader = (props) => {
   const navigate = useNavigate();
-  console.log(localStorage.actor);
-
+  const user = JSON.parse(localStorage.getItem('user')), actor = localStorage.getItem('actor');
+  
   const handleProfileRedirect = () => {
-    if(localStorage.actor === "etudiant"){
+    if(actor === "etudiant"){
       navigate('/account/evolution');
     }
     else (
-      navigate(`/acteur/${localStorage.actor}/dashboard`)
+      navigate(`/acteur/${actor}/dashboard`)
     )
   }
 
@@ -24,8 +24,7 @@ const TopHeader = (props) => {
       .post("/logout")
       .then((res) => {
         console.log(res);
-        localStorage.removeItem("user");
-        localStorage.removeItem("actor");
+        localStorage.clear();
       })
       .catch((err) => {
         console.error(err);
@@ -52,7 +51,7 @@ const TopHeader = (props) => {
         <Link to="/connexion/etudiant">
           <button
             className="my-1 me-1 headerIconEmpty rounded-pill"
-            style={props.isLogin === true ? { display: "none" } : {}}
+            style={user !== null ? { display: "none" } : {}}
           >
             {" "}
              Se connecter
@@ -61,7 +60,7 @@ const TopHeader = (props) => {
         <Link to="/inscription/etudiant">
           <button
             className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
-            style={props.isLogin === true ? { display: "none" } : {}}
+            style={user !== null ? { display: "none" } : {}}
           >
             {" "}
             S'inscrire
@@ -69,7 +68,7 @@ const TopHeader = (props) => {
         </Link>
         <button
           className=" my-1 px-4 ms-3 headerIconFull rounded-pill"
-          style={props.isLogin === false ? { display: "none" } : {}}
+          style={user === null ? { display: "none" } : {}}
           onClick={handleProfileRedirect}
         >
           Profil
@@ -77,7 +76,7 @@ const TopHeader = (props) => {
         <Link to="/">
           <button
               className=" my-1 px-3 ms-3 headerIconEmpty rounded-pill"
-              style={props.isLogin === false ? { display: "none" } : {}}
+              style={user === null ? { display: "none" } : {}}
               onClick={handleLogout}
             >
               Deconnexion

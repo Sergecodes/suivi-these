@@ -8,7 +8,7 @@ import PdfViewer from "../../common/PdfViewer";
 import { ACTEURS } from "../../../constants/Constant";
 import { BsEyeFill, BsX, BsCheck, BsArrowLeft } from "react-icons/bs";
 import RejetDossier from "../../common/RejetDossier";
-import { setRejectModal } from "../../redux/DashboardDisplaySlice";
+import { setRejectModal } from "../../../redux/DashboardDisplaySlice";
 import { useDispatch } from "react-redux";
 
 const { confirm } = Modal;

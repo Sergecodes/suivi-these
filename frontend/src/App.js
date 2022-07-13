@@ -46,10 +46,12 @@ import DepartementConnexionScreen from "./screen/inscriptionScreens/DepartementC
 /************************************************page etudiant************************************/
 import Etudiant from "./screen/Etudiant";
 import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
-import DepotDossierThese from "./components/pageEtudiant/DepotDossierThese";
+//import DepotDossierThese from "./components/pageEtudiant/DepotDossierThese";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
-import EvolutionDossierThese from "./components/pageEtudiant/EvolutionDossierThese";
+//import EvolutionDossierThese from "./components/pageEtudiant/EvolutionDossierThese";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
+import DateSoutenance from "./components/pageEtudiant/DateSoutenance";
+
 
 /**************************************************************************************************/
 
@@ -148,8 +150,8 @@ if (process.env.REACT_APP_API_BASE_URL === undefined) {
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
-const actor = localStorage.actor;
-const user = JSON.parse(localStorage.getItem("user"));
+//const actor = localStorage.actor;
+//const user = JSON.parse(localStorage.getItem("user"));
 
 const App = () => {
   document.title = "Ecole Doctorale STG";
@@ -166,27 +168,10 @@ const App = () => {
            *  */
           /*user.niveau === "MASTER 2"?<div>steph</div>:*/}
           <Route path="/account" element={<Etudiant />}>
-            <Route
-              path="/account/depot"
-              element={
-                actor === "etudiant" && user.niveau === "MASTER 2" ? (
-                  <DepotDossierMaster />
-                ) : (
-                  <DepotDossierThese />
-                )
-              }
-            />
+            <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
-            <Route
-              path="/account/evolution"
-              element={
-                actor === "etudiant" && user.niveau === "MASTER 2" ? (
-                  <EvolutionDossier />
-                ) : (
-                  <EvolutionDossierThese />
-                )
-              }
-            />
+            <Route path="/account/evolution" element={<EvolutionDossier />} />
+            <Route path="/account/date-soutenance" element={<DateSoutenance />} />
             <Route
               path="/account/changement-sujet"
               element={<Result title="En cours d'implémentation" />}
@@ -341,11 +326,11 @@ const App = () => {
               path="/acteur/admin/dossier-master"
               element={<DossierMaster />}
             />
-             <Route
+            <Route
               path="/acteur/admin/dossier-these"
               element={<TableListThese />}
             />
-             <Route
+            <Route
               path="/acteur/admin/verification-these"
               element={<VerificationDossierThese />}
             />
