@@ -43,7 +43,7 @@ const EvolutionDossier = () => {
           setEvolution(evolution);
           setCurrentEtape(numEtapeActuelle);
           // todo also set validity period
-          localStorage.setItem('evolution', JSON.stringify(evolution));
+         // localStorage.setItem('evolution', JSON.stringify(evolution));
           localStorage.setItem('numEtapeActuelle', numEtapeActuelle);
         })
         .catch(err => {
@@ -78,8 +78,8 @@ const EvolutionDossier = () => {
                     are the same. This is the case with the "Envoi du dossier de soutenance"
                     step (which is the first step).
                    */}
-                  <div style={item.debuteeLe === item.acheveeLe ? { display: 'none' } : {}}>
-                    <span className="mx-2">-</span>
+                  <div  style={item.debuteeLe === item.acheveeLe ? { display: 'none' } : {margin:0,display:"flex",alignItems:"center"}}>
+                    <span className="mx-2 pb-3">-</span>
                     <p>{item.acheveeLe}</p>
                   </div>
                   </div>

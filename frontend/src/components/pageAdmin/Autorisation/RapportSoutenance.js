@@ -24,7 +24,7 @@ const RapportSoutenance = () => {
       okText: 'Oui',
       cancelText: 'Non',
       async onOk() {
-        return axios.put(`/dossiers/${etudiantInfo.idDossier}/valider-notation`, {
+        return axios.put(`/admin/dossiers/${etudiantInfo.idDossier}/valider-notation`, {
           rapport: value,
         })
           .then(res => {
@@ -50,7 +50,7 @@ const RapportSoutenance = () => {
 
   return (
     <>
-      <section className="my-5">
+      <section className="my-5" style={{width:"100%",overflow:"hidden"}}>
         <ToastContainer />
         <div className="row d-flex justify-content-center">
           <div
@@ -62,7 +62,7 @@ const RapportSoutenance = () => {
               Vous redigez la lettre d'autorisation de soutenance de l'étudiant{" "}
               <strong>{etudiantInfo.nom}</strong>
             </p>
-            <ReactQuill theme="snow" onChange={setValue} />
+            <ReactQuill theme="snow" value={value} onChange={setValue} />
             <div className="d-flex justify-content-between mx-2 my-3">
               <button
                 type="button"

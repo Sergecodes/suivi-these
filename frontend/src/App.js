@@ -50,6 +50,8 @@ import DepotDossierMaster from "./components/pageEtudiant/DepotDossierMaster";
 import EvolutionDossier from "./components/pageEtudiant/EvolutionDossier";
 //import EvolutionDossierThese from "./components/pageEtudiant/EvolutionDossierThese";
 import ProfilEtudiant from "./components/pageEtudiant/ProfilEtudiant";
+import DateSoutenance from "./components/pageEtudiant/DateSoutenance";
+
 
 /**************************************************************************************************/
 
@@ -169,6 +171,7 @@ const App = () => {
             <Route path="/account/depot" element={<DepotDossierMaster />} />
             <Route path="/account/profil" element={<ProfilEtudiant />} />
             <Route path="/account/evolution" element={<EvolutionDossier />} />
+            <Route path="/account/date-soutenance" element={<DateSoutenance />} />
             <Route
               path="/account/changement-sujet"
               element={<Result title="En cours d'implémentation" />}

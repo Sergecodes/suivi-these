@@ -42,6 +42,11 @@ const NotationMaster = () => {
   };
   
   const handleSubmit = () => {
+    if(somme > 60 || somme < 0 || isNaN(somme)) {
+      toast.error("La note doit etre comprise entre 0 et 60", { hideProgressBar: true });
+      return false;
+    }
+
     let notes = (function () {
       let result = {};
       for (let note of notation) {

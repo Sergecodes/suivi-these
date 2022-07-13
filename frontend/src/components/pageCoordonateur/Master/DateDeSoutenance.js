@@ -14,7 +14,6 @@ const DateDeSoutenance = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dateRef = useRef();
-  const today = moment();
   const { etudiantInfo } = location.state;
 
   const handleSubmit = () => {

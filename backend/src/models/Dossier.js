@@ -96,14 +96,7 @@ DossierSchema.methods.getNotesTotales = async function () {
 
 DossierSchema.methods.getEtapeActuelle = async function () {
   await this.populate("etapes");
-  let etapes = this.etapes;
-  for (let i = etapes.length - 1; i >= 0; i--) {
-    let etape = etapes[i];
-    if (etape.acheveeLe) return etape;
-  }
-
-  console.log("no étape achevée, getting first etape or null");
-  return etapes[0] || null;
+  return this.etapes.at(-1);
 };
 
 DossierSchema.methods.incrementerEtape = async function (numEtapeSuivante) {

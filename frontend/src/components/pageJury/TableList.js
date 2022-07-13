@@ -138,6 +138,8 @@ const TableList = () => {
       initDateNotation: 0,
       dateNotation: "---",
       dossier: {},
+      notes: {},
+      total: 0
     },
   ]);
 
@@ -185,8 +187,8 @@ const TableList = () => {
           ? moment(noteObj.noteLe).format("dddd, D MMM YYYY")
           : "---",
         dossier: envoiObj.dossier,
-        notes: noteObj.notes,
-        total: noteObj.total,
+        notes: noteObj ? noteObj.notes : {},
+        total: noteObj ? noteObj.total : 0,
       });
     }
 

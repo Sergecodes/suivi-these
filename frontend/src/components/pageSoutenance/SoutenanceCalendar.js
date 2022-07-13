@@ -1,110 +1,121 @@
-import moment from 'moment';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import moment from "moment";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import {
-  Calendar, Input, Col, Table, Row,
-  Typography, Modal, Button, Select,
-} from 'antd';
-import { toast, ToastContainer } from 'react-toastify'
-import '../../Styles/Soutenance.css';
+  Calendar,
+  Input,
+  Col,
+  Table,
+  Row,
+  Typography,
+  Modal,
+  Button,
+  Select,
+} from "antd";
+import { toast, ToastContainer } from "react-toastify";
+import "../../Styles/Soutenance.css";
 
+moment.locale("fr");
 
 const { Option } = Select;
 const { Search } = Input;
 const { Title } = Typography;
 
 const frLocale = {
-  "lang": {
-    "locale": "fr_FR",
-    "placeholder": "Sélectionner une date",
-    "rangePlaceholder": ['Date de début', 'Date de fin'],
-    "today": "aujourd'hui",
-    "now": "maintenant",
-    "backToToday": "Retour à aujourd'hui",
-    "ok": "OK",
-    "clear": "Effacer",
-    "month": "Mois",
-    "year": "Année",
-    "timeSelect": "Selectionner l'heure",
-    "dateSelect": "Selectionner la date",
-    "monthSelect": "Sélectionner un mois",
-    "yearSelect": "Sélectionner une année",
-    "decadeSelect": "Choisissez une décennie",
-    "yearFormat": "YYYY",
-    "dateFormat": "M/D/YYYY",
-    "dayFormat": "D",
-    "dateTimeFormat": "M/D/YYYY HH:mm:ss",
-    "monthFormat": "MMMM",
-    "monthBeforeYear": true,
-    "previousMonth": "Mois précédent (PageUp)",
-    "nextMonth": "Moir prochain (PageDown)",
-    "previousYear": "Année dernière (Control + left)",
-    "nextYear": "Année prochaine (Control + right)",
-    "previousDecade": "Décennie passée",
-    "nextDecade": "Décennie prochaine",
-    "previousCentury": "Dernier siècle",
-    "nextCentury": "Siècle prochain"
+  lang: {
+    locale: "fr_FR",
+    placeholder: "Sélectionner une date",
+    rangePlaceholder: ["Date de début", "Date de fin"],
+    today: "aujourd'hui",
+    now: "maintenant",
+    backToToday: "Retour à aujourd'hui",
+    ok: "OK",
+    clear: "Effacer",
+    month: "Mois",
+    year: "Année",
+    timeSelect: "Selectionner l'heure",
+    dateSelect: "Selectionner la date",
+    monthSelect: "Sélectionner un mois",
+    yearSelect: "Sélectionner une année",
+    decadeSelect: "Choisissez une décennie",
+    yearFormat: "YYYY",
+    dateFormat: "M/D/YYYY",
+    dayFormat: "D",
+    dateTimeFormat: "M/D/YYYY HH:mm:ss",
+    monthFormat: "MMMM",
+    monthBeforeYear: true,
+    previousMonth: "Mois précédent (PageUp)",
+    nextMonth: "Moir prochain (PageDown)",
+    previousYear: "Année dernière (Control + left)",
+    nextYear: "Année prochaine (Control + right)",
+    previousDecade: "Décennie passée",
+    nextDecade: "Décennie prochaine",
+    previousCentury: "Dernier siècle",
+    nextCentury: "Siècle prochain",
   },
-  "timePickerLocale": {
-    "placeholder": "Selectionner l'heure"
+  timePickerLocale: {
+    placeholder: "Selectionner l'heure",
   },
-  "dateFormat": "YYYY-MM-DD",
-  "dateTimeFormat": "YYYY-MM-DD HH:mm:ss",
-  "weekFormat": "YYYY-wo",
-  "monthFormat": "YYYY-MM"
+  dateFormat: "YYYY-MM-DD",
+  dateTimeFormat: "YYYY-MM-DD HH:mm:ss",
+  weekFormat: "YYYY-wo",
+  monthFormat: "YYYY-MM",
 };
 
-
 export default function SoutenanceCalendar() {
-  const [allDatesSoutenance, setAllDatesSoutenance] = useState([{
-    date: '2022/08/17',
-    etudiants: [
-      {
-        id: '1111',
-        matricule: '18M499',
-        nom: 'yo',
-        prenom: 'ya',
-        niveau: 'MASTER 2',
-        sexe: 'Mâle'
-      },
-    ],
-  }]);
+  const [allDatesSoutenance, setAllDatesSoutenance] = useState([
+    // {
+    //   date: '2022-08-17T18:37',
+    //   etudiants: [
+    //     {
+    //       id: '1111',
+    //       matricule: '18M499',
+    //       nom: 'yo',
+    //       prenom: 'ya',
+    //       niveau: 'MASTER 2',
+    //       sexe: 'Mâle'
+    //     },
+    //   ],
+    // }
+  ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [datesSoutenance, setDatesSoutenance] = useState(allDatesSoutenance);
-  const [etudSearch, setEtudSearch] = useState('');
+  const [etudSearch, setEtudSearch] = useState("");
   const [displayEtudSearchTable, setDisplayEtudSearchTable] = useState(false);
+
+  // console.log("datesSoutenance is", datesSoutenance);
 
   const tableColumns = [
     {
-      title: 'Matricule',
-      dataIndex: 'matricule',
-      sortDirections: ['ascend', 'descend', 'ascend'],
+      title: "Matricule",
+      dataIndex: "matricule",
+      sortDirections: ["ascend", "descend", "ascend"],
       sorter: (a, b) => a.matricule.localeCompare(b.matricule),
       // render: text => <a>{text}</a>,
     },
     {
-      title: 'Noms et Prenoms',
-      dataIndex: 'nomPrenom',
-      sortDirections: ['ascend', 'descend', 'ascend'],
+      title: "Noms et Prenoms",
+      dataIndex: "nomPrenom",
+      sortDirections: ["ascend", "descend", "ascend"],
       sorter: (a, b) => a.nomPrenom.localeCompare(b.nomPrenom),
     },
     {
-      title: 'Niveau',
-      dataIndex: 'niveau',
-      sortDirections: ['ascend', 'descend', 'ascend'],
+      title: "Niveau",
+      dataIndex: "niveau",
+      sortDirections: ["ascend", "descend", "ascend"],
       sorter: (a, b) => a.niveau.localeCompare(b.niveau),
     },
     {
-      title: 'Sexe',
-      dataIndex: 'sexe',
-      sortDirections: ['ascend', 'descend', 'ascend'],
+      title: "Sexe",
+      dataIndex: "sexe",
+      sortDirections: ["ascend", "descend", "ascend"],
       sorter: (a, b) => a.sexe.localeCompare(b.sexe),
-      render: record => record.sexe === 'Mâle' ? 'M' : 'F'
+      render: (value) => (value === "Mâle" ? "M" : "F"),
     },
     {
-      title: 'Date de soutenance',
-      dataIndex: 'date',
-      sortDirections: ['ascend', 'descend', 'ascend'],
+      title: "Date de soutenance",
+      dataIndex: "date",
+      sortDirections: ["ascend", "descend", "ascend"],
       sorter: (a, b) => a.date.localeCompare(b.date),
     },
   ];
@@ -112,11 +123,12 @@ export default function SoutenanceCalendar() {
   useEffect(() => {
     // First check in localStorage if results are present. If not present,
     // call endpoint and store result in localStorage for given period (say 1day)
-    let dates = JSON.parse(localStorage.getItem('datesSoutenance'));
+    let dates = JSON.parse(localStorage.getItem("datesSoutenance"));
 
     if (dates === null) {
-      axios.get('/etudiants/dates-soutenance')
-        .then(res => {
+      axios
+        .get("/etudiants/dates-soutenance")
+        .then((res) => {
           console.log(res);
           dates = parseDates(res.data);
           console.log(dates);
@@ -125,7 +137,7 @@ export default function SoutenanceCalendar() {
           // todo also set validity period
           // localStorage.setItem('datesSoutenance', JSON.stringify(dates));
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           toast.error("Une erreur est survenue", { hideProgressBar: true });
         });
@@ -140,25 +152,25 @@ export default function SoutenanceCalendar() {
   const parseDates = (dates) => {
     // backend format is an object with keys as dates and values array of etudiants
     // of the form { <date>: [<array etudiants>] }
-    // frontend compatible format is an array with objects of the form 
-    // [ {'date': <date>, 'etudiants': [<array etudiants>] } ]  
+    // frontend compatible format is an array with objects of the form
+    // [ {'date': <date>, 'etudiants': [<array etudiants>] } ]
     let result = [];
 
     for (let date in dates) {
       result.push({
-        date,
-        etudiants: dates[date]
+        date: moment(date).format("YYYY-MM-DD HH:mm"),
+        etudiants: dates[date],
       });
     }
 
     return result;
-  }
+  };
 
   const handleNiveauChange = (value) => {
-    setEtudSearch('');
+    setEtudSearch("");
     setDisplayEtudSearchTable(false);
 
-    if (value !== 'tous') {
+    if (value !== "tous") {
       let newDates = [];
 
       for (let i = 0; i < allDatesSoutenance.length; i++) {
@@ -194,7 +206,7 @@ export default function SoutenanceCalendar() {
   const handleEtudiantSearch = (value) => {
     value = value.trim().toLowerCase();
 
-    if (value !== '') {
+    if (value !== "") {
       let newDates = [];
 
       for (let i = 0; i < allDatesSoutenance.length; i++) {
@@ -205,8 +217,8 @@ export default function SoutenanceCalendar() {
         for (let j = 0; j < etudiants.length; j++) {
           let etud = etudiants[j];
           if (
-            etud.nom.toLowerCase() === value ||
-            etud.prenom.toLowerCase() === value ||
+            etud.nom.toLowerCase().includes(value) ||
+            etud.prenom.toLowerCase().includes(value) ||
             etud.matricule.toLowerCase() === value
           ) {
             tempEtuds.push(etud);
@@ -234,16 +246,16 @@ export default function SoutenanceCalendar() {
   const handleCancel = () => setIsModalVisible(false);
 
   const handlePanelChange = (date, mode) => {
-    setEtudSearch('');
+    setEtudSearch("");
     setDisplayEtudSearchTable(false);
   };
 
   function getEtudiantsFromDate(value) {
-    let date = value.format('yyyy/MM/DD');
+    let date = value.format("YYYY-MM-DD");
 
-    for (let dateObj of datesSoutenance) {
-      if (dateObj['date'] === date) {
-        return dateObj['etudiants'];
+    for (let entry of datesSoutenance) {
+      if (moment(entry.date).format("YYYY-MM-DD") === date) {
+        return entry.etudiants;
       }
     }
 
@@ -252,17 +264,14 @@ export default function SoutenanceCalendar() {
 
   function dateCellRender(value) {
     let etudiants = getEtudiantsFromDate(value);
+
     if (etudiants.length > 0) {
-      let date = value.format('yyyy/MM/DD');
+      let date = value.format("YYYY-MM-DD");
 
       // Remove last column (date soutenance)
-      let columns = tableColumns.filter((col, idx) => idx !== tableColumns.length - 1);
-      // let n = tableColumns.length;
-      // for (let i = 0; i < n; i++) {
-      //   if (i !== n - 1) {
-      //     columns.push(tableColumns[i]);
-      //   }
-      // }
+      let columns = tableColumns.filter(
+        (col, idx) => idx !== tableColumns.length - 1
+      );
 
       let data = [];
       for (let etud of etudiants) {
@@ -270,7 +279,7 @@ export default function SoutenanceCalendar() {
           id: etud.id,
           key: etud.matricule,
           matricule: etud.matricule,
-          nomPrenom: etud.nom + ' ' + etud.prenom,
+          nomPrenom: etud.nom + " " + etud.prenom,
           niveau: etud.niveau,
         });
       }
@@ -294,18 +303,18 @@ export default function SoutenanceCalendar() {
             visible={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
-            cancelButtonProps={{ style: { display: 'none' } }}
+            cancelButtonProps={{ style: { display: "none" } }}
           >
             <Table
               columns={columns}
-              style={{ marginBottom: '1rem' }}
+              style={{ marginBottom: "1rem" }}
               dataSource={data}
               size="small"
               pagination={{ hideOnSinglePage: true }}
               title={() => {
                 let message =
                   data.length === 1
-                    ? '1 étudiant trouvé'
+                    ? "1 étudiant trouvé"
                     : `${data.length} étudiants trouvés`;
                 return <b>{message}</b>;
               }}
@@ -313,9 +322,10 @@ export default function SoutenanceCalendar() {
           </Modal>
         </div>
       );
+    } else {
+      // console.log("no etudiants for given date");
+      return <></>;
     }
-
-    return <></>;
   }
 
   function etudiantsTableRender() {
@@ -325,7 +335,7 @@ export default function SoutenanceCalendar() {
         data.push({
           key: etud.id,
           matricule: etud.matricule,
-          nomPrenom: etud.nom + ' ' + etud.prenom,
+          nomPrenom: etud.nom + " " + etud.prenom,
           niveau: etud.niveau,
           date: dateObj.date,
         });
@@ -335,17 +345,17 @@ export default function SoutenanceCalendar() {
     return (
       <Table
         columns={tableColumns}
-        style={{ marginBottom: '1rem' }}
+        style={{ marginBottom: "1rem" }}
         dataSource={data}
         size="small"
         scroll={{ y: 150 }}
         pagination={{ hideOnSinglePage: true }}
         title={() => {
-          let message = '';
+          let message = "";
           if (data.length === 0) {
-            message = 'Aucun étudiant trouvé';
+            message = "Aucun étudiant trouvé";
           } else if (data.length === 1) {
-            message = '1 étudiant trouvé';
+            message = "1 étudiant trouvé";
           } else {
             message = `${data.length} étudiants trouvés`;
           }
@@ -378,33 +388,50 @@ export default function SoutenanceCalendar() {
 
           for (let index = start; index < end; index++) {
             monthOptions.push(
-              <Select.Option key={`${index}`}>{months[index]}</Select.Option>
+              <Option key={`${index}`}>{months[index]}</Option>
             );
           }
 
           const month = value.month();
-          const year = value.year();
-          const options = [];
-          for (let i = year - 2; i < year + 2; i++) {
-            options.push(
-              <Select.Option key={i} value={i}>
-                {i}
-              </Select.Option>
+          const year = value.year();  // this is the selected year
+          const yearOptions = [];
+          // for (let i = year - 2; i <= year + 2; i++) {
+          //   yearOptions.push(
+          //     <Option key={i} value={i}>
+          //       {i}
+          //     </Option>
+          //   );
+          // }
+          const startYear = 2018, stopYear = 2025;
+          for (let i = startYear; i <= stopYear; i++) {
+            yearOptions.push(
+              <Option key={i} value={i}>
+                <span style={ year === i ? { fontWeight: 'bold' } : {} }>
+                  {i}
+                </span>
+              </Option>
             );
           }
+
           return (
             <div style={{ padding: 8 }}>
               <Title
                 level={4}
-                style={{ fontSize: "20px", textAlign: 'center', margin: '1.5rem 0rem', color: "var(--primaryColor)" }}
+                style={{
+                  fontSize: "20px",
+                  textAlign: "center",
+                  margin: "1.5rem 0rem",
+                  color: "var(--primaryColor)",
+                }}
               >
                 SOUTENANCES
               </Title>
-              <Row gutter={8}
-                style={{ marginBottom: '10px' }}
-
-              >
-                <Col span={24} style={{ marginBottom: '5px' }} className="d-flex justify-content-center">
+              <Row gutter={8} style={{ marginBottom: "10px" }}>
+                <Col
+                  span={24}
+                  style={{ marginBottom: "5px" }}
+                  className="d-flex justify-content-center"
+                >
                   <Search
                     allowClear
                     value={etudSearch}
@@ -419,8 +446,8 @@ export default function SoutenanceCalendar() {
                     defaultValue="tous"
                     style={{
                       width: 170,
-                      marginRight: '8px',
-                      marginBottom: '5px',
+                      marginRight: "8px",
+                      marginBottom: "5px",
                     }}
                     onChange={handleNiveauChange}
                   >
@@ -429,22 +456,20 @@ export default function SoutenanceCalendar() {
                     <Option value="DOCTORAT">These</Option>
                   </Select>
                   <Select
-                    dropdownMatchSelectWidth={false}
                     onChange={(newYear) => {
                       const now = value.clone().year(newYear);
                       onChange(now);
                     }}
                     value={String(year)}
-                    style={{ marginRight: '5px' }}
+                    style={{ marginRight: "5px" }}
                   >
-                    {options}
+                    {yearOptions}
                   </Select>
                   <Select
-                    dropdownMatchSelectWidth={false}
                     value={String(month)}
                     onChange={(selectedMonth) => {
                       const newValue = value.clone();
-                      newValue.month(parseInt(selectedMonth, 10));
+                      newValue.month(selectedMonth);
                       onChange(newValue);
                     }}
                     style={{ width: 80 }}

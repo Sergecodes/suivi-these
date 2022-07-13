@@ -63,7 +63,7 @@ const columns = [
               </Tooltip>
             </p>
           </Link>
-          <div style={record.dateProgrammation !== "---"?{}:{display:"none"}}>
+          <div style={record.dateProgrammation === "---"?{}:{display:"none"}}>
             <Link
               to="/acteur/coordonateur/date"
               state={{
@@ -74,8 +74,6 @@ const columns = [
                   nom: record.name,
                 },
               }}
-              
-            
             >
               <Tooltip
                 placement="bottom"

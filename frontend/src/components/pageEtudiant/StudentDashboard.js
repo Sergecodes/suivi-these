@@ -1,5 +1,5 @@
 import { useWindowSize } from "react-use";
-import { BsFolderFill, BsPersonFill,BsDoorOpenFill ,BsArrowRepeat } from "react-icons/bs";
+import { BsFolderFill, BsPersonFill,BsDoorOpenFill ,BsArrowRepeat,BsCalendar2DateFill } from "react-icons/bs";
 import { IoRocketSharp } from "react-icons/io5";
 import { Link, useNavigate ,useLocation} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -104,6 +104,13 @@ const StudentDashboard = (props) => {
             <p style={location.pathname === "/account/evolution"?{backgroundColor:"#ff5821",color:"white"}:{}}>
               <IoRocketSharp className="me-2 fs-5"/> Evolution du dossier
             </p>
+          </Link>
+          <Link to="/account/date-soutenance">
+            <div style={etudiant.dateSoutenance !== "" ?{margin:0}:{display:"none",margin:0}}>
+              <p style={location.pathname === "/account/date-soutenance"?{backgroundColor:"#ff5821",color:"white"}:{}}>
+                <BsCalendar2DateFill className="me-2 fs-5"/> Date soutenance <span className="ms-1 " style={{border:"1px solid green",borderRadius:"3px",color:"green",backgroundColor:"transparent",fontSize:"13px",padding:"2px"}}>NEW !</span>
+              </p>
+            </div>
           </Link>
           <p onClick={handleLogout} style={{ cursor: 'pointer' }}>
             <BsDoorOpenFill  className="me-2 fs-5"/> Deconnexion
