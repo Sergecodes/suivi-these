@@ -139,7 +139,7 @@ const NotificationsActeurs = (props) => {
         style={{ position: "relative" }}
       >
         <div style={{ position: "absolute", right: "3%", top: "0%" }}>
-          <Dropdown overlay={menu} trigger={["click"]}>
+          <Dropdown overlay={menu} trigger={["click", "contextMenu"]}>
             <span onClick={() => setCurrent(notif)} style={{ cursor: 'pointer' }}>
               <Space
                 className="fs-3"
