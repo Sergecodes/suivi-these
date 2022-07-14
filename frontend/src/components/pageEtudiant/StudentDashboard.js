@@ -18,6 +18,7 @@ const StudentDashboard = (props) => {
   const location = useLocation()
   const etudiant = JSON.parse(localStorage.getItem('user'));
 
+
   const handleLogout = () => {
     axios.post('/logout')
       .then(res => {
@@ -106,7 +107,7 @@ const StudentDashboard = (props) => {
             </p>
           </Link>
           <Link to="/account/date-soutenance">
-            <div style={etudiant.dateSoutenance !== "" ?{margin:0}:{display:"none",margin:0}}>
+            <div style={typeof etudiant.dateSoutenance === 'undefined'?{display:"none",margin:0}:{margin:0}}>
               <p style={location.pathname === "/account/date-soutenance"?{backgroundColor:"#ff5821",color:"white"}:{}}>
                 <BsCalendar2DateFill className="me-2 fs-5"/> Date soutenance <span className="ms-1 " style={{border:"1px solid green",borderRadius:"3px",color:"green",backgroundColor:"transparent",fontSize:"13px",padding:"2px"}}>NEW !</span>
               </p>

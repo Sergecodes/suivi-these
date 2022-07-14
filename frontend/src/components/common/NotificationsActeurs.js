@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import moment from 'moment';
@@ -23,13 +23,16 @@ const NotificationsActeurs = (props) => {
   //   vueLe: '' or date string,
   // }];
 
-  console.log("props", props);
   // acteur and notifs should be passed as props
   const { acteur, notifs: allNotifs } = props;
 
   const [notifs, setNotifs] = useState(props.notifs);
   const [clicked, setClicked] = useState(true);
   const [current, setCurrent] = useState({});
+
+  useEffect( () => {
+    setNotifs(props.notifs)
+  }, [props.notifs])
 
   const handleSelectTout = () => {
     setNotifs(allNotifs);
@@ -70,7 +73,7 @@ const NotificationsActeurs = (props) => {
   const handleSupprimer = () => {
     axios.delete(`notifications/${current.id}`)
       .then(res => {
-        console.log(res);
+        console.log("res est",res);
         toast.success("Supprimée", { hideProgressBar: true });
 
         // Remove notif from list of notifs
@@ -102,7 +105,6 @@ const NotificationsActeurs = (props) => {
   const menu = (
     <Menu items={[
         {
-          type: "divider",
           label: (
             <p onClick={handleMarquerLu} style={current.vueLe ? { display: 'none' } : {}}>
               Marquer comme lu
@@ -111,21 +113,22 @@ const NotificationsActeurs = (props) => {
           key: "marquerLu",
         },
         {
-          type: "divider",
+          type: 'divider',
+        },
+        {
           danger: true,
           label: (
-            <p onClick={handleSupprimer}>
+            <p onClick={handleSupprimer} >
               Supprimer la notification
             </p>
           ),
           key: "supprimer",
-        },
+        }
       ]}
     />
   );
 
   const getNotifDisplay = (notif) => {
-    console.log("notif is",notif);
     const render = (
       <div
         key={notif.id}
@@ -136,7 +139,7 @@ const NotificationsActeurs = (props) => {
         style={{ position: "relative" }}
       >
         <div style={{ position: "absolute", right: "3%", top: "0%" }}>
-          <Dropdown overlay={menu} trigger={["click", "contextMenu"]}>
+          <Dropdown overlay={menu} trigger={["click"]}>
             <span onClick={() => setCurrent(notif)} style={{ cursor: 'pointer' }}>
               <Space
                 className="fs-3"
@@ -163,6 +166,7 @@ const NotificationsActeurs = (props) => {
       return render;
     }
   }
+  
 
   return (
     <section
