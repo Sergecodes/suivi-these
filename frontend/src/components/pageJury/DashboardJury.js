@@ -29,7 +29,7 @@ const DashboardJury = () => {
                    </div>
                 </div>
                 <hr style={{color:'gray'}}/>
-                <Link to="/acteur/admin/liste" style={{color:"gray"}} className="adminDashboardDetail">Plus de details</Link>
+                <Link to="/acteur/jury/dashboard" style={{color:"gray"}} className="adminDashboardDetail">Plus de details</Link>
               </div>
             </div>
           );

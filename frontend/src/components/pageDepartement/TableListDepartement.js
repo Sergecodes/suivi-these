@@ -198,9 +198,14 @@ const TableListDepartement = () => {
   };
 
   return (
-    <section style={{minHeight:"80vh"}}>
+    <section>
       <ToastContainer />
       <div className=" mx-3 my-3" >
+        <div style={{ backgroundColor: "#2a1c5a", borderRadius: "10px" }}>
+          <h5 className="text-center py-3" style={{ color: "white" }}>
+            LISTE DES DOSSIERS ETUDIANTS
+          </h5>
+        </div>
         <Table
           columns={columns}
           dataSource={data}

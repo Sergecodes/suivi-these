@@ -15,8 +15,6 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "../../Styles/Soutenance.css";
 
-moment.locale("fr");
-
 const { Option } = Select;
 const { Search } = Input;
 const { Title } = Typography;
@@ -64,25 +62,28 @@ const frLocale = {
 
 export default function SoutenanceCalendar() {
   const [allDatesSoutenance, setAllDatesSoutenance] = useState([
-    // {
-    //   date: '2022-08-17T18:37',
-    //   etudiants: [
-    //     {
-    //       id: '1111',
-    //       matricule: '18M499',
-    //       nom: 'yo',
-    //       prenom: 'ya',
-    //       niveau: 'MASTER 2',
-    //       sexe: 'Mâle'
-    //     },
-    //   ],
-    // }
+     {
+       date: '2022-07-17T18:37',
+       etudiants: [
+         {
+           id: '1111',
+           matricule: '18M499',
+           nom: 'yo',
+           prenom: 'ya',
+           niveau: 'MASTER 2',
+           sexe: 'Mâle'
+         },
+       ],
+     }
   ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [datesSoutenance, setDatesSoutenance] = useState(allDatesSoutenance);
   const [etudSearch, setEtudSearch] = useState("");
   const [displayEtudSearchTable, setDisplayEtudSearchTable] = useState(false);
-
+  const [modalInfo, setModalInfo] = useState({
+    title: '',
+    body: <></>
+  });
   // console.log("datesSoutenance is", datesSoutenance);
 
   const tableColumns = [
@@ -120,6 +121,7 @@ export default function SoutenanceCalendar() {
     },
   ];
 
+  // Get list of students defence date
   useEffect(() => {
     // First check in localStorage if results are present. If not present,
     // call endpoint and store result in localStorage for given period (say 1day)
@@ -134,6 +136,7 @@ export default function SoutenanceCalendar() {
           console.log(dates);
 
           setAllDatesSoutenance(dates);
+          setDatesSoutenance(dates)
           // todo also set validity period
           // localStorage.setItem('datesSoutenance', JSON.stringify(dates));
         })
@@ -148,6 +151,7 @@ export default function SoutenanceCalendar() {
 
   /**
    * Convert result received from backend to compatible format
+   * i.e. array of date with students; which will be used by the calendar
    */
   const parseDates = (dates) => {
     // backend format is an object with keys as dates and values array of etudiants
@@ -203,6 +207,10 @@ export default function SoutenanceCalendar() {
     setEtudSearch(e.target.value);
   };
 
+  /**
+   * Called when search button is click
+   * value is the search string entered
+   */
   const handleEtudiantSearch = (value) => {
     value = value.trim().toLowerCase();
 
@@ -239,17 +247,54 @@ export default function SoutenanceCalendar() {
     }
   };
 
-  const showModal = () => setIsModalVisible(true);
+  const handleModalBtnClick = (value, tableData) => {
+    let date = value.format("YYYY-MM-DD");
+
+    // Remove last column (date soutenance)
+    let columns = tableColumns.filter(
+      (col, idx) => idx !== tableColumns.length - 1
+    );
+    setModalInfo({
+      title: moment() > value
+            ? `Etudiants qui vont soutenir le ${date}`
+            : `Etudiants ayant soutenus le ${date}`,
+      body:  (
+        <Table
+          columns={columns}
+          style={{ marginBottom: "1rem" }}
+          dataSource={tableData}
+          size="small"
+          pagination={{ hideOnSinglePage: true }}
+          title={() => {
+            let message =
+              tableData.length === 1
+                ? "1 étudiant trouvé"
+                : `${tableData.length} étudiants trouvés`;
+            return <b>{message}</b>;
+          }}
+        />
+      )
+    });
+    setIsModalVisible(true);
+  }
 
   const handleOk = () => setIsModalVisible(false);
 
   const handleCancel = () => setIsModalVisible(false);
 
+  /**
+   * Called when panel is changed.
+   * Panel refers to month or year
+   */
   const handlePanelChange = (date, mode) => {
     setEtudSearch("");
     setDisplayEtudSearchTable(false);
   };
 
+  /**
+   * Get students that are associated with given date
+   * value: moment object
+   */
   function getEtudiantsFromDate(value) {
     let date = value.format("YYYY-MM-DD");
 
@@ -262,20 +307,19 @@ export default function SoutenanceCalendar() {
     return [];
   }
 
+  /**
+   * This function will be called for each visible cell in the calendar.
+   * It determines whether we should display the modal button or not.
+   * Modal button is displayed if date has associated students.
+   * value - moment object
+   */
   function dateCellRender(value) {
     let etudiants = getEtudiantsFromDate(value);
 
     if (etudiants.length > 0) {
-      let date = value.format("YYYY-MM-DD");
-
-      // Remove last column (date soutenance)
-      let columns = tableColumns.filter(
-        (col, idx) => idx !== tableColumns.length - 1
-      );
-
-      let data = [];
+      let etudiantsData = [];
       for (let etud of etudiants) {
-        data.push({
+        etudiantsData.push({
           id: etud.id,
           key: etud.matricule,
           matricule: etud.matricule,
@@ -290,36 +334,10 @@ export default function SoutenanceCalendar() {
             size="small"
             className="modal-btn"
             type="primary"
-            onClick={showModal}
+            onClick={() => handleModalBtnClick(value, etudiantsData)}
           >
             ...
           </Button>
-          <Modal
-            title={
-              moment() > value
-                ? `Etudiants qui vont soutenir le ${date}`
-                : `Etudiants ayant soutenus le ${date}`
-            }
-            visible={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            cancelButtonProps={{ style: { display: "none" } }}
-          >
-            <Table
-              columns={columns}
-              style={{ marginBottom: "1rem" }}
-              dataSource={data}
-              size="small"
-              pagination={{ hideOnSinglePage: true }}
-              title={() => {
-                let message =
-                  data.length === 1
-                    ? "1 étudiant trouvé"
-                    : `${data.length} étudiants trouvés`;
-                return <b>{message}</b>;
-              }}
-            />
-          </Modal>
         </div>
       );
     } else {
@@ -328,6 +346,9 @@ export default function SoutenanceCalendar() {
     }
   }
 
+  /**
+   * Used to display table when a student is searched (based on name or matricule...)
+   */
   function etudiantsTableRender() {
     let data = [];
     for (let dateObj of datesSoutenance) {
@@ -368,6 +389,16 @@ export default function SoutenanceCalendar() {
   return (
     <>
       <ToastContainer />
+      <Modal
+        title={modalInfo.title}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        destroyOnClose={true}
+        cancelButtonProps={{ style: { display: "none" } }}
+      >
+        {modalInfo.body}
+      </Modal>
       <Calendar
         className="calendar"
         dateCellRender={dateCellRender}
