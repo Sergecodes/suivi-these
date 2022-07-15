@@ -5,9 +5,9 @@ import TableList from "./TableList";
 
 const DashboardJury = () => {
   const infos = [
-    { slug: "total", nom: "Dossiers à noter", nombre: "10",color:"orange",icon:<BsFillFolderFill className="fs-4" /> },
-    { slug: "noté", nom: "Etudiants déja notés", nombre: "5" ,color:"green",icon:<BsCheck className="fs-3"/> },
-    { slug: "non-noté", nom: "Etudiants restant", nombre: "15",color:"red" ,icon:<BsX className="fs-3"/> },
+    { slug: "total", nom: "Dossiers totaux", nombre: "3",color:"orange",icon:<BsFillFolderFill className="fs-4" /> },
+    { slug: "noté", nom: "Etudiants déja notés", nombre: "2" ,color:"green",icon:<BsCheck className="fs-3"/> },
+    { slug: "non-noté", nom: "Etudiants restant", nombre: "1",color:"red" ,icon:<BsX className="fs-3"/> },
   ];
   return (
     <section className="container DashboardJury my-4">

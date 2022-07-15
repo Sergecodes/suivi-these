@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Button, Result } from 'antd';
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +13,8 @@ import "../../Styles/Connexion.css";
 
 import LoadingScreen from "../LoadingScreen";
 
-function EtudiantInscriptionScreen() {
+const EtudiantInscriptionScreen = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     matricule: "",
     nom: "",
@@ -33,8 +35,7 @@ function EtudiantInscriptionScreen() {
   const dispatch = useDispatch();
   const [departements, setDepartements] = useState([]);
   const [encadreurs, setEncadreurs] = useState([]);
-  const [showResult, setShowResult] = useState(false);
-  const { isLoading, isSuccess } = useSelector(
+  const { isLoading, isSuccess, showResult } = useSelector(
     (state) => state.registerEtudiant
   );
 
@@ -55,12 +56,6 @@ function EtudiantInscriptionScreen() {
       })
   }, []);
 
-  useEffect(() => {
-    if (isSuccess) {
-      console.log("isSuccess is true")
-      setShowResult(true);
-    }
-  }, [isSuccess]);
 
 
   const handleDepartementChange = e => {
@@ -107,12 +102,12 @@ function EtudiantInscriptionScreen() {
   };
 
   const handleResultClick = () => {
-    setShowResult(false);
     dispatch(resetRegisterEtudiant());
+    navigate('/')
   }
 
   const getReturnOutput = () => {
-    console.log("in getReturnOutput()");
+    console.log("in getReturnOutput()",isSuccess);
 
     if (isLoading && !showResult) {
       return <LoadingScreen />;
