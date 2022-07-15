@@ -9,6 +9,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isRejected: false,
+  showResult:false,
   message: "",
 };
 
@@ -53,6 +54,7 @@ export const registerEtudiantSlice = createSlice({
       state.isError = false;
       state.message = "";
       state.isRejected = false;
+      state.showResult = false;
     },
     logoutRegisterEtudiant: (state) => {
       state.etudiant = null;
@@ -60,6 +62,7 @@ export const registerEtudiantSlice = createSlice({
       state.isSuccess = false;
       state.isLoading = false;
       state.isRejected = false;
+      state.showResult = false;
       state.message = "";
       localStorage.removeItem("user");
       localStorage.removeItem("actor");
@@ -77,6 +80,7 @@ export const registerEtudiantSlice = createSlice({
         state.isSuccess = true;
         state.message = '';
         state.isError = false;
+        state.showResult = true;
         return state;
       })
       .addCase(registerEtudiant.rejected, (state, action) => {
@@ -85,6 +89,7 @@ export const registerEtudiantSlice = createSlice({
         state.etudiant = null;
         state.isRejected = true;
         state.isError = true;
+        state.showResult = false;
         state.message = action.payload;
       });
   },

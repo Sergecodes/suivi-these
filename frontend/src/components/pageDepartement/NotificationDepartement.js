@@ -29,6 +29,7 @@ const NotificationsDepartement = () => {
         message: notif.message,
         creeLe: notif.creeLe,
         vueLe: notif.vueLe || '',
+        objetConcerne: notif.objetConcerne
       });
     }
 

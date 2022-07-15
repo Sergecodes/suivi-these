@@ -9,7 +9,7 @@ export default function PdfViewer (props) {
     >
       <p>
         Votre navigateur n'a pas de plugin pour la lecture des fichiers PDF. <br />
-        Vous pouvez néanmoins <a href="file_url" download>telecharger</a> le fichier.
+        Vous pouvez néanmoins <a href={props.url} download>telecharger</a> le fichier.
       </p>
     </object>
   );

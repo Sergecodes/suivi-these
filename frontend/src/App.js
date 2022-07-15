@@ -441,32 +441,32 @@ const App = () => {
           ></Route>
 
           {/* Routes qui concernent les information sur tous ce quil y'a a savoir sur les these et autres*/}
-          <Route path="/candidature" element={<CandidatureScreen />}></Route>
-          <Route path="/document" element={<DocumentImportantScreen />}></Route>
-          <Route path="/equipe" element={<EquipeScreen />}></Route>
-          <Route path="/formation" element={<FormationEnTheseScreen />}></Route>
-          <Route path="/Inscription" element={<InscriptionScreen />}></Route>
-          <Route path="/presentation" element={<Presentation />}></Route>
-          <Route path="/canditature" element={<CandidatureScreen />}></Route>
+          <Route path="/informations/candidature" element={<CandidatureScreen />}></Route>
+          <Route path="/informations/document" element={<DocumentImportantScreen />}></Route>
+          <Route path="/informations/equipe" element={<EquipeScreen />}></Route>
+          <Route path="/informations/formation" element={<FormationEnTheseScreen />}></Route>
+          <Route path="/informations/inscription" element={<InscriptionScreen />}></Route>
+          <Route path="/informations/presentation" element={<Presentation />}></Route>
+          <Route path="/informations/canditature" element={<CandidatureScreen />}></Route>
           <Route
-            path="/Procedure"
+            path="/informations/procedure"
             element={<ProceduredeSoutenanceScreen />}
           ></Route>
-          <Route path="/Suivie" element={<SuivieDeFormation />}></Route>
+          <Route path="/informations/suivie" element={<SuivieDeFormation />}></Route>
           <Route
-            path="/these-cotutelle"
+            path="/informations/these-cotutelle"
             element={<TheseEnCotutelleScreen />}
           ></Route>
-          <Route path="/these-cours" element={<TheseEnCoursScreen />}></Route>
+          <Route path="/informations/these-cours" element={<TheseEnCoursScreen />}></Route>
           <Route
-            path="/unites-recherche"
+            path="/informations/unites-recherche"
             element={<UnitesRechercheScreen />}
           ></Route>
           <Route
-            path="/conseil"
+            path="/informations/conseil"
             element={<ConseilScientifiqueScreen />}
           ></Route>
-          <Route path="/document" element={<DocumentImportantScreen />}></Route>
+          <Route path="/informations/document" element={<DocumentImportantScreen />}></Route>
         </Routes>
       </div>
     </BrowserRouter>

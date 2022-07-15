@@ -31,7 +31,8 @@ const NotificationsActeurs = (props) => {
   const [current, setCurrent] = useState({});
 
   useEffect( () => {
-    setNotifs(props.notifs)
+    setNotifs(props.notifs);
+    console.log("props.notifs are ", props.notifs)
   }, [props.notifs])
 
   const handleSelectTout = () => {
@@ -86,9 +87,12 @@ const NotificationsActeurs = (props) => {
   }
 
   const getDescription = (notif) => {
-    // let type = notif.type;
-
-    return notif.message;
+    let type = notif.type;
+    let message = "";
+    if(type === TypeNotification.DOSSIER_ENVOYE){
+      message = "Dossier de l'étudiant envoyé avec succès"
+    }
+    return message;
   }
 
   const getNotifLink = (notif) => {
@@ -151,10 +155,8 @@ const NotificationsActeurs = (props) => {
           </Dropdown>
         </div>
         <h5>{notif.type}</h5>
-        <div>
-          <p>{getDescription(notif)}</p>
-        </div>
-        <p>{moment(notif.creeLe).format("dddd, D MMMM YYYY")}</p>
+          <p className="my-2 fs-6" style={{fontStyle:"italic"}}>{getDescription(notif)}</p>
+        <p className="fw-lighter">{moment(notif.creeLe).format("dddd, D MMMM YYYY")}</p>
       </div>
     );
 

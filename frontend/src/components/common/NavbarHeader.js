@@ -47,7 +47,7 @@ const NavbarHeader = (props) => {
   ];
 
   const onClick = (e) => {
-    navigate(`/` + e.key);
+    navigate(`/informations/` + e.key);
   };
 
   return (

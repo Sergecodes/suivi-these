@@ -7,6 +7,9 @@ import { BsPencil, BsArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { setAdminClicked } from "../../redux/DashboardDisplaySlice";
 import axios from "axios";
+import { logout } from "../../redux/authentification/authSlice";
+import { toast } from "react-toastify";
+
 const logo = require("../../assets/images/téléchargement.jpg");
 
 const NavbarAdmin = () => {
@@ -15,16 +18,18 @@ const NavbarAdmin = () => {
   const [clicked, setClicked] = useState(false);
   const handleLogout = () => {
     axios
-      .post("/logout")
-      .then((res) => {
-        console.log(res);
-        localStorage.removeItem("user");
-        localStorage.removeItem("actor");
-        navigate("/");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    .post("/logout")
+    .then((res) => {
+      console.log(res);
+      dispatch(logout());
+      toast.success("Deconnexion Reussie");
+      localStorage.removeItem("user");
+      localStorage.removeItem("actor");
+      navigate("/");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   };
 
   return (
@@ -71,11 +76,9 @@ const NavbarAdmin = () => {
           </Link>
         </p>
         <hr />
-        <p onClick={handleLogout}>
+        <p onClick={handleLogout} className="profileOptionsLogout" style={{cursor:"pointer"}}>
           {" "}
-          <Link to="/">
             <BsArrowRight /> <span>Se deconnecter</span>
-          </Link>
         </p>
       </div>
     </section>

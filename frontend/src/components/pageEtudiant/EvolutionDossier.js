@@ -41,10 +41,10 @@ const EvolutionDossier = () => {
           numEtapeActuelle = res.data.numEtapeActuelle;
 
           setEvolution(evolution);
-          setCurrentEtape(numEtapeActuelle);
+          setCurrentEtape(numEtapeActuelle - 1);
           // todo also set validity period
          // localStorage.setItem('evolution', JSON.stringify(evolution));
-          localStorage.setItem('numEtapeActuelle', numEtapeActuelle);
+         // localStorage.setItem('numEtapeActuelle', numEtapeActuelle);
         })
         .catch(err => {
           console.error(err);
