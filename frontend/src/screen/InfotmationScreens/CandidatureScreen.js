@@ -7,7 +7,7 @@ function CandidatureScreen() {
   return (
     <>
       <Header />
-      <div className="informationScreen">
+      <div className="informationScreen my-2">
         <div className="container">
           <div className="row">
             <h2>Modalité recrutement</h2>
