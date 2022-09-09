@@ -6,6 +6,7 @@ const { GradeJury, ActeurDossier, AvisEmetteur, EtapeDossier } = require('./type
 const TypeAvis = require('./types').Avis;
 const Avis = require('./Avis');
 const { validerNumTel } = require('../validators');
+const { sendEmail } = require('../utils');
 
 
 const JurySchema = new Schema({
@@ -126,6 +127,15 @@ JurySchema.methods.attribuerNote = async function (dossier, notes, commentaire) 
         // Increment step of dossier since all juries have given note to dossier
         if (numNotes === numJuries) {
             await dossier.incrementerEtape(EtapeDossier.CINQ_MASTER);
+            if (process.env.SEND_EMAILS === "true") {
+                await dossier.populate('etudiant', 'email');
+                sendEmail(
+                    dossier.etudiant.email, 
+                    'Dossier noté', 
+                    `Votre dossier a été note par les differents jurys. Veuillez patienter 
+                    pour la decision finale.`
+                );
+            }
         }
     }
 }

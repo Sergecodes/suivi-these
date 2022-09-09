@@ -175,6 +175,16 @@ AdminSchema.methods.rejeterEtudiant = async function (etudiant, raison) {
  */
 AdminSchema.methods.validerNotation = async function (dossier) {
     await dossier.incrementerEtape(EtapeDossier.SIX_MASTER);
+    if (process.env.SEND_EMAILS === "true") {
+        await dossier.populate('etudiant', 'email');
+        sendEmail(
+            dossier.etudiant.email, 
+            'Notation des jurys validée', 
+            `Félicitations, apres l'évaluation de la notation des jurys, 
+            votre dossier a été validé. <br> Veuillez patienter pour la programmation de 
+            votre date de soutenance.`
+        );
+    }
 }
 
 

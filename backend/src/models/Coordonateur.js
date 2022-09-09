@@ -5,6 +5,7 @@ const Avis = require('./Avis')
 const Notification = require('./Notification')
 const { AvisEmetteur, EtapeDossier, TypeNotification, ModelNotif } = require('./types')
 const { validerNumTel } = require('../validators');
+const { sendEmail } = require('../utils');
 
 
 const CoordonateurSchema = new Schema({
@@ -87,6 +88,14 @@ CoordonateurSchema.methods.programmerDateSoutenanceMaster = async function (etud
             destinataireModel: ModelNotif.ETUDIANT,
             message: `Votre date de soutenance est le ${etudiant.dateSoutenance}`
         });
+
+        if (process.env.SEND_EMAILS === "true") {
+            sendEmail(
+                etudiant.email, 
+                'Date de soutenance programmée', 
+                `Vous soutenez le ${etudiant.dateSoutenance}. Bon courage!`
+            );
+        }
     } else {
         throw "Ce dossier n'a pas encore atteint cette etape";
     } 
