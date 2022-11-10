@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 
 
+// Get new refreshToken on https://developers.google.com/oauthplayground
 const transporter = nodemailer.createTransport({
    host: "smtp.gmail.com",
    port: 465,

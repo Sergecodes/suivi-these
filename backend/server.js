@@ -6,6 +6,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const fileupload = require('express-fileupload');
 // const schedule = require('node-schedule');
+// const { sendEmail } = require('./src/utils');
 
 // Importer les routes
 const etudiantRoutes = require('./src/routes/etudiant');
@@ -59,7 +60,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'session-secret',
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: false,  // don't create session until something stored
     resave: false,   // don't save session if unmodified,
     // cookie: {
@@ -86,7 +87,7 @@ app.use(fileupload({
 const apiRouter = express.Router();
 
 apiRouter.get('/', (req, res) => {
-    res.send("Bienvenue sur l'api");
+    res.send("You are connected to the api");
 });
 
 app.use('/api', apiRouter);
@@ -107,11 +108,11 @@ app.use('/api/notifications', notificationRoutes);
  * Send email to actors that have unread notifications, reminding them to 
  * login to the platform.
  */
-const emailActors = () => {
-    // Admin, etudiants, conseils, coordonateurs,
-    // departements, experts, jurys, rectorat
+// const emailActors = () => {
+//     // Admin, etudiants, conseils, coordonateurs,
+//     // departements, experts, jurys, rectorat
     
-}
+// }
 
 // Lancer le serveur
 app.listen(port, () => {
