@@ -1,0 +1,8 @@
+{
+   "appService.zipIgnorePattern": [
+      "node_modules{,/**}",
+      ".vscode{,/**}"
+   ],
+   "appService.defaultWebAppToDeploy": "/subscriptions/b2bf0423-a139-432c-990f-c4d7ed45fb52/AppServices/subscriptions/b2bf0423-a139-432c-990f-c4d7ed45fb52/resourceGroups/suivi-these/providers/Microsoft.Web/sites/thesis-dhl-server",
+   "appService.deploySubpath": "backend"
+}
