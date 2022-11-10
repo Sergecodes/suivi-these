@@ -54,7 +54,11 @@ const port = process.env.PORT || 8001;
 
 // Configuration des middlewares
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: [
+        'https://thesis-dhl.vercel.app/',
+        'https://thesis-dhl-serge956.vercel.app/',
+        'https://thesis-dhl-git-main-serge956.vercel.app/'
+    ],
     credentials: true
 }));
 app.use(express.json());
