@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Modal } from "antd";
+import { AiOutlineCheck } from "react-icons/ai";
 import { GoLocation } from "react-icons/go";
 import { BsTelephoneFill, BsFacebook } from "react-icons/bs";
 import { FaEnvelope } from "react-icons/fa";
 import Copyright from "./Copyright";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TopFooter = () => {
   const [adminCode, setAdminCode] = useState("");
@@ -18,10 +19,10 @@ const TopFooter = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    if(adminSelect!==""){
-      navigate("/connexion/"+adminSelect)
+    if (adminSelect !== "") {
+      navigate("/connexion/" + adminSelect)
     }
-    
+
   };
 
   const handleCancel = () => {
@@ -30,9 +31,9 @@ const TopFooter = () => {
 
   const handleModalClick = () => {
     if (adminCode === "1234") {
-     
       showModal();
     }
+
     setAdminCode("");
   };
 
@@ -47,35 +48,36 @@ const TopFooter = () => {
     >
       <div className="footer row">
         <div className="footerCol py-2 col-12 col-lg-6" style={{}}>
-          <p style={{ fontSize: "20px" }}>About Ecole Doctorale STG</p>
+          <p style={{ fontSize: "20px" }}>A propos de l'Ecole Doctorale STG</p>
           <div>
             <h6>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non justo porta, convallis dolor sed, varius leo.
-             Pellentesque sagittis tortor quis cursus imperdiet. Aenean faucibus lectus et congue pulvinar. Curabitur facilisis aliquet nibh ac eleifend. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse ac pulvinar lorem. Aliquam porttitor tortor purus, nec cursus nibh vulputate eu. Morbi accumsan vitae ligula sit amet egestas. 
+              Le Centre de Recherche et de Formation Doctorale en Sciences, Technologies et Geosciences(CRFD/STG) est une structure de l’Université de Yaoundé I créée en 2013 par arrêté de Mr le Ministre de l’Enseignement Supérieur dans le but de rendre la recherche plus moderne, plus féconde et plus professionnelle et d'aider les doctorants à développer leur compétence et à construire leur projet professionnel.
+              Il est composé de cinq unités de recherche et de formation dirigées chacune par un coordinateur. Chaque unité dispose de plusieurs laboratoires gérés par des équipes de recherche.
             </h6>
             <div className="d-flex align-items-center">
               <input
+                style={{ width: '20%' }}
                 type="password"
                 value={adminCode}
                 className="border rounded-pill adminModal"
                 onChange={(e) => setAdminCode(e.target.value)}
-              ></input>
+              />
               <button
                 type="button"
                 className="btn border rounded-pill ms-2 adminModalButton"
                 onClick={handleModalClick}
               >
-                OK
+                <AiOutlineCheck />
               </button>
             </div>
 
-            <div >
+            <div>
               <Modal
                 title="CONNEXION ACTEURS"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
-               
+
               >
                 <section>
                   <p className="text-center fs-5 fw-light">
@@ -102,13 +104,12 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil admin"
                           style={
                             adminSelect === "admin"
                               ? {
-                                  border:
-                                    "2px solid var(--primaryColor) !important",
-                                }
+                                border: "2px solid var(--primaryColor) !important",
+                              }
                               : {}
                           }
                         />
@@ -125,7 +126,7 @@ const TopFooter = () => {
                       }
                     >
                       <div
-                        className=" py-1"
+                        className="py-1"
                         style={
                           adminSelect === "rectorat"
                             ? { boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }
@@ -135,7 +136,7 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil rectorat"
                         />
                         <p>RECTORAT</p>
                       </div>
@@ -160,9 +161,9 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil coordonateur"
                         />
-                        <p>COORDONNATEUR</p>
+                        <p>COORDONATEUR</p>
                       </div>
                     </div>
                     <div
@@ -185,7 +186,7 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil departement"
                         />
                         <p>DEPARTEMENT</p>
                       </div>
@@ -200,7 +201,7 @@ const TopFooter = () => {
                       }
                     >
                       <div
-                        className=" py-1"
+                        className="py-1"
                         style={
                           adminSelect === "jury"
                             ? { boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }
@@ -210,7 +211,7 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil jury"
                         />
                         <p>JURY</p>
                       </div>
@@ -235,7 +236,7 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil conseil"
                         />
                         <p>CONSEIL</p>
                       </div>
@@ -260,7 +261,7 @@ const TopFooter = () => {
                         <img
                           className="border rounded-circle"
                           src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-                          alt="profile"
+                          alt="profil expert"
                         />
                         <p>EXPERT</p>
                       </div>
@@ -271,7 +272,7 @@ const TopFooter = () => {
             </div>
           </div>
         </div>
-        <div className="footerCol py-2 col-12 col-lg-3" style={{}}>
+        {/* <div className="footerCol py-2 col-12 col-lg-3" style={{}}>
           <div className="footerLink">
             <p>Important Links</p>
             <ul style={{ padding: "0px" }}>
@@ -300,10 +301,10 @@ const TopFooter = () => {
               </li>
             </ul>
           </div>
-        </div>
+        </div> */}
 
-        <div className="footerCol py-2 col-12 col-lg-3 " style={{}}>
-          <p style={{ marginBottom: "16px", fontSize: "20px" }}>Contact Info</p>
+        <div className="footerCol py-2 col-12 col-lg-6" style={{}}>
+          <p style={{ marginBottom: "16px", fontSize: "20px" }}>Contact</p>
           <div style={{}}>
             <div
               className="contactCard  d-flex  flex-wrap"
@@ -324,7 +325,7 @@ const TopFooter = () => {
               </div>
             </div>
             <div
-              className="contactCard  d-flex flex-wrap"
+              className="contactCard d-flex flex-wrap"
               style={{ border: "none", marginBottom: "10px" }}
             >
               <div className="contactCardIcon rounded-circle d-flex justify-content-center align-items-center ">
@@ -335,11 +336,11 @@ const TopFooter = () => {
                 <h5 className="fs-6" style={{ margin: "0px" }}>
                   Telephone:
                 </h5>
-                <p>+237655386776</p>
+                <p>(+237) 243 312 288</p>
               </div>
             </div>
             <div
-              className="contactCard  d-flex flex-row flex-wrap "
+              className="contactCard d-flex flex-row flex-wrap "
               style={{ border: "none", marginBottom: "10px" }}
             >
               <div className="contactCardIcon rounded-circle d-flex justify-content-center align-items-center ">
@@ -353,11 +354,11 @@ const TopFooter = () => {
                 <h5 className="fs-6" style={{ margin: "0px" }}>
                   Email:
                 </h5>
-                <p>ecoledoctorale@gmail.com</p>
+                <p>edc.uy1.stg@gmail.com</p>
               </div>
             </div>
             <div
-              className="contactCard  d-flex flex-wrap"
+              className="contactCard d-flex flex-wrap"
               style={{ border: "none", marginBottom: "10px" }}
             >
               <div className="contactCardIcon rounded-circle d-flex justify-content-center align-items-center ">

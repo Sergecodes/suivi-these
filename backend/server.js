@@ -63,21 +63,28 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
+
+// Creer l'objet session
+let sessionObj = {
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,  // don't create session until something stored
     resave: false,   // don't save session if unmodified,
-    // cookie: {
-    //     sameSite: 'none',
-    //     maxAge: 7 * 24 * 60 * 60 * 1000,  // = 7days
-    //     httpOnly: true,
-    //     secure: process.env.PRODUCTION === "true" || false
-    // },
     store: MongoStore.create({
         mongoUrl: urlBd,
         ttl: 7 * 24 * 60 * 60   // = 7 days. Default is 14 days
     })
-}));
+}
+if (process.env.PRODUCTION === "true") {
+    sessionObj['cookie'] = {
+        sameSite: 'none',
+        // maxAge will be taken from store above
+        // maxAge: 7 * 24 * 60 * 60 * 1000,  // = 7days
+        httpOnly: true,
+        // Cookies with SameSite=None require a secure context/HTTPS
+        secure: true
+    };
+}
+app.use(session(sessionObj));
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
     abortOnLimit: true,

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { ImCross } from "react-icons/im";
-import Dropdown from "react-bootstrap/Dropdown";
-import { IoLanguage } from "react-icons/io5";
+// import Dropdown from "react-bootstrap/Dropdown";
+// import { IoLanguage } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu } from "antd";
 const logo = require("../../assets/images/téléchargement.jpg");
 
 const NavbarHeader = (props) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [clicked, setClicked] = useState(false);
-  const location = useLocation(); //used to have the general idea of the location of the url
+  const location = useLocation(); 
+
   function getItem(label, key, icon, children, type) {
     return {
       key,
@@ -81,7 +82,7 @@ const NavbarHeader = (props) => {
                 Accueil
               </Link>
               <div className="navContentCascader">
-                <Menu onClick={onClick} mode="vertical" items={items} /> 
+                <Menu onClick={onClick} mode="vertical" items={items} />
               </div>
               <Link
                 to="/soutenances"
@@ -94,7 +95,7 @@ const NavbarHeader = (props) => {
                 Soutenances
               </Link>
             </div>
-            <Dropdown>
+            {/* <Dropdown>
               <Dropdown.Toggle
                 variant="success"
                 id="dropdown-basic"
@@ -126,7 +127,7 @@ const NavbarHeader = (props) => {
                   </Link>
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <GiHamburgerMenu
               className="d-flex d-lg-none options"
               onClick={() => {
