@@ -2,6 +2,13 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy Node.js app to Azure Web App - thesis-dhl
+
+# This needs to be set here(not in azure server) since npm run build basically compiles the project.
+# Other servers like netlify probably support setting these vars in their portal, but not azure for reactjs
+env: 
+  CI: false
+  PRODUCTION: true
+  REACT_APP_API_BASE_URL: 'https://thesis-dhl-server.azurewebsites.net/api'
   
 on:
   push:
