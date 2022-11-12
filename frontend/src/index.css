@@ -42,7 +42,7 @@ body {
 }
 
 /* lg */
-@media (max-width: 992px) {
+@media (min-width: 992px) {
   .topHeaderAuth {
     width: auto !important;
   }
