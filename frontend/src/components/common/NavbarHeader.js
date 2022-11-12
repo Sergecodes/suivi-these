@@ -169,7 +169,7 @@ const NavbarHeader = (props) => {
             >
               Soutenances
             </Link>
-            <div class="navContentCascader" style={{ 
+            <div className="navContentCascader" style={{ 
               position: 'relative', 
               height: 'initial', 
               width: '80%',
