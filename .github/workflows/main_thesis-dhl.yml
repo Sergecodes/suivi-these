@@ -2,7 +2,12 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy Node.js app to Azure Web App - thesis-dhl
-   
+        
+env: 
+  CI: false
+  PRODUCTION: true
+  REACT_APP_API_BASE_URL: 'https://thesis-dhl-server.azurewebsites.net/api'
+  
 on:
   push:
     branches:
