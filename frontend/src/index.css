@@ -40,9 +40,11 @@ body {
   color: var(--primaryColor);
   background-color: #595656;
 }
-@media (max-width: 1080px) {
-  .topHeader {
-    display: none;
+
+/* lg */
+@media (max-width: 992px) {
+  .topHeaderAuth {
+    width: auto !important;
   }
 }
 

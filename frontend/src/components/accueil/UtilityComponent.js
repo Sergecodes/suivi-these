@@ -19,9 +19,9 @@ const UtilityComponent = () => {
           <div className="prior d-flex px-4 py-4 flex-column align-items-center ">
             <h2>A quoi sert cette plateforme?</h2>
             <p>
-              Cette plateforme est un miroir refletant l'ecole doctorale de l'UY1. Elle vous aidera à ...
+              Cette plateforme est un miroir refletant l'école doctorale de l'UY1. Elle vous aidera à ...
             </p>
-            <Link to="/presentation">
+            <Link to="/informations/presentation">
               <button className="rounded-pill "> En savoir plus ! </button>
             </Link>
           </div>
@@ -30,10 +30,10 @@ const UtilityComponent = () => {
           <div className=" px-4 py-5 second d-flex flex-column align-items-center " >
             <IoNewspaperOutline style={{ color: "var(--primaryColor)", height: "35px", width: "35px" }} />
             <h4 className="pt-4 pb-3">
-              Nouveautes
+              Nouveautés
             </h4>
             <p style={{ textAlign: "center" }}>
-              Avoir de nouveautes concernant l'ecole doctorale de l'UY1
+              Avoir de nouveautés concernant l'école doctorale de l'UY1
             </p>
           </div>
         </div>
@@ -55,7 +55,7 @@ const UtilityComponent = () => {
               Information
             </h4>
             <p style={{ textAlign: "center" }}>
-              Avoir plus d'information concernant l'ecole doctorale de l'UY1 et son fonctionnement.
+              Avoir plus d'information concernant l'école doctorale de l'UY1 et son fonctionnement.
             </p>
           </div>
         </div>

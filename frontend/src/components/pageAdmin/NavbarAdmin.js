@@ -38,7 +38,7 @@ const NavbarAdmin = () => {
         <div className="d-flex justify-content-around align-items-center col-4">
           <GiHamburgerMenu
             onClick={() => dispatch(setAdminClicked())}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", marginRight: '1.5rem', fontSize: '2rem' }}
           />
           <div
             className="d-flex align-items-center"

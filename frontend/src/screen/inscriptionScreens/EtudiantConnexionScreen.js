@@ -25,7 +25,7 @@ function EtudiantConnexionScreen() {
 
   useEffect(() => {
     if (isError) {
-      alert(message);
+      alert(JSON.stringify(message));
     }
     if (isSuccess || etudiant) {
       toast.success("Connexion Reussie");

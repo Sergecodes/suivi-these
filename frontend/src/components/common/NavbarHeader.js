@@ -169,7 +169,16 @@ const NavbarHeader = (props) => {
             >
               Soutenances
             </Link>
-            <Link
+            <div class="navContentCascader" style={{ 
+              position: 'relative', 
+              height: 'initial', 
+              width: '80%',
+              border: 'none',
+              marginRight: '4.5rem',
+            }}>
+              <Menu onClick={onClick} mode="vertical" items={items} />
+            </div>
+            {/* <Link
               to="/*"
               style={
                 location.pathname === "/information"
@@ -178,7 +187,7 @@ const NavbarHeader = (props) => {
               }
             >
               Informations
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

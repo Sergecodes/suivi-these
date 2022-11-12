@@ -24,9 +24,11 @@ const commonRoutes = require('./src/routes/common')
 
 
 // console.log(process.env);
+// env vars
+const PRODUCTION = process.env.PRODUCTION;
+const urlBd = process.env.URL_BD;
 
 // Connexion a la base de donnees
-const urlBd = process.env.URL_BD;
 console.log(urlBd);
 
 mongoose.connect(urlBd).then((mongooseObj) => {
@@ -53,11 +55,10 @@ const port = process.env.PORT || 8001;
 
 
 // Configuration des middlewares
+// app.set("trust proxy", 1);
 app.use(cors({
     origin: [
-        'https://thesis-dhl.vercel.app/',
-        'https://thesis-dhl-serge956.vercel.app/',
-        'https://thesis-dhl-git-main-serge956.vercel.app/'
+        'https://thesis-dhl.azurewebsites.net',
     ],
     credentials: true
 }));
@@ -65,25 +66,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Creer l'objet session
+let sevenDays = 7 * 24 * 60 * 60;
 let sessionObj = {
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,  // don't create session until something stored
     resave: false,   // don't save session if unmodified,
     store: MongoStore.create({
         mongoUrl: urlBd,
-        ttl: 7 * 24 * 60 * 60   // = 7 days. Default is 14 days
-    })
-}
-if (process.env.PRODUCTION === "true") {
-    sessionObj['cookie'] = {
-        sameSite: 'none',
-        // maxAge will be taken from store above
-        // maxAge: 7 * 24 * 60 * 60 * 1000,  // = 7days
+        ttl: sevenDays  // Default is 14 days
+    }),
+    cookie: {
+        sameSite: PRODUCTION == 'true' ? 'none' : 'lax',
+        maxAge: sevenDays,
         httpOnly: true,
         // Cookies with SameSite=None require a secure context/HTTPS
-        secure: true
-    };
-}
+        secure: PRODUCTION == 'true' ? true : false,
+        domain: PRODUCTION == 'true' ? (process.env.COOKIE_DOMAIN || '') : ''
+    }
+};
 app.use(session(sessionObj));
 app.use(fileupload({
     limits: { fileSize: 10 * 1024 * 1024 },
