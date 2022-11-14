@@ -25,7 +25,7 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+          # npm run test --if-present
         working-directory: ./backend
 
       - name: Upload artifact for deployment job
@@ -54,4 +54,4 @@ jobs:
           app-name: 'thesis-dhl-server'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6291CAD668CA44B984BDA85C92E45FDE }}
-          package: .
+          package: ./backend

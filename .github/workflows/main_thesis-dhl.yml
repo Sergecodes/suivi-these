@@ -36,7 +36,7 @@ jobs:
         working-directory: ./frontend
         
       - name: Zip artifact for deployment
-        run: zip release.zip ./frontend -r
+        run: zip -u release.zip ./frontend -r
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -66,6 +66,5 @@ jobs:
         with:
           app-name: 'thesis-dhl'
           slot-name: 'Production'
-          app-settings-json: ${{ secrets.APP_SETTINGS }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_08AF553F84A94C89B70AF9BD72670011 }}
-          package: .
+          package: ./frontend
