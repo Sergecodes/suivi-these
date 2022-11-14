@@ -67,4 +67,4 @@ jobs:
           app-name: 'thesis-dhl'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_08AF553F84A94C89B70AF9BD72670011 }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          package: ./build
