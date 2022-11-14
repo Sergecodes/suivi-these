@@ -62,4 +62,4 @@ jobs:
           app-name: 'thesis-dhl-server'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6291CAD668CA44B984BDA85C92E45FDE }}
-          package: .
+          package: ./release.zip
