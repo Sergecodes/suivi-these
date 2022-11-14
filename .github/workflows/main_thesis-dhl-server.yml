@@ -28,6 +28,9 @@ jobs:
           # npm run test --if-present
         working-directory: ./backend
 
+      - name: Zip artifact for deployment
+        run: zip -u release.zip ./backend -r
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -47,6 +50,9 @@ jobs:
         with:
           name: node-app
 
+      - name: Unzip artifact for deployment
+        run: unzip -o release.zip
+        
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
