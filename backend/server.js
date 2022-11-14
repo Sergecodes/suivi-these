@@ -55,7 +55,7 @@ const port = process.env.PORT || 8001;
 
 
 // Configuration des middlewares
-// app.set("trust proxy", 1);
+app.set('trust proxy', 1);  // trust first proxy
 app.use(cors({
     origin: [
         'https://thesis-dhl.azurewebsites.net',
@@ -66,7 +66,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Creer l'objet session
-let sevenDays = 7 * 24 * 60 * 60;
+let sevenDays = 7 * 24 * 60 * 60 * 1000;
 let sessionObj = {
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,  // don't create session until something stored
@@ -78,6 +78,7 @@ let sessionObj = {
     cookie: {
         sameSite: PRODUCTION == 'true' ? 'none' : 'lax',
         maxAge: sevenDays,
+        expires: new Date(Date.now() + sevenDays),
         httpOnly: true,
         // Cookies with SameSite=None require a secure context/HTTPS
         secure: PRODUCTION == 'true' ? true : false,

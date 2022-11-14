@@ -14,21 +14,23 @@ function UnitesRechercheScreen() {
             <br></br>
             <br></br>
             <hr></hr>
-            <p>Notre ecole doctorale propose 03 (trois) Unites de recherches</p>
+            <p>Notre ecole doctorale propose 05 (cinq) Unites de recherches</p>
             <div className="container dedans">
               <ul>
                 <li>
-                  {" "}
-                  <span className="color-orange">Unites 1</span> : lorem12 ipsum
-                  dollor sit amet set
+                  <span className="color-orange">URFD-MIBA</span> : Mathematiques, Informatique et Biosciences-Appliquées
                 </li>
                 <li>
-                  <span className="color-orange">Unites 2</span> : lorem12 ipsum
-                  dollor sit amet set
+                  <span className="color-orange">URFD-PA</span> : Physique et Applications
                 </li>
                 <li>
-                  <span className="color-orange">Unites 3</span> : lorem12 ipsum
-                  dollor sit amet set
+                  <span className="color-orange">URFD-CA</span> : Chimie et Applications
+                </li>
+                <li>
+                  <span className="color-orange">URFD-GA</span> : Géosciences et Applications
+                </li>
+                <li>
+                  <span className="color-orange">URFD-SIA</span> : Sciences d'Ingénierie et Applications
                 </li>
               </ul>
             </div>

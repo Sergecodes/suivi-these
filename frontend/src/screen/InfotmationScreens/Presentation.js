@@ -12,34 +12,13 @@ function Presentation() {
           <div className="row">
             <h1 className="color-orange">Présentation de l'Ecole Doctorale </h1>
             <div className="container" style={{ textAlign: "left" }}>
-              <h2 className="color-orange">Contact</h2>
+              <h2 className="color-orange">A propos</h2>
               <hr></hr>
               <p>
-                Mme <span className="color-orange">Agnès Labande</span>, Chargée
-                de Recherche CNRS, membre
-                <span>Mr Eric Benoist</span>, Professeur UPS, Directeur.
-              </p>
-              <p>
-                Mme <span className="color-orange">Agnès Labande</span>, Chargée
-                de Recherche CNRS, membre
-                <span>Mr Bernard Viguier</span>, Professeur INP,
-                Directeur-Adjoint.
-              </p>
-              <p>
-                Mme <span className="color-orange">Agnès Labande</span>, Chargée
-                de Recherche CNRS, membre Mr <span>Joël Douin</span>, Directeur
-                de Recherche CNRS, Directeur-Adjoint.
-              </p>
-              <p>
-                Mme <span className="color-orange">Agnès Labande</span>, Chargée
-                de Recherche CNRS, membre du bureau.
-              </p>
-              <p>
-                Mr <span className="color-orange"> Jérôme Cuny</span>, Maître de
-                Conférences UPS, membre du bureau.
+              L'École des hautes études en sciences, technologies et géosciences (CRFD / STG) est un établissement de l'Université de Yaoundé 1 créé en 2013 par arrêté du ministre de l'Enseignement supérieur avec pour objectifs de professionnaliser, moderniser et valoriser les travaux de recherche et d'aider les doctorants à développer des compétences et à construire leur projet professionnel. Il est chargé de l'encadrement et de la formation des étudiants en Master II et en doctorat. Le CRFD/STG est dirigé par un coordinateur qui est placé sous l'autorité du Recteur de l'Université de Yaoundé I.
               </p>
             </div>
-            <div className="secretariat-ed container">
+            {/* <div className="secretariat-ed container">
               <h2 className="color-orange">Secrétariat de l'école doctorale</h2>
               <hr></hr>
               <p>
@@ -65,7 +44,7 @@ function Presentation() {
               <p className="site color-orange">
                 https://ed-sdm.univ-toulouse.fr
               </p>
-            </div>
+            </div> */}
             <div className="Missions">
               <h2>En Bref : Missions des Ecoles Doctorales</h2>
               <hr></hr>
@@ -109,38 +88,17 @@ function Presentation() {
                   Doctorales.
                 </li>
                 <li>
-                  Une personne susceptible de diriger ou co-diriger une thèse de
-                  doctorat ne peut être rattachée qu'à une seule Ecole
-                  doctorale, sauf pour l'inscription d'un doctorant à l'Ecole
-                  doctorale Aéronautique et Astronautique. En effet, cette Ecole
-                  Doctorale joue le rôle de seconde école doctorale de
-                  rattachement et ne dispose d'aucun potentiel de recherche en
-                  propre, aucune personne ne pouvant être rattachée uniquement à
-                  cette Ecole Doctorale.
+                L'instance de consultation et de validation des dossiers scientifiques et administratifs importants du CRFD/STG est le Conseil Scientifique et Pédagogique du Centre, conseil dont les membres (23) sont nommés par décision du Recteur de l'Université de Yaoundé I. Le conseil se réunit sur convocation du Coordonnateur du CRFD/STG chaque fois que celui-ci le juge nécessaire.
+                Le doctorat peut être poursuivi dans l'une des Unités de Recherche et de Formation Postgraduée (URFD) qui abritent chacune un ou plusieurs laboratoires de recherche.
                 </li>
                 <li>
-                  Tous les doctorants dont le directeur de thèse est membre de
-                  l'Ecole Doctorale Sciences de la Matière sont inscrits dans
-                  l'Ecole Doctorale Sciences de la Matière.
-                </li>
-                <li>
-                  Les 16 structures de recherche rattachées en totalité ou
-                  partie à l'Ecole Doctorale Sciences de la Matière représentent
-                  un potentiel d'encadrement de 500 personnes dont 350 sont
-                  titulaires de l'Habilitation à diriger des Recherches (HDR).
-                  Environ 320 doctorants sont inscrits dans l'Ecole Doctorale,
-                  ce qui représente un flux annuel d'inscription d'environ 80 à
-                  90 nouveaux doctorants
+                Le CRFD / STG a sous son autorité cinq (5) Unités de Recherche et de Formation dirigées chacune par un Coordinateur. Chaque unité regroupe un certain nombre de laboratoires gérés par des équipes de recherche.
                 </li>
               </ol>
             </div>
             <div className="programme-daction-ed">
               <h2>Programme d'actions des écoles doctorales</h2>
               <hr></hr>
-              <h4>
-                Le programme d'actions des Ecoles Doctorales est défini par
-                l'arrêté du 25 mai 2016. Dans ce cadre, les Ecoles Doctorales :
-              </h4>
               <ol>
                 <li>
                   mettent en œuvre une politique de choix des doctorants fondée
@@ -154,7 +112,7 @@ function Presentation() {
                 <li>
                   s'assurent de la qualité de l'encadrement des doctorants par
                   les unités et équipes de recherche, et veiller au respect de
-                  la charte des thèses de l'Université de Toulouse de manière à
+                  la charte des thèses de l'UY1 de manière à
                   mettre les doctorants en mesure de préparer et de soutenir
                   leur thèse dans les meilleures conditions ;
                 </li>

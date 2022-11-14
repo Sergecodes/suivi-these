@@ -28,22 +28,22 @@ const NavbarHeader = (props) => {
         getItem("Presentation", "presentation"),
         getItem("Equipe", "equipe"),
         getItem("Unite de recherche", "unites-recherche"),
-        getItem("Conseil scientifique", "conseil"),
+        // getItem("Conseil scientifique", "conseil"),
       ]),
       getItem("Sujet de thèse", "sujet-de-thèse", null, [
         getItem("Candidature", "candidature"),
       ]),
-      getItem("Le doctorat", "le-doctorat", null, [
-        getItem("Inscription", "inscription"),
-        getItem("Formation en thèse", "formation"),
-        getItem("Suivi de formation", "suivi-de-formation"),
-        getItem("Procédure de présoutenance", "procédure"),
-        getItem("Thèse en cotutelle", "thèse-cotutelle"),
-        getItem("Thèse en cours", "thèse-en-cours"),
-      ]),
-      getItem("Divers", "divers", null, [
-        getItem("Documents importants", "document"),
-      ]),
+      // getItem("Le doctorat", "le-doctorat", null, [
+      //   getItem("Inscription", "inscription"),
+      //   getItem("Formation en thèse", "formation"),
+      //   getItem("Suivi de formation", "suivi-de-formation"),
+      //   getItem("Procédure de présoutenance", "procédure"),
+      //   getItem("Thèse en cotutelle", "thèse-cotutelle"),
+      //   getItem("Thèse en cours", "thèse-en-cours"),
+      // ]),
+      // getItem("Divers", "divers", null, [
+      //   getItem("Documents importants", "document"),
+      // ]),
     ]),
   ];
 
@@ -60,7 +60,7 @@ const NavbarHeader = (props) => {
       }}
     >
       <div className="container pb-1">
-        <div className="d-flex justify-content-between  align-items-center py-2">
+        <div className="d-flex justify-content-between align-items-center py-2">
           <div className="logo d-flex align-items-center ">
             <img
               src={logo}
