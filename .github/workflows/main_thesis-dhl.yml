@@ -9,6 +9,7 @@ env:
   CI: false
   PRODUCTION: true
   REACT_APP_API_BASE_URL: 'https://thesis-dhl-server.azurewebsites.net/api'
+  AZURE_WEBAPP_PACKAGE_PATH: './frontend'
   
 on:
   push:
@@ -28,21 +29,20 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: npm install, build, and test
+      - name: npm install, build
         run: |
           npm install
           npm run build --if-present
-          # npm run test --if-present
-        working-directory: ./frontend
+        working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         
-      - name: Zip artifact for deployment
-        run: zip -u release.zip ./frontend -r
+      # - name: Zip artifact for deployment
+      #   run: zip -u release.zip ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} -r
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: build/
     
   deploy:
     runs-on: ubuntu-latest
@@ -57,8 +57,8 @@ jobs:
         with:
           name: node-app
 
-      - name: Unzip artifact for deployment
-        run: unzip -o release.zip
+      # - name: Unzip artifact for deployment
+      #   run: unzip -o release.zip
         
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -67,4 +67,4 @@ jobs:
           app-name: 'thesis-dhl'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_08AF553F84A94C89B70AF9BD72670011 }}
-          package: ./frontend
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
