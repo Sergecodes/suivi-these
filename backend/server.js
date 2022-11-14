@@ -81,7 +81,7 @@ let sessionObj = {
         httpOnly: true,
         // Cookies with SameSite=None require a secure context/HTTPS
         secure: PRODUCTION == 'true' ? true : false,
-        domain: PRODUCTION == 'true' ? (process.env.COOKIE_DOMAIN || '') : ''
+        // domain: PRODUCTION == 'true' ? (process.env.COOKIE_DOMAIN || '') : ''
     }
 };
 app.use(session(sessionObj));
