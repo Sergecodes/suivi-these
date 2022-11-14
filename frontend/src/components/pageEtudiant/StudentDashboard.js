@@ -75,16 +75,6 @@ const StudentDashboard = (props) => {
             <BsFolderFill className="me-2 fs-5"/> Depot dossier
           </p>
         </Link>
-        <Link to="/account/changement-sujet">
-          <p style={location.pathname === "/account/changement-sujet"?{backgroundColor:"#ff5821",color:"white"}:{}}>
-            <BsArrowRepeat className="me-2 fs-5"/> Changement de sujet
-          </p>
-        </Link>
-        <Link to="/account/changement-encadreur">
-          <p style={location.pathname === "/account/changement-encadreur"?{backgroundColor:"#ff5821",color:"white"}:{}}>
-            <BsArrowRepeat className="me-2 fs-5"/> Changement d'encadreur
-          </p>
-        </Link>
 
           <Link
             to="/account/profil"
@@ -104,6 +94,16 @@ const StudentDashboard = (props) => {
           <Link to="/account/evolution">
             <p style={location.pathname === "/account/evolution"?{backgroundColor:"#ff5821",color:"white"}:{}}>
               <IoRocketSharp className="me-2 fs-5"/> Evolution du dossier
+            </p>
+          </Link>
+          <Link to="/account/changement-sujet">
+            <p style={location.pathname === "/account/changement-sujet"?{backgroundColor:"#ff5821",color:"white"}:{}}>
+              <BsArrowRepeat className="me-2 fs-5"/> Changement de sujet
+            </p>
+          </Link>
+          <Link to="/account/changement-encadreur">
+            <p style={location.pathname === "/account/changement-encadreur"?{backgroundColor:"#ff5821",color:"white"}:{}}>
+              <BsArrowRepeat className="me-2 fs-5"/> Changement d'encadreur
             </p>
           </Link>
           <Link to="/account/date-soutenance">

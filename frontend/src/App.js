@@ -174,11 +174,11 @@ const App = () => {
             <Route path="/account/date-soutenance" element={<DateSoutenance />} />
             <Route
               path="/account/changement-sujet"
-              element={<Result title="En cours d'implémentation" />}
+              element={<Result title="Veuillez vous rapprocher du campus." />}
             />
             <Route
               path="/account/changement-encadreur"
-              element={<Result title="En cours d'implémentation" />}
+              element={<Result title="Veuillez vous rapprocher du campus." />}
             />
           </Route>
 
