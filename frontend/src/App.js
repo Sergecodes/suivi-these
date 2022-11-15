@@ -156,6 +156,14 @@ axios.defaults.withCredentials = true;
 const App = () => {
   document.title = "Ecole Doctorale STG";
 
+  // Display disclaimer to new users
+  let isOldUser = parseInt(localStorage.getItem('isOldUser') || 0);
+  if (!isOldUser) {
+    let alertMsg = 'This platform is no longer used by the University of Yaounde 1 due to changes in their tech stack. It is open-sourced at https://github.com/Sergecodes/suivi-these';
+    localStorage.setItem('isOldUser', 1);
+    alert(alertMsg);
+  }
+
   return (
     <BrowserRouter>
       <div className="App">
