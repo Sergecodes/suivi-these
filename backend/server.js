@@ -58,7 +58,8 @@ const port = process.env.PORT || 8001;
 app.set('trust proxy', 1);  // trust first proxy
 app.use(cors({
     origin: [
-        'https://thesis-dhl.azurewebsites.net',
+        'http://suivi-these.eu-west-3.elasticbeanstalk.com',
+        'https://suivi-these.eu-west-3.elasticbeanstalk.com',
     ],
     credentials: true
 }));
